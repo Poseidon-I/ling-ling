@@ -156,7 +156,7 @@ public class CommandHub extends ListenerAdapter {
                     String id = message[1];
                     int add = Integer.parseInt(message[2]);
                     BufferedReader br;
-                    int violins = 0;
+                    int violins;
                     String data;
                     try {
                         br = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data\\" + id + ".txt"));
@@ -167,9 +167,9 @@ public class CommandHub extends ListenerAdapter {
                         throw new IllegalArgumentException();
                     }
                     StringBuilder newData = new StringBuilder();
-                    newData.append(violins).append(" ");
+                    newData.append(violins);
                     for (int i = 1; i < data.split(" ").length; i++) {
-                        newData.append(data.split(" ")[i]).append(" ");
+                        newData.append(" ").append(data.split(" ")[i]);
                     }
                     newData.deleteCharAt(data.length() - 1);
                     PrintWriter writeEdit;
@@ -278,6 +278,28 @@ public class CommandHub extends ListenerAdapter {
                         }
                     } else {
                         e.getChannel().sendMessage("Please type `!updateusers confirm` to confirm that you would like to update all data to the latest version.").queue();
+                    }
+                }
+                case "!purgeusers" -> {
+                    e.getChannel().sendMessage("Purging saves for users with no violins...").queue();
+                    File directory = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data");
+                    File[] files = directory.listFiles();
+                    if (files != null) {
+                        int deleted = 0;
+                        for (File file : files) {
+                            try {
+                                BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
+                                int violins = Integer.parseInt(br.readLine().split(" ")[0]);
+                                br.close();
+                                if(violins == 0) {
+                                    file.delete();
+                                    deleted ++;
+                                }
+                            } catch (Exception exception) {
+                                //nothing here lol
+                            }
+                        }
+                        e.getChannel().sendMessage("Successfully purged " + deleted + " files!").queue();
                     }
                 }
             }
@@ -485,7 +507,7 @@ public class CommandHub extends ListenerAdapter {
                                 e.getChannel().sendMessage("HAHA DEV ABOOZ").queue();
                             } else {
                                 e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-                                User user = null;
+                                User user;
                                 try {
                                     user = e.getJDA().getUserById(target);
                                 } catch (Exception exception) {
@@ -523,7 +545,7 @@ public class CommandHub extends ListenerAdapter {
                             } else if (hasDevPing) {
                                 e.getChannel().sendMessage("HAHA DEV ABOOZ").queue();
                             } else {
-                                User user = null;
+                                User user;
                                 try {
                                     user = e.getJDA().getUserById(target);
                                 } catch (Exception exception) {
@@ -558,7 +580,7 @@ public class CommandHub extends ListenerAdapter {
                                 } catch (Exception exception) {
                                     e.getChannel().sendMessage("You do not have a channel named \"moderation-log\", the mute was not logged.").queue();
                                 }
-                                Objects.requireNonNull(e.getJDA().getUserById(target)).openPrivateChannel().complete().sendMessage("You were violatized in " + e.getGuild().getName() + " for " + reason + "!").queue();
+                                Objects.requireNonNull(e.getJDA().getUserById(target)).openPrivateChannel().complete().sendMessage("You were muted in " + e.getGuild().getName() + " for " + reason + "!").queue();
 
                             }
                         } else {
@@ -567,7 +589,7 @@ public class CommandHub extends ListenerAdapter {
                     }
                     case "unmute" -> {
                         if (Objects.requireNonNull(e.getGuild().getMemberById(e.getAuthor().getId())).hasPermission(Permission.MESSAGE_MANAGE) || isDev) {
-                            User user = null;
+                            User user;
                             try {
                                 user = e.getJDA().getUserById(target);
                             } catch (Exception exception) {
@@ -619,7 +641,7 @@ public class CommandHub extends ListenerAdapter {
                             } else if (hasDevPing) {
                                 e.getChannel().sendMessage("HAHA DEV ABOOZ").queue();
                             } else {
-                                User user = null;
+                                User user;
                                 try {
                                     user = e.getJDA().getUserById(target);
                                 } catch (Exception exception) {
@@ -669,7 +691,7 @@ public class CommandHub extends ListenerAdapter {
                             } else if (hasDevPing) {
                                 e.getChannel().sendMessage("HAHA DEV ABOOZ").queue();
                             } else {
-                                User user = null;
+                                User user;
                                 try {
                                     user = e.getJDA().getUserById(target);
                                 } catch (Exception exception) {
@@ -760,7 +782,7 @@ public class CommandHub extends ListenerAdapter {
                             e.getChannel().sendMessage("Either the recipient was being a n00b and didn't have their DMs open or you are smol brane and forgot to mention a user or you mentioned a bot.").queue();
                         }
                     }
-                    case "wound" -> {
+                    case "kill" -> {
                         e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
                         if (e.getAuthor().getName().contains("@everyone") || e.getAuthor().getName().contains("@here") || e.getAuthor().getName().contains("<@&")) {
                             e.getChannel().sendMessage("Nice try but no").queue();
@@ -786,7 +808,7 @@ public class CommandHub extends ListenerAdapter {
                         } else if (i == 8) {
                             e.getChannel().sendMessage("A bomb detonated over " + targetPing + "'s head").queue();
                         } else if (i == 9) {
-                            e.getChannel().sendMessage(targetPing + " destroyed Jacqueline's Stradivarius so Jacqueline destroyed " + target).queue();
+                            e.getChannel().sendMessage(targetPing + " destroyed Jacqueline's Stradivarius so Jacqueline destroyed " + targetPing).queue();
                         } else if (i == 10) {
                             e.getChannel().sendMessage(targetPing + " tripped over a tripwire and fell into the Void").queue();
                         } else if (i == 11) {
@@ -1010,7 +1032,19 @@ public class CommandHub extends ListenerAdapter {
                     }
                     case "vote" -> {
                         e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-                        e.getChannel().sendMessage("You can vote for the bot here: https://top.gg/bot/733409243222507670/vote.  Voting currently does not offer rewards but as soon as top.gg API is figured out, voting will unlock access to one use of `!rehearse`.\n\nWant to vote for the support server?  Vote at https://top.gg/servers/670725611207262219/vote for a 10% boost to `!practice`, `!rehearse`, and `!perform` in the support server!").queue();
+                        e.getChannel().sendMessage("You can vote for the bot here: https://top.gg/bot/733409243222507670/vote.  Voting does not give a reward (nor does not voting negatively impact you) but helps the bot grow!\n\nWant to vote for the support server?  Vote at https://top.gg/servers/670725611207262219/vote for a 10% boost to `!practice`, `!rehearse`, and `!perform` in the support server!").queue();
+                    }
+                    case "website" -> {
+                        e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
+                        e.getChannel().sendMessage("Visit my webpage!  <https://lingling40hrs.weebly.com/>").queue();
+                    }
+                    case "costs" -> {
+                        e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
+                        e.getChannel().sendMessage("Need a table with all upgrade costs?  Here's one!  <https://lingling40hrs-guide.neocities.org/upgrades.html>").queue();
+                    }
+                    case "guide" -> {
+                        e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
+                        e.getChannel().sendMessage("The guide is being worked on currently, this command will be updated as soon as it releases!").queue();
                     }
                 }
             }
@@ -1023,35 +1057,37 @@ public class CommandHub extends ListenerAdapter {
         } catch (Exception exception) {
             //nothing here lol
         }
-        if (e.getChannel().getName().contains("announcements") && data[1].equals("true")) {
-            e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1FB").queue();
-            e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue();
-            e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F4").queue();
-            e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F1").queue();
-            e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E6").queue();
-        } else {
-            if (random.nextDouble() <= 0.025) {
-                if (server.equals("679237495333847060")) {
-                    e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F7").queue(); //r
-                    e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue(); //i
-                    e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E8").queue(); //c
-                    e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EA").queue(); //e
-                } else {
-                    try {
-                        TextChannel textChannel = e.getGuild().getTextChannelById("734697510517342309");
-                        assert textChannel != null;
-                        textChannel.sendMessage("annoy<@&734697394389778462>").queue();
-                    } catch (Exception exception) {
-                        //nothing here lol
-                    }
-                    try {
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1FB").queue();
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue();
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F4").queue();
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F1").queue();
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E6").queue();
-                    } catch (Exception exception1) {
-                        e.getChannel().sendMessage("<@" + e.getAuthor().getName() + "> was probably being a pussy and blocked the bot.  Or I happened to try to react to a deleted message.").queue();
+        if(data[1].equals("true")) {
+            if (e.getChannel().getName().contains("announcement")) {
+                e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1FB").queue();
+                e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue();
+                e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F4").queue();
+                e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F1").queue();
+                e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E6").queue();
+            } else {
+                if (random.nextDouble() <= 0.025) {
+                    if (server.equals("679237495333847060")) {
+                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F7").queue(); //r
+                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue(); //i
+                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E8").queue(); //c
+                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EA").queue(); //e
+                    } else {
+                        try {
+                            TextChannel textChannel = e.getGuild().getTextChannelById("734697510517342309");
+                            assert textChannel != null;
+                            textChannel.sendMessage("annoy<@&734697394389778462>").queue();
+                        } catch (Exception exception) {
+                            //nothing here lol
+                        }
+                        try {
+                            e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1FB").queue();
+                            e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue();
+                            e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F4").queue();
+                            e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F1").queue();
+                            e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E6").queue();
+                        } catch (Exception exception1) {
+                            e.getChannel().sendMessage("<@" + e.getAuthor().getName() + "> was probably being a pussy and blocked the bot.  Or I happened to try to react to a deleted message.").queue();
+                        }
                     }
                 }
             }

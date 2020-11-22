@@ -74,7 +74,7 @@ public class Luthier extends ListenerAdapter {
                 }
                 target.deleteCharAt(target.length() - 1);
                 int gain = Integer.parseInt(arr[arr.length - 1]);
-                String user = null;
+                String user;
                 if(e.getMessage().getContentRaw().toLowerCase().equals(target.toString())) {
                     try {
                         reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt."));
