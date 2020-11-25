@@ -245,7 +245,7 @@ public class Economy extends ListenerAdapter {
                                             EmbedBuilder builder = new EmbedBuilder()
                                                     .setColor(Color.BLUE)
                                                     .setFooter("Uesr balance: " + violins + "\nUser `" + prefix + "buy [ID]` to buy an upgrade!", e.getJDA().getSelfUser().getAvatarUrl())
-                                                    .addField("Concert Hall Quality (" + hallLevel + "/2)", "Price: " + hallCost + "\nEffect: +300 violins/hour, +20% violins from `" + prefix + "perform`\nID: `concert`, `hall`", false)
+                                                    .addField("Concert Hall Quality (" + hallLevel + "/2)", "Price: " + hallCost + "\nEffect: +300 violins/hour, +20% violins from `" + prefix + "practice` `" + prefix + "rehearse` and `" + prefix + "perform`\nID: `concert`, `hall`", false)
                                                     .addField("", "Buy the orchestra to unlock more upgrades!", false)
                                                     .setTitle("__**Miscellaneous Orchestra Items**__");
                                             e.getChannel().sendMessage(builder.build()).queue();
@@ -255,7 +255,7 @@ public class Economy extends ListenerAdapter {
                                                     .setColor(Color.BLUE)
                                                     .setFooter("User balance: " + violins + "\nUse `" + prefix + "buy [ID]` to buy an upgrade!", e.getJDA().getSelfUser().getAvatarUrl())
                                                     .addField("Efficient Practising (" + workL + "/75)", "Price: " + workCost + "\nEffect: Increases your income from `" + prefix + "practice`, `" + prefix + "rehearse`, and `" + prefix + "perform` by 5%.\nID: `efficient`, `practising`, `ep`", false)
-                                                    .addField("Lucky Musician (" + gambleL + "/40)", "Price: " + gambleCost + "\nEffect: Increases your chance of winning at `" + prefix + "bet` by 1%.\nID: `lucky`, `lm`", false)
+                                                    .addField("Lucky Musician (" + gambleL + "/40)", "Price: " + gambleCost + "\nEffect: Increases your chance of winning at `" + prefix + "bet` by 0.75%.\nID: `lucky`, `lm`", false)
                                                     .addField("Sophisticated Robbing (" + robL + "/25)", "Price: " + robCost + "\nEffect: Increases your chance of a successful `" + prefix + "rob` by 0.5%.\nID: `sophisticated`, `robbing`, `sr`", false)
                                                     .setTitle("__**Other Miscellaneous Upgrades**__");
                                             if (ownInsurance1) {
@@ -358,7 +358,7 @@ public class Economy extends ListenerAdapter {
                                             EmbedBuilder builder = new EmbedBuilder()
                                                     .setColor(Color.BLUE)
                                                     .setFooter("User balance: " + violins + "\nUse `" + prefix + "buy [ID]` to buy an upgrade!", e.getJDA().getSelfUser().getAvatarUrl())
-                                                    .addField("Concert Hall Quality (" + hallLevel + "/5)", "Price: " + hallCost + "\nEffect: +300 violins/hour\nID: `concert`, `hall`", false)
+                                                    .addField("Concert Hall Quality (" + hallLevel + "/5)", "Price: " + hallCost + "\nEffect: +300 violins/hour, +20% violins from `" + prefix + "practice` `" + prefix + "rehearse` and `" + prefix + "perform`\nID: `concert`, `hall`", false)
                                                     .addField("Conductor Musicality (" + conductor + "/5)", "Price: " + conductorCost + "\nEffect: +200 violins/hour\nID: `conductor`, `musicality`", false)
                                                     .addField("Advertisement (" + advertising + "/20)", "Price: " + advertisingCost + "\nEffect: +100 violins/hour\nID: `advertisement`, `ad`", false)
                                                     .addField("Ticket Price (" + tickets + "/5)", "Price: " + ticketCost + "\nEffect: +1000 violins/hour\nID: `tickets`", false)
@@ -370,7 +370,7 @@ public class Economy extends ListenerAdapter {
                                                     .setColor(Color.BLUE)
                                                     .setFooter("User balance: " + violins + "\nUse `" + prefix + "buy [ID]` to buy an upgrade!", e.getJDA().getSelfUser().getAvatarUrl())
                                                     .addField("Efficient Practising (" + workL + "/75)", "Price: " + workCost + "\nEffect: Increases your income from `" + prefix + "practice`, `" + prefix + "rehearse`, and `" + prefix + "perform` by 5%.\nID: `efficient`, `practising`, `ep`", false)
-                                                    .addField("Lucky Musician (" + gambleL + "/40)", "Price: " + gambleCost + "\nEffect: Increases your chance of winning at `" + prefix + "bet` by 1%.\nID: `lucky`, `lm`", false)
+                                                    .addField("Lucky Musician (" + gambleL + "/40)", "Price: " + gambleCost + "\nEffect: Increases your chance of winning at `" + prefix + "bet` by 0.75%.\nID: `lucky`, `lm`", false)
                                                     .addField("Sophisticated Robbing (" + robL + "/25)", "Price: " + robCost + "\nEffect: Increases your chance of a successful `" + prefix + "rob` by 0.5%.\nID: `sophisticated`, `robbing`, `sr`", false)
                                                     .setTitle("__**Other Miscellaneous Upgrades**__");
                                             if (ownInsurance1) {
@@ -1114,15 +1114,16 @@ public class Economy extends ListenerAdapter {
                                 milliseconds -= seconds * 1000;
                                 e.getChannel().sendMessage("Chill, you already practised this hour!  Wait " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
                             } else {
-                                int base;
-                                if (serverVote) {
-                                    base = (int) ((random.nextInt(40) + 280) * Math.pow(1.05, workL) * 1.1);
-                                } else {
-                                    base = (int) ((random.nextInt(40) + 280) * Math.pow(1.05, workL));
+                                int base = (int) ((random.nextInt(40) + 380) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1));
+                                if(serverVote) {
+                                    base *= 1.1;
+                                }
+                                if(hasOrchestra) {
+                                    base *= 2;
                                 }
                                 violins += base;
                                 e.getChannel().sendMessage("You practised for one hour and earned " + base + " violins.").queue();
-                                workC = time + 2640000;
+                                workC = time + 2340000;
                             }
                         }
                         case "rehearse", "r" -> {
@@ -1141,11 +1142,12 @@ public class Economy extends ListenerAdapter {
                                     milliseconds -= seconds * 1000;
                                     e.getChannel().sendMessage("You don't have the time to go to rehearsal that often, wait " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
                                 } else {
-                                    int base;
-                                    if (serverVote) {
-                                        base = (int) ((random.nextInt(100) + 1200) * Math.pow(1.05, workL) * 1.1);
-                                    } else {
-                                        base = (int) ((random.nextInt(100) + 1200) * Math.pow(1.05, workL));
+                                    int base = (int) ((random.nextInt(200) + 1900) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1));
+                                    if(serverVote) {
+                                        base *= 1.1;
+                                    }
+                                    if(hasOrchestra) {
+                                        base *= 2;
                                     }
                                     violins += base;
                                     e.getChannel().sendMessage("You went to rehearse with the Berlin Philharmonic and earned " + base + " violins.").queue();
@@ -1172,7 +1174,7 @@ public class Economy extends ListenerAdapter {
                                 milliseconds -= seconds * 1000;
                                 e.getChannel().sendMessage("Don't tire yourself with two performances a week!  Wait " + days + " days " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
                             } else {
-                                int base = (int) ((random.nextInt(1500) + 6250) * Math.pow(1.05, workL) * (1.2 * hallLevel));
+                                int base = (int) ((random.nextInt(2000) + 5000) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1));
                                 if(serverVote) {
                                     base *= 1.1;
                                 }
@@ -1181,7 +1183,7 @@ public class Economy extends ListenerAdapter {
                                 }
                                 violins += base;
                                 e.getChannel().sendMessage("You performed your solo and earned " + base + " violins.").queue();
-                                performC = time + 604740000;
+                                performC = time + 302340000;
                             }
                         }
                         case "rob" -> {
@@ -1201,7 +1203,7 @@ public class Economy extends ListenerAdapter {
                             } else {
                                 String target = "";
                                 try {
-                                    target = e.getMessage().getMentionedUsers().get(0).getId();
+                                    target = e.getMessage().getMentionedUsers().get(0).getName();
                                 } catch (Exception exception) {
                                     try {
                                         target = message[1];
@@ -1231,7 +1233,7 @@ public class Economy extends ListenerAdapter {
                                 double num = random.nextDouble();
                                 int insurance = Integer.parseInt(targetDataArray[11]);
                                 if (num < failChance) {
-                                    e.getChannel().sendMessage("Brett and Eddy caught you trying to rob <@" + target + ">!  You paid <@" + target + "> " + (long) (Long.parseLong(dataArray[0]) * 0.05) + " violins for attempting to rob them.\n*The generator rolled " + num + ", you need at least " + failChance + " to succeed.*").queue();
+                                    e.getChannel().sendMessage("Brett and Eddy caught you trying to rob " + target + "!  You paid " + target + " " + (long) (Long.parseLong(dataArray[0]) * 0.05) + " violins for attempting to rob them.\n*The generator rolled " + num + ", you need at least " + failChance + " to succeed.*").queue();
                                     User send = e.getJDA().getUserById(target);
                                     assert send != null;
                                     send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> tried to rob you but failed!  They paid you " + (long) (Long.parseLong(targetDataArray[0]) * 0.05) + " violins in fines.").queue();
@@ -1239,20 +1241,20 @@ public class Economy extends ListenerAdapter {
                                     violins -= Long.parseLong(dataArray[0]) * 0.05;
                                 } else {
                                     if (insurance == 1) {
-                                        e.getChannel().sendMessage("You try to rob <@" + target + "> only to notice that Ling Ling Security is present.  You try to escape but you are caught and kicked from the estate.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
+                                        e.getChannel().sendMessage("You try to rob " + target + " only to notice that Ling Ling Security is present.  You try to escape but you are caught and kicked from the estate.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
                                         User send = e.getJDA().getUserById(target);
                                         assert send != null;
-                                        send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> tried to rob you!  Luckily, insurance protected you and you only paid " + (long) (Long.parseLong(targetDataArray[0]) * 0.03) + " violins in insurance costs.").queue();
-                                        targetViolins -= Long.parseLong(targetDataArray[0]) * 0.03;
+                                        send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> tried to rob you!  Luckily, insurance protected you and you only paid " + (long) (Long.parseLong(targetDataArray[0]) * 0.04) + " violins in insurance costs.").queue();
+                                        targetViolins -= Long.parseLong(targetDataArray[0]) * 0.04;
                                     } else if (insurance == 2) {
-                                        e.getChannel().sendMessage("You successfully robbed <@" + target + "> but only managed to get away with " + (long) (Long.parseLong(targetDataArray[0]) * 0.067) + " violins before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
+                                        e.getChannel().sendMessage("You successfully robbed " + target + " but only managed to get away with " + (long) (Long.parseLong(targetDataArray[0]) * 0.06) + " violins before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
                                         User send = e.getJDA().getUserById(target);
                                         assert send != null;
-                                        send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> just robbed " + (long) (Long.parseLong(targetDataArray[0]) * 0.067) + " violins from you!  Your Ling Ling insurance protected " + (long) (Long.parseLong(targetDataArray[0]) * 0.133) + " violins.").queue();
-                                        targetViolins -= Long.parseLong(targetDataArray[0]) * 0.067;
-                                        violins += Long.parseLong(targetDataArray[0]) * 0.067;
+                                        send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> just robbed " + (long) (Long.parseLong(targetDataArray[0]) * 0.06) + " violins from you!  Your Ling Ling insurance protected " + (long) (Long.parseLong(targetDataArray[0]) * 0.133) + " violins.").queue();
+                                        targetViolins -= Long.parseLong(targetDataArray[0]) * 0.06;
+                                        violins += Long.parseLong(targetDataArray[0]) * 0.06;
                                     } else {
-                                        e.getChannel().sendMessage("You successfully robbed <@" + target + ">!  Your payout was " + (long) (Long.parseLong(targetDataArray[0]) * 0.2) + " violins!\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
+                                        e.getChannel().sendMessage("You successfully robbed " + target + "!  Your payout was " + (long) (Long.parseLong(targetDataArray[0]) * 0.2) + " violins!\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
                                         User send = e.getJDA().getUserById(target);
                                         assert send != null;
                                         send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> just robbed " + (long) (Long.parseLong(targetDataArray[0]) * 0.2) + " violins from you!").queue();
@@ -1305,10 +1307,10 @@ public class Economy extends ListenerAdapter {
                             } else {
                                 double chance = random.nextDouble();
                                 gambleC = time + 20000;
-                                if (chance > 0.4 + 0.01 * gambleL) {
+                                if (chance > 0.4 + 0.075 * gambleL) {
                                     violins -= bet;
-                                    e.getChannel().sendMessage("You lost " + bet + " violins!\n*The generator rolled " + chance + ", you need less than " + (0.4 + 0.01 * gambleL) + " to win.*\nYou now have " + violins + " violins.").queue();
-                                } else if (chance <= 0.4 + 0.01 * gambleL) {
+                                    e.getChannel().sendMessage("You lost " + bet + " violins!\n*The generator rolled " + chance + ", you need less than " + (0.4 + 0.075 * gambleL) + " to win.*\nYou now have " + violins + " violins.").queue();
+                                } else if (chance <= 0.4 + 0.075 * gambleL) {
                                     violins += bet;
                                     e.getChannel().sendMessage("You won " + bet + " violins!\n*The generator rolled " + chance + ".*\nYou now have " + violins + " violins.").queue();
                                 }

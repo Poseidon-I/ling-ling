@@ -171,7 +171,6 @@ public class CommandHub extends ListenerAdapter {
                     for (int i = 1; i < data.split(" ").length; i++) {
                         newData.append(" ").append(data.split(" ")[i]);
                     }
-                    newData.deleteCharAt(data.length() - 1);
                     PrintWriter writeEdit;
                     try {
                         writeEdit = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data\\" + id + ".txt")));
