@@ -15,7 +15,7 @@ public class BotJoin extends ListenerAdapter {
         try {
             file.createNewFile();
             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt")));
-            pw.print("true true false true");
+            pw.print("true true false true true");
             pw.close();
         } catch(Exception exception) {
             //nothing here lol

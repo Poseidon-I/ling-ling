@@ -71,7 +71,7 @@ public class Economy extends ListenerAdapter {
                 br.close();
             } catch (IOException ioException) {
                 hasData = false;
-                dataArray = new String[]{"0", "0", "0", "0", "0", "0", "0", "0", "0", "false", "false", "0", "0", "0", "0", "0", "0", "0", "false", "false", "false", "0", "0", "0", "0", "false", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "false", "0", "0", "0", "0", "0", "0", "0", "0", "0"};
+                dataArray = new String[]{"0", "0", "0", "0", "0", "0", "0", "0", "0", "false", "false", "0", "0", "0", "0", "0", "0", "0", "false", "false", "false", "0", "0", "0", "0", "false", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "false", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"};
             }
             long violins = Long.parseLong(dataArray[0]);
             long workC = Long.parseLong(dataArray[1]);
@@ -120,6 +120,9 @@ public class Economy extends ListenerAdapter {
             int conductor = Integer.parseInt(dataArray[44]);
             int advertising = Integer.parseInt(dataArray[45]);
             int tickets = Integer.parseInt(dataArray[46]);
+            int streak = Integer.parseInt(dataArray[47]);
+            long dailyC = Long.parseLong(dataArray[48]);
+            long dailyExp = Long.parseLong(dataArray[49]);
             if (message[0].equals(prefix + "start") && !hasData) {
                 File file = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt");
                 try {
@@ -134,7 +137,7 @@ public class Economy extends ListenerAdapter {
                     e.getChannel().sendMessage("Something went wrong creating the file.").queue();
                 }
                 assert newData != null;
-                newData.print("0 " + time + " 0 " + time + " 0 " + time + " 0 " + time + " " + time + " false false 0 0 0 0 0 0 0 false false false 0 0 0 0 false 0 0 0 0 0 0 1 1 0 0 0 false 0 0 0 0 0 0 0 0 0 ");
+                newData.print("0 " + time + " 0 " + time + " 0 " + time + " 0 " + time + " " + time + " false false 0 0 0 0 0 0 0 false false false 0 0 0 0 false 0 0 0 0 0 0 1 1 0 0 0 false 0 0 0 0 0 0 0 0 0 0 " + time + " " + time);
                 newData.close();
                 e.getChannel().sendMessage("Your profile has been created!  Run `" + prefix + "help 4` for a list of economy commands!").queue();
                 throw new IllegalArgumentException();
@@ -931,7 +934,7 @@ public class Economy extends ListenerAdapter {
                                         if (advertising == 20) {
                                             e.getChannel().sendMessage("You can't advertise more!").queue();
                                             throw new IllegalArgumentException();
-                                        } else if (violins < conductorCost) {
+                                        } else if (violins < advertisingCost) {
                                             e.getChannel().sendMessage("You are too poor to buy more advertisements!").queue();
                                             throw new IllegalArgumentException();
                                         } else {
@@ -945,14 +948,14 @@ public class Economy extends ListenerAdapter {
                                         if (tickets == 5) {
                                             e.getChannel().sendMessage("You can't make your tickets more expensive!").queue();
                                             throw new IllegalArgumentException();
-                                        } else if (violins < conductorCost) {
+                                        } else if (violins < ticketCost) {
                                             e.getChannel().sendMessage("You are too poor to make your tickets more expensive!").queue();
                                             throw new IllegalArgumentException();
                                         } else {
                                             violins -= ticketCost;
                                             tickets++;
                                             hourlyIncome += 1000;
-                                            e.getChannel().sendMessage("Successfully upgraded Ticket Cost to Level " + conductor + "\nYou have " + violins + " violins left.").queue();
+                                            e.getChannel().sendMessage("Successfully upgraded Ticket Cost to Level " + tickets + "\nYou have " + violins + " violins left.").queue();
                                         }
                                     }
                                 }
@@ -1054,7 +1057,7 @@ public class Economy extends ListenerAdapter {
                                     builder.addField("**Rehearse**", hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds", false);
                                 }
                             }
-                            
+
                             //perform
                             milliseconds = performC - time;
                             if (milliseconds < 0) {
@@ -1069,6 +1072,20 @@ public class Economy extends ListenerAdapter {
                                 seconds = milliseconds / 1000;
                                 milliseconds -= seconds * 1000;
                                 builder.addField("**Perform**", days + " days " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds", false);
+                            }
+
+                            //daily
+                            milliseconds = dailyC - time;
+                            if(milliseconds < 0) {
+                                builder.addField("**Daily**", "This command can be used now!", false);
+                            } else {
+                                hours = milliseconds / 3600000;
+                                milliseconds -= hours * 3600000;
+                                minutes = milliseconds / 60000;
+                                milliseconds -= minutes * 60000;
+                                seconds = milliseconds / 1000;
+                                milliseconds -= seconds * 1000;
+                                builder.addField("**Daily**", hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds", false);
                             }
                             builder.setTitle("__**Cooldowns**__");
                             e.getChannel().sendMessage(builder.build()).queue();
@@ -1186,6 +1203,34 @@ public class Economy extends ListenerAdapter {
                                 performC = time + 302340000;
                             }
                         }
+                        case "daily", "d" -> {
+                            if(!hasData) {
+                                e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                            }
+                            if(!e.getMessage().getContentRaw().contains("!d bump")) {
+                                if (time < dailyC) {
+                                    long milliseconds = dailyC - time;
+                                    long hours = milliseconds / 3600000;
+                                    milliseconds -= hours * 3600000;
+                                    long minutes = milliseconds / 60000;
+                                    milliseconds -= minutes * 60000;
+                                    long seconds = milliseconds / 1000;
+                                    milliseconds -= seconds * 1000;
+                                    e.getChannel().sendMessage("I can't give out violins that fast, wait " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
+                                } else {
+                                    if(time > dailyExp) {
+                                        e.getChannel().sendMessage("Oh no!  Your streak was reset!").queue();
+                                        streak = 0;
+                                    }
+                                    int base = 4000 + (streak * 40);
+                                    violins += base;
+                                    dailyC = time + 85500000;
+                                    dailyExp = time + 172800000;
+                                    streak++;
+                                    e.getChannel().sendMessage("You received a total of " + base + " violins, with " + (streak - 1) * 40 + " violins coming from your " + streak + "-day streak!").queue();
+                                }
+                            }
+                        }
                         case "rob" -> {
                             if (!hasData) {
                                 e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
@@ -1202,15 +1247,15 @@ public class Economy extends ListenerAdapter {
                                 e.getChannel().sendMessage("Hey, Brett and Eddy are still looking for you after your last hit!  Wait " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
                             } else {
                                 String target = "";
+                                String name = "";
                                 try {
-                                    target = e.getMessage().getMentionedUsers().get(0).getName();
+                                    target = e.getMessage().getMentionedUsers().get(0).getId();
+                                    name = e.getJDA().getUserById(target).getName();
                                 } catch (Exception exception) {
                                     try {
                                         target = message[1];
                                     } catch (Exception exception1) {
-                                        if (random.nextDouble() < 0.1) {
-                                            e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F3BB").queue();
-                                        }
+                                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F4A9").queue();
                                     }
                                 }
                                 if (e.getAuthor().getId().equals(target)) {
@@ -1233,31 +1278,31 @@ public class Economy extends ListenerAdapter {
                                 double num = random.nextDouble();
                                 int insurance = Integer.parseInt(targetDataArray[11]);
                                 if (num < failChance) {
-                                    e.getChannel().sendMessage("Brett and Eddy caught you trying to rob " + target + "!  You paid " + target + " " + (long) (Long.parseLong(dataArray[0]) * 0.05) + " violins for attempting to rob them.\n*The generator rolled " + num + ", you need at least " + failChance + " to succeed.*").queue();
+                                    e.getChannel().sendMessage("Brett and Eddy caught you trying to rob " + name + "!  You paid " + name + " " + (long) (Long.parseLong(dataArray[0]) * 0.05) + " violins for attempting to rob them.\n*The generator rolled " + num + ", you need at least " + failChance + " to succeed.*").queue();
                                     User send = e.getJDA().getUserById(target);
                                     assert send != null;
-                                    send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> tried to rob you but failed!  They paid you " + (long) (Long.parseLong(targetDataArray[0]) * 0.05) + " violins in fines.").queue();
+                                    send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") tried to rob you but failed!  They paid you " + (long) (Long.parseLong(dataArray[0]) * 0.05) + " violins in fines.").queue();
                                     targetViolins += Long.parseLong(dataArray[0]) * 0.05;
                                     violins -= Long.parseLong(dataArray[0]) * 0.05;
                                 } else {
                                     if (insurance == 1) {
-                                        e.getChannel().sendMessage("You try to rob " + target + " only to notice that Ling Ling Security is present.  You try to escape but you are caught and kicked from the estate.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
+                                        e.getChannel().sendMessage("You try to rob " + name + " only to notice that Ling Ling Security is present.  You try to escape but you are caught and kicked from the estate.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
                                         User send = e.getJDA().getUserById(target);
                                         assert send != null;
-                                        send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> tried to rob you!  Luckily, insurance protected you and you only paid " + (long) (Long.parseLong(targetDataArray[0]) * 0.04) + " violins in insurance costs.").queue();
+                                        send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") tried to rob you!  Luckily, insurance protected you and you only paid " + (long) (Long.parseLong(targetDataArray[0]) * 0.04) + " violins in insurance costs.").queue();
                                         targetViolins -= Long.parseLong(targetDataArray[0]) * 0.04;
                                     } else if (insurance == 2) {
-                                        e.getChannel().sendMessage("You successfully robbed " + target + " but only managed to get away with " + (long) (Long.parseLong(targetDataArray[0]) * 0.06) + " violins before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
+                                        e.getChannel().sendMessage("You successfully robbed " + name + " but only managed to get away with " + (long) (Long.parseLong(targetDataArray[0]) * 0.06) + " violins before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
                                         User send = e.getJDA().getUserById(target);
                                         assert send != null;
-                                        send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> just robbed " + (long) (Long.parseLong(targetDataArray[0]) * 0.06) + " violins from you!  Your Ling Ling insurance protected " + (long) (Long.parseLong(targetDataArray[0]) * 0.133) + " violins.").queue();
+                                        send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") just robbed " + (long) (Long.parseLong(targetDataArray[0]) * 0.06) + " violins from you!  Your Ling Ling insurance protected " + (long) (Long.parseLong(targetDataArray[0]) * 0.14) + " violins.").queue();
                                         targetViolins -= Long.parseLong(targetDataArray[0]) * 0.06;
                                         violins += Long.parseLong(targetDataArray[0]) * 0.06;
                                     } else {
-                                        e.getChannel().sendMessage("You successfully robbed " + target + "!  Your payout was " + (long) (Long.parseLong(targetDataArray[0]) * 0.2) + " violins!\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
+                                        e.getChannel().sendMessage("You successfully robbed " + name + "!  Your payout was " + (long) (Long.parseLong(targetDataArray[0]) * 0.2) + " violins!\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
                                         User send = e.getJDA().getUserById(target);
                                         assert send != null;
-                                        send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> just robbed " + (long) (Long.parseLong(targetDataArray[0]) * 0.2) + " violins from you!").queue();
+                                        send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") just robbed " + (long) (Long.parseLong(targetDataArray[0]) * 0.2) + " violins from you!").queue();
                                         targetViolins -= Long.parseLong(targetDataArray[0]) * 0.2;
                                         violins += Long.parseLong(targetDataArray[0]) * 0.2;
                                     }
@@ -1294,23 +1339,21 @@ public class Economy extends ListenerAdapter {
                                 long seconds = milliseconds / 1000;
                                 milliseconds -= seconds * 1000;
                                 e.getChannel().sendMessage("Don't bet your violins like Paganini, wait " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
-                                throw new IllegalArgumentException();
                             } else if (bet > violins) {
                                 e.getChannel().sendMessage("You can't bet more than you have, don't try to outsmart me.").queue();
-                                throw new IllegalArgumentException();
                             } else if (bet < 0) {
                                 e.getChannel().sendMessage("You can't bet a negative number, don't try breaking me.").queue();
-                                throw new IllegalArgumentException();
-                            } else if (bet < 40) {
-                                e.getChannel().sendMessage("If you're going to bet less than forty violins, go away and stop wasting my time.").queue();
-                                throw new IllegalArgumentException();
+                            } else if (bet < 4000) {
+                                e.getChannel().sendMessage("If you're going to bet less than four thousand violins, go away and stop wasting my time.").queue();
+                            } else if(bet > hourlyIncome * 5) {
+                                e.getChannel().sendMessage("You cannot bet more than " + hourlyIncome * 5 + " violins.  To raise this cap, upgrade your hourly income!").queue();
                             } else {
                                 double chance = random.nextDouble();
-                                gambleC = time + 20000;
-                                if (chance > 0.4 + 0.075 * gambleL) {
+                                gambleC = time + 59000;
+                                if (chance > 0.35 + 0.0075 * gambleL) {
                                     violins -= bet;
-                                    e.getChannel().sendMessage("You lost " + bet + " violins!\n*The generator rolled " + chance + ", you need less than " + (0.4 + 0.075 * gambleL) + " to win.*\nYou now have " + violins + " violins.").queue();
-                                } else if (chance <= 0.4 + 0.075 * gambleL) {
+                                    e.getChannel().sendMessage("You lost " + bet + " violins!\n*The generator rolled " + chance + ", you need less than " + (0.35 + 0.0075 * gambleL) + " to win.*\nYou now have " + violins + " violins.").queue();
+                                } else if (chance <= 0.35 + 0.0075 * gambleL) {
                                     violins += bet;
                                     e.getChannel().sendMessage("You won " + bet + " violins!\n*The generator rolled " + chance + ".*\nYou now have " + violins + " violins.").queue();
                                 }
@@ -1451,7 +1494,7 @@ public class Economy extends ListenerAdapter {
                             //nothing here lol
                         }
                         assert pw != null;
-                        pw.print(violins + " " + workC + " " + workL + " " + gambleC + " " + gambleL + " " + robC + " " + robL + " " + rehearseC + " " + performC + " " + ownInsurance1 + " " + ownInsurance2 + " " + activeInsurance + " " + hourlyIncome + " " + violinQuality + " " + skillLevel + " " + lessonQuality + " " + stringQuality + " " + bowQuality + " " + hasMath + " " + hasOrchestra + " " + piccolo + " " + flute + " " + oboe + " " + clarinet + " " + bassoon + " " + contrabassoon + " " + horn + " " + trumpet + " " + trombone + " " + tuba + " " + timpani + " " + percussion + " " + first + " " + second + " " + cello + " " + stringBass + " " + piano + " " + harp + " " + soprano + " " + alto + " " + tenor + " " + bass + " " + soloists + " " + hallLevel + " " + conductor + " " + advertising + " " + tickets);
+                        pw.print(violins + " " + workC + " " + workL + " " + gambleC + " " + gambleL + " " + robC + " " + robL + " " + rehearseC + " " + performC + " " + ownInsurance1 + " " + ownInsurance2 + " " + activeInsurance + " " + hourlyIncome + " " + violinQuality + " " + skillLevel + " " + lessonQuality + " " + stringQuality + " " + bowQuality + " " + hasMath + " " + hasOrchestra + " " + piccolo + " " + flute + " " + oboe + " " + clarinet + " " + bassoon + " " + contrabassoon + " " + horn + " " + trumpet + " " + trombone + " " + tuba + " " + timpani + " " + percussion + " " + first + " " + second + " " + cello + " " + stringBass + " " + piano + " " + harp + " " + soprano + " " + alto + " " + tenor + " " + bass + " " + soloists + " " + hallLevel + " " + conductor + " " + advertising + " " + tickets + " " + streak + " " + dailyC + " " + dailyExp);
                         pw.close();
                     }
                 }

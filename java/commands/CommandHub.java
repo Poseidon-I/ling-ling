@@ -1,9 +1,7 @@
 package commands;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -52,257 +50,10 @@ public class CommandHub extends ListenerAdapter {
         try {
             server = e.getGuild().getId();
         } catch (Exception exception) {
-            if (!e.getAuthor().isBot()) {
-                if (message[0].equals("!report")) {
-                    TextChannel channel = Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("749076642927739041");
-                    StringBuilder report = new StringBuilder();
-                    for (int i = 1; i < message.length; i++) {
-                        report.append(message[i]).append(" ");
-                    }
-                    assert channel != null;
-                    channel.sendMessage("<@" + e.getAuthor().getId() + "> is reporting the following: " + report).queue();
-                    e.getChannel().sendMessage(":white_check_mark: Your message was successfully sent!  Please wait patiently for a mod or admin to follow up.").queue();
-                }
-            }
+            //nothing here lol
         }
         String fullMessage = e.getMessage().getContentRaw();
         char prefix = '!';
-        // **DEV COMMANDS** \\
-        if (isDev) {
-            switch (message[0]) {
-                case "!status" -> {
-                    e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-                    switch (message[1]) {
-                        case "online" -> e.getJDA().getPresence().setStatus(OnlineStatus.ONLINE);
-                        case "away" -> e.getJDA().getPresence().setStatus(OnlineStatus.IDLE);
-                        case "dnd" -> e.getJDA().getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
-                    }
-                }
-                case "!activity" -> {
-                    e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-                    StringBuilder activity = new StringBuilder();
-                    for (int i = 2; i < message.length; i++) {
-                        activity.append(message[i]).append(" ");
-                    }
-                    switch (message[1]) {
-                        case "playing" -> e.getJDA().getPresence().setActivity(Activity.playing(activity.toString()));
-                        case "listening" -> e.getJDA().getPresence().setActivity(Activity.listening(activity.toString()));
-                        case "watching" -> e.getJDA().getPresence().setActivity(Activity.watching(activity.toString()));
-                        case "streaming" -> e.getJDA().getPresence().setActivity(Activity.streaming(activity.toString(), "twitch.tv"));
-                        case "nothing" -> e.getJDA().getPresence().setActivity(null);
-                    }
-                }
-                case "!annoy" -> {
-                    int pings = Integer.parseInt(message[1]);
-                    if (pings > 100000) {
-                        e.getChannel().sendMessage("Why would you want to run the command for more than two and a half days?  That's already bad enough and now you want to crash me.").queue();
-                        throw new IllegalArgumentException();
-                    }
-                    StringBuilder target = new StringBuilder();
-                    for (int i = 2; i < message.length; i++) {
-                        target.append(message[i]).append(" ");
-                    }
-                    for (int i = 0; i < pings; i++) {
-                        e.getChannel().sendMessage("annoy" + target).queue();
-                    }
-                }
-                case "!spam" -> {
-                    int pings = Integer.parseInt(message[1]);
-                    if (pings > 100000) {
-                        e.getChannel().sendMessage("Why would you want to run the command for more than two and a half days?  That's already bad enough and now you want to crash me.").queue();
-                        throw new IllegalArgumentException();
-                    }
-                    e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-                    User target = e.getMessage().getMentionedMembers().get(0).getUser();
-                    StringBuilder send = new StringBuilder();
-                    for (int i = 2; i < message.length; i++) {
-                        send.append(message[i]).append(" ");
-                    }
-                    for (int i = 0; i < pings; i++) {
-                        target.openPrivateChannel().complete().sendMessage("annoy" + send).queue();
-                    }
-                }
-                case "!lookdata" -> {
-                    BufferedReader br;
-                    String data;
-                    String target = message[1];
-                    try {
-                        br = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data\\" + target + ".txt"));
-                        data = br.readLine();
-                        e.getChannel().sendMessage(e.getJDA().getUserById(target).getName() + "'s data: " + data).queue();
-                        br.close();
-                    } catch (Exception exception) {
-                        throw new IllegalArgumentException();
-                    }
-                }
-                case "!editdata" -> {
-                    String id = message[1];
-                    StringBuilder data = new StringBuilder();
-                    for (int i = 2; i < message.length; i++) {
-                        data.append(message[i]).append(" ");
-                    }
-                    data.deleteCharAt(data.length() - 1);
-                    PrintWriter writeEdit;
-                    try {
-                        writeEdit = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data\\" + id + ".txt")));
-                    } catch (Exception exception) {
-                        throw new IllegalArgumentException();
-                    }
-                    writeEdit.print(data.toString());
-                    writeEdit.close();
-                    e.getChannel().sendMessage("Successfully edited the data of " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName()).queue();
-                }
-                case "!give" -> {
-                    String id = message[1];
-                    int add = Integer.parseInt(message[2]);
-                    BufferedReader br;
-                    int violins;
-                    String data;
-                    try {
-                        br = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data\\" + id + ".txt"));
-                        data = br.readLine();
-                        violins = Integer.parseInt(data.split(" ")[0]) + add;
-                        br.close();
-                    } catch (Exception exception) {
-                        throw new IllegalArgumentException();
-                    }
-                    StringBuilder newData = new StringBuilder();
-                    newData.append(violins);
-                    for (int i = 1; i < data.split(" ").length; i++) {
-                        newData.append(" ").append(data.split(" ")[i]);
-                    }
-                    PrintWriter writeEdit;
-                    try {
-                        writeEdit = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data\\" + id + ".txt")));
-                    } catch (Exception exception) {
-                        throw new IllegalArgumentException();
-                    }
-                    writeEdit.print(newData);
-                    writeEdit.close();
-                    e.getChannel().sendMessage("Successfully gave " + add + " violins to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName()).queue();
-                }
-                case "!luthier" -> {
-                    PrintWriter writeEdit = null;
-                    try {
-                        if (message[1].equals("setup")) {
-                            File file = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Luthier\\" + server + ".txt");
-                            try {
-                                file.createNewFile();
-                                writeEdit = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Luthier\\" + server + ".txt")));
-                            } catch (Exception exception2) {
-                                //nothing here lol
-                            }
-                            assert writeEdit != null;
-                            writeEdit.print(e.getChannel().getId() + " 1 0.02 false blank 0");
-                            writeEdit.close();
-                            e.getChannel().sendMessage("Successfully set up Luthier for " + e.getGuild().getName()).queue();
-                        } else if (message[1].equals("edit")) {
-                            String id = e.getGuild().getId();
-                            StringBuilder data = new StringBuilder();
-                            for (int i = 2; i < message.length; i++) {
-                                data.append(message[i]).append(" ");
-                            }
-                            data.deleteCharAt(data.length() - 1);
-                            try {
-                                writeEdit = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Luthier\\" + id + ".txt")));
-                                writeEdit.print(data.toString());
-                                writeEdit.close();
-                                e.getChannel().sendMessage("Successfully edited the data of Luthier for " + e.getGuild().getName()).queue();
-                            } catch (Exception exception1) {
-                                //nothing here lol
-                            }
-                        }
-                    } catch (Exception exception) {
-                        BufferedReader br;
-                        String data;
-                        try {
-                            br = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt"));
-                            data = br.readLine();
-                            e.getChannel().sendMessage("Luthier Settings for " + e.getGuild().getName() + ": " + data).queue();
-                            br.close();
-                        } catch (Exception exception1) {
-                            e.getChannel().sendMessage("Luthier has not been set up!").queue();
-                        }
-                    }
-                }
-                case "!updateservers" -> {
-                    if (message.length > 1 && message[1].equals("confirm")) {
-                        e.getChannel().sendMessage("Updating saves for all servers...").queue();
-                        File directory = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server");
-                        File[] files = directory.listFiles();
-                        StringBuilder append = new StringBuilder();
-                        for (int i = 2; i < message.length; i++) {
-                            append.append(" ").append(message[i]);
-                        }
-                        if (files != null) {
-                            for (File file : files) {
-                                try {
-                                    BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
-                                    String currentData = br.readLine();
-                                    br.close();
-                                    PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
-                                    pw.print(currentData + append);
-                                    pw.close();
-                                } catch (Exception exception) {
-                                    //nothing here lol
-                                }
-                            }
-                        }
-                    } else {
-                        e.getChannel().sendMessage("Please type `" + prefix + "updateservers confirm` to confirm that you would like to update all data to the latest version.").queue();
-                    }
-                }
-                case "!updateusers" -> {
-                    if (message.length > 1 && message[1].equals("confirm")) {
-                        e.getChannel().sendMessage("Updating saves for all users...").queue();
-                        File directory = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data");
-                        File[] files = directory.listFiles();
-                        StringBuilder append = new StringBuilder();
-                        for (int i = 2; i < message.length; i++) {
-                            append.append(" ").append(message[i]);
-                        }
-                        if (files != null) {
-                            for (File file : files) {
-                                try {
-                                    BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
-                                    String currentData = br.readLine();
-                                    br.close();
-                                    PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
-                                    pw.print(currentData + append);
-                                    pw.close();
-                                } catch (Exception exception) {
-                                    //nothing here lol
-                                }
-                            }
-                        }
-                    } else {
-                        e.getChannel().sendMessage("Please type `" + prefix + "updateusers confirm` to confirm that you would like to update all data to the latest version.").queue();
-                    }
-                }
-                case "!purgeusers" -> {
-                    e.getChannel().sendMessage("Purging saves for users with no violins...").queue();
-                    File directory = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data");
-                    File[] files = directory.listFiles();
-                    if (files != null) {
-                        int deleted = 0;
-                        for (File file : files) {
-                            try {
-                                BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
-                                int violins = Integer.parseInt(br.readLine().split(" ")[0]);
-                                br.close();
-                                if(violins == 0) {
-                                    file.delete();
-                                    deleted ++;
-                                }
-                            } catch (Exception exception) {
-                                //nothing here lol
-                            }
-                        }
-                        e.getChannel().sendMessage("Successfully purged " + deleted + " files!").queue();
-                    }
-                }
-            }
-        }
         if (isBot) {
             try {
                 if (message[1].contains("POLL:")) {
@@ -348,26 +99,28 @@ public class CommandHub extends ListenerAdapter {
             if (pingBot && !e.getAuthor().isBot()) {
                 e.getChannel().sendMessage("Hello!  My prefix in this server is `" + prefix + "`\nIf you have other issues, join the support server at discord.gg/gNfPwa8 to get in touch with the developer.").queue();
             }
-            if (isDev) {
-                prefix = '!';
-            }
             String target = "";
             String targetPing = "";
+            String[] data = null;
+            try {
+                BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + server + ".txt"));
+                data = br.readLine().split(" ");
+                br.close();
+            } catch (Exception exception) {
+                //nothing here lol
+            }
             try {
                 target = e.getMessage().getMentionedUsers().get(0).getId();
                 targetPing = e.getMessage().getMentionedUsers().get(0).getName();
             } catch (Exception exception) {
                 try {
                     target = message[1];
-                    targetPing = e.getJDA().getUserById(message[1]).getName();
+                    targetPing = Objects.requireNonNull(e.getJDA().getUserById(message[1])).getName();
                 } catch (Exception exception1) {
-                    if (random.nextDouble() < 0.025) {
+                    if(data[1].equals("true") && random.nextDouble() < 0.025) {
                         e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F3BB").queue();
                     }
                 }
-            }
-            if (targetPing.contains("@everyone") || targetPing.contains("@here") || targetPing.contains("<@&")) {
-                targetPing = "**nice try**";
             }
             if (e.getMessage().getContentRaw().contains("@everyone") && e.getMessage().getContentRaw().charAt(0) == prefix || e.getMessage().getContentRaw().contains("@here") && e.getMessage().getContentRaw().charAt(0) == prefix || e.getMessage().getContentRaw().contains("<@&") && e.getMessage().getContentRaw().charAt(0) == prefix) {
                 e.getChannel().sendMessage("why the hell did you ping here, everyone, or a role dumbass").queue();
@@ -400,7 +153,7 @@ public class CommandHub extends ListenerAdapter {
                     }
                     case "serversettings" -> {
                         if (Objects.requireNonNull(e.getGuild().getMemberById(e.getAuthor().getId())).hasPermission(Permission.ADMINISTRATOR) || isDev) {
-                            String[] data = new String[0];
+                            data = new String[0];
                             try {
                                 BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + server + ".txt"));
                                 data = br.readLine().split(" ");
@@ -413,75 +166,102 @@ public class CommandHub extends ListenerAdapter {
                                     case "autoresponse" -> {
                                         try {
                                             pw = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + server + ".txt")));
-                                            if (message[2].equals("false")) {
-                                                pw.print("false " + data[1] + " " + data[2] + " " + data[3]);
+                                            if (message[2].equals("false") || message[2].equals("off")) {
+                                                pw.print("false " + data[1] + " " + data[2] + " " + data[3] + " " + data[4]);
                                                 pw.close();
                                                 e.getChannel().sendMessage("Turned off Autoresponse!").queue();
-                                            } else if (message[2].equals("true")) {
-                                                pw.print("true " + data[1] + " " + data[2] + " " + data[3]);
+                                            } else if (message[2].equals("true") || message[2].equals("on")) {
+                                                pw.print("true " + data[1] + " " + data[2] + " " + data[3] + " " + data[4]);
                                                 pw.close();
                                                 e.getChannel().sendMessage("Turned on Autoresponse!").queue();
+                                            } else {
+                                                e.getChannel().sendMessage("That format isn't supported!  Supported values are `true/false`, `on/off`").queue();
                                             }
                                         } catch (Exception exception1) {
-                                            //nothing here lol
+                                            e.getChannel().sendMessage("That format isn't supported!  Supported values are `true/false`, `on/off`").queue();
                                         }
                                     }
-                                    case "viola" -> {
+                                    case "reactions" -> {
                                         try {
                                             pw = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + server + ".txt")));
-                                            if (message[2].equals("false")) {
-                                                pw.print(data[0] + " false " + data[2] + " " + data[3]);
+                                            if (message[2].equals("false") || message[2].equals("off")) {
+                                                pw.print(data[0] + " false " + data[2] + " " + data[3] + " " + data[4]);
                                                 pw.close();
-                                                e.getChannel().sendMessage("Turned off Viola Mode!").queue();
-                                            } else if (message[2].equals("true")) {
-                                                pw.print(data[0] + " true " + data[2] + " " + data[3]);
+                                                e.getChannel().sendMessage("Turned off Reactions!").queue();
+                                            } else if (message[2].equals("true") || message[2].equals("on")) {
+                                                pw.print(data[0] + " true " + data[2] + " " + data[3] + " " + data[4]);
                                                 pw.close();
-                                                e.getChannel().sendMessage("Turned on Viola Mode!").queue();
+                                                e.getChannel().sendMessage("Turned on Reactions!").queue();
+                                            } else {
+                                                e.getChannel().sendMessage("That format isn't supported!  Supported values are `true/false`, `on/off`").queue();
                                             }
                                         } catch (Exception exception1) {
-                                            //nothing here lol
+                                            e.getChannel().sendMessage("You need to enter a value.  Currently supportad values: `true/false`, `on/off`").queue();
                                         }
                                     }
                                     case "logging" -> {
                                         try {
                                             pw = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + server + ".txt")));
-                                            if (message[2].equals("false")) {
-                                                pw.print(data[0] + " " + data[1] + " false " + data[3]);
+                                            if (message[2].equals("false") || message[2].equals("off")) {
+                                                pw.print(data[0] + " " + data[1] + " false " + data[3] + " " + data[4]);
                                                 pw.close();
                                                 e.getChannel().sendMessage("Turned off Message Logging!").queue();
-                                            } else if (message[2].equals("true")) {
-                                                pw.print(data[0] + " " + data[1] + " false " + data[3]);
+                                            } else if (message[2].equals("true") || message[2].equals("on")) {
+                                                pw.print(data[0] + " " + data[1] + " false " + data[3] + " " + data[4]);
                                                 pw.close();
                                                 e.getChannel().sendMessage("Turned on Message Logging!").queue();
+                                            } else {
+                                                e.getChannel().sendMessage("That format isn't supported!  Supported values are `true/false`, `on/off`").queue();
                                             }
                                         } catch (Exception exception1) {
-                                            //nothing here lol
+                                            e.getChannel().sendMessage("You need to enter a value.  Currently supportad values: `true/false`, `on/off`").queue();
                                         }
                                     }
                                     case "automod" -> {
                                         try {
                                             pw = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + server + ".txt")));
-                                            if (message[2].equals("false")) {
-                                                pw.print(data[0] + " " + data[1] + " " + data[2] + " false");
+                                            if (message[2].equals("false") || message[2].equals("off")) {
+                                                pw.print(data[0] + " " + data[1] + " " + data[2] + " false " + " " + data[4]);
                                                 pw.close();
                                                 e.getChannel().sendMessage("Turned off Automod! (not a good idea)").queue();
-                                            } else if (message[2].equals("true")) {
-                                                pw.print(data[0] + " " + data[1] + " " + data[2] + " true");
+                                            } else if (message[2].equals("true") || message[2].equals("on")) {
+                                                pw.print(data[0] + " " + data[1] + " " + data[2] + " true " + " " + data[4]);
                                                 pw.close();
                                                 e.getChannel().sendMessage("Turned on Automod!").queue();
+                                            } else {
+                                                e.getChannel().sendMessage("That format isn't supported!  Supported values are `true/false`, `on/off`").queue();
                                             }
                                         } catch (Exception exception1) {
-                                            //nothing here lol
+                                            e.getChannel().sendMessage("You need to enter a value.  Currently supportad values: `true/false`, `on/off`").queue();
+                                        }
+                                    }
+                                    case "modcommands" -> {
+                                        try {
+                                            pw = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + server + ".txt")));
+                                            if (message[2].equals("false") || message[2].equals("off")) {
+                                                pw.print(data[0] + " " + data[1] + " " + data[2] + " " + data[3] + " false");
+                                                pw.close();
+                                                e.getChannel().sendMessage("Turned off Moderation Commands!").queue();
+                                            } else if (message[2].equals("true") || message[2].equals("on")) {
+                                                pw.print(data[0] + " " + data[1] + " " + data[2] + " " + data[3] + " true");
+                                                pw.close();
+                                                e.getChannel().sendMessage("Turned on Moderation Commands!").queue();
+                                            } else {
+                                                e.getChannel().sendMessage("That format isn't supported!  Supported values are `true/false`, `on/off`").queue();
+                                            }
+                                        } catch (Exception exception1) {
+                                            e.getChannel().sendMessage("You need to enter a value.  Currently supportad values: `true/false`, `on/off`").queue();
                                         }
                                     }
                                 }
                             } catch (Exception exception) {
                                 EmbedBuilder builder = new EmbedBuilder().setColor(Color.BLUE)
                                         .setTitle("Server Settings for " + e.getGuild().getName())
-                                        .addField("Autoresponse", "A variety of more than forty triggers to add some pizzazz to your conversation!  Current value: `" + data[0] + "`\nID: `autoresponse`", false)
-                                        .addField("Viola Mode", "All messages sent in channels with \"announcement\" in their name will have a 100% chance to have the V I O L A reaction,\nand all other messages have a 2.5% chance of it happening.  Current value: `" + data[1] + "`\nID: `viola`", false)
-                                        .addField("Message Logging", "Will log Edited and Deleted Messages!  Work-in-progress, requires a channel named \"moderation-log\"  Current value: `" + data[2] + "`\nID: `logging`", false)
-                                        .addField("Automod", "A variety pre-determined bad words that the bot will automatically filter out!  Current value: `" + data[3] + "`\nID: `automod`", false)
+                                        .addField("Autoresponse", "A variety of more than forty triggers to add some pizzazz to your conversation!\nCurrent value: `" + data[0] + "`\nID: `autoresponse`", false)
+                                        .addField("Reactions", "All messages sent in channels with \"announcement\" in their name will have a 100% chance to have the V I O L A reaction.\nAll other messages have a 2.5% chance of a V I O L A reactions.\nSome random messages will have :violin: reacted on them.\n Current value: `" + data[1] + "`\nID: `reactions`", false)
+                                        .addField("Message Logging", "Will log Edited and Deleted Messages!  Work-in-progress, requires a channel named \"moderation-log\"\nCurrent value: `" + data[2] + "`\nID: `logging`", false)
+                                        .addField("Automod", "A variety pre-determined bad words that the bot will automatically filter out!\nCurrent value: `" + data[3] + "`\nID: `automod`", false)
+                                        .addField("Moderation Commands", "Basic moderation commands such as `!warn`, `!mute`, `!kick`, and `!ban`.  This setting disables these commands for mods and admins.  Note that devs will always have the power to warn users for breaking bot rules.\nCurrent value: `" + data[4] + "`\nID: `modcommands`", false)
                                         .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl());
                                 e.getChannel().sendMessage(builder.build()).queue();
                             }
@@ -490,7 +270,7 @@ public class CommandHub extends ListenerAdapter {
                         }
                     }
                     case "warn" -> {
-                        if (e.getGuild().getMemberById(e.getAuthor().getId()).hasPermission(Permission.MESSAGE_MANAGE) || isDev) {
+                        if (Objects.requireNonNull(e.getGuild().getMemberById(e.getAuthor().getId())).hasPermission(Permission.MESSAGE_MANAGE) && data[4].equals("true") || isDev) {
                             StringBuilder reason = new StringBuilder();
                             for (int i = 2; i < message.length; i++) {
                                 reason.append(message[i]).append(" ");
@@ -510,26 +290,29 @@ public class CommandHub extends ListenerAdapter {
                                     e.getChannel().sendMessage("You tried to warn a non-existant user.  What a waste of your time.").queue();
                                     break;
                                 }
-                                EmbedBuilder builder = new EmbedBuilder()
-                                        .setColor(Color.BLUE)
-                                        .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
-                                        .addField("Moderator: " + e.getAuthor().getName(), "User: " + user.getName() + "#" + user.getDiscriminator() + "\nReason: " + reason, false)
-                                        .setTitle("__**Warning Info**__");
-                                try {
-                                    TextChannel textChannel = e.getGuild().getTextChannelsByName("moderation-log", true).get(0);
-                                    textChannel.sendMessage(builder.build()).queue();
-                                } catch (Exception exception) {
-                                    e.getChannel().sendMessage("The warning was not logged, you must have a channel named \"moderation log\"").queue();
+                                if (data[4].equals("true")) {
+                                    assert user != null;
+                                    EmbedBuilder builder = new EmbedBuilder()
+                                            .setColor(Color.BLUE)
+                                            .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
+                                            .addField("Moderator: " + e.getAuthor().getName(), "User: " + user.getName() + "#" + user.getDiscriminator() + "\nReason: " + reason, false)
+                                            .setTitle("__**Warning Info**__");
+                                    try {
+                                        TextChannel textChannel = e.getGuild().getTextChannelsByName("moderation-log", true).get(0);
+                                        textChannel.sendMessage(builder.build()).queue();
+                                    } catch (Exception exception) {
+                                        e.getChannel().sendMessage("The warning was not logged, you must have a channel named \"moderation log\"").queue();
+                                    }
+                                    user.openPrivateChannel().complete().sendMessage("You were warned in " + e.getGuild().getName() + " for " + reason + "!").queue();
+                                    e.getChannel().sendMessage(":warning: " + targetPing + " was successfully warned!").queue();
                                 }
-                                user.openPrivateChannel().complete().sendMessage("You were warned in " + e.getGuild().getName() + " for " + reason + "!").queue();
-                                e.getChannel().sendMessage(":warning: " + targetPing + " was successfully warned!").queue();
                             }
                         } else {
                             e.getChannel().sendMessage(":x: You are not authorized to use this command!").queue();
                         }
                     }
                     case "mute" -> {
-                        if (Objects.requireNonNull(e.getGuild().getMemberById(e.getAuthor().getId())).hasPermission(Permission.MESSAGE_MANAGE) || isDev) {
+                        if (Objects.requireNonNull(e.getGuild().getMemberById(e.getAuthor().getId())).hasPermission(Permission.MESSAGE_MANAGE) && data[4].equals("true") || isDev && data[4].equals("true")) {
                             StringBuilder reason = new StringBuilder();
                             for (int i = 2; i < message.length; i++) {
                                 reason.append(message[i]).append(" ");
@@ -550,6 +333,7 @@ public class CommandHub extends ListenerAdapter {
                                 }
                                 if (server.equals("670725611207262219")) {
                                     try {
+                                        assert user != null;
                                         e.getGuild().addRoleToMember(user.getId(), Objects.requireNonNull(e.getGuild().getRoleById("734697394389778462"))).queue();
                                     } catch (Exception exception) {
                                         e.getChannel().sendMessage("How are we going to mute nobody dum dum").queue();
@@ -557,6 +341,7 @@ public class CommandHub extends ListenerAdapter {
                                     }
                                 } else {
                                     try {
+                                        assert user != null;
                                         e.getGuild().addRoleToMember(user.getId(), Objects.requireNonNull(e.getGuild().getRolesByName("Muted", true).get(0))).queue();
                                     } catch (Exception exception) {
                                         e.getChannel().sendMessage("Whoops!  I could not mute them!  Please check that I have `Manage Roles` and that the `Muted` role exists and is below my highest role.").queue();
@@ -584,7 +369,7 @@ public class CommandHub extends ListenerAdapter {
                         }
                     }
                     case "unmute" -> {
-                        if (Objects.requireNonNull(e.getGuild().getMemberById(e.getAuthor().getId())).hasPermission(Permission.MESSAGE_MANAGE) || isDev) {
+                        if (Objects.requireNonNull(e.getGuild().getMemberById(e.getAuthor().getId())).hasPermission(Permission.MESSAGE_MANAGE) && data[4].equals("true") || isDev && data[4].equals("true")) {
                             User user;
                             try {
                                 user = e.getJDA().getUserById(target);
@@ -594,6 +379,7 @@ public class CommandHub extends ListenerAdapter {
                             }
                             if (server.equals("670725611207262219")) {
                                 try {
+                                    assert user != null;
                                     e.getGuild().removeRoleFromMember(user.getId(), Objects.requireNonNull(e.getGuild().getRoleById("734697394389778462"))).queue();
                                 } catch (Exception exception) {
                                     e.getChannel().sendMessage("How are we going to unmute nobody dum dum").queue();
@@ -601,6 +387,7 @@ public class CommandHub extends ListenerAdapter {
                                 }
                             } else {
                                 try {
+                                    assert user != null;
                                     e.getGuild().removeRoleFromMember(user.getId(), Objects.requireNonNull(e.getGuild().getRolesByName("Muted", true).get(0))).queue();
                                 } catch (Exception exception) {
                                     e.getChannel().sendMessage("Whoops!  I could not unmute them!  Please check that I have `Manage Roles` and that the `Muted` role exists and is below my highest role and that the user is actually muted.").queue();
@@ -625,7 +412,7 @@ public class CommandHub extends ListenerAdapter {
                         }
                     }
                     case "kick" -> {
-                        if (Objects.requireNonNull(e.getGuild().getMemberById(e.getAuthor().getId())).hasPermission(Permission.KICK_MEMBERS) || isDev) {
+                        if (Objects.requireNonNull(e.getGuild().getMemberById(e.getAuthor().getId())).hasPermission(Permission.KICK_MEMBERS) && data[4].equals("true") || isDev && data[4].equals("true")) {
                             StringBuilder reason = new StringBuilder();
                             for (int i = 2; i < message.length; i++) {
                                 reason.append(message[i]).append(" ");
@@ -645,6 +432,7 @@ public class CommandHub extends ListenerAdapter {
                                     break;
                                 }
                                 e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
+                                assert user != null;
                                 user.openPrivateChannel().complete().sendMessage("You were kicked from " + e.getGuild().getName() + " for " + reason + "!").queue();
                                 EmbedBuilder builder = new EmbedBuilder()
                                         .setColor(Color.BLUE)
@@ -670,7 +458,7 @@ public class CommandHub extends ListenerAdapter {
                         }
                     }
                     case "ban" -> {
-                        if (Objects.requireNonNull(e.getGuild().getMemberById(e.getAuthor().getId())).hasPermission(Permission.BAN_MEMBERS) || isDev) {
+                        if (Objects.requireNonNull(e.getGuild().getMemberById(e.getAuthor().getId())).hasPermission(Permission.BAN_MEMBERS) && data[4].equals("true") || isDev && data[4].equals("true")) {
                             StringBuilder reason = new StringBuilder();
                             try {
                                 for (int i = 2; i < message.length; i++) {
@@ -696,6 +484,7 @@ public class CommandHub extends ListenerAdapter {
                                 }
                                 e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
                                 Objects.requireNonNull(e.getJDA().getUserById(target)).openPrivateChannel().complete().sendMessage("You were banned from " + e.getGuild().getName() + " for " + reason + "!").queue();
+                                assert user != null;
                                 EmbedBuilder builder = new EmbedBuilder()
                                         .setColor(Color.BLUE)
                                         .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
@@ -733,6 +522,7 @@ public class CommandHub extends ListenerAdapter {
                         e.getChannel().sendMessage(":white_check_mark: " + targetPing + " was successfully banned!").queue();
                         try {
                             User send = e.getJDA().getUserById(target);
+                            assert send != null;
                             send.openPrivateChannel().complete().sendMessage("You were banned from " + e.getGuild().getName() + "!").queue();
                         } catch (Exception exception) {
                             e.getChannel().sendMessage("Either the recipient was being a n00b and didn't have their DMs open or you are smol brane and forgot to mention a user or you mentioned a bot.").queue();
@@ -743,6 +533,7 @@ public class CommandHub extends ListenerAdapter {
                         e.getChannel().sendMessage(":white_check_mark: " + targetPing + " was successfully muted!").queue();
                         try {
                             User send = e.getJDA().getUserById(target);
+                            assert send != null;
                             send.openPrivateChannel().complete().sendMessage("You were muted in " + e.getGuild().getName() + "!").queue();
                         } catch (Exception exception) {
                             e.getChannel().sendMessage("Either the recipient was being a n00b and didn't have their DMs open or you are smol brane and forgot to mention a user or you mentioned a bot.").queue();
@@ -753,6 +544,7 @@ public class CommandHub extends ListenerAdapter {
                         e.getChannel().sendMessage(":white_check_mark: " + targetPing + " was successfully kicked!").queue();
                         try {
                             User send = e.getJDA().getUserById(target);
+                            assert send != null;
                             send.openPrivateChannel().complete().sendMessage("You were kicked from " + e.getGuild().getName() + "!").queue();
                         } catch (Exception exception) {
                             e.getChannel().sendMessage("Either the recipient was being a n00b and didn't have their DMs open or you are smol brane and forgot to mention a user or you mentioned a bot.").queue();
@@ -763,6 +555,7 @@ public class CommandHub extends ListenerAdapter {
                         e.getChannel().sendMessage(":white_check_mark: " + targetPing + " was successfully warned!").queue();
                         try {
                             User send = e.getJDA().getUserById(target);
+                            assert send != null;
                             send.openPrivateChannel().complete().sendMessage("You were warned in " + e.getGuild().getName() + "!").queue();
                         } catch (Exception exception) {
                             e.getChannel().sendMessage("Either the recipient was being a n00b and didn't have their DMs open or you are smol brane and forgot to mention a user or you mentioned a bot.").queue();
@@ -773,6 +566,7 @@ public class CommandHub extends ListenerAdapter {
                         e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
                         try {
                             User send = e.getJDA().getUserById(target);
+                            assert send != null;
                             send.openPrivateChannel().complete().sendMessage("**OI <@" + target + ">, " + e.getAuthor().getName() + " WANTS YOU TO CHECK YOUR DMS.  DO IT NOW OR ELSE.**").queue();
                         } catch (Exception exception) {
                             e.getChannel().sendMessage("Either the recipient was being a n00b and didn't have their DMs open or you are smol brane and forgot to mention a user or you mentioned a bot.").queue();
@@ -1053,6 +847,7 @@ public class CommandHub extends ListenerAdapter {
         } catch (Exception exception) {
             //nothing here lol
         }
+        assert data != null;
         if(data[1].equals("true")) {
             if (e.getChannel().getName().contains("announcement")) {
                 e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1FB").queue();
@@ -1062,28 +857,14 @@ public class CommandHub extends ListenerAdapter {
                 e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E6").queue();
             } else {
                 if (random.nextDouble() <= 0.025) {
-                    if (server.equals("679237495333847060")) {
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F7").queue(); //r
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue(); //i
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E8").queue(); //c
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EA").queue(); //e
-                    } else {
-                        try {
-                            TextChannel textChannel = e.getGuild().getTextChannelById("734697510517342309");
-                            assert textChannel != null;
-                            textChannel.sendMessage("annoy<@&734697394389778462>").queue();
-                        } catch (Exception exception) {
-                            //nothing here lol
-                        }
-                        try {
-                            e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1FB").queue();
-                            e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue();
-                            e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F4").queue();
-                            e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F1").queue();
-                            e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E6").queue();
-                        } catch (Exception exception1) {
-                            e.getChannel().sendMessage("<@" + e.getAuthor().getName() + "> was probably being a pussy and blocked the bot.  Or I happened to try to react to a deleted message.").queue();
-                        }
+                    try {
+                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1FB").queue();
+                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue();
+                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F4").queue();
+                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F1").queue();
+                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E6").queue();
+                    } catch (Exception exception1) {
+                        e.getChannel().sendMessage("<@" + e.getAuthor().getName() + "> was probably being a pussy and blocked the bot.  Or I happened to try to react to a deleted message.").queue();
                     }
                 }
             }
