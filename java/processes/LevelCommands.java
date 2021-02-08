@@ -17,7 +17,7 @@ public class LevelCommands {
                 try {
                     reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + e.getAuthor().getId() + ".txt"));
                     String[] data = reader.readLine().split(" ");
-                    e.getChannel().sendMessage(e.getAuthor().getName() + "'s Level " + data[0] + "\nCurrent XP: " + data[1] + "/" + (Integer.parseInt(data[0]) + 1) * 100).queue();
+                    e.getChannel().sendMessage("**__" + e.getAuthor().getName() + "'s Stats__**\nLevel " + data[0] + "\n" + data[1] + "/" + (Integer.parseInt(data[0]) + 1) * 100 + " XP").queue();
                 } catch (Exception exception) {
                     //nothing here lol
                 }

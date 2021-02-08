@@ -3,6 +3,7 @@ package processes;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.io.*;
+import java.util.Objects;
 import java.util.Random;
 
 public class Leveling {
@@ -60,6 +61,19 @@ public class Leveling {
                         writer.close();
                     } catch (Exception exception) {
                         //nothing here lol
+                    }
+                }
+                if(e.getGuild().getId().equals("670725611207262219")) {
+                    if(level >= 40) {
+                        e.getGuild().addRoleToMember(e.getAuthor().getId(), Objects.requireNonNull(e.getGuild().getRoleById("734697410273607751"))).queue();
+                    } else if(level >= 30) {
+                        e.getGuild().addRoleToMember(e.getAuthor().getId(), Objects.requireNonNull(e.getGuild().getRoleById("734697411074719765"))).queue();
+                    } else if(level >= 20) {
+                        e.getGuild().addRoleToMember(e.getAuthor().getId(), Objects.requireNonNull(e.getGuild().getRoleById("734697411783688245"))).queue();
+                    } else if(level >= 10) {
+                        e.getGuild().addRoleToMember(e.getAuthor().getId(), Objects.requireNonNull(e.getGuild().getRoleById("734697412865818645"))).queue();
+                    } else if(level >= 5) {
+                        e.getGuild().addRoleToMember(e.getAuthor().getId(), Objects.requireNonNull(e.getGuild().getRoleById("734697413901680691"))).queue();
                     }
                 }
             }

@@ -266,10 +266,10 @@ public class DevCommands {
                         boolean moreIncome = Boolean.parseBoolean(data[56]);
                         int income = violinQuality * 600 + skillLevel * 240 + lessonQuality * 150 + stringQuality * 100 + bowQuality * 200 + flute * 60 + oboe * 50 + clarinet * 40 + bassoon * 40 + horn * 40 + trumpet * 30 + trombone * 20 + tuba * 20 + timpani * 60 + percussion * 10 + first * 70 + second * 60 + cello * 50 + stringBass * 50 + piano * 110 + soprano * 30 + alto * 20 + tenor * 20 + bass * 20 + soloists * 60 + hallLevel * 300 + conductor * 200 + advertising * 100 + tickets * 1000;
                         if (hasMath) {
-                            income += 2500;
+                            income += 6500;
                         }
                         if (hasOrchestra) {
-                            income += 3000;
+                            income += 3100;
                         } else {
                             income -= 130;
                         }
