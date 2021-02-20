@@ -8,18 +8,35 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.List;
+import java.util.Objects;
 
 public class LevelCommands {
     public LevelCommands(GuildMessageReceivedEvent e, String[] message) {
         BufferedReader reader;
         switch (message[0]) {
             case "rank" -> {
-                try {
-                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + e.getAuthor().getId() + ".txt"));
-                    String[] data = reader.readLine().split(" ");
-                    e.getChannel().sendMessage("**__" + e.getAuthor().getName() + "'s Stats__**\nLevel " + data[0] + "\n" + data[1] + "/" + (Integer.parseInt(data[0]) + 1) * 100 + " XP").queue();
-                } catch (Exception exception) {
-                    //nothing here lol
+                if (message.length == 1) {
+                    try {
+                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + e.getAuthor().getId() + ".txt"));
+                        String[] data = reader.readLine().split(" ");
+                        e.getChannel().sendMessage("**__" + e.getAuthor().getName() + "'s Stats__**\nLevel " + data[0] + "\n" + data[1] + "/" + (Integer.parseInt(data[0]) + 1) * 100 + " XP").queue();
+                    } catch (Exception exception) {
+                        //nothing here lol
+                    }
+                } else {
+                    String id = "";
+                    try {
+                        id = e.getMessage().getMentionedUsers().get(0).getId();
+                    } catch(Exception exception) {
+                        id = message[1];
+                    }
+                    try {
+                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + id + ".txt"));
+                        String[] data = reader.readLine().split(" ");
+                        e.getChannel().sendMessage("**__" + Objects.requireNonNull(e.getJDA().getUserById(id)).getName() + "'s Stats__**\nLevel " + data[0] + "\n" + data[1] + "/" + (Integer.parseInt(data[0]) + 1) * 100 + " XP").queue();
+                    } catch (Exception exception) {
+                        e.getChannel().sendMessage("This save file does not exist!").queue();
+                    }
                 }
             }
             case "levels", "levellb" -> {

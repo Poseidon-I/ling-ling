@@ -53,7 +53,7 @@ public class Economy {
                     }
                 }
             } else {
-                entry = new String[]{e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + "`" + e.getAuthor().getId() + "`: " + userNum + " " + type + "\n", "null#0000 `0`: 0 " + type + "\n", "null#0000 `0`: 0 " + type + "\n", "null#0000 `0`: 0 " + type + "\n", "null#0000 `0`: 0 " + type + "\n", "null#0000 `0`: 0 " + type + "\n", "null#0000 `0`: 0 " + type + "\n", "null#0000 `0`: 0 " + type + "\n", "null#0000 `0`: 0 " + type + "\n", "null#0000 `0`: 0 " + type + "\n"};
+                entry = new String[]{e.getAuthor().getName().replace(' ', '-') + "#" + e.getAuthor().getDiscriminator() + " `" + e.getAuthor().getId() + "`: " + userNum + " " + type + "\n", "null#0000 `0`: 0 " + type + "\n", "null#0000 `0`: 0 " + type + "\n", "null#0000 `0`: 0 " + type + "\n", "null#0000 `0`: 0 " + type + "\n", "null#0000 `0`: 0 " + type + "\n", "null#0000 `0`: 0 " + type + "\n", "null#0000 `0`: 0 " + type + "\n", "null#0000 `0`: 0 " + type + "\n", "null#0000 `0`: 0 " + type + "\n"};
                 List<Member> list = e.getGuild().getMembers();
                 for (Member user : list) {
                     String currentData;
@@ -254,17 +254,17 @@ public class Economy {
         } else if (message[0].equals("start") && hasData) {
             e.getChannel().sendMessage("You already have a save, don't try to outsmart me").queue();
         }
-        long workCost = (long) (Math.pow(1.15, workL)) * 50;
-        long gambleCost = (long) (Math.pow(1.3, gambleL)) * 500;
-        long robCost = (long) (Math.pow(1.45, robL)) * 5000;
-        long violinCost = (long) (Math.pow(4, violinQuality)) * 1000;
-        long skillCost = (long) (Math.pow(2.5, skillLevel)) * 500;
-        long lessonCost = (long) (Math.pow(3, lessonQuality)) * 700;
-        long stringCost = (long) (Math.pow(2, stringQuality)) * 400;
-        long bowCost = (long) (Math.pow(4, bowQuality)) * 500;
-        long hallCost = (long) (Math.pow(10, hallLevel)) * 10000;
-        long conductorCost = (long) (Math.pow(5, conductor)) * 100000;
-        long ticketCost = (long) (Math.pow(2, tickets)) * 2000000;
+        long workCost = (long) (Math.pow(1.15, workL) * 50);
+        long gambleCost = (long) (Math.pow(1.3, gambleL) * 500);
+        long robCost = (long) (Math.pow(1.45, robL) * 5000);
+        long violinCost = (long) (Math.pow(4, violinQuality) * 1000);
+        long skillCost = (long) (Math.pow(2.5, skillLevel) * 500);
+        long lessonCost = (long) (Math.pow(3, lessonQuality) * 700);
+        long stringCost = (long) (Math.pow(2, stringQuality) * 400);
+        long bowCost = (long) (Math.pow(4, bowQuality) * 500);
+        long hallCost = (long) (Math.pow(10, hallLevel) * 10000);
+        long conductorCost = (long) (Math.pow(5, conductor) * 100000);
+        long ticketCost = (long) (Math.pow(2, tickets) * 2000000);
         long fluteCost = 400000L * (flute + 1);
         long oboeCost = 400000L * (oboe + 1);
         long clarinetCost = 400000L * (clarinet + 1);
@@ -283,7 +283,7 @@ public class Economy {
         long sopranoCost = 100000L * (soprano + 1);
         long altoCost = 75000L * (alto + 1);
         long tenorCost = 75000L * (tenor + 1);
-        long bassCost = 75000L * (tenor + 1);
+        long bassCost = 75000L * (bass + 1);
         long soloistCost = 400000L * (soloists + 1);
         long advertisingCost = 100000L * (advertising + 1);
         switch (message[0]) {
@@ -562,7 +562,7 @@ public class Economy {
                             } else {
                                 violins -= 300000;
                                 piccolo = true;
-                                e.getChannel().sendMessage("Successfully hired a piccolo player!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a piccolo player for 300 000:violin:!\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "contrabassoon", "cb" -> {
@@ -573,7 +573,7 @@ public class Economy {
                             } else {
                                 violins -= 400000;
                                 contrabassoon = true;
-                                e.getChannel().sendMessage("Successfully hired a contrabassoonist!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a contrabassoonist for 400 000:violin:!\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "harp" -> {
@@ -584,7 +584,7 @@ public class Economy {
                             } else {
                                 violins -= 500000;
                                 harp = true;
-                                e.getChannel().sendMessage("Successfully hired a harpist!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a harpist for 500 000:violin:!\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "flute" -> {
@@ -595,7 +595,7 @@ public class Economy {
                             } else {
                                 violins -= fluteCost;
                                 flute++;
-                                e.getChannel().sendMessage("Successfully hired a flautist!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a flautist for " + fluteCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "oboe" -> {
@@ -606,7 +606,7 @@ public class Economy {
                             } else {
                                 violins -= oboeCost;
                                 oboe++;
-                                e.getChannel().sendMessage("Successfully hired a oboist!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a oboist for " + oboeCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "clarinet" -> {
@@ -617,7 +617,7 @@ public class Economy {
                             } else {
                                 violins -= clarinetCost;
                                 clarinet++;
-                                e.getChannel().sendMessage("Successfully hired a clarinetist!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a clarinetist for " + clarinetCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "bassoon" -> {
@@ -628,7 +628,7 @@ public class Economy {
                             } else {
                                 violins -= bassoonCost;
                                 bassoon++;
-                                e.getChannel().sendMessage("Successfully hired a bassoonist!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a bassoonist for " + bassoonCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "horn" -> {
@@ -639,7 +639,7 @@ public class Economy {
                             } else {
                                 violins -= hornCost;
                                 horn++;
-                                e.getChannel().sendMessage("Successfully hired a hornist!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a hornist for " + hornCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "trumpet" -> {
@@ -650,7 +650,7 @@ public class Economy {
                             } else {
                                 violins -= trumpetCost;
                                 trumpet++;
-                                e.getChannel().sendMessage("Successfully hired a trumpeter!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a trumpeter for " + trumpetCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "trombone" -> {
@@ -661,7 +661,7 @@ public class Economy {
                             } else {
                                 violins -= tromboneCost;
                                 trombone++;
-                                e.getChannel().sendMessage("Successfully hired a trombonist!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a trombonist for " + tromboneCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "tuba" -> {
@@ -672,7 +672,7 @@ public class Economy {
                             } else {
                                 violins -= tubaCost;
                                 tuba++;
-                                e.getChannel().sendMessage("Successfully hired a tubist!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a tubist for " + tubaCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "timpani" -> {
@@ -683,7 +683,7 @@ public class Economy {
                             } else {
                                 violins -= timpaniCost;
                                 timpani++;
-                                e.getChannel().sendMessage("Successfully hired a timpanist!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a timpanist for " + timpaniCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "percussion" -> {
@@ -694,7 +694,7 @@ public class Economy {
                             } else {
                                 violins -= percussionCost;
                                 percussion++;
-                                e.getChannel().sendMessage("Successfully hired a percussionist!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a percussionist for " + percussionCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "first" -> {
@@ -705,7 +705,7 @@ public class Economy {
                             } else {
                                 violins -= firstCost;
                                 first++;
-                                e.getChannel().sendMessage("Successfully hired a first violinist!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a first violinist for " + firstCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "second" -> {
@@ -716,7 +716,7 @@ public class Economy {
                             } else {
                                 violins -= secondCost;
                                 second++;
-                                e.getChannel().sendMessage("Successfully hired a second violinist!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a second violinist for " + secondCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "cello" -> {
@@ -727,7 +727,7 @@ public class Economy {
                             } else {
                                 violins -= celloCost;
                                 cello++;
-                                e.getChannel().sendMessage("Successfully hired a cellist!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a cellist for " + celloCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "double", "upright", "db", "doublebass" -> {
@@ -738,7 +738,7 @@ public class Economy {
                             } else {
                                 violins -= doubleCost;
                                 stringBass++;
-                                e.getChannel().sendMessage("Successfully hired a double bassist!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a double bassist for " + doubleCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "piano" -> {
@@ -749,7 +749,7 @@ public class Economy {
                             } else {
                                 violins -= pianoCost;
                                 piano++;
-                                e.getChannel().sendMessage("Successfully hired a pianists!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a pianist for " + pianoCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "soprano" -> {
@@ -760,7 +760,7 @@ public class Economy {
                             } else {
                                 violins -= sopranoCost;
                                 soprano++;
-                                e.getChannel().sendMessage("Successfully hired a sopranist!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a sopranist for " + sopranoCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "alto" -> {
@@ -771,7 +771,7 @@ public class Economy {
                             } else {
                                 violins -= altoCost;
                                 alto++;
-                                e.getChannel().sendMessage("Successfully hired an alto!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired an alto for " + altoCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "tenor" -> {
@@ -782,7 +782,7 @@ public class Economy {
                             } else {
                                 violins -= tenorCost;
                                 tenor++;
-                                e.getChannel().sendMessage("Successfully hired a tenor!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a tenor for " + tenorCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "bass" -> {
@@ -793,18 +793,18 @@ public class Economy {
                             } else {
                                 violins -= bassCost;
                                 bass++;
-                                e.getChannel().sendMessage("Successfully hired a bassist!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a bassist for " + bassCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "soloist" -> {
                             if (soloists == 4) {
-                                e.getChannel().sendMessage("You already hired the max amount of soloists!").queue();
+                                e.getChannel().sendMessage("You already hired the max amount of vocal soloists!").queue();
                             } else if (violins < soloistCost) {
-                                e.getChannel().sendMessage("You are too poor to hire a soloist!").queue();
+                                e.getChannel().sendMessage("You are too poor to hire a vocal soloist!").queue();
                             } else {
                                 violins -= soloistCost;
                                 soloists++;
-                                e.getChannel().sendMessage("Successfully hired a soloist!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully hired a vocal soloist for " + soloistCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "conductor", "musicality" -> {
@@ -815,7 +815,7 @@ public class Economy {
                             } else {
                                 violins -= conductorCost;
                                 conductor++;
-                                e.getChannel().sendMessage("Successfully upgraded Conductor Musicality to Level " + conductor + "\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully upgraded Conductor Musicality to Level " + conductor + " for " + conductorCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "advertisement", "ad" -> {
@@ -826,7 +826,7 @@ public class Economy {
                             } else {
                                 violins -= advertisingCost;
                                 advertising++;
-                                e.getChannel().sendMessage("Successfully upgraded Advertising to Level " + advertising + "\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully upgraded Advertising to Level " + advertising + " for " + advertisingCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         case "tickets" -> {
@@ -837,7 +837,7 @@ public class Economy {
                             } else {
                                 violins -= ticketCost;
                                 tickets++;
-                                e.getChannel().sendMessage("Successfully upgraded Ticket Cost to Level " + tickets + "\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully upgraded Ticket Cost to Level " + tickets + " for " + ticketCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                         default -> boughtItem = false;
@@ -847,22 +847,22 @@ public class Economy {
                     case "1" -> {
                         if (ownInsurance1) {
                             e.getChannel().sendMessage("You already bought this insurance!  Run `" + prefix + "use 1` to apply it.  Remember that you can only have one insurance plan active at once but you can swap at any time for no cost if you have bought Plan 2.").queue();
-                        } else if (violins < 2500000) {
+                        } else if (violins < 3000000) {
                             e.getChannel().sendMessage("You are too poor to buy this insurance!").queue();
                         } else {
                             ownInsurance1 = true;
-                            violins -= 2000000;
+                            violins -= 3000000;
                             e.getChannel().sendMessage("You have successfully bought Ling Ling Insurance - Plan 1 - Full Security!  Run `" + prefix + "use 1` to apply it.  Remember that you can only have one insurance plan active at once but you can swap at any time for no cost if you have bought Plan 2.\nYou have " + violins + ":violin: left.").queue();
                         }
                     }
                     case "2" -> {
                         if (ownInsurance2) {
                             e.getChannel().sendMessage("You already bought this insurance!  Run `" + prefix + "use 2` to apply it.  Remember that you can only have one insurance plan active at once but you can swap at any time for no cost if you have bought Plan 1.").queue();
-                        } else if (violins < 2500000) {
+                        } else if (violins < 3000000) {
                             e.getChannel().sendMessage("You are too poor to buy this insurance!").queue();
                         } else {
                             ownInsurance2 = true;
-                            violins -= 2500000;
+                            violins -= 3000000;
                             e.getChannel().sendMessage("You have successfully bought Ling Ling Insurance - Plan 2 - Half Security!  Run `" + prefix + "use 2` to apply it.  Remember that you can only have one insurance plan active at once but you can swap at any time for no cost if you have bought Plan 1.\nYou have " + violins + ":violin: left.").queue();
                         }
                     }
@@ -874,7 +874,7 @@ public class Economy {
                         } else {
                             faster = true;
                             violins -= 150000000;
-                            e.getChannel().sendMessage("You approach Ling Ling and pay him (her?) 200 million violins.  Ling Ling then does magic and you are back in your room.  You feel like you can do things faster, around 25% faster.\n`" + prefix + "practice` cooldown is now 30 minutes.\n`" + prefix + "rehearse` cooldown is now 18 hours.\n`" + prefix + "perform` cooldown is now 2.5 days.\nYou have " + violins + ":violin: left.").queue();
+                            e.getChannel().sendMessage("You approach Ling Ling and pay him (her?) 150 million violins.  Ling Ling then does magic and you are back in your room.  You feel like you can do things faster, around 25% faster.\n`" + prefix + "practice` cooldown is now 30 minutes.\n`" + prefix + "rehearse` cooldown is now 18 hours.\n`" + prefix + "perform` cooldown is now 2.5 days.\nYou have " + violins + ":violin: left.").queue();
                         }
                     }
                     case "efficient", "practising", "ep" -> {
@@ -885,7 +885,7 @@ public class Economy {
                         } else {
                             violins -= workCost;
                             workL++;
-                            e.getChannel().sendMessage("Successfully upgraded Efficient Practising to Level " + workL + "\nYou have " + violins + ":violin: left.").queue();
+                            e.getChannel().sendMessage("Successfully upgraded Efficient Practising to Level " + workL + " for " + workCost + "\nYou have " + violins + ":violin: left.").queue();
                         }
                     }
                     case "lucky", "lm" -> {
@@ -896,7 +896,7 @@ public class Economy {
                         } else {
                             violins -= gambleCost;
                             gambleL++;
-                            e.getChannel().sendMessage("Successfully upgraded Lucky Musician to Level " + gambleL + "\nYou have " + violins + ":violin: left.").queue();
+                            e.getChannel().sendMessage("Successfully upgraded Lucky Musician to Level " + gambleL + " for " + gambleCost + "\nYou have " + violins + ":violin: left.").queue();
                         }
                     }
                     case "sophisticated", "robbing", "sr" -> {
@@ -907,7 +907,7 @@ public class Economy {
                         } else {
                             violins -= robCost;
                             robL++;
-                            e.getChannel().sendMessage("Successfully upgraded Sophisticated Robbing to Level " + robL + "\nYou have " + violins + ":violin: left.").queue();
+                            e.getChannel().sendMessage("Successfully upgraded Sophisticated Robbing to Level " + robL + " for " + robCost + "\nYou have " + violins + ":violin: left.").queue();
                         }
                     }
                     case "violin", "v" -> {
@@ -918,7 +918,7 @@ public class Economy {
                         } else {
                             violins -= violinCost;
                             violinQuality++;
-                            e.getChannel().sendMessage("Successfully upgraded Violin Quality to Level " + violinQuality + "\nYou have " + violins + ":violin: left.").queue();
+                            e.getChannel().sendMessage("Successfully upgraded Violin Quality to Level " + violinQuality + " for " + violinCost + "\nYou have " + violins + ":violin: left.").queue();
                         }
                     }
                     case "skill", "s" -> {
@@ -929,7 +929,7 @@ public class Economy {
                         } else {
                             violins -= skillCost;
                             skillLevel++;
-                            e.getChannel().sendMessage("Successfully upgraded Skill Level to Level " + skillLevel + "\nYou have " + violins + ":violin: left.").queue();
+                            e.getChannel().sendMessage("Successfully upgraded Skill Level to Level " + skillLevel + " for " + skillCost + "\nYou have " + violins + ":violin: left.").queue();
                         }
                     }
                     case "lesson", "l" -> {
@@ -940,7 +940,7 @@ public class Economy {
                         } else {
                             violins -= lessonCost;
                             lessonQuality++;
-                            e.getChannel().sendMessage("Successfully upgraded Lesson Quality to Level " + lessonQuality + "\nYou have " + violins + ":violin: left.").queue();
+                            e.getChannel().sendMessage("Successfully upgraded Lesson Quality to Level " + lessonQuality + " for " + lessonCost + "\nYou have " + violins + ":violin: left.").queue();
                         }
                     }
                     case "string", "str" -> {
@@ -951,7 +951,7 @@ public class Economy {
                         } else {
                             violins -= stringCost;
                             stringQuality++;
-                            e.getChannel().sendMessage("Successfully upgraded String Quality to Level " + stringQuality + "\nYou have " + violins + ":violin: left.").queue();
+                            e.getChannel().sendMessage("Successfully upgraded String Quality to Level " + stringQuality + " for " + stringCost + "\nYou have " + violins + ":violin: left.").queue();
                         }
                     }
                     case "bow", "b" -> {
@@ -962,7 +962,7 @@ public class Economy {
                         } else {
                             violins -= bowCost;
                             bowQuality++;
-                            e.getChannel().sendMessage("Successfully upgraded Bow Quality to Level " + bowQuality + "\nYou have " + violins + ":violin: left.").queue();
+                            e.getChannel().sendMessage("Successfully upgraded Bow Quality to Level " + bowQuality + " for " + bowCost + "\nYou have " + violins + ":violin: left.").queue();
                         }
                     }
                     case "math" -> {
@@ -998,7 +998,7 @@ public class Economy {
                             } else {
                                 violins -= hallCost;
                                 hallLevel++;
-                                e.getChannel().sendMessage("Successfully upgarded Concert Hall to Level " + hallLevel + "!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully upgarded Concert Hall to Level " + hallLevel + " for " + hallCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         } else {
                             if (hallLevel == 5) {
@@ -1008,13 +1008,13 @@ public class Economy {
                             } else {
                                 violins -= hallCost;
                                 hallLevel++;
-                                e.getChannel().sendMessage("Successfully upgarded Concert Hall to Level " + hallLevel + "!\nYou have " + violins + ":violin: left.").queue();
+                                e.getChannel().sendMessage("Successfully upgarded Concert Hall to Level " + hallLevel + " for " + hallCost + ":violin:\nYou have " + violins + ":violin: left.").queue();
                             }
                         }
                     }
                     default ->  {
                         if(!boughtItem) {
-                            e.getChannel().sendMessage("You can't buy nothing, that would be quite redundant.").queue();
+                            e.getChannel().sendMessage("You can't buy something that's not for sale, that would be quite a waste of time.").queue();
                         }
                     }
                 }
@@ -1271,7 +1271,7 @@ public class Economy {
                     } else if(num > 0.25) {
                         num = random.nextDouble();
                         if(num > 0.6) {
-                            e.getChannel().sendMessage("Your teacher your performance.  Your tiger mom saw the comment, and gave you " + (long) (base * 0.1) + ":violin: in addition to the " + base + ":violin: that you earned.").queue();
+                            e.getChannel().sendMessage("Your teacher approved your performance.  Your tiger mom saw the comment, and gave you " + (long) (base * 0.1) + ":violin: in addition to the " + base + ":violin: that you earned.").queue();
                             base *= 1.1;
                             violins += base;
                         } else if(num > 0.25) {
@@ -1298,6 +1298,7 @@ public class Economy {
                             e.getChannel().sendMessage("Your violin randomly went out of tune while you were practising.  You had to spend 4 minutes tuning it and were only able to earn " + base + ":violin:").queue();
                         } else if(num > 0.4) {
                             base *= 0.95;
+                            violins += base;
                             e.getChannel().sendMessage("You had problems with your music stand, and page turning wasn't the best this session.  You earned " + base + ":violin:").queue();
                         } else if(num > 0.25) {
                             base *= 0.5;
@@ -1369,7 +1370,7 @@ public class Economy {
                         } else if(num > 0.25) {
                             num = random.nextDouble();
                             if(num > 0.6) {
-                                e.getChannel().sendMessage("Your teacher your performance.  Your tiger mom saw the comment, and gave you " + (long) (base * 0.1) + ":violin: in addition to the " + base + ":violin: that you earned.").queue();
+                                e.getChannel().sendMessage("Your teacher approved your performance.  Your tiger mom saw the comment, and gave you " + (long) (base * 0.1) + ":violin: in addition to the " + base + ":violin: that you earned.").queue();
                                 base *= 1.1;
                                 violins += base;
                             } else if(num > 0.25) {
@@ -1400,7 +1401,7 @@ public class Economy {
                                 base *= 0.95;
                                 e.getChannel().sendMessage("The orchestra had music stand problems, and page turning wasn't the best either.  You only earned " + base + ":violin:").queue();
                             } else if(num > 0.25) {
-                                base *= hourlyIncome;
+                                base *= 0.5;
                                 violins += base;
                                 violins -= hourlyIncome / 10;
                                 e.getChannel().sendMessage("You hurt your wrist during the rehearsal and only got half of the effectiveness.  You earned " + base + ":violin: but ended up paying " + (int) (hourlyIncome / 10) + ":violin: in hospital fees.").queue();
@@ -1473,7 +1474,7 @@ public class Economy {
                     } else if(num > 0.3) {
                         num = random.nextDouble();
                         if(num > 0.6) {
-                            e.getChannel().sendMessage("Your teacher your performance.  Your tiger mom saw the comment, and gave you " + (long) (base * 0.1) + ":violin: in addition to the " + base + ":violin: that you earned.").queue();
+                            e.getChannel().sendMessage("Your teacher approved your performance.  Your tiger mom saw the comment, and gave you " + (long) (base * 0.1) + ":violin: in addition to the " + base + ":violin: that you earned.").queue();
                             base *= 1.1;
                             violins += base;
                         } else if(num > 0.25) {
@@ -1898,25 +1899,6 @@ public class Economy {
                     }
                 }
             }
-            case "balance", "bal", "b" -> {
-                if (message.length == 1) {
-                    if (!hasData) {
-                        e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                        throw new IllegalArgumentException();
-                    }
-                    e.getChannel().sendMessage("You have " + Integer.parseInt(data[0]) + ":violin:\nHourly income: " + hourlyIncome + "\nLing Ling Medals: " + medals + ":military_medal:").queue();
-                } else {
-                    String name = Objects.requireNonNull(e.getJDA().getUserById(target)).getName();
-                    try {
-                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data\\" + target + ".txt"));
-                        String line = reader.readLine();
-                        e.getChannel().sendMessage(name + " has " + line.split(" ")[0] + ":violin:\nHourly income: " + line.split(" ")[12] + "\nLing Ling Medals: " + line.split(" ")[55] + ":military_medal:").queue();
-                        reader.close();
-                    } catch (Exception exception) {
-                        e.getChannel().sendMessage("This save file does not exist!").queue();
-                    }
-                }
-            }
             case "inventory", "inv" -> {
                 if (message.length == 1) {
                     if (!hasData) {
@@ -1950,7 +1932,7 @@ public class Economy {
                     }
                 }
             }
-            case "profile" -> {
+            case "profile", "balance", "bal", "b"-> {
                 if(message.length == 1) {
                     if (!hasData) {
                         e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();

@@ -50,7 +50,7 @@ public class Receiver extends ListenerAdapter {
             data = reader.readLine().split(" ");
             reader.close();
             new Luthier(e, data);
-        } catch(Exception exception) {
+        } catch (Exception exception) {
             //nothing here lol
         }
 
@@ -71,10 +71,10 @@ public class Receiver extends ListenerAdapter {
             }
         }
         if (!e.getAuthor().isBot() || e.getAuthor().getId().equals("733409243222507670")) {
-            if(data[2].equals("true") && !e.getAuthor().isBot()) {
+            if (data[2].equals("true") && !e.getAuthor().isBot()) {
                 new Leveling(e);
             }
-            if(data[0].equals("true") && !e.getAuthor().isBot()) {
+            if (data[0].equals("true") && !e.getAuthor().isBot()) {
                 new Autoresponse(e);
             }
             String server = "";
@@ -108,59 +108,61 @@ public class Receiver extends ListenerAdapter {
             } catch (Exception exception) {
                 //nothing here lol
             }
-            if (message[0].charAt(0) == prefix) {
-                String target = "";
-                String targetPing = "";
-                try {
-                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + server + ".txt"));
-                    data = reader.readLine().split(" ");
-                    reader.close();
-                } catch (Exception exception) {
-                    //nothing here lol
-                }
-                try {
-                    target = e.getMessage().getMentionedUsers().get(0).getId();
-                    targetPing = e.getMessage().getMentionedUsers().get(0).getName();
-                } catch (Exception exception) {
+            if (!e.getAuthor().isBot()) {
+                if (message[0].charAt(0) == prefix) {
+                    String target = "";
+                    String targetPing = "";
                     try {
-                        target = message[1];
-                        targetPing = message[1];
-                    } catch (Exception exception1) {
-                        if (data[1].equals("true") && random.nextDouble() < 0.025) {
-                            e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F3BB").queue();
+                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + server + ".txt"));
+                        data = reader.readLine().split(" ");
+                        reader.close();
+                    } catch (Exception exception) {
+                        //nothing here lol
+                    }
+                    try {
+                        target = e.getMessage().getMentionedUsers().get(0).getId();
+                        targetPing = e.getMessage().getMentionedUsers().get(0).getName();
+                    } catch (Exception exception) {
+                        try {
+                            target = message[1];
+                            targetPing = message[1];
+                        } catch (Exception exception1) {
+                            if (data[1].equals("true") && random.nextDouble() < 0.025) {
+                                e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F3BB").queue();
+                            }
                         }
                     }
+                    if (e.getMessage().getContentRaw().contains("@everyone") || e.getMessage().getContentRaw().contains("@here") || e.getMessage().getContentRaw().contains("<@&")) {
+                        e.getChannel().sendMessage("why the hell did you ping here, everyone, or a role dumbass").queue();
+                        throw new IllegalArgumentException();
+                    } else if (e.getAuthor().getName().contains("@everyone") || e.getAuthor().getName().contains("@here") || e.getAuthor().getName().contains("<@&")) {
+                        e.getChannel().sendMessage("Nice try but no").queue();
+                        throw new IllegalArgumentException();
+                    } else if (targetPing.contains("@everyone") || targetPing.contains("@here") || targetPing.contains("<@&")) {
+                        e.getChannel().sendMessage("Nice try but no").queue();
+                        throw new IllegalArgumentException();
+                    }
+                    message[0] = message[0].substring(1);
+                    new RegularCommands(e, message, prefix, isDev, target, targetPing, data);
                 }
-                if (e.getMessage().getContentRaw().contains("@everyone") || e.getMessage().getContentRaw().contains("@here") || e.getMessage().getContentRaw().contains("<@&")) {
-                    e.getChannel().sendMessage("why the hell did you ping here, everyone, or a role dumbass").queue();
-                    throw new IllegalArgumentException();
-                } else if (e.getAuthor().getName().contains("@everyone") || e.getAuthor().getName().contains("@here") || e.getAuthor().getName().contains("<@&")) {
-                    e.getChannel().sendMessage("Nice try but no").queue();
-                    throw new IllegalArgumentException();
-                } else if (targetPing.contains("@everyone") || targetPing.contains("@here") || targetPing.contains("<@&")) {
-                    e.getChannel().sendMessage("Nice try but no").queue();
-                    throw new IllegalArgumentException();
-                }
-                message[0] = message[0].substring(1);
-                new RegularCommands(e, message, prefix, isDev, target, targetPing, data);
             }
-            //V I O L A
-            assert data != null;
-            if (data[1].equals("true")) {
-                if (e.getChannel().getName().contains("announcement")) {
+        }
+        //V I O L A
+        assert data != null;
+        if (data[1].equals("true")) {
+            if (e.getChannel().getName().contains("announcement")) {
+                e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1FB").queue();
+                e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue();
+                e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F4").queue();
+                e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F1").queue();
+                e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E6").queue();
+            } else {
+                if (random.nextDouble() <= 0.025) {
                     e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1FB").queue();
                     e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue();
                     e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F4").queue();
                     e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F1").queue();
                     e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E6").queue();
-                } else {
-                    if (random.nextDouble() <= 0.025) {
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1FB").queue();
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue();
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F4").queue();
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F1").queue();
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E6").queue();
-                    }
                 }
             }
         }

@@ -100,7 +100,7 @@ public class DevCommands {
                         try {
                             file.createNewFile();
                             writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt")));
-                            writer.print(e.getChannel().getId() + " 1 0.02 false blank 0");
+                            writer.print(e.getChannel().getId() + " 1 0.01 false blank 0");
                             writer.close();
                             e.getChannel().sendMessage("Successfully set up Luthier for " + e.getGuild().getName()).queue();
                         } catch (Exception exception2) {
