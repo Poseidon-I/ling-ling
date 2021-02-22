@@ -17,7 +17,7 @@ public class Economy {
         File directory = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data");
         File[] files = directory.listFiles();
         String[] entry = new String[0];
-        int place = 1;
+        long place = 1;
         if (files != null) {
             if (global) {
                 entry = new String[]{e.getAuthor().getAsMention() + ": " + userNum + " " + type + "\n", "<@0>: 0 " + type + "\n", "<@0>: 0 " + type + "\n", "<@0>: 0 " + type + "\n", "<@0>: 0 " + type + "\n", "<@0>: 0 " + type + "\n", "<@0>: 0 " + type + "\n", "<@0>: 0 " + type + "\n", "<@0>: 0 " + type + "\n", "<@0>: 0 " + type + "\n"};
@@ -37,12 +37,12 @@ public class Economy {
                     user = user.substring(0, pos);
                     assert currentData != null;
                     String[] temp = currentData.split(" ");
-                    int num = Integer.parseInt(temp[dataPosition]);
+                    long num = Long.parseLong(temp[dataPosition]);
                     if (num == 0) {
                         continue;
                     }
                     for (int i = 0; i < 10; i++) {
-                        if (num > Integer.parseInt(entry[i].split(" ")[1]) && !user.equals(e.getAuthor().getId())) {
+                        if (num > Long.parseLong(entry[i].split(" ")[1]) && !user.equals(e.getAuthor().getId())) {
                             System.arraycopy(entry, i, entry, i + 1, 9 - i);
                             entry[i] = "<@" + user + ">: " + num + " " + type + "\n";
                             if(num > userNum) {
@@ -69,12 +69,12 @@ public class Economy {
                     }
                     assert currentData != null;
                     String[] temp = currentData.split(" ");
-                    int num = Integer.parseInt(temp[dataPosition]);
+                    long num = Long.parseLong(temp[dataPosition]);
                     if (num == 0) {
                         continue;
                     }
                     for (int i = 0; i < 10; i++) {
-                        if (num > Integer.parseInt(entry[i].split(" ")[2]) && !user.getId().equals(e.getAuthor().getId())) {
+                        if (num > Long.parseLong(entry[i].split(" ")[2]) && !user.getId().equals(e.getAuthor().getId())) {
                             System.arraycopy(entry, i, entry, i + 1, 9 - i);
                             String name = user.getUser().getName().replace(' ', '-');
                             entry[i] = name + "#" + user.getUser().getDiscriminator() + " `" + user.getId() + "`: " + num + " " + type + "\n";
@@ -129,7 +129,7 @@ public class Economy {
         e.getChannel().sendMessage(builder.build()).queue();
     }
 
-    public static int calculateAmount(GuildMessageReceivedEvent e, String[] data, int base) {
+    public static long calculateAmount(GuildMessageReceivedEvent e, String[] data, long base) {
         if (e.getGuild().getId().equals("670725611207262219")) {
             if (Objects.requireNonNull(e.getMember()).getRoles().contains(e.getGuild().getRoleById("755910677075460206"))) {
                 base *= 1.1;
@@ -145,9 +145,6 @@ public class Economy {
             } else if (Objects.requireNonNull(e.getMember()).getRoles().contains(e.getGuild().getRoleById("734697413901680691"))) {
                 base *= 1.01;
             }
-        }
-        if(data[19].equals("true")) {
-            base *= 2;
         }
         if(data[57].equals("true")) {
             base *= 2;
@@ -173,68 +170,68 @@ public class Economy {
         }
         long violins = Long.parseLong(data[0]);
         long workC = Long.parseLong(data[1]);
-        int workL = Integer.parseInt(data[2]);
+        long workL = Long.parseLong(data[2]);
         long gambleC = Long.parseLong(data[3]);
-        int gambleL = Integer.parseInt(data[4]);
+        long gambleL = Long.parseLong(data[4]);
         long robC = Long.parseLong(data[5]);
-        int robL = Integer.parseInt(data[6]);
+        long robL = Long.parseLong(data[6]);
         long rehearseC = Long.parseLong(data[7]);
         long performC = Long.parseLong(data[8]);
         boolean ownInsurance1 = Boolean.parseBoolean(data[9]);
         boolean ownInsurance2 = Boolean.parseBoolean(data[10]);
-        int activeInsurance = Integer.parseInt(data[11]);
+        long activeInsurance = Long.parseLong(data[11]);
         long hourlyIncome = Long.parseLong(data[12]);
-        int violinQuality = Integer.parseInt(data[13]);
-        int skillLevel = Integer.parseInt(data[14]);
-        int lessonQuality = Integer.parseInt(data[15]);
-        int stringQuality = Integer.parseInt(data[16]);
-        int bowQuality = Integer.parseInt(data[17]);
+        long violinQuality = Long.parseLong(data[13]);
+        long skillLevel = Long.parseLong(data[14]);
+        long lessonQuality = Long.parseLong(data[15]);
+        long stringQuality = Long.parseLong(data[16]);
+        long bowQuality = Long.parseLong(data[17]);
         boolean hasMath = Boolean.parseBoolean(data[18]);
         boolean hasOrchestra = Boolean.parseBoolean(data[19]);
         boolean piccolo = Boolean.parseBoolean(data[20]);
-        int flute = Integer.parseInt(data[21]);
-        int oboe = Integer.parseInt(data[22]);
-        int clarinet = Integer.parseInt(data[23]);
-        int bassoon = Integer.parseInt(data[24]);
+        long flute = Long.parseLong(data[21]);
+        long oboe = Long.parseLong(data[22]);
+        long clarinet = Long.parseLong(data[23]);
+        long bassoon = Long.parseLong(data[24]);
         boolean contrabassoon = Boolean.parseBoolean(data[25]);
-        int horn = Integer.parseInt(data[26]);
-        int trumpet = Integer.parseInt(data[27]);
-        int trombone = Integer.parseInt(data[28]);
-        int tuba = Integer.parseInt(data[29]);
-        int timpani = Integer.parseInt(data[30]);
-        int percussion = Integer.parseInt(data[31]);
-        int first = Integer.parseInt(data[32]);
-        int second = Integer.parseInt(data[33]);
-        int cello = Integer.parseInt(data[34]);
-        int stringBass = Integer.parseInt(data[35]);
-        int piano = Integer.parseInt(data[36]);
+        long horn = Long.parseLong(data[26]);
+        long trumpet = Long.parseLong(data[27]);
+        long trombone = Long.parseLong(data[28]);
+        long tuba = Long.parseLong(data[29]);
+        long timpani = Long.parseLong(data[30]);
+        long percussion = Long.parseLong(data[31]);
+        long first = Long.parseLong(data[32]);
+        long second = Long.parseLong(data[33]);
+        long cello = Long.parseLong(data[34]);
+        long stringBass = Long.parseLong(data[35]);
+        long piano = Long.parseLong(data[36]);
         boolean harp = Boolean.parseBoolean(data[37]);
-        int soprano = Integer.parseInt(data[38]);
-        int alto = Integer.parseInt(data[39]);
-        int tenor = Integer.parseInt(data[40]);
-        int bass = Integer.parseInt(data[41]);
-        int soloists = Integer.parseInt(data[42]);
-        int hallLevel = Integer.parseInt(data[43]);
-        int conductor = Integer.parseInt(data[44]);
-        int advertising = Integer.parseInt(data[45]);
-        int tickets = Integer.parseInt(data[46]);
-        int streak = Integer.parseInt(data[47]);
+        long soprano = Long.parseLong(data[38]);
+        long alto = Long.parseLong(data[39]);
+        long tenor = Long.parseLong(data[40]);
+        long bass = Long.parseLong(data[41]);
+        long soloists = Long.parseLong(data[42]);
+        long hallLevel = Long.parseLong(data[43]);
+        long conductor = Long.parseLong(data[44]);
+        long advertising = Long.parseLong(data[45]);
+        long tickets = Long.parseLong(data[46]);
+        long streak = Long.parseLong(data[47]);
         long dailyC = Long.parseLong(data[48]);
         long dailyExp = Long.parseLong(data[49]);
         boolean faster = Boolean.parseBoolean(data[50]);
-        int rice = Integer.parseInt(data[51]);
-        int thirdP = Integer.parseInt(data[52]);
-        int secondP = Integer.parseInt(data[53]);
-        int firstP = Integer.parseInt(data[54]);
-        int medals = Integer.parseInt(data[55]);
+        long rice = Long.parseLong(data[51]);
+        long thirdP = Long.parseLong(data[52]);
+        long secondP = Long.parseLong(data[53]);
+        long firstP = Long.parseLong(data[54]);
+        long medals = Long.parseLong(data[55]);
         boolean extraIncome = Boolean.parseBoolean(data[56]);
         boolean extraCommandIncome = Boolean.parseBoolean(data[57]);
         boolean higherWinrate = Boolean.parseBoolean(data[58]);
         boolean higherRobrate = Boolean.parseBoolean(data[59]);
         boolean stealShield = Boolean.parseBoolean(data[60]);
         boolean violinDuplicator = Boolean.parseBoolean(data[61]);
-        int tea = Integer.parseInt(data[62]);
-        int blessing = Integer.parseInt(data[63]);
+        long tea = Long.parseLong(data[62]);
+        long blessing = Long.parseLong(data[63]);
         if (message[0].equals("start") && !hasData) {
             File file = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt");
             try {
@@ -254,14 +251,14 @@ public class Economy {
         } else if (message[0].equals("start") && hasData) {
             e.getChannel().sendMessage("You already have a save, don't try to outsmart me").queue();
         }
-        long workCost = (long) (Math.pow(1.15, workL) * 50);
-        long gambleCost = (long) (Math.pow(1.3, gambleL) * 500);
-        long robCost = (long) (Math.pow(1.45, robL) * 5000);
-        long violinCost = (long) (Math.pow(4, violinQuality) * 1000);
-        long skillCost = (long) (Math.pow(2.5, skillLevel) * 500);
-        long lessonCost = (long) (Math.pow(3, lessonQuality) * 700);
-        long stringCost = (long) (Math.pow(2, stringQuality) * 400);
-        long bowCost = (long) (Math.pow(4, bowQuality) * 500);
+        long workCost = (long) (Math.pow(1.125, workL) * 250);
+        long gambleCost = (long) (Math.pow(1.25, gambleL) * 1000);
+        long robCost = (long) (Math.pow(1.4, robL) * 5000);
+        long violinCost = (long) (Math.pow(3.5, violinQuality) * 1000);
+        long skillCost = (long) (Math.pow(2.25, skillLevel) * 500);
+        long lessonCost = (long) (Math.pow(2.75, lessonQuality) * 700);
+        long stringCost = (long) (Math.pow(1.8, stringQuality) * 400);
+        long bowCost = (long) (Math.pow(3.5, bowQuality) * 500);
         long hallCost = (long) (Math.pow(10, hallLevel) * 10000);
         long conductorCost = (long) (Math.pow(5, conductor) * 100000);
         long ticketCost = (long) (Math.pow(2, tickets) * 2000000);
@@ -299,11 +296,11 @@ public class Economy {
                                 EmbedBuilder builder = new EmbedBuilder()
                                         .setColor(Color.BLUE)
                                         .setFooter("User balance: " + violins + "\nUse `" + prefix + "buy [ID]` to buy an upgrade!", e.getJDA().getSelfUser().getAvatarUrl())
-                                        .addField("Violin Quality (" + violinQuality + "/5)", "Price: " + violinCost + "\nEffect: +600:violin:/hour\nID: `violin`, `v`", false)
-                                        .addField("Skill Level (" + skillLevel + "/10)", "Price: " + skillCost + "\nEffect: +240:violin:/hour\nID: `skill`, `s`", false)
-                                        .addField("Lesson Quality (" + lessonQuality + "/8)", "Price: " + lessonCost + "\nEffect: +150:violin:/hour\nID: `lesson`, `l`", false)
-                                        .addField("String Quality (" + stringQuality + "/15)", "Price: " + stringCost + "\nEffect: +100:violin:/hour\nID: `string`, `str`", false)
-                                        .addField("Bow Quality (" + bowQuality + "/7)", "Price: " + bowCost + "\nEffect: +200:violin:/hour\nID: `bow`, `b`", false)
+                                        .addField("Violin Quality (" + violinQuality + "/10)", "Price: " + violinCost + "\nEffect: +600:violin:/hour\nID: `violin`, `v`", false)
+                                        .addField("Skill Level (" + skillLevel + "/15)", "Price: " + skillCost + "\nEffect: +240:violin:/hour\nID: `skill`, `s`", false)
+                                        .addField("Lesson Quality (" + lessonQuality + "/12)", "Price: " + lessonCost + "\nEffect: +150:violin:/hour\nID: `lesson`, `l`", false)
+                                        .addField("String Quality (" + stringQuality + "/20)", "Price: " + stringCost + "\nEffect: +100:violin:/hour\nID: `string`, `str`", false)
+                                        .addField("Bow Quality (" + bowQuality + "/10)", "Price: " + bowCost + "\nEffect: +200:violin:/hour\nID: `bow`, `b`", false)
                                         .setTitle("__**Income Upgrades**__");
                                 if (hasMath) {
                                     builder.addField("Math Tutoring (1/1)", "Price: 10 000 000\nEffect: +6500:violin:/hour\nID: `math`", false);
@@ -317,7 +314,7 @@ public class Economy {
                                         .setColor(Color.BLUE)
                                         .setFooter("User balance: " + violins + "\nUser `" + prefix + "buy [ID]` to buy an upgrade!", e.getJDA().getSelfUser().getAvatarUrl())
                                         .addField("Concert Hall Quality (" + hallLevel + "/2)", "Price: " + hallCost + "\nEffect: +300:violin:/hour, +20% violins from `" + prefix + "practice` `" + prefix + "rehearse` and `" + prefix + "perform`\nID: `concert`, `hall`", false)
-                                        .addField("Orchestra", "Price: 40 000 000\nIncome Requirement: 7 500\nEffect: +3 100:violin:/hour, x2 violins from `" + prefix + "practice` `" + prefix + "rehearse` and `" + prefix + "perform`\nID:`orchestra`, `o`", false)
+                                        .addField("Orchestra", "Price: 40 000 000\nIncome Requirement: 7 500\nEffect: +3 100:violin:/hour, access to `" + prefix + "rehearse` command\nID:`orchestra`, `o`", false)
                                         .setTitle("__**Miscellaneous Orchestra Items**__");
                                 e.getChannel().sendMessage(builder.build()).queue();
                             }
@@ -1025,9 +1022,9 @@ public class Economy {
                     throw new IllegalArgumentException();
                 }
                 if(hasOrchestra) {
-                    int temp1 = 0;
-                    int temp2 = 0;
-                    int temp3 = 0;
+                    long temp1 = 0;
+                    long temp2 = 0;
+                    long temp3 = 0;
                     if(piccolo) {
                         temp1 = 1;
                     }
@@ -1040,11 +1037,11 @@ public class Economy {
                     EmbedBuilder builder = new EmbedBuilder()
                             .setTitle("**__Orchestra Stats__**")
                             .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
-                            .addField("**Woodwinds**", temp1 + " Piccolo\n" + flute + " Flutes\n" + oboe + " Oboes\n" + clarinet + " Clarinets\n" + bassoon + " Bassoons\n" + temp2 + " Contrabassoon", false)
-                            .addField("**Brass**", trumpet + " Trumpets\n" + horn + " French Horns\n" + trombone + " Trombones\n" + tuba + " Tubas", false)
-                            .addField("**Strings**", first + " Violin I\n" + second + " Violin II\n" + cello + " Celli\n" + stringBass + " Double Basses\n" + piano + " Pianists", false)
-                            .addField("**Choir**", soprano + " Sopranos\n" + alto + " Altos\n" + tenor + " Tenors\n" + bass + " Basses\n" + soloists + " Vocal Soloists", false)
-                            .addField("**Other**", temp3 + " Harp\n" + percussion + " Percussionists\n" + timpani + " Timpanists",false)
+                            .addField("**Woodwinds**", temp1 + " Piccolo\n" + flute + " Flutes\n" + oboe + " Oboes\n" + clarinet + " Clarinets\n" + bassoon + " Bassoons\n" + temp2 + " Contrabassoon", true)
+                            .addField("**Brass**", trumpet + " Trumpets\n" + horn + " French Horns\n" + trombone + " Trombones\n" + tuba + " Tubas", true)
+                            .addField("**Strings**", first + " Violin I\n" + second + " Violin II\n" + cello + " Celli\n" + stringBass + " Double Basses\n" + piano + " Pianists", true)
+                            .addField("**Choir**", soprano + " Sopranos\n" + alto + " Altos\n" + tenor + " Tenors\n" + bass + " Basses\n" + soloists + " Vocal Soloists", true)
+                            .addField("**Other**", temp3 + " Harp\n" + percussion + " Percussionists\n" + timpani + " Timpanists",true)
                             .setColor(Color.BLUE);
                     e.getChannel().sendMessage(builder.build()).queue();
                 } else {
@@ -1165,7 +1162,7 @@ public class Economy {
                     }
                     case "rice" -> {
                         if(hourlyIncome == 200000) {
-                            e.getChannel().sendMessage("Woah there, take a chill pill!  Your hourly income is already WAY above the hard maximum of 40 000!").queue();
+                            e.getChannel().sendMessage("Woah there, take a chill pill!  Your hourly income is already WAY above the hard maximum of 50000!").queue();
                         } else if(rice == 0) {
                             e.getChannel().sendMessage("You look for that last rice piece you had but can't find it.  Then you remember that you don't have any left.").queue();
                         } else if(hourlyIncome == 0) {
@@ -1173,9 +1170,9 @@ public class Economy {
                         } else {
                             rice --;
                             hourlyIncome *= 2;
-                            if(hourlyIncome > 200000) {
+                            if(hourlyIncome >= 200000) {
                                 hourlyIncome = 200000;
-                                e.getChannel().sendMessage("You consume a piece of rice.  It turns out to be Blessed Rice but the God of Rice has capped your income to 200 000.").queue();
+                                e.getChannel().sendMessage("You consume a piece of rice.  It turns out to be Blessed Rice but the God of Rice has capped your income to 200000.").queue();
                             } else {
                                 e.getChannel().sendMessage("You consume a piece of rice.  It turns out to be Blessed Rice and God of Rice doubles your hourly income for 1 hour.").queue();
                             }
@@ -1186,7 +1183,7 @@ public class Economy {
                             e.getChannel().sendMessage("You don't have any more bubble tea!").queue();
                         } else {
                             tea --;
-                            int base = calculateAmount(e, data, (int) ((random.nextInt(100) + 350) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1))) * 2;
+                            long base = calculateAmount(e, data, (long) ((random.nextInt(100) + 350) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1))) * 2;
                             violins += base;
                             e.getChannel().sendMessage("You drank some Bubble Tea and wound up with an extra " + base + ":violin:").queue();
                         }
@@ -1196,7 +1193,7 @@ public class Economy {
                             e.getChannel().sendMessage("You already used all your blessings, run more commands to get back into Ling Ling's good graces!").queue();
                         } else {
                             blessing --;
-                            int base = calculateAmount(e, data, (int) ((random.nextInt(2000) + 4000) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1)));
+                            long base = calculateAmount(e, data, (long) ((random.nextInt(2000) + 4000) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1)));
                             double num = random.nextDouble();
                             if(num > 0.5) {
                                 violins += base;
@@ -1251,7 +1248,7 @@ public class Economy {
                     milliseconds -= seconds * 1000;
                     e.getChannel().sendMessage("Chill, you already practised this hour!  Wait " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
                 } else {
-                    int base = calculateAmount(e, data, (int) ((random.nextInt(100) + 350) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1)));
+                    long base = calculateAmount(e, data, (long) ((random.nextInt(100) + 350) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1)));
                     double num = random.nextDouble();
                     if(num > 0.75) {
                         violins += base;
@@ -1291,7 +1288,7 @@ public class Economy {
                         num = random.nextDouble();
                         if(num > 0.75) {
                             violins -= hourlyIncome / 100;
-                            e.getChannel().sendMessage("Oh no!  Your E String snapped while you were practising!  You had to go to the store to get it replaced, and were not able to get any practising done.  You earned 0:violin: and had to pay " + (int) (hourlyIncome / 100) + ":violin: for a new E String.").queue();
+                            e.getChannel().sendMessage("Oh no!  Your E String snapped while you were practising!  You had to go to the store to get it replaced, and were not able to get any practising done.  You earned 0:violin: and had to pay " + (hourlyIncome / 100) + ":violin: for a new E String.").queue();
                         } else if(num > 0.55) {
                             base *= 0.9;
                             violins += base;
@@ -1304,11 +1301,11 @@ public class Economy {
                             base *= 0.5;
                             violins += base;
                             violins -= hourlyIncome / 10;
-                            e.getChannel().sendMessage("You hurt your wrist while practising and only got half of the effectiveness.  You earned " + base + ":violin: but ended up paying " + (int) (hourlyIncome / 10) + ":violin: in hospital fees.").queue();
+                            e.getChannel().sendMessage("You hurt your wrist while practising and only got half of the effectiveness.  You earned " + base + ":violin: but ended up paying " + (hourlyIncome / 10) + ":violin: in hospital fees.").queue();
                         } else if(num > 0.15) {
                             base *= 0.2;
                             violins += base;
-                            e.getChannel().sendMessage("Your bridge fell off 10 minutes into your session.  You spend the next half-hour trying to get it back on, and you only earned " + base + ":violin:").queue();
+                            e.getChannel().sendMessage("Your bridge fell off 10 minutes longo your session.  You spend the next half-hour trying to get it back on, and you only earned " + base + ":violin:").queue();
                         } else if(num > 0.05) {
                             violins -= hourlyIncome;
                             e.getChannel().sendMessage("You were caught playing Minecraft while practising.  Your tiger mom took all your earnings, in addition to another " + hourlyIncome + " for being distracted.").queue();
@@ -1350,7 +1347,7 @@ public class Economy {
                         milliseconds -= seconds * 1000;
                         e.getChannel().sendMessage("You don't have the time to go to rehearsal that often, wait " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
                     } else {
-                        int base = calculateAmount(e, data, (int) ((random.nextInt(1000) + 1500) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1)));
+                        long base = calculateAmount(e, data, (long) ((random.nextInt(1000) + 1500) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1)));
                         double num = random.nextDouble();
                         if(num > 0.75) {
                             violins += base;
@@ -1392,7 +1389,7 @@ public class Economy {
                                 violins -= hourlyIncome / 100;
                                 base *= 0.95;
                                 violins += base;
-                                e.getChannel().sendMessage("Oh no!  Your E String snapped during the rehearsal!  You had to borrow the concertmaster's violin, and only earned " + base + ":violin:  You eventually had to pay " + (int) (hourlyIncome / 100) + ":violin: for a new E String.").queue();
+                                e.getChannel().sendMessage("Oh no!  Your E String snapped during the rehearsal!  You had to borrow the concertmaster's violin, and only earned " + base + ":violin:  You eventually had to pay " + (hourlyIncome / 100) + ":violin: for a new E String.").queue();
                             } else if(num > 0.55) {
                                 base *= 0.9;
                                 violins += base;
@@ -1404,7 +1401,7 @@ public class Economy {
                                 base *= 0.5;
                                 violins += base;
                                 violins -= hourlyIncome / 10;
-                                e.getChannel().sendMessage("You hurt your wrist during the rehearsal and only got half of the effectiveness.  You earned " + base + ":violin: but ended up paying " + (int) (hourlyIncome / 10) + ":violin: in hospital fees.").queue();
+                                e.getChannel().sendMessage("You hurt your wrist during the rehearsal and only got half of the effectiveness.  You earned " + base + ":violin: but ended up paying " + (hourlyIncome / 10) + ":violin: in hospital fees.").queue();
                             } else if(num > 0.15) {
                                 base *= 0.2;
                                 violins += base;
@@ -1454,7 +1451,7 @@ public class Economy {
                     milliseconds -= seconds * 1000;
                     e.getChannel().sendMessage("Don't tire yourself with two performances a week!  Wait " + days + " days " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
                 } else {
-                    int base = calculateAmount(e, data, (int) ((random.nextInt(2000) + 4000) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1)));
+                    long base = calculateAmount(e, data, (long) ((random.nextInt(2000) + 4000) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1)));
                     double num = random.nextDouble();
                     if(num > 0.8) {
                         violins += base;
@@ -1500,7 +1497,7 @@ public class Economy {
                             violins -= hourlyIncome / 100;
                             base *= 0.5;
                             violins += base;
-                            e.getChannel().sendMessage("Oh no!  Your E String snapped during the performance!  You couldn't go on, and only earned " + base + ":violin:  You eventually had to pay " + (int) (hourlyIncome / 100) + ":violin: for a new E String.").queue();
+                            e.getChannel().sendMessage("Oh no!  Your E String snapped during the performance!  You couldn't go on, and only earned " + base + ":violin:  You eventually had to pay " + (hourlyIncome / 100) + ":violin: for a new E String.").queue();
                         } else if(num > 0.6) {
                             base *= 0.9;
                             violins += base;
@@ -1512,7 +1509,7 @@ public class Economy {
                             base *= 0.5;
                             violins += base;
                             violins -= hourlyIncome / 10;
-                            e.getChannel().sendMessage("You hurt your wrist during the performance and only got half of the effectiveness.  You earned " + base + ":violin: but ended up paying " + (int) (hourlyIncome / 10) + ":violin: in hospital fees.").queue();
+                            e.getChannel().sendMessage("You hurt your wrist during the performance and only got half of the effectiveness.  You earned " + base + ":violin: but ended up paying " + (hourlyIncome / 10) + ":violin: in hospital fees.").queue();
                         } else if(num > 0.2) {
                             base *= 0.1;
                             violins += base;
@@ -1606,7 +1603,7 @@ public class Economy {
                             e.getChannel().sendMessage("Oh no!  Your streak was reset!").queue();
                             streak = 0;
                         }
-                        int base = 4000 + (streak * 40);
+                        long base = 4000 + (streak * 40);
                         violins += base;
                         dailyC = time + 85500000;
                         dailyExp = time + 172800000;
@@ -1658,7 +1655,7 @@ public class Economy {
                         failChance -= 0.025;
                     }
                     double num = random.nextDouble();
-                    int insurance = Integer.parseInt(targetdata[11]);
+                    long insurance = Long.parseLong(targetdata[11]);
                     boolean opponentShield = Boolean.parseBoolean(targetdata[60]);
                     long baseRob = (long) (targetViolins * 0.2);
                     if(baseRob > 2000000) {
@@ -1685,7 +1682,7 @@ public class Economy {
                         } else if (insurance == 2) {
                             User send = e.getJDA().getUserById(target);
                             if(opponentShield) {
-                                e.getChannel().sendMessage("You successfully robbed " + name + " but ran into a Steal Shield.  You only managed to get away with " + (long) (baseRob * 0.025) + ":violin: before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
+                                e.getChannel().sendMessage("You successfully robbed " + name + " but ran longo a Steal Shield.  You only managed to get away with " + (long) (baseRob * 0.025) + ":violin: before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
                                 send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") just robbed " + (long) (baseRob * 0.025) + ":violin: from you!  Your Ling Ling insurance protected " + (long) (baseRob * 0.95) + ":violin: and your Steal Shield protected " + (long) (baseRob * 0.025) + ":violin:").queue();
                                 targetViolins -= baseRob * 0.025;
                                 if(violinDuplicator) {
@@ -1750,7 +1747,7 @@ public class Economy {
                 }
                 long bet;
                 try {
-                    bet = Integer.parseInt(message[2]);
+                    bet = Long.parseLong(message[2]);
                 } catch (Exception exception) {
                     e.getChannel().sendMessage("You must bet something, how smol brane are you???").queue();
                     throw new IllegalArgumentException();
@@ -1783,12 +1780,12 @@ public class Economy {
                                     e.getChannel().sendMessage("You lost " + bet + ":violin:\n*The generator rolled " + chance + ", you need less than 0.5 to win.*\nYou now have " + violins + ":violin:").queue();
                                 } else if (chance <= 0.5) {
                                     violins += bet * (1 + multi);
-                                    e.getChannel().sendMessage("You won " + bet + ":violin:\nYour " + multi + "% multiplier earned you an extra " + (int) (bet * multi) + ":violin:\n*The generator rolled " + chance + ".*\nYou now have " + violins + ":violin:").queue();
+                                    e.getChannel().sendMessage("You won " + bet + ":violin:\nYour " + multi + "% multiplier earned you an extra " + (long) (bet * multi) + ":violin:\n*The generator rolled " + chance + ".*\nYou now have " + violins + ":violin:").queue();
                                 }
                             }
                             case "slots" -> {
-                                gambleC = time + 39000;
-                                int[] slots = {random.nextInt(6), random.nextInt(6), random.nextInt(6)};
+                                gambleC = time + 29000;
+                                long[] slots = {random.nextInt(6), random.nextInt(6), random.nextInt(6)};
                                 String[] emojis = new String[3];
                                 for(int i = 0; i < slots.length; i ++) {
                                     if(slots[i] == 0) {
@@ -1821,7 +1818,7 @@ public class Economy {
                                         payout *= 40;
                                     }
                                 } else if(slots[0] == slots[1] || slots[1] == slots[2] || slots[2] == slots[0]) {
-                                    payout *= 2;
+                                    payout *= 1;
                                 } else {
                                     payout = -1;
                                 }
@@ -1830,7 +1827,7 @@ public class Economy {
                                         .setFooter("Ling Ling Bot", e.getJDA().getSelfUser().getAvatarUrl())
                                         .setTitle("__**Slots for " + e.getAuthor().getName() + "**__");
                                 if(payout != -1) {
-                                    builder.addField(":arrow_right: " + emojis[0] + " " + emojis[1] + " " + emojis[2] + " :arrow_left:\n_ _", ":white_check_mark: You **win**!  Payout: " + payout + ":violin:\nYour " + multi * 100 + "% multiplier earned you an extra " + (int) (payout * multi) + ":violin:", false);
+                                    builder.addField(":arrow_right: " + emojis[0] + " " + emojis[1] + " " + emojis[2] + " :arrow_left:\n_ _", ":white_check_mark: You **win**!  Payout: " + payout + ":violin:\nYour " + multi * 100 + "% multiplier earned you an extra " + (long) (payout * multi) + ":violin:", false);
                                     violins += payout * (1 + multi);
                                 } else {
                                     builder.addField(":arrow_right: " + emojis[0] + " " + emojis[1] + " " + emojis[2] + " :arrow_left:\n_ _", ":x: You **lose**!  You lost " + bet + ":violin:", false);
@@ -1839,14 +1836,14 @@ public class Economy {
                                 e.getChannel().sendMessage(builder.build()).queue();
                             }
                             case "scratch" -> {
-                                gambleC = time + 39000;
-                                int[] payouts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+                                gambleC = time + 29000;
+                                long[] payouts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
                                 if (bet % 100 != 0) {
                                     e.getChannel().sendMessage("You must bet a multiple of 100 because scratch tickets cost 100:violin: each.").queue();
                                 } else {
-                                    int numTickets = (int) bet / 100;
-                                    int payout = 0;
-                                    for (int i = 0; i < numTickets; i++) {
+                                    long numTickets = bet / 100;
+                                    long payout = 0;
+                                    for (long i = 0; i < numTickets; i++) {
                                         double chance = random.nextDouble();
                                         if (chance > 0.4) {
                                             payout -= 4;
@@ -1885,7 +1882,7 @@ public class Economy {
                                     StringBuilder breakdown = new StringBuilder().append("Lose 4:violin:: ").append(payouts[0]).append("\nNo Prize: ").append(payouts[1]).append("\nGain 2:violin:: ").append(payouts[2]).append("\nGain 5:violin:: ").append(payouts[3]).append("\nGain 10:violin:: ").append(payouts[4]).append("\nGain 25:violin:: ").append(payouts[5]).append("\nGain 50:violin:: ").append(payouts[6]).append("\nGain 100:violin:: ").append(payouts[7]).append("\nGain 200:violin:: ").append(payouts[8]).append("\nGain 500:violin:: ").append(payouts[9]);
                                     if(payout > 0) {
                                         violins += payout * (1 + multi);
-                                        e.getChannel().sendMessage("You scratched " + numTickets + " tickets and gained " + payout + ":violin:\nYour " + multi * 100 + "% multiplier earned you an extra " + (int) (payout * multi) + ":violin:\n\n**__Ticket Breakdown__**\n" + breakdown.toString()).queue();
+                                        e.getChannel().sendMessage("You scratched " + numTickets + " tickets and gained " + payout + ":violin:\nYour " + multi * 100 + "% multiplier earned you an extra " + (long) (payout * multi) + ":violin:\n\n**__Ticket Breakdown__**\n" + breakdown.toString()).queue();
                                     } else {
                                         violins += payout;
                                         e.getChannel().sendMessage("You scratched " + numTickets + " tickets and lost " + payout * -1 + ":violin:\n\n**__Ticket Breakdown__**\n" + breakdown.toString()).queue();
