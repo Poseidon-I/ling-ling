@@ -45,13 +45,25 @@ public class Receiver extends ListenerAdapter {
         }
 
         //LUTHIER
-        try {
-            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt"));
-            data = reader.readLine().split(" ");
-            reader.close();
-            new Luthier(e, data);
-        } catch (Exception exception) {
-            //nothing here lol
+        if(!e.getAuthor().isBot()) {
+            try {
+                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt"));
+                data = reader.readLine().split(" ");
+                reader.close();
+                new Luthier(e, data);
+            } catch (Exception exception) {
+                //nothing here lol
+            }
+            if (e.getChannel().getId().equals("814021138380095559")) {
+                try {
+                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\SpeedJar.txt"));
+                    String line = reader.readLine();
+                    reader.close();
+                    new SpeedJar(e, line);
+                } catch (Exception exception) {
+                    //nothing here lol
+                }
+            }
         }
 
         //ALL COMMANDS
