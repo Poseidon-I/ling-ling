@@ -285,7 +285,8 @@ public class DevCommands {
                         if (moreIncome) {
                             income += 8000;
                         }
-                        data[12] = income + "";
+                        data[65] = income + "";
+                        data[12] = data[65];
                         StringBuilder write = new StringBuilder(data[0]);
                         for (int i = 1; i < data.length; i++) {
                             write.append(" ").append(data[i]);

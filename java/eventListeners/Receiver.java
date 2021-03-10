@@ -5,20 +5,42 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import processes.*;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("ConstantConditions")
 public class Receiver extends ListenerAdapter {
     public void onGuildMessageReceived(GuildMessageReceivedEvent e) {
-        e.getGuild().loadMembers();
         Random random = new Random();
         BufferedReader reader;
         PrintWriter writer;
-        String[] message = e.getMessage().getContentRaw().split(" ");
+        String[] message = e.getMessage().getContentRaw().toLowerCase().split(" ");
         String[] data = new String[0];
         boolean isDev = false;
         if (e.getAuthor().getId().equals("619989388109152256") || e.getAuthor().getId().equals("488487157372157962") || e.getAuthor().getId().equals("706933826193981612") || e.getAuthor().getId().equals("733409243222507670")) {
             isDev = true;
+        }
+
+        //LOAD SERVER MEMBERS ONLY ONCE
+        try {
+            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\loadedservers.txt"));
+            String line = reader.readLine();
+            reader.close();
+            try {
+                List<String> loaded = Arrays.asList(line.split(" "));
+                if(!loaded.contains(e.getGuild().getId())) {
+                    e.getGuild().loadMembers();
+                    line += " " + e.getGuild().getId();
+                }
+            } catch(Exception exception) {
+                line = e.getGuild().getId();
+            }
+            writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\loadedservers.txt")));
+            writer.print(line);
+            writer.close();
+        } catch (Exception exception1) {
+            //nothing here lol
         }
 
         //HOURLY
@@ -53,16 +75,6 @@ public class Receiver extends ListenerAdapter {
                 new Luthier(e, data);
             } catch (Exception exception) {
                 //nothing here lol
-            }
-            if (e.getChannel().getId().equals("814021138380095559")) {
-                try {
-                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\SpeedJar.txt"));
-                    String line = reader.readLine();
-                    reader.close();
-                    new SpeedJar(e, line);
-                } catch (Exception exception) {
-                    //nothing here lol
-                }
             }
         }
 

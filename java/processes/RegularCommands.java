@@ -26,9 +26,9 @@ public class RegularCommands {
                         case "1" -> builder.addField("Help List Page 1 - Fun\nRun `" + prefix + "help <commandName>` to view a command in depth", "`joke`\n`insult`\n`kill`\n`emojify`", false);
                         case "2" -> builder.addField("Help List Page 2 - Utility\nRun `" + prefix + "help <commandName>` to view a command in depth",
                                 "`suggest`\n`poll`\n`checkdm`\n`invite`\n`faq`\n`serversettings`\n`support`\n`prefix`", false);
-                        case "3" -> builder.addField("Help List Page 3 - Economy eventListeners.Commands\nRun `" + prefix + "help <commandName>` to view a command in depth.",
+                        case "3" -> builder.addField("Help List Page 3 - Economy Commands\nRun `" + prefix + "help <commandName>` to view a command in depth.",
                                 "`start`\n`practice`\n`rehearse`\n`perform`\n`daily`\n`gamble`\n`balance`\n`profile`\n`inventory`\n`cooldowns`\n`rob`\n`upgrades`\n`buy`\n`use`", false);
-                        case "4" -> builder.addField("Help List Page 4 - Leaderboards\nRun `" + prefix + "help <commandName>` to view a command in depth", "`leaderboard`\n`streakleaderboard`\n`medalleaderboard`\n`incomeleaderboard`", false);
+                        case "4" -> builder.addField("Help List Page 4 - Leaderboards\nRun `" + prefix + "help <commandName>` to view a command in depth\n**NOTICE** - Local leaderboards temporarily disabled to combat crashing.", "`leaderboard`\n`streakleaderboard`\n`medalleaderboard`\n`incomeleaderboard`", false);
                         case "5" -> builder.addField("Help List Page 5 - Leveling Commands\nRun `" + prefix + "help <commandName>` to view a command in depth\nThis module requres the server setting `leveling` to be set to `true`.", "`rank`\n`levelsettings`\n`levels`\n`setlevel`", false);
                         case "6" -> builder.addField("Help List Page 6 - Dev Only Commands\nOnly Developers have access to these commands.\nThis page exists for people who are curious.",
                                 "`status`\n`activity`\n`lookdata`\n`editdata`\n`luthier`\n`updateservers`\n`updateusers`\n`give`\n`purgeusers`\n`resetincomes`\n`warn`", false);
@@ -50,6 +50,7 @@ public class RegularCommands {
                         case "give" -> builder.addField("Give Command", "Syntax: `!give <id> <amount>`\nUsage: Gives the user an amount of violins.\nRestrictions: Usable only by Developers.", false);
                         case "lookdata" -> builder.addField("LookData Command", "Syntax: `!lookdata <userID>`\nUsage: Shows the profile of a user.\nRestrictions: Usable only by Developers.", false);
                         case "luthier" -> builder.addField("Luthier Command", "Syntax: `!luthier <setup | edit> [New Data]`\nUsage: Sets up, or edits the settings of a server's Luthier.\nRestrictions: Usable only by Developers.", false);
+                        case "scales" -> builder.addField("Scales Command", "Syntax: `" + prefix + "scales`\nUsage: Practise scales earn some violins!\nCooldown: 90S/65S\nAliases: `" + prefix + "s`", false);
                         case "practice" -> builder.addField("Practice Command", "Syntax: `" + prefix + "practice`\nUsage: Practise to earn some violins!\nCooldown: 40M/30M\nAliases: `" + prefix + "p`", false);
                         case "rehearse" -> builder.addField("Rehearse Command", "Syntax: `" + prefix + "rehearse`\nUsage: Rehearse with an orchestra to earn loads of violins!\nRestrictions: Usable only by people with an Orchestra.\nCooldown: 1D/18H\nAliases: `" + prefix + "r`", false);
                         case "perform" -> builder.addField("Perform Command", "Syntax: `" + prefix + "perform`\nUsage: Perform your solo to earn an INSANE amount of violins!  Gain even more by hiring an orchestra and upgrading your Concert Hall!\nCooldown: 3D 12H/2D 12H", false);
@@ -296,7 +297,7 @@ public class RegularCommands {
                 try {
                     while (fullMessage.charAt(i) != '"' && fullMessage.charAt(i) != '“' && fullMessage.charAt(i) != '”') {
                         if (fullMessage.charAt(i) == ';') {
-                            i += 2;
+                            i ++;
                             options++;
                             character++;
                             send.append("\n`").append(character).append(":` ");
