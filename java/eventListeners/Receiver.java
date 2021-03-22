@@ -29,7 +29,7 @@ public class Receiver extends ListenerAdapter {
             reader.close();
             try {
                 List<String> loaded = Arrays.asList(line.split(" "));
-                if(!loaded.contains(e.getGuild().getId())) {
+                if(!loaded.contains(e.getGuild().getId()) || e.getJDA().getSelfUser().getId().equals("772582345944334356")) {
                     e.getGuild().loadMembers();
                     line += " " + e.getGuild().getId();
                 }

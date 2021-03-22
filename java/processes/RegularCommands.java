@@ -27,13 +27,14 @@ public class RegularCommands {
                         case "2" -> builder.addField("Help List Page 2 - Utility\nRun `" + prefix + "help <commandName>` to view a command in depth",
                                 "`suggest`\n`poll`\n`checkdm`\n`invite`\n`faq`\n`serversettings`\n`support`\n`prefix`", false);
                         case "3" -> builder.addField("Help List Page 3 - Economy Commands\nRun `" + prefix + "help <commandName>` to view a command in depth.",
-                                "`start`\n`practice`\n`rehearse`\n`perform`\n`daily`\n`gamble`\n`balance`\n`profile`\n`inventory`\n`cooldowns`\n`rob`\n`upgrades`\n`buy`\n`use`", false);
+                                "`start`\n`scales`\n``practice`\n`rehearse`\n`perform`\n`daily`\n`gamble`\n`balance`\n`profile`\n`inventory`\n`cooldowns`\n`rob`\n`upgrades`\n`buy`\n`use`", false);
                         case "4" -> builder.addField("Help List Page 4 - Leaderboards\nRun `" + prefix + "help <commandName>` to view a command in depth\n**NOTICE** - Local leaderboards temporarily disabled to combat crashing.", "`leaderboard`\n`streakleaderboard`\n`medalleaderboard`\n`incomeleaderboard`", false);
-                        case "5" -> builder.addField("Help List Page 5 - Leveling Commands\nRun `" + prefix + "help <commandName>` to view a command in depth\nThis module requres the server setting `leveling` to be set to `true`.", "`rank`\n`levelsettings`\n`levels`\n`setlevel`", false);
+                        case "5" -> builder.addField("Help List Page 5 - Leveling Commands\nRun `" + prefix + "help <commandName>` to view a command in depth\nThis module requres the server setting `leveling` to be set to `true`.", "`rank`\n`levelsettings`\n`levels`\n`setlevel`\n`rolerewards`", false);
                         case "6" -> builder.addField("Help List Page 6 - Dev Only Commands\nOnly Developers have access to these commands.\nThis page exists for people who are curious.",
                                 "`status`\n`activity`\n`lookdata`\n`editdata`\n`luthier`\n`updateservers`\n`updateusers`\n`give`\n`purgeusers`\n`resetincomes`\n`warn`", false);
                         case "rank" -> builder.addField("Rank Command", "Syntax: `" + prefix + "rank`\nUsage: Shows you your level and XP amount in the server.", false);
                         case "levelsettings" -> builder.addField("LevelSettings Command", "Syntax: `" + prefix + "levelsettings [min | max | cooldown | blacklist] [amount | add | remove] <channel>`\nUsage: A variety of commands to configure the leveling experience in a server.\nDefault values are Minimum 15, Maximum 25, Cooldown 60.\nRestrictions: Usable only by members with the `ADMINISTRATOR` permission.\nExample: `" + prefix + "levelsettings min 10`\nExample: `" + prefix + "levelsettings blacklist add #spam", false);
+                        case "rolerewards" -> builder.addField("RoleRewards Command", "Syntax: `" + prefix + "rolerewards [add | remove] <level> <role>`\nUsage: View and/or edit role rewards.\nRestrictions: Editing role rewards can only be done by members with the `ADMINISTRATOR` permission.\nExample: `" + prefix + "rolerewards add 5 734697413901680691`\nExample: `" + prefix + "rolerewards remove 12", false);
                         case "setlevel" -> builder.addField("SetLevel Command", "Syntax: `" + prefix + "setlevel <user> <level>`\nUsage: Sets the level of a user.\nRestrictions: Usable only by members with the `ADMINISTRATOR` permission.\nExample: `" + prefix + "setlevel 488487157372157962 10`", false);
                         case "levels" -> builder.addField("Levels Command", "Syntax: `" + prefix + "levels`\nUsage: Shows the 10 people with the most XP in a server.\nAliases: `" + prefix + "levellb`", false);
                         case "cooldowns" -> builder.addField("Cooldowns Command", "Syntax: `" + prefix + "cooldowns`\nUsage: Shows you the cooldowns of most commands.\nAliases: `" + prefix + "c`", false);
@@ -50,14 +51,14 @@ public class RegularCommands {
                         case "give" -> builder.addField("Give Command", "Syntax: `!give <id> <amount>`\nUsage: Gives the user an amount of violins.\nRestrictions: Usable only by Developers.", false);
                         case "lookdata" -> builder.addField("LookData Command", "Syntax: `!lookdata <userID>`\nUsage: Shows the profile of a user.\nRestrictions: Usable only by Developers.", false);
                         case "luthier" -> builder.addField("Luthier Command", "Syntax: `!luthier <setup | edit> [New Data]`\nUsage: Sets up, or edits the settings of a server's Luthier.\nRestrictions: Usable only by Developers.", false);
-                        case "scales" -> builder.addField("Scales Command", "Syntax: `" + prefix + "scales`\nUsage: Practise scales earn some violins!\nCooldown: 90S/65S\nAliases: `" + prefix + "s`", false);
-                        case "practice" -> builder.addField("Practice Command", "Syntax: `" + prefix + "practice`\nUsage: Practise to earn some violins!\nCooldown: 40M/30M\nAliases: `" + prefix + "p`", false);
-                        case "rehearse" -> builder.addField("Rehearse Command", "Syntax: `" + prefix + "rehearse`\nUsage: Rehearse with an orchestra to earn loads of violins!\nRestrictions: Usable only by people with an Orchestra.\nCooldown: 1D/18H\nAliases: `" + prefix + "r`", false);
-                        case "perform" -> builder.addField("Perform Command", "Syntax: `" + prefix + "perform`\nUsage: Perform your solo to earn an INSANE amount of violins!  Gain even more by hiring an orchestra and upgrading your Concert Hall!\nCooldown: 3D 12H/2D 12H", false);
-                        case "daily" -> builder.addField("Daily Command", "Syntax: `" + prefix + "daily`\nUsage: Get a daily dose of violins!  Run the command many days in a row to start gaining a streak and get even more violins!\nCooldown: 1D\nAliases: `" + prefix + "d`", false);
-                        case "rob" -> builder.addField("Rob Command", "Syntax: `" + prefix + "rob <user>`\nUsage: Robs the user.  Beware that the more violins you have than the target, the harder it is to succeed!\nCooldown: 16H\nExample: `" + prefix + "rob 488487157372157962`", false);
+                        case "scales" -> builder.addField("Scales Command", "Syntax: `" + prefix + "scales`\nUsage: Practise scales earn some violins!\nCooldown: 90s/65s\nAliases: `" + prefix + "s`", false);
+                        case "practice" -> builder.addField("Practice Command", "Syntax: `" + prefix + "practice`\nUsage: Practise to earn some violins!\nCooldown: 40m/30m\nAliases: `" + prefix + "p`", false);
+                        case "rehearse" -> builder.addField("Rehearse Command", "Syntax: `" + prefix + "rehearse`\nUsage: Rehearse with an orchestra to earn loads of violins!\nRestrictions: Usable only by people with an Orchestra.\nCooldown: 1d/18h\nAliases: `" + prefix + "r`", false);
+                        case "perform" -> builder.addField("Perform Command", "Syntax: `" + prefix + "perform`\nUsage: Perform your solo to earn an INSANE amount of violins!  Gain even more by hiring an orchestra and upgrading your Concert Hall!\nCooldown: 84h/60h", false);
+                        case "daily" -> builder.addField("Daily Command", "Syntax: `" + prefix + "daily`\nUsage: Get a daily dose of violins!  Run the command many days in a row to start gaining a streak and get even more violins!\nCooldown: 24h\nAliases: `" + prefix + "d`", false);
+                        case "rob" -> builder.addField("Rob Command", "Syntax: `" + prefix + "rob <user>`\nUsage: Robs the user.  Beware that the more violins you have than the target, the harder it is to succeed!\nCooldown: 16h\nExample: `" + prefix + "rob 488487157372157962`", false);
                         case "start" -> builder.addField("Start Command", "Syntax: `" + prefix + "start`\nUsage: Creates a profile for the user.  This can only be used once.", false);
-                        case "gamble" -> builder.addField("Gamble Command", "Syntax: `" + prefix + "gamble [type] [amount]`\nUsage: Bets the amount using the gamemode specified.  You can only bet up to 8x your hourly income.\nGambling Options: `rng` `slots` `scratch`\nCooldown: 30 seconds\nAliases: `" + prefix + "bet`\nExample: `" + prefix + "gamble slots 4000`", false);
+                        case "gamble" -> builder.addField("Gamble Command", "Syntax: `" + prefix + "gamble [type] [amount]`\nUsage: Bets the amount using the gamemode specified.  You can only bet up to 8x your hourly income.\nGambling Options: `rng` `slots` `scratch`\nCooldown: 30s\nAliases: `" + prefix + "bet`\nExample: `" + prefix + "gamble slots 4000`", false);
                         case "inventory" -> builder.addField("Inventory Command", "Syntax: `" + prefix + "inventory [user]`\nUsage: Shows your inventory or the inventory of another user.\nAliases: `" + prefix + "inv`", false);
                         case "profile" -> builder.addField("Profile Command", "Syntax: `" + prefix + "profile [user]`\nUsage: Shows your profile or the profile of another user.\nAliases: `" + prefix + "b` `" + prefix + "bal` `" + prefix + "balance`", false);
                         case "leaderboard" -> builder.addField("Leaderboard Command", "Syntax: `" + prefix + "leaderboard`\nUsage: Shows the ten richest people in the world.\nAliases: `" + prefix + "lb`", false);
@@ -101,17 +102,18 @@ public class RegularCommands {
                         case "slots" -> builder.addField(":slot_machine: What are the payouts for slots?", "Rolling 2 items that are the same will pay 1x your bet.\nRolling 3 :trumpet: will pay 2.5x of your bet.\nRolling 3 :violin: will pay 5x of your bet.\nRolling 3 <:lingling40hrs:688449820410773532> will pay 10x of your bet.\nRolling 3 <:twoset:688452024009883669> will pay 15x of your bet.\nRolling 3 <:linglingclock:747499551451250730> will pay 25x of your bet.\nRolling 3 <a:StradSpam:772894512154279945> will pay 40x of your bet.", false);
                         case "delete" -> builder.addField(":wastebasket: Why was my save randomly deleted?", "It may have been purged due to having 0 violins and having 0 hourly income.  Purges happen often to help save storage space and processing demands.", false);
                         case "scratch" -> builder.addField(":tickets: What are the payouts for scratch tickets?", "__**Chances to Draw Certain Tickets**__\nLose 4:violin:: 60%\nNo Prize: 20%\nGain 2:violin:: 10%\nGain 5:violin:: 5%\nGain 10:violin:: 3%\nGain 25:violin:: 1%\nGain 50:violin:: 0.5%\nGain 100:violin:: 0.3%\nGain 200:violin:: 0.1%\nGain 500:violin:: 0.099%\n1 000 000:violin: Jackpot: 0.001%", false);
+                        case "robchance" -> builder.addField(":cop: What are the chances to succeed in a rob?", "Your chance is determined by your balance and the target's balance.  The exact chance of **failing** is your balance divided by the sum of your balance and the target's balance.  There is a cap of 5 000 000:violin: during a robbery that can be stolen, and there is no cap on how much you can be fined for failing.\n\ntl;dr - the more you have, the harder it is to succeed in robbing someone", false);
                         default -> builder.addField("You entered an invalid entry!  FAQ Entries", "Use `" + prefix + "faq [item]` to view a page in depth.\n\n`rob` `give` `luthier` `hourly` `orchestra` `rehearse` `delete` `slots` `scratch`", false);
                     }
                 } catch(Exception exception) {
-                    builder.addField("FAQ Entries", "Use `" + prefix + "faq [item]` to view a page in depth.\n\n`rob` `give` `luthier` `hourly` `orchestra` `rehearse` `delete` `slots` `scratch`", false);
+                    builder.addField("FAQ Entries", "Use `" + prefix + "faq [item]` to view a page in depth.\n\n`rob` `give` `luthier` `hourly` `orchestra` `rehearse` `delete` `slots` `scratch` `robchance`", false);
                 }
                 e.getChannel().sendMessage(builder.build()).queue();
                 ranCommand = true;
             }
-            case "suggest" -> {
+            case "code" -> {
                 e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-                e.getChannel().sendMessage("Reporting a bug or requesting a new command?  Go to <https://github.com/Poseidon-I/ling-ling/wiki/This-Repository-is-for-Submitting-Bugs,-Feature-Requests,-or-Command-Requests> \n\nSuggesting a new autoresponse, command response, or word to blacklist?  Go to <https://forms.gle/LTqhVNdu7CgsrQzf7>").queue();
+                e.getChannel().sendMessage("The open source GitHub page is at <https://github.com/Poseidon-I/ling-ling>").queue();
                 ranCommand = true;
             }
             case "support" -> {
@@ -119,7 +121,6 @@ public class RegularCommands {
                 e.getChannel().sendMessage("Join the support server at discord.gg/gNfPwa8").queue();
                 ranCommand = true;
             }
-
             case "checkdm" -> {
                 e.getChannel().sendMessage("**OI <@" + target + ">, " + e.getAuthor().getName() + " WANTS YOU TO CHECK YOUR DMS.  DO IT NOW OR ELSE.**").queue();
                 e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
@@ -135,6 +136,15 @@ public class RegularCommands {
             case "kill" -> {
                 if (e.getAuthor().getName().contains("@everyone") || e.getAuthor().getName().contains("@here") || e.getAuthor().getName().contains("<@&")) {
                     e.getChannel().sendMessage("Nice try but no").queue();
+                    throw new IllegalArgumentException();
+                }
+                StringBuilder targetPingBuilder = new StringBuilder(targetPing);
+                for(int i = 2; i < message.length; i ++) {
+                    targetPingBuilder.append(" ").append(message[i]);
+                }
+                targetPing = targetPingBuilder.toString();
+                if(targetPing.equals("i") || targetPing.equals("ling ling") || targetPing.equals("lingling")) {
+                    e.getChannel().sendMessage("Nice try but you cannot kill me").queue();
                     throw new IllegalArgumentException();
                 }
                 int i = random.nextInt(27);
@@ -196,6 +206,19 @@ public class RegularCommands {
                 ranCommand = true;
             }
             case "insult" -> {
+                if (e.getAuthor().getName().contains("@everyone") || e.getAuthor().getName().contains("@here") || e.getAuthor().getName().contains("<@&")) {
+                    e.getChannel().sendMessage("Nice try but no").queue();
+                    throw new IllegalArgumentException();
+                }
+                StringBuilder targetPingBuilder = new StringBuilder(targetPing);
+                for(int i = 2; i < message.length; i ++) {
+                    targetPingBuilder.append(" ").append(message[i]);
+                }
+                targetPing = targetPingBuilder.toString();
+                if(targetPing.equals("i") || targetPing.equals("ling ling") || targetPing.equals("lingling")) {
+                    e.getChannel().sendMessage("Nice try but you cannot insult me").queue();
+                    throw new IllegalArgumentException();
+                }
                 int i = random.nextInt(13);
                 if (i == 0) {
                     e.getChannel().sendMessage(targetPing + "'s violining skills are so bad even the violists were allowed to laugh at them").queue();
@@ -382,30 +405,14 @@ public class RegularCommands {
             }
             case "invite" -> {
                 e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-                EmbedBuilder builder = new EmbedBuilder()
-                        .setColor(Color.BLUE)
-                        .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
-                        .addField("__How to invite the bot to your server.__", "You can add the bot to your server using the below link:\n<https://discord.com/api/oauth2/authorize?client_id=733409243222507670&permissions=268725312&scope=bot>", false);
-                e.getChannel().sendMessage(builder.build()).queue();
+                e.getChannel().sendMessage("You can add the bot to your server using the below link:\n<https://discord.com/api/oauth2/authorize?client_id=733409243222507670&permissions=268725312&scope=bot>").queue();
                 ranCommand = true;
             }
             case "vote" -> {
                 e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-                e.getChannel().sendMessage("You can vote for the bot here: <https://top.gg/bot/733409243222507670/vote>.\nYou can vote for the support server here: <https://top.gg/servers/670725611207262219/vote>.  Voting gives a 10% boost to `" + prefix + "practice`, `" + prefix + "rehearse`, and `" + prefix + "perform` in the support server!").queue();
+                e.getChannel().sendMessage("You can vote for the bot here: <https://top.gg/bot/733409243222507670/vote>.\nYou can vote for the support server here to get a 10% command boost in the server: <https://top.gg/servers/670725611207262219/vote>").queue();
                 ranCommand = true;
             }
-                    /*case "website" -> {
-                        e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-                        e.getChannel().sendMessage("Visit my webpage!  <https://lingling40hrs.weebly.com/>").queue();
-                    }
-                    case "costs" -> {
-                        e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-                        e.getChannel().sendMessage("Need a table with all upgrade costs?  Here's one!  <https://lingling40hrs-guide.neocities.org/upgrades.html>").queue();
-                    }
-                    case "guide" -> {
-                        e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-                        e.getChannel().sendMessage("The guide is being worked on currently, this command will be updated as soon as it releases!").queue();
-                    }*/
         }
         if(serverSettings[2].equals("true")) {
             new LevelCommands(e, message);

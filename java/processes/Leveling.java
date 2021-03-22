@@ -1,8 +1,10 @@
 package processes;
 
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 
@@ -13,7 +15,6 @@ public class Leveling {
         Random random = new Random();
         String[] userData = new String[3];
         String[] serverXpSettings = new String[3];
-        //String[][] roleRewards;
         String serverBlacklist = "";
         try {
             reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + e.getAuthor().getId() + ".txt"));
@@ -41,9 +42,25 @@ public class Leveling {
             int min = Integer.parseInt(serverXpSettings[0]);
             int max = Integer.parseInt(serverXpSettings[1]);
             int cooldown = Integer.parseInt(serverXpSettings[2]);
+            String[] data;
+            HashMap<Integer, Role> map = new HashMap<>();
+            try {
+                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "rewards.txt"));
+                while (true) {
+                    try {
+                        data = reader.readLine().split(" ");
+                        map.put(Integer.parseInt(data[0]), e.getGuild().getRoleById(data[1]));
+                    } catch (Exception exception) {
+                        break;
+                    }
+                }
+                reader.close();
+            } catch (Exception exception) {
+                e.getChannel().sendMessage("Something went wrong when creating the file, please turn leveling off and back on.  Your data will not be lost.").queue();
+            }
             if (System.currentTimeMillis() > time) {
                 if(max - min + 1 <= 0) {
-                    e.getChannel().sendMessage("You cannot have a minimum that is higher than the maximum.  Please contact an admin immediately to fix this.").queue();
+                    e.getChannel().sendMessage("The minimum XP must be lower than the maximum.  Ping a server admin immediately to have them fix this.  If an admin does not respond, contact a bot admin in the support server.").queue();
                 } else {
                     xp += random.nextInt(max - min + 1) + min;
                     time = System.currentTimeMillis() + cooldown * 1000L;
@@ -51,6 +68,13 @@ public class Leveling {
                         while(xp > (level + 1) * 100) {
                             level++;
                             xp -= level * 100;
+                            if (map.containsKey(level)) {
+                                try {
+                                    e.getGuild().addRoleToMember(Objects.requireNonNull(e.getGuild().getMember(e.getAuthor())), map.get(level)).queue();
+                                } catch(Exception exception) {
+                                    e.getChannel().sendMessage("I could not assign that role!  Make sure that my highest role is above all level reward roles.").queue();
+                                }
+                            }
                         }
                         e.getChannel().sendMessage("Congratulations <@" + e.getAuthor().getId() + ">!  You advanced to Level " + level + "!").queue();
                     }
@@ -61,19 +85,6 @@ public class Leveling {
                         writer.close();
                     } catch (Exception exception) {
                         //nothing here lol
-                    }
-                }
-                if(e.getGuild().getId().equals("670725611207262219")) {
-                    if(level >= 40) {
-                        e.getGuild().addRoleToMember(e.getAuthor().getId(), Objects.requireNonNull(e.getGuild().getRoleById("734697410273607751"))).queue();
-                    } else if(level >= 30) {
-                        e.getGuild().addRoleToMember(e.getAuthor().getId(), Objects.requireNonNull(e.getGuild().getRoleById("734697411074719765"))).queue();
-                    } else if(level >= 20) {
-                        e.getGuild().addRoleToMember(e.getAuthor().getId(), Objects.requireNonNull(e.getGuild().getRoleById("734697411783688245"))).queue();
-                    } else if(level >= 10) {
-                        e.getGuild().addRoleToMember(e.getAuthor().getId(), Objects.requireNonNull(e.getGuild().getRoleById("734697412865818645"))).queue();
-                    } else if(level >= 5) {
-                        e.getGuild().addRoleToMember(e.getAuthor().getId(), Objects.requireNonNull(e.getGuild().getRoleById("734697413901680691"))).queue();
                     }
                 }
             }

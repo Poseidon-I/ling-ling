@@ -226,6 +226,7 @@ public class DevCommands {
                         try {
                             reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
                             data = reader.readLine().split(" ");
+                            reader.close();
                         } catch (Exception exception) {
                             continue;
                         }
@@ -285,7 +286,12 @@ public class DevCommands {
                         if (moreIncome) {
                             income += 8000;
                         }
-                        data[65] = income + "";
+                        try {
+                            data[65] = income + "";
+                        } catch (Exception exception) {
+                            e.getJDA().getUserById("619989388109152256").openPrivateChannel().complete().sendMessage(file.getAbsolutePath()).queue();
+                            continue;
+                        }
                         data[12] = data[65];
                         StringBuilder write = new StringBuilder(data[0]);
                         for (int i = 1; i < data.length; i++) {
@@ -305,7 +311,27 @@ public class DevCommands {
             /*case "!custom" -> {
                 File directory = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data");
                 File[] files = directory.listFiles();
-                for(File file : files) {
+                for (File file : files) {
+                    String[] data;
+                    try {
+                        reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
+                        data = reader.readLine().split(" ");
+                    } catch (Exception exception) {
+                        continue;
+                    }
+                    if(Integer.parseInt(data[29]) > 2) {
+                        data[29] = "2";
+                    }
+                    try {
+                        writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
+                        writer.print(data[0]);
+                        for(int i = 1; i < data.length; i ++) {
+                            writer.print(" " + data[i]);
+                        }
+                        writer.close();
+                    } catch (Exception exception) {
+                        //nothing here lol
+                    }
                 }
             }*/
             case "!warn" -> {

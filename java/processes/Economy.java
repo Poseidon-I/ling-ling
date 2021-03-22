@@ -83,7 +83,7 @@ public class Economy {
                         }
                     }
                 }*/
-                e.getChannel().sendMessage("Local leaderboards have been temporarily disabled as a fix for crashes is being reviewed.").queue();
+                e.getChannel().sendMessage("Local leaderboards have been temporarily disabled as a fix for crashes is being reviewed.  Please use the global version in the meantime.").queue();
                 throw new IllegalArgumentException();
             }
         }
@@ -130,20 +130,22 @@ public class Economy {
     }
 
     public static long calculateAmount(GuildMessageReceivedEvent e, String[] data, long base) {
+        base *= Math.pow(1.05, Integer.parseInt(data[2]));
+        base *= Math.pow(1.1, Integer.parseInt(data[43]));
         if (e.getGuild().getId().equals("670725611207262219")) {
             if (Objects.requireNonNull(e.getMember()).getRoles().contains(e.getGuild().getRoleById("755910677075460206"))) {
                 base *= 1.1;
             }
             if (Objects.requireNonNull(e.getMember()).getRoles().contains(e.getGuild().getRoleById("734697410273607751"))) {
-                base *= 1.1;
+                base *= 1.15;
             } else if (Objects.requireNonNull(e.getMember()).getRoles().contains(e.getGuild().getRoleById("734697411074719765"))) {
-                base *= 1.065;
+                base *= 1.11;
             } else if (Objects.requireNonNull(e.getMember()).getRoles().contains(e.getGuild().getRoleById("734697411783688245"))) {
-                base *= 1.04;
+                base *= 1.075;
             } else if (Objects.requireNonNull(e.getMember()).getRoles().contains(e.getGuild().getRoleById("734697412865818645"))) {
-                base *= 1.02;
+                base *= 1.045;
             } else if (Objects.requireNonNull(e.getMember()).getRoles().contains(e.getGuild().getRoleById("734697413901680691"))) {
-                base *= 1.01;
+                base *= 1.02;
             }
         }
         if(data[57].equals("true")) {
@@ -244,11 +246,11 @@ public class Economy {
             PrintWriter newData;
             try {
                 newData = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
-                newData.print("0 " + time + " 0 " + time + " 0 " + time + " 0 " + time + " " + time + " false false 0 0 0 0 0 0 0 false false false 0 0 0 0 false 0 0 0 0 0 0 1 1 0 0 0 false 0 0 0 0 0 0 0 0 0 0 " + time + " " + (time + 86400000) + " false 0 0 0 0 0 false false false false false false 0 0");
+                newData.print("0 " + time + " 0 " + time + " 0 " + time + " 0 " + time + " " + time + " false false 0 0 0 0 0 0 0 false false false 0 0 0 0 false 0 0 0 0 0 0 1 1 0 0 0 false 0 0 0 0 0 0 0 0 0 0 " + time + " " + (time + 86400000) + " false 0 0 0 0 0 false false false false false false 0 0 0 0");
                 newData.close();
                 e.getChannel().sendMessage("Your profile has been created!  Run `" + prefix + "help 3` for a list of economy commands!").queue();
             } catch (Exception exception) {
-                e.getChannel().sendMessage("Something went wrong creating the file.").queue();
+                e.getChannel().sendMessage("Something went wrong creating the file.  Run `" + prefix + "`support for a link to the support server to get in contact with the developer.").queue();
             }
         } else if (message[0].equals("start") && hasData) {
             e.getChannel().sendMessage("You already have a save, don't try to outsmart me").queue();
@@ -315,7 +317,7 @@ public class Economy {
                                 EmbedBuilder builder = new EmbedBuilder()
                                         .setColor(Color.BLUE)
                                         .setFooter("User balance: " + violins + "\nUser `" + prefix + "buy [ID]` to buy an upgrade!", e.getJDA().getSelfUser().getAvatarUrl())
-                                        .addField("Concert Hall Quality (" + hallLevel + "/2)", "Price: " + hallCost + "\nEffect: +300:violin:/hour, +20% violins from `" + prefix + "practice` `" + prefix + "rehearse` and `" + prefix + "perform`\nID: `concert`, `hall`", false)
+                                        .addField("Concert Hall Quality (" + hallLevel + "/2)", "Price: " + hallCost + "\nEffect: +300:violin:/hour, +10% violins from `" + prefix + "scales`, `" + prefix + "practice` `" + prefix + "rehearse` and `" + prefix + "perform`\nID: `concert`, `hall`", false)
                                         .addField("Orchestra", "Price: 40 000 000\nIncome Requirement: 7 500\nEffect: +3 100:violin:/hour, access to `" + prefix + "rehearse` command\nID:`orchestra`, `o`", false)
                                         .setTitle("__**Miscellaneous Orchestra Items**__");
                                 e.getChannel().sendMessage(builder.build()).queue();
@@ -324,14 +326,14 @@ public class Economy {
                                 EmbedBuilder builder = new EmbedBuilder()
                                         .setColor(Color.BLUE)
                                         .setFooter("User balance: " + violins + "\nUse `" + prefix + "buy [ID]` to buy an upgrade!", e.getJDA().getSelfUser().getAvatarUrl())
-                                        .addField("Efficient Practising (" + workL + "/100)", "Price: " + workCost + "\nEffect: Increases your income from `" + prefix + "practice`, `" + prefix + "rehearse`, and `" + prefix + "perform` by 5%.\nID: `efficient`, `practising`, `ep`", false)
+                                        .addField("Efficient Practising (" + workL + "/100)", "Price: " + workCost + "\nEffect: Increases your income from `" + prefix + "scales`, `" + prefix + "practice`, `" + prefix + "rehearse`, and `" + prefix + "perform` by 5%.\nID: `efficient`, `practising`, `ep`", false)
                                         .addField("Lucky Musician (" + gambleL + "/50)", "Price: " + gambleCost + "\nEffect: Increases your gambling multiplier by 0.5%.\nID: `lucky`, `lm`", false)
                                         .addField("Sophisticated Robbing (" + robL + "/30)", "Price: " + robCost + "\nEffect: Increases your chance of a successful `" + prefix + "rob` by 0.5%.\nID: `sophisticated`, `robbing`, `sr`", false)
                                         .setTitle("__**Other Miscellaneous Upgrades**__");
                                 if (ownInsurance1) {
-                                    builder.addField("Ling Ling Insurance - Plan 1 - Full Security (1/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect all your violins from being stolen.  You pay a 12% insurance cost and the robber is fined 3% of their balance.\nID: `1`", false);
+                                    builder.addField("Ling Ling Insurance - Plan 1 - Full Security (1/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect all your violins from being stolen.  You pay a 15% insurance cost and the robber is fined 5% of their balance.\nID: `1`", false);
                                 } else {
-                                    builder.addField("Ling Ling Insurance - Plan 1 - Full Security (0/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect all your violins from being stolen.  You pay a 12% insurance cost and the robber is fined 3% of their balance.\nID: `1`", false);
+                                    builder.addField("Ling Ling Insurance - Plan 1 - Full Security (0/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect all your violins from being stolen.  You pay a 15% insurance cost and the robber is fined 5% of their balance.\nID: `1`", false);
                                 }
                                 if (ownInsurance2) {
                                     builder.addField("Ling Ling Insurance - Plan 2 - Half Security (1/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect only 95% of your violins from being stolen but you don't pay any insurance costs.\nID: `2`", false);
@@ -469,7 +471,7 @@ public class Economy {
                                 EmbedBuilder builder = new EmbedBuilder()
                                         .setColor(Color.BLUE)
                                         .setFooter("User balance: " + violins + "\nUse `" + prefix + "buy [ID]` to buy an upgrade!", e.getJDA().getSelfUser().getAvatarUrl())
-                                        .addField("Concert Hall Quality (" + hallLevel + "/5)", "Price: " + hallCost + "\nEffect: +300:violin:/hour, +20% violins from `" + prefix + "practice` `" + prefix + "rehearse` and `" + prefix + "perform`\nID: `concert`, `hall`", false)
+                                        .addField("Concert Hall Quality (" + hallLevel + "/5)", "Price: " + hallCost + "\nEffect: +300:violin:/hour, +10% violins from `" + prefix + "scales`, `" + prefix + "practice` `" + prefix + "rehearse` and `" + prefix + "perform`\nID: `concert`, `hall`", false)
                                         .addField("Conductor Musicality (" + conductor + "/5)", "Price: " + conductorCost + "\nEffect: +200:violin:/hour\nID: `conductor`, `musicality`", false)
                                         .addField("Advertisement (" + advertising + "/20)", "Price: " + advertisingCost + "\nEffect: +100:violin:/hour\nID: `advertisement`, `ad`", false)
                                         .addField("Ticket Price (" + tickets + "/5)", "Price: " + ticketCost + "\nEffect: +1000:violin:/hour\nID: `tickets`", false)
@@ -480,14 +482,14 @@ public class Economy {
                                 EmbedBuilder builder = new EmbedBuilder()
                                         .setColor(Color.BLUE)
                                         .setFooter("User balance: " + violins + "\nUse `" + prefix + "buy [ID]` to buy an upgrade!", e.getJDA().getSelfUser().getAvatarUrl())
-                                        .addField("Efficient Practising (" + workL + "/100)", "Price: " + workCost + "\nEffect: Increases your income from `" + prefix + "practice`, `" + prefix + "rehearse`, and `" + prefix + "perform` by 5%.\nID: `efficient`, `practising`, `ep`", false)
+                                        .addField("Efficient Practising (" + workL + "/100)", "Price: " + workCost + "\nEffect: Increases your income from `" + prefix + "scales`, `" + prefix + "practice`, `" + prefix + "rehearse`, and `" + prefix + "perform` by 5%.\nID: `efficient`, `practising`, `ep`", false)
                                         .addField("Lucky Musician (" + gambleL + "/50)", "Price: " + gambleCost + "\nEffect: Increases your gambling multiplier by 0.5%.\nID: `lucky`, `lm`", false)
                                         .addField("Sophisticated Robbing (" + robL + "/30)", "Price: " + robCost + "\nEffect: Increases your chance of a successful `" + prefix + "rob` by 0.5%.\nID: `sophisticated`, `robbing`, `sr`", false)
                                         .setTitle("__**Other Miscellaneous Upgrades**__");
                                 if (ownInsurance1) {
-                                    builder.addField("Ling Ling Insurance - Plan 1 - Full Security (1/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect all your violins from being stolen.  You pay a 12% insurance cost and the robber is fined 3% of their balance.\nID: `1`", false);
+                                    builder.addField("Ling Ling Insurance - Plan 1 - Full Security (1/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect all your violins from being stolen.  You pay a 15% insurance cost and the robber is fined 5% of their balance.\nID: `1`", false);
                                 } else {
-                                    builder.addField("Ling Ling Insurance - Plan 1 - Full Security (0/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect all your violins from being stolen.  You pay a 12% insurance cost and the robber is fined 3% of their balance.\nID: `1`", false);
+                                    builder.addField("Ling Ling Insurance - Plan 1 - Full Security (0/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect all your violins from being stolen.  You pay a 15% insurance cost and the robber is fined 5% of their balance.\nID: `1`", false);
                                 }
                                 if (ownInsurance2) {
                                     builder.addField("Ling Ling Insurance - Plan 2 - Half Security (1/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect only 95% of your violins from being stolen but you don't pay any insurance costs.\nID: `2`", false);
@@ -664,7 +666,7 @@ public class Economy {
                             }
                         }
                         case "tuba" -> {
-                            if (horn == 2) {
+                            if (tuba == 2) {
                                 e.getChannel().sendMessage("You already hired the max amount of tubists!").queue();
                             } else if (violins < tubaCost) {
                                 e.getChannel().sendMessage("You are too poor to hire a tubist!").queue();
@@ -873,7 +875,7 @@ public class Economy {
                         } else {
                             faster = true;
                             violins -= 150000000;
-                            e.getChannel().sendMessage("You approach Ling Ling and pay him (her?) 150 million violins.  Ling Ling then does magic and you are back in your room.  You feel like you can do things faster, around 25% faster.\n`" + prefix + "practice` cooldown is now 30 minutes.\n`" + prefix + "rehearse` cooldown is now 18 hours.\n`" + prefix + "perform` cooldown is now 2.5 days.\nYou have " + violins + ":violin: left.").queue();
+                            e.getChannel().sendMessage("You approach Ling Ling and pay him (her?) 150 million violins.  Ling Ling then does magic and you are back in your room.  You feel like you can do things faster, around 25% faster.\n`" + prefix + "scales` cooldown is now 65 seconds.\n`" + prefix + "practice` cooldown is now 30 minutes.\n`" + prefix + "rehearse` cooldown is now 18 hours.\n`" + prefix + "perform` cooldown is now 2.5 days.\nYou have " + violins + ":violin: left.").queue();
                         }
                     }
                     case "efficient", "practising", "ep" -> {
@@ -1013,7 +1015,7 @@ public class Economy {
                     }
                     default ->  {
                         if(!boughtItem) {
-                            e.getChannel().sendMessage("You can't buy something that's not for sale, that would be quite a waste of time.").queue();
+                            e.getChannel().sendMessage("You can't buy something that's not for sale, that would be quite a waste of time and violins.").queue();
                         }
                     }
                 }
@@ -1063,7 +1065,6 @@ public class Economy {
                 long seconds;
                 long minutes;
                 long hours;
-                long days;
                 if (milliseconds < 0) {
                     builder.addField("**Rob**", ":white_check_mark:", false);
                 } else {
@@ -1073,7 +1074,21 @@ public class Economy {
                     milliseconds -= minutes * 60000;
                     seconds = milliseconds / 1000;
                     milliseconds -= seconds * 1000;
-                    builder.addField("**Rob**", hours + "h " + minutes + "m " + seconds + "s " + milliseconds + "ms", false);
+                    if(hours < 0) {
+                        builder.addField("**Rob**", minutes + "m " + seconds + "s " + milliseconds + "ms", false);
+                    } else {
+                        builder.addField("**Rob**", hours + "h " + minutes + "m " + seconds + "s ", false);
+                    }
+                }
+
+                //scales
+                milliseconds = scaleC - time;
+                if (milliseconds < 0) {
+                    builder.addField("**Scales**", ":white_check_mark:", false);
+                } else {
+                    seconds = milliseconds / 1000;
+                    milliseconds -= seconds * 1000;
+                    builder.addField("**Scales**", seconds + "s " + milliseconds + "ms", false);
                 }
 
                 //practice
@@ -1085,7 +1100,11 @@ public class Economy {
                     milliseconds -= minutes * 60000;
                     seconds = milliseconds / 1000;
                     milliseconds -= seconds * 1000;
-                    builder.addField("**Practice**", minutes + "m " + seconds + "s " + milliseconds + "ms", false);
+                    if(minutes < 0) {
+                        builder.addField("**Practice**", seconds + "s " + milliseconds + "ms", false);
+                    } else {
+                        builder.addField("**Practice**", minutes + "m " + seconds + "s ", false);
+                    }
                 }
 
                 //rehearse
@@ -1100,7 +1119,11 @@ public class Economy {
                         milliseconds -= minutes * 60000;
                         seconds = milliseconds / 1000;
                         milliseconds -= seconds * 1000;
-                        builder.addField("**Rehearse**", hours + "h " + minutes + "m " + seconds + "s " + milliseconds + "ms", false);
+                        if(hours < 0) {
+                            builder.addField("**Rehearse**", minutes + "m " + seconds + "s " + milliseconds + "ms", false);
+                        } else {
+                            builder.addField("**Rehearse**", hours + "h " + minutes + "m " + seconds + "s ", false);
+                        }
                     }
                 }
 
@@ -1109,15 +1132,17 @@ public class Economy {
                 if (milliseconds < 0) {
                     builder.addField("**Perform**", ":white_check_mark:", false);
                 } else {
-                    days = milliseconds / 86400000;
-                    milliseconds -= days * 86400000;
                     hours = milliseconds / 3600000;
                     milliseconds -= hours * 3600000;
                     minutes = milliseconds / 60000;
                     milliseconds -= minutes * 60000;
                     seconds = milliseconds / 1000;
                     milliseconds -= seconds * 1000;
-                    builder.addField("**Perform**", days + "d " + hours + "h " + minutes + "m " + seconds + "s " + milliseconds + "ms", false);
+                    if(hours < 0) {
+                        builder.addField("**Perform**", minutes + "m " + seconds + "s " + milliseconds + "ms", false);
+                    } else {
+                        builder.addField("**Perform**", hours + "h " + minutes + "m " + seconds + "s ", false);
+                    }
                 }
 
                 //daily
@@ -1131,7 +1156,11 @@ public class Economy {
                     milliseconds -= minutes * 60000;
                     seconds = milliseconds / 1000;
                     milliseconds -= seconds * 1000;
-                    builder.addField("**Daily**", hours + "h " + minutes + "m " + seconds + "s " + milliseconds + "ms", false);
+                    if(hours < 0) {
+                        builder.addField("**Daily**", minutes + "m " + seconds + "s " + milliseconds + "ms", false);
+                    } else {
+                        builder.addField("**Daily**", hours + "h " + minutes + "m " + seconds + "s ", false);
+                    }
                 }
                 builder.setTitle("__**Cooldowns**__");
                 e.getChannel().sendMessage(builder.build()).queue();
@@ -1185,7 +1214,7 @@ public class Economy {
                             e.getChannel().sendMessage("You don't have any more bubble tea!").queue();
                         } else {
                             tea --;
-                            long base = calculateAmount(e, data, (long) ((random.nextInt(100) + 350) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1))) * 2;
+                            long base = calculateAmount(e, data, random.nextInt(101) + 350);
                             violins += base;
                             e.getChannel().sendMessage("You drank some Bubble Tea and wound up with an extra " + base + ":violin:").queue();
                         }
@@ -1195,7 +1224,7 @@ public class Economy {
                             e.getChannel().sendMessage("You already used all your blessings, run more commands to get back into Ling Ling's good graces!").queue();
                         } else {
                             blessing --;
-                            long base = calculateAmount(e, data, (long) ((random.nextInt(1000) + 4500) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1)));
+                            long base = calculateAmount(e, data, random.nextInt(1001) + 4500);;
                             double num = random.nextDouble();
                             if(num > 0.5) {
                                 violins += base;
@@ -1234,7 +1263,7 @@ public class Economy {
                             }
                         }
                     }
-                    default -> e.getChannel().sendMessage("You can't use nothing, that doesn't make sense.").queue();
+                    default -> e.getChannel().sendMessage("You can't use something that doesn't exist, that doesn't make sense.").queue();
                 }
             }
             case "scales", "s" -> {
@@ -1248,7 +1277,7 @@ public class Economy {
                     milliseconds -= seconds * 1000;
                     e.getChannel().sendMessage("Chill, you can't play two scales at once!  Wait " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
                 } else {
-                    long base = calculateAmount(e, data, (long) ((random.nextInt(5) + 8) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1)));
+                    long base = calculateAmount(e, data, random.nextInt(11) + 10);
                     violins += base;
                     if(faster) {
                         scaleC = time + 64000;
@@ -1271,7 +1300,7 @@ public class Economy {
                     milliseconds -= seconds * 1000;
                     e.getChannel().sendMessage("Take a break, you already practised a lot!  Wait " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
                 } else {
-                    long base = calculateAmount(e, data, (long) ((random.nextInt(101) + 350) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1)));
+                    long base = calculateAmount(e, data, random.nextInt(101) + 350);
                     double num = random.nextDouble();
                     if(num > 0.75) {
                         violins += base;
@@ -1334,6 +1363,7 @@ public class Economy {
                             e.getChannel().sendMessage("You were caught playing Minecraft while practising.  Your tiger mom took all your earnings, in addition to another " + hourlyIncome + " for being distracted.").queue();
                         } else if(num > 0.015) {
                             e.getChannel().sendMessage("Your chin rest popped off your violin!  You take your violin to the luthier, who informs you that the violin will have to stay overnight.  You are not able to practise for 12 hours.").queue();
+                            scaleC += 43200000;
                             time += 43200000;
                         } else if(num > 0.005) {
                             e.getChannel().sendMessage("You decided to fake your practise session.  Ling Ling caught you in the act, and fined you " + violins * (hourlyIncome / 200000) + ":violin:").queue();
@@ -1345,6 +1375,7 @@ public class Economy {
                             rehearseC += 86400000;
                             performC += 86400000;
                             robC += 86400000;
+                            scaleC += 86400000;
                         }
                     }
                     if(faster) {
@@ -1370,7 +1401,7 @@ public class Economy {
                         milliseconds -= seconds * 1000;
                         e.getChannel().sendMessage("You don't have the time to go to rehearsal that often, wait " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
                     } else {
-                        long base = calculateAmount(e, data, (long) ((random.nextInt(501) + 1750) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1)));
+                        long base = calculateAmount(e, data, random.nextInt(501) + 1750);
                         double num = random.nextDouble();
                         if(num > 0.75) {
                             violins += base;
@@ -1434,6 +1465,7 @@ public class Economy {
                                 e.getChannel().sendMessage("You had a memory blank during rehearsal.  Your tiger mom took all of your earnings, in addition to another " + hourlyIncome + " for shaming yourself.").queue();
                             } else if(num > 0.015) {
                                 e.getChannel().sendMessage("Your chin rest popped off your violin!  You take your violin to the luthier, who informs you that the violin will have to stay overnight.  You are not able to practise for 12 hours.").queue();
+                                scaleC += 43200000;
                                 workC += 43200000;
                             } else if(num > 0.005) {
                                 e.getChannel().sendMessage("You decided to fake your solo.  Of course it didn't work and Ling Ling fined you " + violins * (hourlyIncome / 150000) + ":violin:").queue();
@@ -1445,6 +1477,7 @@ public class Economy {
                                 time += 86400000;
                                 performC += 86400000;
                                 robC += 86400000;
+                                scaleC += 86400000;
                             }
                         }
                         if(faster) {
@@ -1474,7 +1507,7 @@ public class Economy {
                     milliseconds -= seconds * 1000;
                     e.getChannel().sendMessage("Don't tire yourself with two performances a week!  Wait " + days + " days " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
                 } else {
-                    long base = calculateAmount(e, data, (long) ((random.nextInt(1001) + 4500) * Math.pow(1.05, workL) * ((0.2 * hallLevel) + 1)));
+                    long base = calculateAmount(e, data, random.nextInt(1001) + 4500);
                     double num = random.nextDouble();
                     if(num > 0.8) {
                         violins += base;
@@ -1546,7 +1579,8 @@ public class Economy {
                             violins += base;
                             e.getChannel().sendMessage("Your performance was for a competition, and you only won Honorable Mention.  Your tiger mom Kung-Paos your chicken and takes half your earnings, in addition to another " + hourlyIncome + " for being so mediocre.").queue();
                         } else if(num > 0.015) {
-                            e.getChannel().sendMessage("Your chin rest popped off your violin!  You take your violin to the luthier, who informs you that the violin will have to stay overnight.  You are not able to practise for 12 hours.").queue();
+                            e.getChannel().sendMessage("Your chin rest popped off your violin!  You take your violin to the luthier, who informs you that the violin will have to stay overnight.  You are not able to practise anything for 12 hours.").queue();
+                            scaleC += 43200000;
                             workC += 43200000;
                         } else if(num > 0.005) {
                             e.getChannel().sendMessage("You decided to fake your performance.  Of course it didn't work and Ling Ling fined you " + violins * (hourlyIncome / 100000) + ":violin:").queue();
@@ -1558,6 +1592,7 @@ public class Economy {
                             rehearseC += 86400000;
                             time += 86400000;
                             robC += 86400000;
+                            scaleC += 86400000;
                         }
                     } else {
                         num = random.nextDouble();
@@ -1667,7 +1702,7 @@ public class Economy {
                         targetdata = reader.readLine().split(" ");
                         reader.close();
                     } catch (Exception exception) {
-                        e.getChannel().sendMessage("You did not mention a user or provide a valid User ID.  Doesn't make sense to rob a non-existant user, does it?").queue();
+                        e.getChannel().sendMessage("You did not mention a user or provide a valid User ID.  Doesn't make sense to rob someone nonexistant, does it?").queue();
                         throw new IllegalArgumentException();
                     }
                     long targetViolins;
@@ -1681,26 +1716,27 @@ public class Economy {
                     long insurance = Long.parseLong(targetdata[11]);
                     boolean opponentShield = Boolean.parseBoolean(targetdata[60]);
                     long baseRob = (long) (targetViolins * 0.2);
-                    if(baseRob > 2000000) {
-                        baseRob = 2000000;
-                    }
                     if (num < failChance) {
+                        baseRob = (long) (violins * 0.2);
                         e.getChannel().sendMessage("Brett and Eddy caught you trying to rob " + name + "!  You paid " + name + " " + baseRob + ":violin: for attempting to rob them.\n*The generator rolled " + num + ", you need at least " + failChance + " to succeed.*").queue();
                         User send = e.getJDA().getUserById(target);
                         send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") tried to rob you but failed!  They paid you " + baseRob + ":violin: in fines.").queue();
                         targetViolins += baseRob;
                         violins -= baseRob;
                     } else {
+                        if(baseRob > 5000000) {
+                            baseRob = 5000000;
+                        }
                         if (insurance == 1) {
-                            e.getChannel().sendMessage("You try to rob " + name + " only to notice that Ling Ling Security is present.  You try to escape but you are caught and kicked from the estate.  You are fined " + (long) (violins * 0.03) + ":violin:.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
+                            e.getChannel().sendMessage("You try to rob " + name + " only to notice that Ling Ling Security is present.  You try to escape but you are caught and kicked from the estate.  You are fined " + (long) (violins * 0.05) + ":violin:.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
                             User send = e.getJDA().getUserById(target);
-                            violins -= violins * 0.03;
+                            violins -= violins * 0.05;
                             if(opponentShield) {
-                                send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") tried to rob you!  Luckily, insurance protected you and you only paid " + (long) (baseRob * 0.06) + ":violin: in insurance costs.  Your Steal Shield protected " + (long) (baseRob * 0.06) + ":violin: from being paid.").queue();
-                                targetViolins -= baseRob * 0.12;
+                                send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") tried to rob you!  Luckily, insurance protected you and you only paid " + (long) (baseRob * 0.075) + ":violin: in insurance costs.  Your Steal Shield protected " + (long) (baseRob * 0.075) + ":violin: from being paid.").queue();
+                                targetViolins -= baseRob * 0.075;
                             } else {
-                                send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") tried to rob you!  Luckily, insurance protected you and you only paid " + (long) (baseRob * 0.12) + ":violin: in insurance costs.").queue();
-                                targetViolins -= baseRob * 0.06;
+                                send.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") tried to rob you!  Luckily, insurance protected you and you only paid " + (long) (baseRob * 0.15) + ":violin: in insurance costs.").queue();
+                                targetViolins -= baseRob * 0.15;
                             }
                         } else if (insurance == 2) {
                             User send = e.getJDA().getUserById(target);
@@ -1772,7 +1808,7 @@ public class Economy {
                 try {
                     bet = Long.parseLong(message[2]);
                 } catch (Exception exception) {
-                    e.getChannel().sendMessage("You must bet something, how smol brane are you???").queue();
+                    e.getChannel().sendMessage("You must bet something, I'm not giving away free violins.").queue();
                     throw new IllegalArgumentException();
                 }
                 if (time < gambleC) {
@@ -1786,8 +1822,8 @@ public class Economy {
                     e.getChannel().sendMessage("You can't bet a negative number, don't try breaking me.").queue();
                 } else if (bet < 4000) {
                     e.getChannel().sendMessage("If you're going to bet less than 4000:violin:, go away and stop wasting my time.").queue();
-                } else if(bet > hourlyIncome * 8) {
-                    e.getChannel().sendMessage("You cannot bet more than " + hourlyIncome * 8 + ":violin:  To raise this cap, upgrade your hourly income!").queue();
+                } else if(bet > realIncome * 8) {
+                    e.getChannel().sendMessage("You cannot bet more than " + realIncome * 8 + ":violin:  To raise this cap, upgrade your hourly income!").queue();
                 } else {
                     try {
                         double multi = 0.005 * gambleL;
@@ -1929,7 +1965,7 @@ public class Economy {
                             .setColor(Color.BLUE)
                             .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
                             .setTitle(e.getAuthor().getName() + "'s Inventory")
-                            .addField("Rice :rice:", "Count: " + rice + "\nUsage: Doubles your hourly income for one hour.\nCaps at 200 000:violin:/hour\nID: `rice`", false)
+                            .addField("Rice :rice:", "Count: " + rice + "\nUsage: Doubles your hourly income for one hour.\nCaps at 400 000:violin:/hour\nID: `rice`", false)
                             .addField("Bubble Tea :bubble_tea:", "Count: " + tea + "\nUsage: Runs `" + prefix + "practice` 2 times immediately.  Only gives violins.\nID: `tea`", false)
                             .addField("Ling Ling Blessing :angel:", "Count: " + blessing + "\nUsage: Runs `" + prefix + "perform` 1 time and GUARANTEES a medal.  Does not multiply violins earned.\nID: `blessing`", false);
                     e.getChannel().sendMessage(builder.build()).queue();
