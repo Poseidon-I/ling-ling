@@ -134,20 +134,31 @@ public class RegularCommands {
                 ranCommand = true;
             }
             case "kill" -> {
+                message = e.getMessage().getContentRaw().split(" ");
+                e.getChannel().sendMessage(e.getMessage().getContentRaw());
                 if (e.getAuthor().getName().contains("@everyone") || e.getAuthor().getName().contains("@here") || e.getAuthor().getName().contains("<@&")) {
                     e.getChannel().sendMessage("Nice try but no").queue();
                     throw new IllegalArgumentException();
                 }
-                StringBuilder targetPingBuilder = new StringBuilder(targetPing);
-                for(int i = 2; i < message.length; i ++) {
+                StringBuilder targetPingBuilder;
+                int i;
+                if(e.getMessage().getMentionedUsers().size() == 0) {
+                    i = 1;
+                    targetPingBuilder = new StringBuilder();
+                } else {
+                    i = 2;
+                    targetPingBuilder = new StringBuilder(targetPing);
+                }
+                while(i < message.length) {
                     targetPingBuilder.append(" ").append(message[i]);
+                    i ++;
                 }
                 targetPing = targetPingBuilder.toString();
                 if(targetPing.equals("i") || targetPing.equals("ling ling") || targetPing.equals("lingling")) {
                     e.getChannel().sendMessage("Nice try but you cannot kill me").queue();
                     throw new IllegalArgumentException();
                 }
-                int i = random.nextInt(27);
+                i = random.nextInt(40);
                 if (i == 0) {
                     e.getChannel().sendMessage(targetPing + " thought it was a good idea to play the sousaphone after eating chili pepper").queue();
                 } else if (i == 1) {
@@ -200,26 +211,63 @@ public class RegularCommands {
                     e.getChannel().sendMessage(e.getAuthor().getName() + " sacrificed all of " + targetPing + "'s towers to a Sun Temple, which was then sold, causing " + targetPing + " to lose.").queue();
                 } else if (i == 25) {
                     e.getChannel().sendMessage(targetPing + " abused bugs on Tacoshack for two years.  Cole just found out and their $500 000/hour Shack was deleted.").queue();
+                } else if (i == 26) {
+                    e.getChannel().sendMessage(targetPing + " decided to fight the Ender Dragon with nothing but their fists.  They were thrown into the Void.").queue();
+                } else if (i == 27) {
+                    e.getChannel().sendMessage(targetPing + " hit a Zombified Piglin in an area swarming with them.  They had only an axe and got overwhelmed.").queue();
+                } else if (i == 28) {
+                    e.getChannel().sendMessage(targetPing + " ventured into an Abandoned Mineshaft and came across 3 Dungeons and a Cave Spider spawner.  They didn't have torches and were dumb enough not to break them.").queue();
+                } else if (i == 29) {
+                    e.getChannel().sendMessage(targetPing + " was killed by Ling Ling because they thought Axes were better than Swords.").queue();
+                } else if (i == 30) {
+                    e.getChannel().sendMessage(targetPing + " was playing with lava.").queue();
+                } else if (i == 31) {
+                    e.getChannel().sendMessage(targetPing + " fought Ling Ling.  They lost to his (her?) Sharpness 32767 Sword.").queue();
+                } else if (i == 32) {
+                    e.getChannel().sendMessage(targetPing + " attacked Beethoven, who had Throns 32767 armor.").queue();
+                } else if (i == 33) {
+                    e.getChannel().sendMessage(targetPing + " was squashed by a falling Anvil whilst attempting to escape Herobrine.").queue();
+                } else if (i == 34) {
+                    e.getChannel().sendMessage(targetPing + " fell down a cliff.").queue();
+                } else if (i == 35) {
+                    e.getChannel().sendMessage(targetPing + " flew into unloaded chunks and died for no reason.").queue();
+                } else if (i == 36) {
+                    e.getChannel().sendMessage(targetPing + " thought Creepers were cute and invited one into their house.").queue();
+                } else if (i == 37) {
+                    e.getChannel().sendMessage(targetPing + " attacked MsCandy44 and got the ban hammer.").queue();
+                } else if (i == 38) {
+                    e.getChannel().sendMessage(targetPing + " killed Phil.  MsCandy44 then killed " + targetPing).queue();
                 } else {
                     e.getChannel().sendMessage(targetPing + " stepped on a landmine and suffered major injuries.").queue();
                 }
                 ranCommand = true;
             }
             case "insult" -> {
+                message = e.getMessage().getContentRaw().split(" ");
+                e.getChannel().sendMessage(e.getMessage().getContentRaw());
                 if (e.getAuthor().getName().contains("@everyone") || e.getAuthor().getName().contains("@here") || e.getAuthor().getName().contains("<@&")) {
                     e.getChannel().sendMessage("Nice try but no").queue();
                     throw new IllegalArgumentException();
                 }
-                StringBuilder targetPingBuilder = new StringBuilder(targetPing);
-                for(int i = 2; i < message.length; i ++) {
+                StringBuilder targetPingBuilder;
+                int i;
+                if(e.getMessage().getMentionedUsers().size() == 0) {
+                    i = 1;
+                    targetPingBuilder = new StringBuilder();
+                } else {
+                    i = 2;
+                    targetPingBuilder = new StringBuilder(targetPing);
+                }
+                while(i < message.length) {
                     targetPingBuilder.append(" ").append(message[i]);
+                    i ++;
                 }
                 targetPing = targetPingBuilder.toString();
                 if(targetPing.equals("i") || targetPing.equals("ling ling") || targetPing.equals("lingling")) {
                     e.getChannel().sendMessage("Nice try but you cannot insult me").queue();
                     throw new IllegalArgumentException();
                 }
-                int i = random.nextInt(13);
+                i = random.nextInt(14);
                 if (i == 0) {
                     e.getChannel().sendMessage(targetPing + "'s violining skills are so bad even the violists were allowed to laugh at them").queue();
                 } else if (i == 1) {
@@ -244,6 +292,8 @@ public class RegularCommands {
                     e.getChannel().sendMessage(targetPing + " lost Easy mode on Round 1.  How embarassing.").queue();
                 } else if (i == 11) {
                     e.getChannel().sendMessage(targetPing + " was so bad at Bloons that even super slow Red Bloons could get by their poorly planned defense.").queue();
+                } else if (i == 12) {
+                    e.getChannel().sendMessage(targetPing + " is so bad at minecraft they managed to die in one second in Peaceful Mode.  On a Superflat world.").queue();
                 } else {
                     e.getChannel().sendMessage(targetPing + " tried playing their piccolo solo but it broke so many eardrums that the conductor threw them off the stage into the audience headfirst.  Everyone laughed.").queue();
                 }

@@ -34,6 +34,7 @@ public class Receiver extends ListenerAdapter {
                     line += " " + e.getGuild().getId();
                 }
             } catch(Exception exception) {
+                e.getGuild().loadMembers();
                 line = e.getGuild().getId();
             }
             writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\loadedservers.txt")));

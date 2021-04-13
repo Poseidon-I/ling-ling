@@ -308,7 +308,7 @@ public class DevCommands {
                     e.getChannel().sendMessage("Incomes successfully reset!").queue();
                 }
             }
-            /*case "!custom" -> {
+            case "!custom" -> {
                 File directory = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data");
                 File[] files = directory.listFiles();
                 for (File file : files) {
@@ -319,9 +319,7 @@ public class DevCommands {
                     } catch (Exception exception) {
                         continue;
                     }
-                    if(Integer.parseInt(data[29]) > 2) {
-                        data[29] = "2";
-                    }
+                    data[49] = (Long.parseLong(data[49]) + 259200000) + "";
                     try {
                         writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
                         writer.print(data[0]);
@@ -333,7 +331,7 @@ public class DevCommands {
                         //nothing here lol
                     }
                 }
-            }*/
+            }
             case "!warn" -> {
                 StringBuilder reason = new StringBuilder();
                 for (int i = 2; i < message.length; i++) {
