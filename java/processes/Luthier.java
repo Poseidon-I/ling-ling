@@ -59,7 +59,7 @@ public class Luthier {
                     target.append(data[i]).append(" ");
                 }
                 target.deleteCharAt(target.length() - 1);
-                int gain = Integer.parseInt(data[data.length - 1]);
+                long gain = Long.parseLong(data[data.length - 1]);
                 String[] user;
                 if(e.getMessage().getContentRaw().toLowerCase().equals(target.toString())) {
                     try {
@@ -70,7 +70,7 @@ public class Luthier {
                         e.getChannel().sendMessage("You don't even have a profile, where would you store your violins???  Run `!start` **in a bot command channel** to get one!\n\n**PLEASE REMEMBER TO USE THIS SERVER'S PREFIX INSTEAD OF `!`**").queue();
                         throw new IllegalArgumentException();
                     }
-                    long violins = Integer.parseInt(user[0]);
+                    long violins = Long.parseLong(user[0]);
                     e.getChannel().sendMessage("**" + e.getAuthor().getName() + "** unscrambled `" + target + "` and gained " + gain + ":violin:").queue();
                     violins += gain;
                     StringBuilder newData = new StringBuilder("" + violins);

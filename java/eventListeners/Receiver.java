@@ -65,6 +65,11 @@ public class Receiver extends ListenerAdapter {
             }
             String id = e.getJDA().getGuildById("709632179340312597").getTextChannelById("717484601328533565").sendMessage("!resetincomes").complete().getId();
             e.getJDA().getGuildById("709632179340312597").getTextChannelById("717484601328533565").deleteMessageById(id).queue();
+            if(time % 86400000 == 0) {
+                e.getJDA().getGuildById("709632179340312597").getTextChannelById("717484601328533565").sendMessage("Bot Restarting!").queue();
+                e.getJDA().shutdownNow();
+                new StartBot();
+            }
         }
 
         //LUTHIER
@@ -133,7 +138,7 @@ public class Receiver extends ListenerAdapter {
             } catch (Exception exception) {
                 //nothing here lol
             }
-            if (!e.getAuthor().isBot()) {
+            try {
                 if (message[0].charAt(0) == prefix) {
                     String target = "";
                     String targetPing = "";
@@ -170,25 +175,31 @@ public class Receiver extends ListenerAdapter {
                     message[0] = message[0].substring(1);
                     new RegularCommands(e, message, prefix, isDev, target, targetPing, data);
                 }
+            } catch(Exception exception) {
+                //nothing here lol
             }
         }
         //V I O L A
         assert data != null;
         if (data[1].equals("true")) {
-            if (e.getChannel().getName().contains("announcement")) {
-                e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1FB").queue();
-                e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue();
-                e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F4").queue();
-                e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F1").queue();
-                e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E6").queue();
-            } else {
-                if (random.nextDouble() <= 0.025) {
+            try {
+                if (e.getChannel().getName().contains("announcement")) {
                     e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1FB").queue();
                     e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue();
                     e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F4").queue();
                     e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F1").queue();
                     e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E6").queue();
+                } else {
+                    if (random.nextDouble() <= 0.025) {
+                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1FB").queue();
+                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue();
+                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F4").queue();
+                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F1").queue();
+                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E6").queue();
+                    }
                 }
+            } catch(Exception exception) {
+                //nothing here lol
             }
         }
     }

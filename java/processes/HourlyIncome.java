@@ -7,29 +7,27 @@ public class HourlyIncome {
         BufferedReader reader;
         File directory = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data");
         File[] files = directory.listFiles();
-        String data = null;
+        String[] data = null;
+        assert files != null;
         for(File file : files) {
             try {
                 reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
-                data = reader.readLine();
+                data = reader.readLine().split(" ");
                 reader.close();
             } catch (Exception exception) {
                 //nothing here lol
             }
             assert data != null;
-            String[] array;
-            try {
-                array = data.split(" ");
-            } catch(Exception exception) {
-                file.delete();
-                continue;
-            }
-            long violins = Integer.parseInt(array[0]);
-            int income = Integer.parseInt(array[12]);
+            long violins = Integer.parseInt(data[0]);
+            int income = Integer.parseInt(data[12]);
             violins += income;
             StringBuilder newData = new StringBuilder("" + violins);
-            for(int i = 1; i < array.length; i ++) {
-                newData.append(" ").append(array[i]);
+            for(int i = 1; i < data.length; i ++) {
+                if(i == 75) {
+                    newData.append(" ").append(Long.parseLong(data[i]) + income);
+                } else {
+                    newData.append(" ").append(data[i]);
+                }
             }
             PrintWriter pw;
             try {

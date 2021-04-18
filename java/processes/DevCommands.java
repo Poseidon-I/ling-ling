@@ -67,13 +67,13 @@ public class DevCommands {
             }
             case "!give" -> {
                 String id = message[1];
-                int add = Integer.parseInt(message[2]);
+                long add = Long.parseLong(message[2]);
                 long violins;
                 String userData;
                 try {
                     reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data\\" + id + ".txt"));
                     userData = reader.readLine();
-                    violins = Integer.parseInt(userData.split(" ")[0]) + add;
+                    violins = Long.parseLong(userData.split(" ")[0]) + add;
                     reader.close();
                 } catch (Exception exception) {
                     e.getChannel().sendMessage("This user save doesn't exist!").queue();
@@ -230,42 +230,42 @@ public class DevCommands {
                         } catch (Exception exception) {
                             continue;
                         }
-                        int violinQuality = Integer.parseInt(data[13]);
-                        int skillLevel = Integer.parseInt(data[14]);
-                        int lessonQuality = Integer.parseInt(data[15]);
-                        int stringQuality = Integer.parseInt(data[16]);
-                        int bowQuality = Integer.parseInt(data[17]);
+                        long violinQuality = Integer.parseInt(data[13]);
+                        long skillLevel = Integer.parseInt(data[14]);
+                        long lessonQuality = Integer.parseInt(data[15]);
+                        long stringQuality = Integer.parseInt(data[16]);
+                        long bowQuality = Integer.parseInt(data[17]);
                         boolean hasMath = Boolean.parseBoolean(data[18]);
                         boolean hasOrchestra = Boolean.parseBoolean(data[19]);
                         boolean piccolo = Boolean.parseBoolean(data[20]);
-                        int flute = Integer.parseInt(data[21]);
-                        int oboe = Integer.parseInt(data[22]);
-                        int clarinet = Integer.parseInt(data[23]);
-                        int bassoon = Integer.parseInt(data[24]);
+                        long flute = Integer.parseInt(data[21]);
+                        long oboe = Integer.parseInt(data[22]);
+                        long clarinet = Integer.parseInt(data[23]);
+                        long bassoon = Integer.parseInt(data[24]);
                         boolean contrabassoon = Boolean.parseBoolean(data[25]);
-                        int horn = Integer.parseInt(data[26]);
-                        int trumpet = Integer.parseInt(data[27]);
-                        int trombone = Integer.parseInt(data[28]);
-                        int tuba = Integer.parseInt(data[29]);
-                        int timpani = Integer.parseInt(data[30]);
-                        int percussion = Integer.parseInt(data[31]);
-                        int first = Integer.parseInt(data[32]);
-                        int second = Integer.parseInt(data[33]);
-                        int cello = Integer.parseInt(data[34]);
-                        int stringBass = Integer.parseInt(data[35]);
-                        int piano = Integer.parseInt(data[36]);
+                        long horn = Integer.parseInt(data[26]);
+                        long trumpet = Integer.parseInt(data[27]);
+                        long trombone = Integer.parseInt(data[28]);
+                        long tuba = Integer.parseInt(data[29]);
+                        long timpani = Integer.parseInt(data[30]);
+                        long percussion = Integer.parseInt(data[31]);
+                        long first = Integer.parseInt(data[32]);
+                        long second = Integer.parseInt(data[33]);
+                        long cello = Integer.parseInt(data[34]);
+                        long stringBass = Integer.parseInt(data[35]);
+                        long piano = Integer.parseInt(data[36]);
                         boolean harp = Boolean.parseBoolean(data[37]);
-                        int soprano = Integer.parseInt(data[38]);
-                        int alto = Integer.parseInt(data[39]);
-                        int tenor = Integer.parseInt(data[40]);
-                        int bass = Integer.parseInt(data[41]);
-                        int soloists = Integer.parseInt(data[42]);
-                        int hallLevel = Integer.parseInt(data[43]);
-                        int conductor = Integer.parseInt(data[44]);
-                        int advertising = Integer.parseInt(data[45]);
-                        int tickets = Integer.parseInt(data[46]);
+                        long soprano = Integer.parseInt(data[38]);
+                        long alto = Integer.parseInt(data[39]);
+                        long tenor = Integer.parseInt(data[40]);
+                        long bass = Integer.parseInt(data[41]);
+                        long soloists = Integer.parseInt(data[42]);
+                        long hallLevel = Integer.parseInt(data[43]);
+                        long conductor = Integer.parseInt(data[44]);
+                        long advertising = Integer.parseInt(data[45]);
+                        long tickets = Integer.parseInt(data[46]);
                         boolean moreIncome = Boolean.parseBoolean(data[56]);
-                        int income = violinQuality * 600 + skillLevel * 240 + lessonQuality * 150 + stringQuality * 100 + bowQuality * 200 + flute * 60 + oboe * 50 + clarinet * 40 + bassoon * 40 + horn * 40 + trumpet * 30 + trombone * 20 + tuba * 20 + timpani * 60 + percussion * 10 + first * 70 + second * 60 + cello * 50 + stringBass * 50 + piano * 110 + soprano * 30 + alto * 20 + tenor * 20 + bass * 20 + soloists * 60 + hallLevel * 300 + conductor * 200 + advertising * 100 + tickets * 1000;
+                        long income = violinQuality * 600 + skillLevel * 240 + lessonQuality * 150 + stringQuality * 100 + bowQuality * 200 + flute * 60 + oboe * 50 + clarinet * 40 + bassoon * 40 + horn * 40 + trumpet * 30 + trombone * 20 + tuba * 20 + timpani * 60 + percussion * 10 + first * 70 + second * 60 + cello * 50 + stringBass * 50 + piano * 110 + soprano * 30 + alto * 20 + tenor * 20 + bass * 20 + soloists * 60 + hallLevel * 300 + conductor * 200 + advertising * 100 + tickets * 1000;
                         if (hasMath) {
                             income += 6500;
                         }
@@ -311,6 +311,7 @@ public class DevCommands {
             case "!custom" -> {
                 File directory = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data");
                 File[] files = directory.listFiles();
+                assert files != null;
                 for (File file : files) {
                     String[] data;
                     try {
@@ -319,7 +320,7 @@ public class DevCommands {
                     } catch (Exception exception) {
                         continue;
                     }
-                    data[49] = (Long.parseLong(data[49]) + 259200000) + "";
+                    data[75] = "0";
                     try {
                         writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
                         writer.print(data[0]);
@@ -358,6 +359,11 @@ public class DevCommands {
                 Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("709632179340312597")).getTextChannelById("800613646380040233")).sendMessage(builder.build()).queue();
                 user.openPrivateChannel().complete().sendMessage("You have received an official bot warning for" + reason + ".  Continuation of this action will result in a save file reset and/or a bot ban.").queue();
                 e.getChannel().sendMessage(":warning: " + user.getName() + " was successfully warned!").queue();
+            }
+            case "!restart" -> {
+                e.getChannel().sendMessage("Restarting bot...");
+                e.getJDA().shutdownNow();
+                new StartBot();
             }
         }
     }

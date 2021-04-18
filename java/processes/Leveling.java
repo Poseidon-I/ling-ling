@@ -19,8 +19,10 @@ public class Leveling {
         try {
             reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + e.getAuthor().getId() + ".txt"));
             userData = reader.readLine().split(" ");
+            reader.close();
             reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt"));
             serverXpSettings = reader.readLine().split(" ");
+            reader.close();
             reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "blacklist.txt"));
             serverBlacklist = " " + reader.readLine();
             reader.close();

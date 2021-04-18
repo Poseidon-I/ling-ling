@@ -261,6 +261,12 @@ public class AdminCommands {
                                                 throw new IllegalArgumentException();
                                             }
                                         }
+                                        case "clear" -> {
+                                            File file = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "blacklist.txt");
+                                            file.delete();
+                                            file.createNewFile();
+                                            e.getChannel().sendMessage("Successfully cleared the channel blacklists on this server.").queue();
+                                        }
                                     }
                                 } catch(Exception exception) {
                                     e.getChannel().sendMessage("You must either add or remove a channel.").queue();
@@ -300,7 +306,11 @@ public class AdminCommands {
                                 temp.append("<#").append(s).append("> ");
                             }
                         }
-                        builder.addField("**Blacklisted Channels**", temp.toString(), false);
+                        try {
+                            builder.addField("**Blacklisted Channels**", temp.toString(), false);
+                        } catch(Exception exception1) {
+                            builder.addField("**Blacklisted Channels**", "The list cannot be viewed because there are too many blacklisted channels.", false);
+                        }
                         e.getChannel().sendMessage(builder.build()).queue();
                     }
                 } else {
