@@ -18,7 +18,7 @@ public class AdminCommands {
             case "prefix" -> {
                 char newPrefix = message[1].charAt(0);
                 try {
-                    writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Prefixes\\" + e.getGuild().getId() + ".txt")));
+                    writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Prefixes\\" + e.getGuild().getId() + ".txt")));
                     writer.print(newPrefix);
                     writer.close();
                     e.getChannel().sendMessage("The prefix is now `" + newPrefix + "`").queue();
@@ -29,11 +29,11 @@ public class AdminCommands {
             case "serversettings" -> {
                 String[] data = new String[0];
                 try {
-                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt"));
+                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt"));
                     data = reader.readLine().split(" ");
                     reader.close();
                 } catch (Exception exception) {
-                    File file = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt");
+                    File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt");
                     try {
                         file.createNewFile();
                         PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
@@ -47,7 +47,7 @@ public class AdminCommands {
                     switch (message[1]) {
                         case "autoresponse" -> {
                             try {
-                                writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt")));
+                                writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt")));
                                 if (message[2].equals("false") || message[2].equals("off")) {
                                     writer.print("false " + data[1] + " " + data[2]);
                                     writer.close();
@@ -65,7 +65,7 @@ public class AdminCommands {
                         }
                         case "reactions" -> {
                             try {
-                                writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt")));
+                                writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt")));
                                 if (message[2].equals("false") || message[2].equals("off")) {
                                     writer.print(data[0] + " false " + data[2]);
                                     writer.close();
@@ -83,7 +83,7 @@ public class AdminCommands {
                         }
                         case "leveling" -> {
                             try {
-                                writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt")));
+                                writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt")));
                                 if (message[2].equals("false") || message[2].equals("off")) {
                                     writer.print(data[0] + " " + data[1] + " false");
                                     writer.close();
@@ -92,22 +92,22 @@ public class AdminCommands {
                                     writer.print(data[0] + " " + data[1] + " true");
                                     writer.close();
                                     e.getChannel().sendMessage("Turned on Leveling!").queue();
-                                    File file = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt");
+                                    File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt");
                                     if (!file.exists()) {
                                         file.createNewFile();
                                         writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
                                         writer.print("15 25 60");
                                         writer.close();
                                     }
-                                    file = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "blacklist.txt");
+                                    file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "blacklist.txt");
                                     if (!file.exists()) {
                                         file.createNewFile();
                                     }
-                                    file = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "rewards.txt");
+                                    file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "rewards.txt");
                                     if (!file.exists()) {
                                         file.createNewFile();
                                     }
-                                    file = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId());
+                                    file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId());
                                     if(!file.exists()) {
                                         file.mkdirs();
                                     }
@@ -132,7 +132,7 @@ public class AdminCommands {
             case "levelsettings" -> {
                 String[] serverSettings = new String[3];
                 try {
-                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt"));
+                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt"));
                     serverSettings = reader.readLine().split(" ");
                     reader.close();
                 } catch (Exception exception) {
@@ -150,9 +150,9 @@ public class AdminCommands {
                                     e.getChannel().sendMessage("You cannot enter a value that is not an integer, doesn't make sence to add word XP, does it?").queue();
                                     throw new IllegalArgumentException();
                                 }
-                                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt"));
+                                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt"));
                                 serverXpSettings = reader.readLine().split(" ");
-                                writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt")));
+                                writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt")));
                                 writer.print(message[2] + " " + serverXpSettings[1] + " " + serverXpSettings[2]);
                                 writer.close();
                                 e.getChannel().sendMessage("Set the minimum XP amount to " + message[2]).queue();
@@ -165,9 +165,9 @@ public class AdminCommands {
                                         e.getChannel().sendMessage("You cannot enter a value that is not an integer, doesn't make sence to add word XP, does it?").queue();
                                         throw new IllegalArgumentException();
                                     }
-                                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt"));
+                                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt"));
                                     serverXpSettings = reader.readLine().split(" ");
-                                    writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt")));
+                                    writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt")));
                                     writer.print(serverXpSettings[0] + " " + message[2] + " " + serverXpSettings[2]);
                                     writer.close();
                                     e.getChannel().sendMessage("Set the maximum XP amount to " + message[2]).queue();
@@ -183,9 +183,9 @@ public class AdminCommands {
                                         e.getChannel().sendMessage("You cannot enter a value that is not an integer, doesn't make sence to add word seconds, does it?").queue();
                                         throw new IllegalArgumentException();
                                     }
-                                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt"));
+                                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt"));
                                     serverXpSettings = reader.readLine().split(" ");
-                                    writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt")));
+                                    writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt")));
                                     writer.print(serverXpSettings[0] + " " + serverXpSettings[1] + " " + message[2]);
                                     writer.close();
                                     e.getChannel().sendMessage("Set the cooldown to " + message[2] + " seconds.").queue();
@@ -209,12 +209,12 @@ public class AdminCommands {
                                                         throw new IllegalArgumentException();
                                                     }
                                                 }
-                                                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "blacklist.txt"));
+                                                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "blacklist.txt"));
                                                 serverBlacklist = reader.readLine() + " ";
                                                 if (serverBlacklist.contains(channel)) {
                                                     e.getChannel().sendMessage("You already blacklisted this channel, you don't need to blacklist it again.").queue();
                                                 } else {
-                                                    writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "blacklist.txt")));
+                                                    writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "blacklist.txt")));
                                                     writer.print(serverBlacklist + channel);
                                                     writer.close();
                                                     e.getChannel().sendMessage("Successfully blacklisted <#" + channel + ">").queue();
@@ -236,10 +236,10 @@ public class AdminCommands {
                                                         throw new IllegalArgumentException();
                                                     }
                                                 }
-                                                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "blacklist.txt"));
+                                                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "blacklist.txt"));
                                                 serverBlacklist = reader.readLine();
                                                 if (serverBlacklist.contains(channel)) {
-                                                    writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "blacklist.txt")));
+                                                    writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "blacklist.txt")));
                                                     String[] before = serverBlacklist.split(" ");
                                                     if(!before[0].equals(channel) && !before[0].equals("null")) {
                                                         writer.print(before[0]);
@@ -262,7 +262,7 @@ public class AdminCommands {
                                             }
                                         }
                                         case "clear" -> {
-                                            File file = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "blacklist.txt");
+                                            File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "blacklist.txt");
                                             file.delete();
                                             file.createNewFile();
                                             e.getChannel().sendMessage("Successfully cleared the channel blacklists on this server.").queue();
@@ -275,7 +275,7 @@ public class AdminCommands {
                         }
                     } catch (Exception exception) {
                         try {
-                            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt"));
+                            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt"));
                             serverXpSettings = reader.readLine().split(" ");
                             reader.close();
                         } catch(Exception exception1) {
@@ -288,7 +288,7 @@ public class AdminCommands {
                         StringBuilder temp = new StringBuilder();
                         String[] blacklist = new String[1];
                         try {
-                            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "blacklist.txt"));
+                            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "blacklist.txt"));
                             try {
                                 blacklist = reader.readLine().split(" ");
                             } catch (Exception exception1) {
@@ -322,7 +322,7 @@ public class AdminCommands {
                 int level = Integer.parseInt(message[2]);
                 String userData;
                 try {
-                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + id + ".txt"));
+                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + id + ".txt"));
                     userData = reader.readLine();
                     reader.close();
                 } catch (Exception exception) {
@@ -332,7 +332,7 @@ public class AdminCommands {
                 StringBuilder newData = new StringBuilder();
                 newData.append(level).append(" ").append(userData.split(" ")[1]).append(" ").append(userData.split(" ")[2]);
                 try {
-                    writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + id + ".txt")));
+                    writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + id + ".txt")));
                     writer.print(newData);
                     writer.close();
                     e.getChannel().sendMessage("Successfully set " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName() + "'s level to " + level).queue();
@@ -344,7 +344,7 @@ public class AdminCommands {
                 String[] data;
                 HashMap<Integer, Role> map = new HashMap<>();
                 try {
-                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "rewards.txt"));
+                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "rewards.txt"));
                     while (true) {
                         try {
                             data = reader.readLine().split(" ");
@@ -384,7 +384,7 @@ public class AdminCommands {
                         string.append(entry.getKey()).append(" ").append(entry.getValue().getId()).append("\n");
                     }
                     try {
-                        writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "rewards.txt")));
+                        writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "rewards.txt")));
                         writer.print(string.toString());
                         writer.close();
                     } catch (Exception exception) {

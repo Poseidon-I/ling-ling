@@ -17,17 +17,17 @@ public class Leveling {
         String[] serverXpSettings = new String[3];
         String serverBlacklist = "";
         try {
-            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + e.getAuthor().getId() + ".txt"));
+            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + e.getAuthor().getId() + ".txt"));
             userData = reader.readLine().split(" ");
             reader.close();
-            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt"));
+            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "xp.txt"));
             serverXpSettings = reader.readLine().split(" ");
             reader.close();
-            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "blacklist.txt"));
+            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "blacklist.txt"));
             serverBlacklist = " " + reader.readLine();
             reader.close();
         } catch (Exception exception) {
-            File file = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + e.getAuthor().getId() + ".txt");
+            File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + e.getAuthor().getId() + ".txt");
             try {
                 file.createNewFile();
                 writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
@@ -38,16 +38,31 @@ public class Leveling {
             }
         }
         if (!serverBlacklist.contains(e.getChannel().getId())) {
-            int level = Integer.parseInt(userData[0]);
-            int xp = Integer.parseInt(userData[1]);
-            long time = Long.parseLong(userData[2]);
+            int level = 0;
+            int xp = 0;
+            long time = 0;
+            try {
+                level = Integer.parseInt(userData[0]);
+                xp = Integer.parseInt(userData[1]);
+                time = Long.parseLong(userData[2]);
+            } catch(Exception exception) {
+                File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + e.getAuthor().getId() + ".txt");
+                try {
+                    file.createNewFile();
+                    writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
+                    writer.print("0 0 " + System.currentTimeMillis());
+                    writer.close();
+                } catch (Exception exception1) {
+                    throw new IllegalArgumentException();
+                }
+            }
             int min = Integer.parseInt(serverXpSettings[0]);
             int max = Integer.parseInt(serverXpSettings[1]);
             int cooldown = Integer.parseInt(serverXpSettings[2]);
             String[] data;
             HashMap<Integer, Role> map = new HashMap<>();
             try {
-                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "rewards.txt"));
+                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "rewards.txt"));
                 while (true) {
                     try {
                         data = reader.readLine().split(" ");
@@ -58,7 +73,7 @@ public class Leveling {
                 }
                 reader.close();
             } catch (Exception exception) {
-                e.getChannel().sendMessage("Something went wrong when creating the file, please turn leveling off and back on.  Your data will not be lost.").queue();
+                e.getChannel().sendMessage("Something went wrong when creating the file, please have an Admin turn leveling off and back on.  Your data will not be lost.").queue();
             }
             if (System.currentTimeMillis() > time) {
                 if(max - min + 1 <= 0) {
@@ -82,7 +97,7 @@ public class Leveling {
                     }
                     //insert role rewards here soon
                     try {
-                        writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + e.getAuthor().getId() + ".txt")));
+                        writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + e.getAuthor().getId() + ".txt")));
                         writer.print(level + " " + xp + " " + time);
                         writer.close();
                     } catch (Exception exception) {

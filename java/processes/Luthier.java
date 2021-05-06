@@ -46,7 +46,7 @@ public class Luthier {
                     assert channel != null;
                     channel.sendMessage("Olaf is giving away violins!  Unscramble `" + send + "` to get " + money + ":violin:").queue();
                     try {
-                        writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt")));
+                        writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt")));
                         writer.print(write);
                         writer.close();
                     } catch(Exception exception) {
@@ -63,7 +63,7 @@ public class Luthier {
                 String[] user;
                 if(e.getMessage().getContentRaw().toLowerCase().equals(target.toString())) {
                     try {
-                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt."));
+                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt."));
                         user = reader.readLine().split(" ");
                         reader.close();
                     } catch (Exception exception) {
@@ -84,10 +84,10 @@ public class Luthier {
                         }
                     }
                     try {
-                        writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt")));
+                        writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt")));
                         writer.print(newData.toString());
                         writer.close();
-                        writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt")));
+                        writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt")));
                         writer.print(data[0] + " " + data[1] + " " + data[2] + " false blank 0");
                         writer.close();
                     } catch(Exception exception) {

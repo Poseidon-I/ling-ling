@@ -20,7 +20,7 @@ public class LevelCommands {
             case "rank" -> {
                 if (message.length == 1) {
                     try {
-                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + e.getAuthor().getId() + ".txt"));
+                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + e.getAuthor().getId() + ".txt"));
                         String[] data = reader.readLine().split(" ");
                         e.getChannel().sendMessage("**__" + e.getAuthor().getName() + "'s Stats__**\nLevel " + data[0] + "\n" + data[1] + "/" + (Integer.parseInt(data[0]) + 1) * 100 + " XP").queue();
                     } catch (Exception exception) {
@@ -34,7 +34,7 @@ public class LevelCommands {
                         id = message[1];
                     }
                     try {
-                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + id + ".txt"));
+                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + id + ".txt"));
                         String[] data = reader.readLine().split(" ");
                         e.getChannel().sendMessage("**__" + Objects.requireNonNull(e.getJDA().getUserById(id)).getName() + "'s Stats__**\nLevel " + data[0] + "\n" + data[1] + "/" + (Integer.parseInt(data[0]) + 1) * 100 + " XP").queue();
                     } catch (Exception exception) {
@@ -51,7 +51,7 @@ public class LevelCommands {
                         continue;
                     }
                     try {
-                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + user.getId() + ".txt"));
+                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Leveling Data\\" + e.getGuild().getId() + "\\" + user.getId() + ".txt"));
                         currentData = reader.readLine();
                         reader.close();
                     } catch (Exception exception) {
@@ -97,7 +97,7 @@ public class LevelCommands {
                     String[] data;
                     HashMap<Integer, Role> map = new HashMap<>();
                     try {
-                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "rewards.txt"));
+                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Leveling\\" + e.getGuild().getId() + "rewards.txt"));
                         while (true) {
                             try {
                                 data = reader.readLine().split(" ");

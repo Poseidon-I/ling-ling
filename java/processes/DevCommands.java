@@ -41,7 +41,7 @@ public class DevCommands {
                 String userData;
                 String target = message[1];
                 try {
-                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data\\" + target + ".txt"));
+                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + target + ".txt"));
                     userData = reader.readLine();
                     e.getChannel().sendMessage(Objects.requireNonNull(e.getJDA().getUserById(target)).getName() + "'s data: " + userData).queue();
                     reader.close();
@@ -57,7 +57,7 @@ public class DevCommands {
                 }
                 userData.deleteCharAt(userData.length() - 1);
                 try {
-                    writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data\\" + id + ".txt")));
+                    writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + id + ".txt")));
                     writer.print(userData);
                     writer.close();
                     e.getChannel().sendMessage("Successfully edited the data of " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName()).queue();
@@ -67,65 +67,120 @@ public class DevCommands {
             }
             case "!give" -> {
                 String id = message[1];
-                long add = Long.parseLong(message[2]);
-                long violins;
+                long add = Long.parseLong(message[3]);
+                long newValue = -1;
                 String userData;
+                int index = -1;
                 try {
-                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data\\" + id + ".txt"));
+                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + id + ".txt"));
                     userData = reader.readLine();
-                    violins = Long.parseLong(userData.split(" ")[0]) + add;
                     reader.close();
                 } catch (Exception exception) {
                     e.getChannel().sendMessage("This user save doesn't exist!").queue();
                     throw new IllegalArgumentException();
                 }
-                StringBuilder newData = new StringBuilder();
-                newData.append(violins);
-                for (int i = 1; i < userData.split(" ").length; i++) {
-                    newData.append(" ").append(userData.split(" ")[i]);
+                switch(message[2]) {
+                    case "violin" -> {
+                        index = 0;
+                        newValue = Long.parseLong(userData.split(" ")[0]) + add;
+                        e.getChannel().sendMessage("Successfully gave " + add + ":violin: to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName()).queue();
+                    }
+                    case "rice" -> {
+                        index = 51;
+                        newValue = Long.parseLong(userData.split(" ")[51]) + add;
+                        e.getChannel().sendMessage("Successfully gave " + add + ":rice: to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName()).queue();
+                    }
+                    case "medal" -> {
+                        index = 55;
+                        newValue = Long.parseLong(userData.split(" ")[55]) + add;
+                        e.getChannel().sendMessage("Successfully gave " + add + ":military_medal: to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName()).queue();
+                    }
+                    case "tea" -> {
+                        newValue = Long.parseLong(userData.split(" ")[62]) + add;
+                        e.getChannel().sendMessage("Successfully gave " + add + ":bubble_tea: to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName()).queue();
+                    }
+                    case "blessing" -> {
+                        newValue = Long.parseLong(userData.split(" ")[63]) + add;
+                        e.getChannel().sendMessage("Successfully gave " + add + ":angel: to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName()).queue();
+                    }
+                    default -> e.getChannel().sendMessage("You wrote this bot you dumbass, you should know that they are all singular.").queue();
                 }
+                StringBuilder newData = new StringBuilder();
+                for (int i = 0; i < userData.split(" ").length; i++) {
+                    if(i == index) {
+                        newData.append(newValue).append(" ");
+                    } else {
+                        newData.append(userData.split(" ")[i]).append(" ");
+                    }
+                }
+                newData.deleteCharAt(newData.length() - 1);
                 try {
-                    writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data\\" + id + ".txt")));
+                    writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + id + ".txt")));
                     writer.print(newData);
                     writer.close();
-                    e.getChannel().sendMessage("Successfully gave " + add + ":violin: to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName()).queue();
                 } catch (Exception exception) {
                     //nothing here lol
                 }
             }
             case "!luthier" -> {
                 try {
-                    if (message[1].equals("setup")) {
-                        File file = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt");
-                        try {
-                            file.createNewFile();
-                            writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt")));
-                            writer.print(e.getChannel().getId() + " 1 0.01 false blank 0");
-                            writer.close();
-                            e.getChannel().sendMessage("Successfully set up Luthier for " + e.getGuild().getName()).queue();
-                        } catch (Exception exception2) {
-                            //nothing here lol
+                    switch (message[1]) {
+                        case "setup" -> {
+                            File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt");
+                            try {
+                                file.createNewFile();
+                                writer = new PrintWriter(new BufferedWriter(new FileWriter("Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt")));
+                                writer.print(e.getChannel().getId() + " 1 0.01 false blank 0");
+                                writer.close();
+                                e.getChannel().sendMessage("Successfully set up Luthier for " + e.getGuild().getName() + " in " + e.getChannel().getAsMention()).queue();
+                            } catch (Exception exception2) {
+                                //nothing here lol
+                            }
                         }
-                    } else if (message[1].equals("edit")) {
-                        String id = e.getGuild().getId();
-                        StringBuilder luthierData = new StringBuilder();
-                        for (int i = 2; i < message.length; i++) {
-                            luthierData.append(message[i]).append(" ");
+                        case "edit" -> {
+                            String id = e.getGuild().getId();
+                            StringBuilder luthierData = new StringBuilder();
+                            for (int i = 2; i < message.length; i++) {
+                                luthierData.append(message[i]).append(" ");
+                            }
+                            luthierData.deleteCharAt(luthierData.length() - 1);
+                            try {
+                                writer = new PrintWriter(new BufferedWriter(new FileWriter("Ling Ling Bot Data\\Settings\\Luthier\\" + id + ".txt")));
+                                writer.print(luthierData);
+                                writer.close();
+                                e.getChannel().sendMessage("Successfully edited the data of Luthier for " + e.getGuild().getName()).queue();
+                            } catch (Exception exception1) {
+                                //nothing here lol
+                            }
                         }
-                        luthierData.deleteCharAt(luthierData.length() - 1);
-                        try {
-                            writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Luthier\\" + id + ".txt")));
-                            writer.print(luthierData);
-                            writer.close();
-                            e.getChannel().sendMessage("Successfully edited the data of Luthier for " + e.getGuild().getName()).queue();
-                        } catch (Exception exception1) {
-                            //nothing here lol
+                        case "add" -> {
+                            String[] data = new String[0];
+                            try {
+                                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt"));
+                                data = reader.readLine().split(" ");
+                                reader.close();
+                            } catch (Exception exception1) {
+                                //nothing here lol
+                            }
+                            long add = Long.parseLong(message[2]);
+                            StringBuilder luthierData = new StringBuilder().append(data[0]).append(" ").append((Long.parseLong(data[1]) + add));
+                            for (int i = 2; i < data.length; i++) {
+                                luthierData.append(" ").append(data[i]);
+                            }
+                            try {
+                                writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt")));
+                                writer.print(luthierData);
+                                writer.close();
+                                e.getChannel().sendMessage("Successfully added " + message[2] + "x multiplier to " + e.getGuild().getName() + ".  New multiplier: " + (Long.parseLong(data[1]) + add)).queue();
+                            } catch (Exception exception1) {
+                                //nothing here lol
+                            }
                         }
                     }
                 } catch (Exception exception) {
                     String luthierData;
                     try {
-                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt"));
+                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt"));
                         luthierData = reader.readLine();
                         e.getChannel().sendMessage("Luthier Settings for " + e.getGuild().getName() + ": " + luthierData).queue();
                         reader.close();
@@ -137,7 +192,7 @@ public class DevCommands {
             case "!updateservers" -> {
                 if (message.length > 1 && message[1].equals("confirm")) {
                     e.getChannel().sendMessage("Updating saves for all servers...").queue();
-                    File directory = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server");
+                    File directory = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Server");
                     File[] files = directory.listFiles();
                     StringBuilder append = new StringBuilder();
                     for (int i = 2; i < message.length; i++) {
@@ -165,7 +220,7 @@ public class DevCommands {
             case "!updateusers" -> {
                 if (message.length > 1 && message[1].equals("confirm")) {
                     e.getChannel().sendMessage("Updating saves for all users...").queue();
-                    File directory = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data");
+                    File directory = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
                     File[] files = directory.listFiles();
                     StringBuilder append = new StringBuilder();
                     for (int i = 2; i < message.length; i++) {
@@ -192,7 +247,7 @@ public class DevCommands {
             }
             case "!purgeusers" -> {
                 e.getChannel().sendMessage("Purging saves for users with no violins...").queue();
-                File directory = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data");
+                File directory = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
                 File[] files = directory.listFiles();
                 if (files != null) {
                     int deleted = 0;
@@ -218,7 +273,7 @@ public class DevCommands {
                 if (!e.getAuthor().isBot()) {
                     e.getChannel().sendMessage("Maually overriding automatic user save reset...").queue();
                 }
-                File directory = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data");
+                File directory = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
                 File[] files = directory.listFiles();
                 if (files != null) {
                     for (File file : files) {
@@ -286,13 +341,7 @@ public class DevCommands {
                         if (moreIncome) {
                             income += 8000;
                         }
-                        try {
-                            data[65] = income + "";
-                        } catch (Exception exception) {
-                            e.getJDA().getUserById("619989388109152256").openPrivateChannel().complete().sendMessage(file.getAbsolutePath()).queue();
-                            continue;
-                        }
-                        data[12] = data[65];
+                        data[12] = income + "";
                         StringBuilder write = new StringBuilder(data[0]);
                         for (int i = 1; i < data.length; i++) {
                             write.append(" ").append(data[i]);
@@ -309,7 +358,7 @@ public class DevCommands {
                 }
             }
             case "!custom" -> {
-                File directory = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Economy Data");
+                File directory = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
                 File[] files = directory.listFiles();
                 assert files != null;
                 for (File file : files) {

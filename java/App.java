@@ -22,10 +22,11 @@ public class App {
 
 // [0] violins workCooldown workLevel gambleCooldown gambleLevel robCooldown robLevel rehearseCooldown performCooldown own1 own2 activeInsurance
 // [12] hourlyIncome violinQuality skillLevel lessonQuality stringQuality bowQuality hasMath
-// [19] hasOrchestra, piccolo, flute, oboe, clarinet, bassoon, contrabassoon, horn, trumpet, trombone, tuba, timpani, percussion, first, second, cello, bass, piano, harp, S, A, T, B, soloists
+// [19] hasOrchestra, piccolo, flute, oboe, clarinet, bassoon, contrabassoon, horn, trumpet, trombone, tuba, timpani, percussion
+// [32] first, second, cello, bass, piano, harp, S, A, T, B, soloists
 // [43] hallLevel, conductor, advertising, ticket, streak, dailyCooldown, dailyExpire, faster
-// [51] rice, thirdP, secondP, firstP, medals, extraIncome, extraCommandIncome, higherWinrate, higherRobrate, stealShield, violinDuplicator, tea, blessing, scaleCooldown, realIncome
-// [66] netGambleWinnings, millionDrawn, robEarnings, amountLost, scales, hoursPractised, rehearsals, performances, maxDailyStreak, violinsEarned, violinsSpentOnUpgrades, luthiersUnscrambled, hoursTaught
-// [79] hasCertificate, teachCooldown, teacherTraining, teachingStudio
+// [51] rice, thirdP, secondP, firstP, medals, extraIncome, extraCommandIncome, higherMulti, higherRobrate, stealShield, violinDuplicator, tea, blessing, scaleCooldown, realIncome
+// [66] netGambleWinnings, millionDrawn, robEarnings, amountLost, scales, hoursPractised, rehearsals, performances, maxDailyStreak, violinsEarned, hoursTaught, luthiersUnscrambled
+// [78] hasCertificate, teachCooldown, teacherTraining, students, lessonCharge, hasStudio, longerLessons
 
-//ex. 100 16000000000 50 16000000000 25 16000000000 15 16000000000 16000000000 true false 1 10000 5 5 5 5 5 true true true 1 1 1 1 true 1 1 1 1 1 1 20 20 15 5 2 true 20 20 20 20 4 5 5 20 5 0 16000000000 16000000000 true 0 3 2 1 10 true true false true true false 0 0 16000000000 10000 0 0 0 0 0 0.0 0 0 0 0 0 0 0
+//ex. 100 16000000000 50 16000000000 25 16000000000 15 16000000000 16000000000 true false 1 10000 5 5 5 5 5 true true true 1 1 1 1 true 1 1 1 1 1 1 20 20 15 5 2 true 20 20 20 20 4 5 5 20 5 0 16000000000 16000000000 true 0 3 2 1 10 true true false true true false 0 0 16000000000 10000 0 0 0 0 0 0.0 0 0 0 0 0 0 0 true 0 0 0 0 true true

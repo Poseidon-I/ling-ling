@@ -17,14 +17,11 @@ public class Receiver extends ListenerAdapter {
         PrintWriter writer;
         String[] message = e.getMessage().getContentRaw().toLowerCase().split(" ");
         String[] data = new String[0];
-        boolean isDev = false;
-        if (e.getAuthor().getId().equals("619989388109152256") || e.getAuthor().getId().equals("488487157372157962") || e.getAuthor().getId().equals("706933826193981612") || e.getAuthor().getId().equals("733409243222507670")) {
-            isDev = true;
-        }
+        boolean isDev = e.getAuthor().getId().equals("619989388109152256") || e.getAuthor().getId().equals("488487157372157962") || e.getAuthor().getId().equals("706933826193981612") || e.getAuthor().getId().equals("733409243222507670");
 
         //LOAD SERVER MEMBERS ONLY ONCE
         try {
-            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\loadedservers.txt"));
+            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\loadedservers.txt"));
             String line = reader.readLine();
             reader.close();
             try {
@@ -37,7 +34,7 @@ public class Receiver extends ListenerAdapter {
                 e.getGuild().loadMembers();
                 line = e.getGuild().getId();
             }
-            writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\loadedservers.txt")));
+            writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\loadedservers.txt")));
             writer.print(line);
             writer.close();
         } catch (Exception exception1) {
@@ -47,7 +44,7 @@ public class Receiver extends ListenerAdapter {
         //HOURLY
         long time = 0;
         try {
-            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\hourly.txt"));
+            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\hourly.txt"));
             time = Long.parseLong(reader.readLine());
             reader.close();
         } catch (Exception exception) {
@@ -57,7 +54,7 @@ public class Receiver extends ListenerAdapter {
             time += 3600000;
             new HourlyIncome();
             try {
-                PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\hourly.txt")));
+                PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\hourly.txt")));
                 pw.print(time);
                 pw.close();
             } catch (Exception exception) {
@@ -75,7 +72,7 @@ public class Receiver extends ListenerAdapter {
         //LUTHIER
         if(!e.getAuthor().isBot()) {
             try {
-                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt"));
+                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt"));
                 data = reader.readLine().split(" ");
                 reader.close();
                 new Luthier(e, data);
@@ -86,15 +83,15 @@ public class Receiver extends ListenerAdapter {
 
         //ALL COMMANDS
         try {
-            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt"));
+            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt"));
             data = reader.readLine().split(" ");
             reader.close();
         } catch (Exception exception) {
-            File file = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt");
+            File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt");
             try {
                 file.createNewFile();
                 PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
-                pw.print("true true false true true");
+                pw.print("true true false");
                 pw.close();
             } catch (Exception exception1) {
                 //nothing here lol
@@ -111,11 +108,11 @@ public class Receiver extends ListenerAdapter {
             char prefix = '!';
             try {
                 server = e.getGuild().getId();
-                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Prefixes\\" + server + ".txt"));
+                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Prefixes\\" + server + ".txt"));
                 prefix = (char) reader.read();
                 reader.close();
             } catch (Exception exception) {
-                File file = new File("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Prefixes\\" + server + ".txt");
+                File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Prefixes\\" + server + ".txt");
                 try {
                     file.createNewFile();
                     writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
@@ -143,7 +140,7 @@ public class Receiver extends ListenerAdapter {
                     String target = "";
                     String targetPing = "";
                     try {
-                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling Ling Bot Data\\Settings\\Server\\" + server + ".txt"));
+                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Server\\" + server + ".txt"));
                         data = reader.readLine().split(" ");
                         reader.close();
                     } catch (Exception exception) {
@@ -180,16 +177,20 @@ public class Receiver extends ListenerAdapter {
             }
         }
         //V I O L A
-        assert data != null;
+        /*assert data != null;
         if (data[1].equals("true")) {
-            try {
-                if (e.getChannel().getName().contains("announcement")) {
+            if (e.getChannel().getName().contains("announcement")) {
+                try {
                     e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1FB").queue();
                     e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue();
                     e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F4").queue();
                     e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F1").queue();
                     e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E6").queue();
-                } else {
+                } catch(Exception exception) {
+                    //nothing here lol
+                }
+            } else {
+                try {
                     if (random.nextDouble() <= 0.025) {
                         e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1FB").queue();
                         e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue();
@@ -197,10 +198,10 @@ public class Receiver extends ListenerAdapter {
                         e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F1").queue();
                         e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E6").queue();
                     }
+                }catch(Exception exception) {
+                    //nothing here lol
                 }
-            } catch(Exception exception) {
-                //nothing here lol
             }
-        }
+        }*/
     }
 }

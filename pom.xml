@@ -4,20 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.practise</groupId>
-    <artifactId>Ling_Ling_Bot</artifactId>
-    <version>2.2.0</version>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>16</source>
-                    <target>16</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <artifactId>Ling_Ling</artifactId>
+    <version>3.0.0 pre-1</version>
 
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
@@ -28,12 +16,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.2.1_255</version>
-        </dependency>
-        <dependency>
-            <groupId>org.discordbots</groupId>
-            <artifactId>DBL-Java-Library</artifactId>
-            <version>2.0.1</version>
+            <version>4.2.1_262</version>
         </dependency>
     </dependencies>
 

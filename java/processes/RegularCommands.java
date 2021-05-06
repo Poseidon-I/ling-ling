@@ -19,13 +19,12 @@ public class RegularCommands {
         Random random = new Random();
         switch (message[0]) {
             case "help" -> {
-                e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
                 EmbedBuilder builder = new EmbedBuilder().setColor(Color.BLUE).setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl()).setTitle("__**Ling Ling Bot Help**__");
                 try {
                     switch (message[1]) {
                         case "1" -> builder.addField("Help List Page 1 - Fun\nRun `" + prefix + "help <commandName>` to view a command in depth", "`joke`\n`insult`\n`kill`\n`emojify`", false);
                         case "2" -> builder.addField("Help List Page 2 - Utility\nRun `" + prefix + "help <commandName>` to view a command in depth",
-                                "`suggest`\n`poll`\n`checkdm`\n`invite`\n`faq`\n`serversettings`\n`support`\n`prefix`", false);
+                                "**`rules`**\n`poll`\n`checkdm`\n`invite`\n`faq`\n`serversettings`\n`support`\n`code`\n`prefix`", false);
                         case "3" -> builder.addField("Help List Page 3 - Economy Commands\nRun `" + prefix + "help <commandName>` to view a command in depth.",
                                 "`start`\n`scales`\n``practice`\n`rehearse`\n`perform`\n`daily`\n`gamble`\n`balance`\n`profile`\n`stats`\n`inventory`\n`cooldowns`\n`rob`\n`upgrades`\n`buy`\n`use`\n`leaderboard`", false);
                         case "4" -> builder.addField("Help List Page 4 - Leveling Commands\nRun `" + prefix + "help <commandName>` to view a command in depth\nThis module requres the server setting `leveling` to be set to `true`.", "`rank`\n`levelsettings`\n`levels`\n`setlevel`\n`rolerewards`", false);
@@ -70,11 +69,12 @@ public class RegularCommands {
                         case "kill" -> builder.addField("Kill Command", "Syntax: `" + prefix + "kill <user>`\nUsage: Totally kills the target\nExample: `" + prefix + "kill 488487157372157962`", false);
                         case "checkdm" -> builder.addField("CheckDM Command", "Syntax: `" + prefix + "checkdm <user>`\nUsage: Sends a pre-generated message telling the mentioned user to check their DM.  Highly effective.\nExample: `" + prefix + "checkdm 488487157372157962`", false);
                         case "poll" -> builder.addField("Poll Command", "Syntax: `" + prefix + "poll \"[Poll Name]\" \"[Options; separated; by; semicolons]`\"\nUsage: Creates a simple poll where reactions are used to vote.\nExample: `" + prefix + "poll \"Which instrument is better?\" \"Violin; Viola; Cello; Bass\"`", false);
-                        case "suggest" -> builder.addField("Suggest Command", "Syntax: `" + prefix + "suggest`\nUsage: Gives you the links to the suggestion pages..", false);
                         case "emojify" -> builder.addField("Emojify Command", "Syntax: `" + prefix + "emojify [message]`\nUsage: Returns your message using regional indicator emojis.\nRestrictions: You can only use numbers, letters, spaces, question marks, and exclamation points.  Incompatible with mentions.\nExample: `" + prefix + "emojify go practise`", false);
                         case "invite" -> builder.addField("Invite Command", "Syntax: `" + prefix + "invite`\nUsage: Gives you instructions on how to invite the bot to your server.", false);
                         case "serversettings" -> builder.addField("ServerSettings Command", "Syntax: `" + prefix + "serversettings [autoresponse | reactions | logging | automod | modcommands] [true/on | false/off]`\nUsage: Toggles a setting to be ON or OFF.\nRestrictions: Usable only by members with the `ADMINISTRATOR` permission.\nExample: `" + prefix + "serversettings autoresponse false`", false);
                         case "support" -> builder.addField("Support Command", "Syntax: `" + prefix + "support`\nUsage: Gives a link to the support server.", false);
+                        case "code" -> builder.addField("Code Command", "Syntax: `" + prefix + "code`\nUsage: Gives a link to view the open-source bot code.", false);
+                        case "rules" -> builder.addField("Rules Command", "Syntax: `" + prefix + "rules`\nUsage: View the bot's rules.  By using the bot, you agree to following these rules and can be subject to punishment for breaking them knowingly or unknowingly.", false);
                         case "vote" -> builder.addField("Vote Command", "Syntax: `" + prefix + "vote`\nUsage: Gives a link to vote for the bot and the support server.", false);
                         case "prefix" -> builder.addField("Prefix Command", "Syntax: `!prefix [new]`\nUsage: Shows the current prefix.  Append a character to change the prefix.  This is the only command that will retain `!` across all servers.\nRestrictions: The prefix can only be changed by members with the `ADMINISTRATOR` permission.\nExample: `!prefix $`", false);
                         default -> builder.addField("Help List", "Page or command `" + message[1] + "` does not exist!  Run `" + prefix + "help` to see a list of pages.", false);
@@ -109,18 +109,15 @@ public class RegularCommands {
                 ranCommand = true;
             }
             case "code" -> {
-                e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
                 e.getChannel().sendMessage("The open source GitHub page is at <https://github.com/Poseidon-I/ling-ling>").queue();
                 ranCommand = true;
             }
             case "support" -> {
-                e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
                 e.getChannel().sendMessage("Join the support server at discord.gg/gNfPwa8").queue();
                 ranCommand = true;
             }
             case "checkdm" -> {
                 e.getChannel().sendMessage("**OI <@" + target + ">, " + e.getAuthor().getName() + " WANTS YOU TO CHECK YOUR DMS.  DO IT NOW OR ELSE.**").queue();
-                e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
                 try {
                     User send = e.getJDA().getUserById(target);
                     assert send != null;
@@ -451,21 +448,22 @@ public class RegularCommands {
                 ranCommand = true;
             }
             case "invite" -> {
-                e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
                 e.getChannel().sendMessage("You can add the bot to your server using the below link:\n<https://discord.com/api/oauth2/authorize?client_id=733409243222507670&permissions=268725312&scope=bot>").queue();
                 ranCommand = true;
             }
             case "vote" -> {
-                e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
                 e.getChannel().sendMessage("You can vote for the bot here: <https://top.gg/bot/733409243222507670/vote>.\nYou can vote for the support server here to get a 10% command boost in the server: <https://top.gg/servers/670725611207262219/vote>").queue();
                 ranCommand = true;
+            }
+            case "rules" -> {
+                e.getChannel().sendMessage("```ini\n[ LING LING BOT RULES ]```\n1. Do not spam commands, spam autoresponse triggers, excessively ping users, or send messages to trigger luthier or any sort of action that may cause the bot to crash.  This is punishable by warn and up to a save reset.\n\n2. Do not abuse bugs or exploits.  If a bug/exploit is found, **IMMEDIATELY** report it to @Stradivarius Violin#6156.  Any instance of bug/exploit abuse can warrant an immediate save reset, and in some cases or for repeat offenders, a permanent bot ban.\n\n3. Some parts of the bot were written to poke fun at others.  However, if taken too far, you will be punished based on how severe your actions were.\n\n4. Read the #update-log before bothering anyone as to why something changed or why the bot is offline.\n\n***All bot mods are allowed to take bot moderation actions in any server and can give users bot warnings even if the action was not against the server rules.***").queue();
             }
         }
         if(serverSettings[2].equals("true")) {
             new LevelCommands(e, message);
         }
         if(!ranCommand) {
-            new Economy(e, message, prefix, target);
+            new Economy(e, message, prefix);
         }
     }
 }
