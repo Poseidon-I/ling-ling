@@ -24,7 +24,7 @@ public class Orchestra {
                     .setTitle("**__Orchestra Stats__**")
                     .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
                     .addField("**Woodwinds**", temp1 + " Piccolo\n" + data[21] + " Flutes\n" + data[22] + " Oboes\n" + data[23] + " Clarinets\n" + data[24] + " Bassoons\n" + temp2 + " Contrabassoon", true)
-                    .addField("**Brass**", data[26] + " Trumpets\n" + data[27] + " French Horns\n" + data[28] + " Trombones\n" + data[29] + " Tubas", true)
+                    .addField("**Brass**", data[26] + " French Horns\n" + data[27] + " Trumpets\n" + data[28] + " Trombones\n" + data[29] + " Tubas", true)
                     .addField("**Strings**", data[32] + " Violin I\n" + data[33] + " Violin II\n" + data[34] + " Celli\n" + data[35] + " Double Basses\n" + data[36] + " Pianists", true)
                     .addField("**Choir**", data[38] + " Sopranos\n" + data[39] + " Altos\n" + data[40] + " Tenors\n" + data[41] + " Basses\n" + data[42] + " Vocal Soloists", true)
                     .addField("**Other**", temp3 + " Harp\n" + data[31] + " Percussionists\n" + data[30] + " Timpanists", true)

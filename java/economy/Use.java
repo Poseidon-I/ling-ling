@@ -35,7 +35,7 @@ public class Use {
                 new SaveData(e, data);
             }
             case "rice" -> {
-                if(Long.parseLong(data[51]) == 0) {
+                if(Long.parseLong(data[51]) <= 0) {
                     e.getChannel().sendMessage("You scourge your pantry but find no rice.  Then you remember you don't have any more.").queue();
                 } else {
                     data[51] = String.valueOf(Long.parseLong(data[51]) - 1);
@@ -46,7 +46,7 @@ public class Use {
                 }
             }
             case "tea" -> {
-                if(Long.parseLong(data[62]) == 0) {
+                if(Long.parseLong(data[62]) <= 0) {
                     e.getChannel().sendMessage("You scourge your pantry but find no more bubble tea.  Then you remember you don't have any more.").queue();
                 } else {
                     data[62] = String.valueOf(Long.parseLong(data[62]) - 1);
@@ -59,7 +59,7 @@ public class Use {
                 }
             }
             case "blessing" -> {
-                if(Long.parseLong(data[51]) == 0) {
+                if(Long.parseLong(data[63]) <= 0) {
                     e.getChannel().sendMessage("You already used all your blessings, run more commands to get back into Ling Ling's good graces!").queue();
                 } else {
                     data[63] = String.valueOf(Long.parseLong(data[63]) - 1);

@@ -30,7 +30,7 @@ public class Upgrades {
             builder = new EmbedBuilder()
                     .setColor(Color.BLUE)
                     .setFooter("User balance: " + data[0] + "\nUser `" + prefix + "buy [ID]` to buy an upgrade!", e.getJDA().getSelfUser().getAvatarUrl())
-                    .addField("Concert Hall Quality (" + data[43] + "/2)", "Price: " + (long) Math.pow(10, Double.parseDouble(data[43])) * 10000 + "\nEffect: +300:violin:/hour, +10% data[0] from `" + prefix + "scales`, `" + prefix + "practice` `" + prefix + "rehearse` and `" + prefix + "perform`\nID: `concert`, `hall`", false)
+                    .addField("Concert Hall Quality (" + data[43] + "/2)", "Price: " + (long) Math.pow(10, Double.parseDouble(data[43])) * 10000 + "\nEffect: +300:violin:/hour, +10% violins from `" + prefix + "scales`, `" + prefix + "practice` `" + prefix + "rehearse` and `" + prefix + "perform`\nID: `concert`, `hall`", false)
                     .addField("Orchestra", "Price: 25 000 000\nIncome Requirement: 7 500\nEffect: +3 100:violin:/hour, access to `" + prefix + "rehearse` command\nID:`orchestra`, `o`", false)
                     .setTitle("__**Miscellaneous Orchestra Items**__");
         } else {
@@ -56,14 +56,14 @@ public class Upgrades {
                 .addField("Sophisticated Robbing (" + data[6] + "/30)", "Price: " + (long) Math.pow(1.4, Double.parseDouble(data[6])) * 5000 + "\nEffect: Increases your chance of a successful `" + prefix + "rob` by 0.5%.\nID: `sophisticated`, `robbing`, `sr`", false)
                 .setTitle("__**Other Miscellaneous Upgrades**__");
         if (Boolean.parseBoolean(data[9])) {
-            builder.addField("Ling Ling Insurance - Plan 1 - Full Security (1/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect all your data[0] from being stolen.  You pay a 15% insurance cost and the robber is fined 5% of their balance.\nID: `1`", false);
+            builder.addField("Ling Ling Insurance - Plan 1 - Full Security (1/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect all your violins from being stolen.  You pay a 15% insurance cost and the robber is fined 5% of their balance.\nID: `1`", false);
         } else {
-            builder.addField("Ling Ling Insurance - Plan 1 - Full Security (0/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect all your data[0] from being stolen.  You pay a 15% insurance cost and the robber is fined 5% of their balance.\nID: `1`", false);
+            builder.addField("Ling Ling Insurance - Plan 1 - Full Security (0/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect all your violins from being stolen.  You pay a 15% insurance cost and the robber is fined 5% of their balance.\nID: `1`", false);
         }
         if (Boolean.parseBoolean(data[10])) {
-            builder.addField("Ling Ling Insurance - Plan 2 - Half Security (1/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect only 95% of your data[0] from being stolen but you don't pay any insurance costs.\nID: `2`", false);
+            builder.addField("Ling Ling Insurance - Plan 2 - Half Security (1/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect only 95% of your violins from being stolen but you don't pay any insurance costs.\nID: `2`", false);
         } else {
-            builder.addField("Ling Ling Insurance - Plan 2 - Half Security (0/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect only 95% of your data[0] from being stolen but you don't pay any insurance costs.\nID: `2`", false);
+            builder.addField("Ling Ling Insurance - Plan 2 - Half Security (0/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect only 95% of your violins from being stolen but you don't pay any insurance costs.\nID: `2`", false);
         }
         if(Boolean.parseBoolean(data[50])) {
             builder.addField("Time Crunch (1/1)", "Price: 150 000 000\nEffect: Decreases `" + prefix + "practice`, `" + prefix + "rehearse`, and `" + prefix + "perform` cooldowns.\nID: `time`, `crunch`, `speed`, `faster`", false);
@@ -98,14 +98,14 @@ public class Upgrades {
             builder.addField("Higher Rob Success Rate", "Needed: 25:military_medal:\nEffect: +2.5% chance at successfully robbing someone.  Does NOT bypass Ling Ling Insurance", false);
         }
         if(Boolean.parseBoolean(data[60])) {
-            builder.addField("Steal Shield :white_check_mark:", "Needed: 35:military_medal:\nEffect: Advanced technology takes back 50% of data[0] when you get robbed.", false);
+            builder.addField("Steal Shield :white_check_mark:", "Needed: 35:military_medal:\nEffect: Advanced technology takes back 50% of violins when you get robbed.", false);
         } else {
-            builder.addField("Steal Shield", "Needed: 35:military_medal:\nEffect: Advanced technology takes back 50% of data[0] when you get robbed.", false);
+            builder.addField("Steal Shield", "Needed: 35:military_medal:\nEffect: Advanced technology takes back 50% of violins when you get robbed.", false);
         }
         if(Boolean.parseBoolean(data[61])) {
-            builder.addField("Violin Duplicator :white_check_mark:", "Needed: 50:military_medal:\nEffect: The Vengeful God of Ben Lee duplicates all data[0] stolen", false);
+            builder.addField("Violin Duplicator :white_check_mark:", "Needed: 50:military_medal:\nEffect: The Vengeful God of Ben Lee duplicates all violins stolen", false);
         } else {
-            builder.addField("Violin Duplicator", "Needed: 50:military_medal:\nEffect: The Vengeful God of Ben Lee duplicates all data[0] stolen", false);
+            builder.addField("Violin Duplicator", "Needed: 50:military_medal:\nEffect: The Vengeful God of Ben Lee duplicates all violins stolen", false);
         }
         e.getChannel().sendMessage(builder.build()).queue();
     }
@@ -153,7 +153,7 @@ public class Upgrades {
                 .addField("Violin I (" + data[32] + "/20)", "Price: " + 600000 * Long.parseLong(data[32]) + "\nEffect: +70:violin:/hour\nID: `first`", false)
                 .addField("Violin II (" + data[33] + "/20)", "Price: " + 500000 * Long.parseLong(data[33]) + "\nEffect: +60:violin:/hour\nID: `second`", false)
                 .addField("Cellos (" + data[34] + "/15)", "Price: " + 500000 * Long.parseLong(data[34] + 1) + "\nEffect: +50:violin:/hour\nID: `cello`", false)
-                .addField("Double Basses (" + data[35] + "/5)", "Price: " + 500000 * Long.parseLong(data[35] + 1) + "\nEffect: +50:violin:/hour\nID: `double`, `upright`, `doublebass`, `db`", false)
+                .addField("Double Basses (" + data[35] + "/5)", "Price: " + 500000 * Long.parseLong(data[35] + 1) + "\nEffect: +50:violin:/hour\nID: `doublebass`, `db`", false)
                 .addField("Pianists (" + data[36] + "/2)", "Price: " + 1000000 * Long.parseLong(data[36] + 1) + "\nEffect: +110:violin:/hour\nID: `piano`", false)
                 .setTitle("__**Strings**__");
         if(Boolean.parseBoolean(data[37])) {
@@ -172,7 +172,7 @@ public class Upgrades {
                 .addField("Altos (" + data[39] + "/20)", "Price: " + 75000 * Long.parseLong(data[39] + 1) + "\nEffect: +20:violin:/hour\nID: `alto`", false)
                 .addField("Tenors (" + data[40] + "/20)", "Price: " + 75000 * Long.parseLong(data[40] + 1) + "\nEffect: +20:violin:/hour\nID: `tenor`", false)
                 .addField("Basses (" + data[41] + "/20)", "Price: " + 75000 * Long.parseLong(data[41] + 1) + "\nEffect: +20:violin:/hour\nID: `bass`", false)
-                .addField("Vocal Soloists (" + data[42] + "/4)", "Price: " + 400000 * (Long.parseLong(data[42]) + 1) + "\nEffect: +60:violin:/hour\nID: `soloist`", false)
+                .addField("Vocal Soloists (" + data[42] + "/4)", "Price: " + 400000 * Long.parseLong(data[42] + 1) + "\nEffect: +60:violin:/hour\nID: `soloist`", false)
                 .setTitle("__**Choir**__");
         e.getChannel().sendMessage(builder.build()).queue();
     }
@@ -181,20 +181,20 @@ public class Upgrades {
         EmbedBuilder builder = new EmbedBuilder()
                 .setColor(Color.BLUE)
                 .setFooter("User balance: " + data[0] + "\nUse `" + prefix + "buy [ID]` to buy an upgrade!", e.getJDA().getSelfUser().getAvatarUrl())
-                .addField("More Students (" + data[81] + ")", "Price: " + (long) Math.pow(2, Double.parseDouble(data[81])) * 1000000 + "\nEffect: +2 500:violin:/hour, +20% data[0] from `" + prefix + "teach`\nID: `students`", false)
-                .addField("Lesson Pricing (" + data[82] + "/5)", "Price: " + 2000000 * Long.parseLong(data[82] + 1) + "\nEffect: +4 000:violin:/hour, +12.5% data[0] from `\" + prefix + \"teach`\nID: `pricing`", false)
-                .addField("Teacher Training (" + data[83] + "/10", "Price: " + 1250000 * Long.parseLong(data[83] + 1) + "\nEffect: +1 500:violin:/hour, +7.5% data[0] from `\" + prefix + \"teach`\nID: `training`", false);
-        if (Boolean.parseBoolean(data[84])) {
+                .addField("More Students (" + data[81] + ")", "Price: " + (long) Math.pow(2, Double.parseDouble(data[81])) * 1000000 + "\nEffect: +2 500:violin:/hour, +20% violins from `" + prefix + "teach`\nID: `students`", false)
+                .addField("Higher Lesson Rates (" + data[82] + "/5)", "Price: " + 2000000 * Long.parseLong(data[82] + 1) + "\nEffect: +4 000:violin:/hour, +12.5% violins from `" + prefix + "teach`\nID: `pricing`", false)
+                .addField("Teacher Training (" + data[80] + "/10)", "Price: " + 1250000 * Long.parseLong(data[80] + 1) + "\nEffect: +1 500:violin:/hour, +7.5% violins from `" + prefix + "teach`\nID: `training`", false);
+        if (Boolean.parseBoolean(data[83])) {
             builder.addField("Teaching Studio (1/1)", "Price: 25 000 000\nEffect: +5 000:violin:/hour\nID: `studio`", false);
         } else {
             builder.addField("Teaching Studio (0/1)", "Price: 25 000 000\nEffect: +5 000:violin:/hour\nID: `studio`", false);
         }
-        if (Boolean.parseBoolean(data[85])) {
-            builder.addField("Longer Lessons (1/1)", "Price: 25 000 000\nEffect: +100% data[0] from `" + prefix + "teach`\nID: `longer`", false);
+        if (Boolean.parseBoolean(data[84])) {
+            builder.addField("Longer Lessons (1/1)", "Price: 25 000 000\nEffect: +100% violins from `" + prefix + "teach`\nID: `longer`", false);
         } else {
-            builder.addField("Longer Lessons (0/1)", "Price: 25 000 000\nEffect: +100% data[0] from `" + prefix + "teach`\nID: `longer`", false);
+            builder.addField("Longer Lessons (0/1)", "Price: 25 000 000\nEffect: +100% violins from `" + prefix + "teach`\nID: `longer`", false);
         }
-        builder.setTitle("__**Teacher Upgrades - Coming Soon!**__");
+        builder.setTitle("__**Teacher Upgrades**__");
         e.getChannel().sendMessage(builder.build()).queue();
     }
 

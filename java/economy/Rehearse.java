@@ -119,7 +119,7 @@ public class Rehearse {
                 new SaveData(e, data);
             }
         } else {
-            e.getChannel().sendMessage("You must hire an orchestra to use this command!").queue();
+            e.getChannel().sendMessage("You must have an orchestra to rehearse with to use this command!").queue();
         }
     }
 }

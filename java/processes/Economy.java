@@ -81,16 +81,20 @@ public class Economy {
     public Economy(GuildMessageReceivedEvent e, String[] message, char prefix) {
         String[] data = new String[0];
         boolean hasData;
+        boolean isBanned = false;
         try {
             BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt"));
             hasData = true;
             data = reader.readLine().split(" ");
+            if(data.length == 1 && data[0].equals("BANNED")) {
+                isBanned = true;
+            }
             reader.close();
         } catch (Exception exception) {
             hasData = false;
             e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
         }
-        if (message[0].equals("start") && !hasData) {
+        if (message[0].equals("start") && !hasData && !isBanned) {
             File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt");
             try {
                 file.createNewFile();
@@ -109,6 +113,9 @@ public class Economy {
         } else if (message[0].equals("start")) {
             e.getChannel().sendMessage("You already have a save, don't try to outsmart me").queue();
         }
+        if(isBanned) {
+            e.getChannel().sendMessage("You are banned from using this bot.").queue();
+        }
         switch (message[0]) {
             case "upgrades", "up", "u", "shop" -> new Upgrades(e, data, prefix);
             case "buy" -> new Buy(e, data);
@@ -118,8 +125,9 @@ public class Economy {
             case "scales", "s" -> new Scales(e, data);
             case "practice", "p" -> new Practise(e, data);
             case "rehearse", "r" -> new Rehearse(e, data);
-            case "perform" -> new Perform(e, data);
+            case "perform", "pf" -> new Perform(e, data);
             case "daily", "d" -> new Daily(e, data);
+            case "teach" -> new Teach(e, data);
             case "rob" -> new Rob(e, data);
             case "gamble", "bet" -> new Gamble(e, data);
             case "inventory", "inv" -> new Inventory(e, data);

@@ -150,7 +150,7 @@ public class Perform {
             } else {
                 newData[8] = String.valueOf(time + 302340000);
             }
-            newData[73] = String.valueOf(Long.parseLong(data[73] + 1));
+            newData[73] = String.valueOf(Long.parseLong(data[73]) + 1);
             new SaveData(e, newData);
         }
     }

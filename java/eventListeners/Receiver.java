@@ -60,8 +60,6 @@ public class Receiver extends ListenerAdapter {
             } catch (Exception exception) {
                 //nothing here lol
             }
-            String id = e.getJDA().getGuildById("709632179340312597").getTextChannelById("717484601328533565").sendMessage("!resetincomes").complete().getId();
-            e.getJDA().getGuildById("709632179340312597").getTextChannelById("717484601328533565").deleteMessageById(id).queue();
             if(time % 86400000 == 0) {
                 e.getJDA().getGuildById("709632179340312597").getTextChannelById("717484601328533565").sendMessage("Bot Restarting!").queue();
                 e.getJDA().shutdownNow();
@@ -77,6 +75,31 @@ public class Receiver extends ListenerAdapter {
                 reader.close();
                 new Luthier(e, data);
             } catch (Exception exception) {
+                //nothing here lol
+            }
+        }
+
+        //DEV COMMANDS
+        if(isDev) {
+            new DevCommands(e, message, 2);
+        } else {
+            try {
+                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Admins.txt"));
+                String admins = reader.readLine();
+                reader.close();
+                if(admins.contains(e.getAuthor().getId())) {
+                    new DevCommands(e, message, 1);
+                } else {
+                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Mods.txt"));
+                    String mods = reader.readLine();
+                    reader.close();
+                    if(mods.contains(e.getAuthor().getId())) {
+                        new DevCommands(e, message, 0);
+                    } else {
+                        new DevCommands(e, message, -1);
+                    }
+                }
+            } catch(Exception exception) {
                 //nothing here lol
             }
         }
@@ -97,7 +120,7 @@ public class Receiver extends ListenerAdapter {
                 //nothing here lol
             }
         }
-        if (!e.getAuthor().isBot() || e.getAuthor().getId().equals("733409243222507670")) {
+        if (!e.getAuthor().isBot()) {
             if (data[2].equals("true") && !e.getAuthor().isBot()) {
                 new Leveling(e);
             }
@@ -106,27 +129,23 @@ public class Receiver extends ListenerAdapter {
             }
             String server = "";
             char prefix = '!';
-            try {
-                server = e.getGuild().getId();
-                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Prefixes\\" + server + ".txt"));
-                prefix = (char) reader.read();
-                reader.close();
-            } catch (Exception exception) {
-                File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Prefixes\\" + server + ".txt");
+            if(!isDev) {
                 try {
-                    file.createNewFile();
-                    writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
-                    writer.print('!');
-                    writer.close();
-                } catch (Exception exception1) {
-                    //nothing here lol
+                    server = e.getGuild().getId();
+                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Prefixes\\" + server + ".txt"));
+                    prefix = (char) reader.read();
+                    reader.close();
+                } catch (Exception exception) {
+                    File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Prefixes\\" + server + ".txt");
+                    try {
+                        file.createNewFile();
+                        writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
+                        writer.print('!');
+                        writer.close();
+                    } catch (Exception exception1) {
+                        //nothing here lol
+                    }
                 }
-            }
-
-            //DEV COMMANDS
-            if (isDev) {
-                prefix = '!';
-                new DevCommands(e, message);
             }
             try {
                 if (e.getMessage().getMentionedUsers().get(0).getId().equals("733409243222507670")) {
