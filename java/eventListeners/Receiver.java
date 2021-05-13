@@ -82,26 +82,12 @@ public class Receiver extends ListenerAdapter {
         //DEV COMMANDS
         if(isDev) {
             new DevCommands(e, message, 2);
+        } else if(e.getAuthor().getId().equals("497916210315264014")) {
+            new DevCommands(e, message, 1);
+        } else if(e.getAuthor().getId().equals("630574049566785547")) {
+            new DevCommands(e, message, 0);
         } else {
-            try {
-                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Admins.txt"));
-                String admins = reader.readLine();
-                reader.close();
-                if(admins.contains(e.getAuthor().getId())) {
-                    new DevCommands(e, message, 1);
-                } else {
-                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Mods.txt"));
-                    String mods = reader.readLine();
-                    reader.close();
-                    if(mods.contains(e.getAuthor().getId())) {
-                        new DevCommands(e, message, 0);
-                    } else {
-                        new DevCommands(e, message, -1);
-                    }
-                }
-            } catch(Exception exception) {
-                //nothing here lol
-            }
+            new DevCommands(e, message, -1);
         }
 
         //ALL COMMANDS

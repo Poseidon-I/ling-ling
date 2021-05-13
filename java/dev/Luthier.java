@@ -13,7 +13,7 @@ public class Luthier {
                     File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt");
                     try {
                         file.createNewFile();
-                        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt")));
+                        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
                         writer.print(e.getChannel().getId() + " 1 0.01 false blank 0");
                         writer.close();
                         e.getChannel().sendMessage("Successfully set up Luthier for " + e.getGuild().getName() + " in " + e.getChannel().getAsMention()).queue();

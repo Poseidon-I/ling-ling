@@ -6,6 +6,22 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.awt.*;
 
 public class Cooldowns {
+    public static String Reformat(long string) {
+        String newString = string + "";
+        if(String.valueOf(string).length() == 1) {
+            newString = "0" + string;
+        }
+        return newString;
+    }
+    public static String ReformatMilliseconds(long string) {
+        String newString = string + "";
+        if(String.valueOf(string).length() == 1) {
+            newString = "00" + string;
+        } else if(String.valueOf(string).length() == 2) {
+            newString = "0" + string;
+        }
+        return newString;
+    }
     public Cooldowns(GuildMessageReceivedEvent e, String[] data) {
         long time = System.currentTimeMillis();
         EmbedBuilder builder = new EmbedBuilder()
@@ -25,7 +41,7 @@ public class Cooldowns {
             milliseconds -= minutes * 60000;
             seconds = milliseconds / 1000;
             milliseconds -= seconds * 1000;
-            builder.addField("**Rob**", "`" + hours + ":" + minutes + ":" + seconds + "." + milliseconds + "`", false);
+            builder.addField("**Rob**", "`" + Reformat(hours) + ":" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`", false);
         }
 
         //scales
@@ -35,7 +51,7 @@ public class Cooldowns {
         } else {
             seconds = milliseconds / 1000;
             milliseconds -= seconds * 1000;
-            builder.addField("**Scales**", "`" + seconds + "." + milliseconds + "`", false);
+            builder.addField("**Scales**", "`" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`", false);
         }
 
         //practice
@@ -47,7 +63,7 @@ public class Cooldowns {
             milliseconds -= minutes * 60000;
             seconds = milliseconds / 1000;
             milliseconds -= seconds * 1000;
-                builder.addField("**Practice**", "`" + minutes + ":" + seconds + "." + milliseconds + "`", false);
+                builder.addField("**Practice**", "`" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`", false);
         }
 
         //teach
@@ -62,7 +78,7 @@ public class Cooldowns {
                 milliseconds -= minutes * 60000;
                 seconds = milliseconds / 1000;
                 milliseconds -= seconds * 1000;
-                builder.addField("**Teach**", "`" + minutes + ":" + seconds + "." + milliseconds + "`", false);
+                builder.addField("**Teach**", "`" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`", false);
             }
         }
 
@@ -78,7 +94,7 @@ public class Cooldowns {
                 milliseconds -= minutes * 60000;
                 seconds = milliseconds / 1000;
                 milliseconds -= seconds * 1000;
-                builder.addField("**Rehearse**", "`" + hours + ":" + minutes + ":" + seconds + "." + milliseconds + "`", false);
+                builder.addField("**Rehearse**", "`" + Reformat(hours) + ":" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`", false);
             }
         }
 
@@ -93,7 +109,7 @@ public class Cooldowns {
             milliseconds -= minutes * 60000;
             seconds = milliseconds / 1000;
             milliseconds -= seconds * 1000;
-            builder.addField("**Perform**", "`" + hours + ":" + minutes + ":" + seconds + "." + milliseconds + "`", false);
+            builder.addField("**Perform**", "`" + Reformat(hours) + ":" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`", false);
         }
 
         //daily
@@ -107,7 +123,7 @@ public class Cooldowns {
             milliseconds -= minutes * 60000;
             seconds = milliseconds / 1000;
             milliseconds -= seconds * 1000;
-            builder.addField("**Daily**", "`" + hours + ":" + minutes + ":" + seconds + "." + milliseconds + "`", false);
+            builder.addField("**Daily**", "`" + Reformat(hours) + ":" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`", false);
         }
         builder.setTitle("__**Cooldowns**__");
         e.getChannel().sendMessage(builder.build()).queue();

@@ -10,11 +10,11 @@ public class Upgrades {
         EmbedBuilder builder = new EmbedBuilder()
                 .setColor(Color.BLUE)
                 .setFooter("User balance: " + data[0] + "\nUse `" + prefix + "buy [ID]` to buy an upgrade!", e.getJDA().getSelfUser().getAvatarUrl())
-                .addField("Violin Quality (" + data[13] + "/10)", "Price: " + (long) Math.pow(3.5, Double.parseDouble(data[13])) * 1000 + "\nEffect: +600:violin:/hour\nID: `violin`, `v`", false)
-                .addField("Skill Level (" + data[14] + "/15)", "Price: " + (long) Math.pow(2.25, Double.parseDouble(data[14])) * 500 + "\nEffect: +240:violin:/hour\nID: `skill`, `s`", false)
-                .addField("Lesson Quality (" + data[15] + "/12)", "Price: " + (long) Math.pow(2.75, Double.parseDouble(data[15])) * 700 + "\nEffect: +150:violin:/hour\nID: `lesson`, `l`", false)
-                .addField("String Quality (" + data[16] + "/20)", "Price: " + (long) Math.pow(1.8, Double.parseDouble(data[16])) * 400 + "\nEffect: +100:violin:/hour\nID: `string`, `str`", false)
-                .addField("Bow Quality (" + data[17] + "/10)", "Price: " + (long) Math.pow(3.5, Double.parseDouble(data[17])) * 500 + "\nEffect: +200:violin:/hour\nID: `bow`, `b`", false)
+                .addField("Violin Quality (" + data[13] + "/10)", "Price: " + (long) (Math.pow(3.5, Double.parseDouble(data[13])) * 1000) + "\nEffect: +600:violin:/hour\nID: `violin`, `v`", false)
+                .addField("Skill Level (" + data[14] + "/15)", "Price: " + (long) (Math.pow(2.25, Double.parseDouble(data[14])) * 500) + "\nEffect: +240:violin:/hour\nID: `skill`, `s`", false)
+                .addField("Lesson Quality (" + data[15] + "/12)", "Price: " + (long) (Math.pow(2.75, Double.parseDouble(data[15])) * 700) + "\nEffect: +150:violin:/hour\nID: `lesson`, `l`", false)
+                .addField("String Quality (" + data[16] + "/20)", "Price: " + (long) (Math.pow(1.8, Double.parseDouble(data[16])) * 400) + "\nEffect: +100:violin:/hour\nID: `string`, `str`", false)
+                .addField("Bow Quality (" + data[17] + "/10)", "Price: " + (long) (Math.pow(3.5, Double.parseDouble(data[17])) * 500) + "\nEffect: +200:violin:/hour\nID: `bow`, `b`", false)
                 .setTitle("__**Income Upgrades**__");
         if (Boolean.parseBoolean(data[18])) {
             builder.addField("Math Tutoring (1/1)", "Price: 10 000 000\nEffect: +6500:violin:/hour\nID: `math`", false);
@@ -30,17 +30,17 @@ public class Upgrades {
             builder = new EmbedBuilder()
                     .setColor(Color.BLUE)
                     .setFooter("User balance: " + data[0] + "\nUser `" + prefix + "buy [ID]` to buy an upgrade!", e.getJDA().getSelfUser().getAvatarUrl())
-                    .addField("Concert Hall Quality (" + data[43] + "/2)", "Price: " + (long) Math.pow(10, Double.parseDouble(data[43])) * 10000 + "\nEffect: +300:violin:/hour, +10% violins from `" + prefix + "scales`, `" + prefix + "practice` `" + prefix + "rehearse` and `" + prefix + "perform`\nID: `concert`, `hall`", false)
+                    .addField("Concert Hall Quality (" + data[43] + "/2)", "Price: " + (long) (Math.pow(10, Double.parseDouble(data[43])) * 10000) + "\nEffect: +300:violin:/hour, +10% violins from `" + prefix + "scales`, `" + prefix + "practice` `" + prefix + "rehearse` and `" + prefix + "perform`\nID: `concert`, `hall`", false)
                     .addField("Orchestra", "Price: 25 000 000\nIncome Requirement: 7 500\nEffect: +3 100:violin:/hour, access to `" + prefix + "rehearse` command\nID:`orchestra`, `o`", false)
                     .setTitle("__**Miscellaneous Orchestra Items**__");
         } else {
             builder = new EmbedBuilder()
                     .setColor(Color.BLUE)
                     .setFooter("User balance: " + data[0] + "\nUse `" + prefix + "buy [ID]` to buy an upgrade!", e.getJDA().getSelfUser().getAvatarUrl())
-                    .addField("Concert Hall Quality (" + data[43] + "/5)", "Price: " + (long) Math.pow(10, Double.parseDouble(data[43])) * 10000 + "\nEffect: +300:violin:/hour, +10% violins from `" + prefix + "scales`, `" + prefix + "practice` `" + prefix + "rehearse` and `" + prefix + "perform`\nID: `concert`, `hall`", false)
-                    .addField("Conductor Musicality (" + data[44] + "/5)", "Price: " + (long) Math.pow(5, Double.parseDouble(data[44])) * 100000 + "\nEffect: +200:violin:/hour\nID: `conductor`, `musicality`", false)
+                    .addField("Concert Hall Quality (" + data[43] + "/5)", "Price: " + (long) (Math.pow(10, Double.parseDouble(data[43])) * 10000) + "\nEffect: +300:violin:/hour, +10% violins from `" + prefix + "scales`, `" + prefix + "practice` `" + prefix + "rehearse` and `" + prefix + "perform`\nID: `concert`, `hall`", false)
+                    .addField("Conductor Musicality (" + data[44] + "/5)", "Price: " + (long) (Math.pow(5, Double.parseDouble(data[44])) * 100000) + "\nEffect: +200:violin:/hour\nID: `conductor`, `musicality`", false)
                     .addField("Advertisement (" + data[45] + "/20)", "Price: " + 100000 * Long.parseLong(data[45] + 1) + "\nEffect: +100:violin:/hour\nID: `advertisement`, `ad`", false)
-                    .addField("Ticket Price (" + data[46] + "/5)", "Price: " + (long) Math.pow(2, Double.parseDouble(data[46])) * 2000000 + "\nEffect: +1000:violin:/hour\nID: `tickets`", false)
+                    .addField("Ticket Price (" + data[46] + "/5)", "Price: " + (long) (Math.pow(2, Double.parseDouble(data[46])) * 2000000) + "\nEffect: +1000:violin:/hour\nID: `tickets`", false)
                     .addField("Teaching Certificate", "Price: 250 000 000\nIncome Requirement: 40 000:violin:/hr\nEffect: +10 000:violin:/hr, access to `" + prefix + "teach` command\nID: `certificate`", false)
                     .setTitle("__**Miscellaneous Orchestra Items**__");
         }
@@ -51,9 +51,9 @@ public class Upgrades {
         EmbedBuilder builder = new EmbedBuilder()
                 .setColor(Color.BLUE)
                 .setFooter("User balance: " + data[0] + "\nUse `" + prefix + "buy [ID]` to buy an upgrade!", e.getJDA().getSelfUser().getAvatarUrl())
-                .addField("Efficient Practising (" + data[2] + "/100)", "Price: " + (long) Math.pow(1.125, Double.parseDouble(data[2])) * 250 + "\nEffect: Increases your income from `" + prefix + "scales`, `" + prefix + "practice`, `" + prefix + "rehearse`, and `" + prefix + "perform` by 5%.\nID: `efficient`, `practising`, `ep`", false)
-                .addField("Lucky Musician (" + data[4] + "/50)", "Price: " + (long) Math.pow(1.25, Double.parseDouble(data[4])) * 1000 + "\nEffect: Increases your gambling multiplier by 0.5%.\nID: `lucky`, `lm`", false)
-                .addField("Sophisticated Robbing (" + data[6] + "/30)", "Price: " + (long) Math.pow(1.4, Double.parseDouble(data[6])) * 5000 + "\nEffect: Increases your chance of a successful `" + prefix + "rob` by 0.5%.\nID: `sophisticated`, `robbing`, `sr`", false)
+                .addField("Efficient Practising (" + data[2] + "/100)", "Price: " + (long) (Math.pow(1.125, Double.parseDouble(data[2])) * 250) + "\nEffect: Increases your income from `" + prefix + "scales`, `" + prefix + "practice`, `" + prefix + "rehearse`, and `" + prefix + "perform` by 5%.\nID: `efficient`, `practising`, `ep`", false)
+                .addField("Lucky Musician (" + data[4] + "/50)", "Price: " + (long) (Math.pow(1.25, Double.parseDouble(data[4])) * 1000) + "\nEffect: Increases your gambling multiplier by 0.5%.\nID: `lucky`, `lm`", false)
+                .addField("Sophisticated Robbing (" + data[6] + "/30)", "Price: " + (long) (Math.pow(1.4, Double.parseDouble(data[6])) * 5000) + "\nEffect: Increases your chance of a successful `" + prefix + "rob` by 0.5%.\nID: `sophisticated`, `robbing`, `sr`", false)
                 .setTitle("__**Other Miscellaneous Upgrades**__");
         if (Boolean.parseBoolean(data[9])) {
             builder.addField("Ling Ling Insurance - Plan 1 - Full Security (1/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect all your violins from being stolen.  You pay a 15% insurance cost and the robber is fined 5% of their balance.\nID: `1`", false);
@@ -66,9 +66,9 @@ public class Upgrades {
             builder.addField("Ling Ling Insurance - Plan 2 - Half Security (0/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect only 95% of your violins from being stolen but you don't pay any insurance costs.\nID: `2`", false);
         }
         if(Boolean.parseBoolean(data[50])) {
-            builder.addField("Time Crunch (1/1)", "Price: 150 000 000\nEffect: Decreases `" + prefix + "practice`, `" + prefix + "rehearse`, and `" + prefix + "perform` cooldowns.\nID: `time`, `crunch`, `speed`, `faster`", false);
+            builder.addField("Time Crunch (1/1)", "Price: 150 000 000\nEffect: Decreases `" + prefix + "practice`, `" + prefix + "rehearse`, and `" + prefix + "perform` cooldowns.\nID: `tc`, `timecrunch`", false);
         } else {
-            builder.addField("Time Crunch (0/1)", "Price: 150 000 000\nEffect: Decreases `" + prefix + "practice`, `" + prefix + "rehearse`, and `" + prefix + "perform` cooldowns.\nID: `time`, `crunch`, `speed`, `faster`", false);
+            builder.addField("Time Crunch (0/1)", "Price: 150 000 000\nEffect: Decreases `" + prefix + "practice`, `" + prefix + "rehearse`, and `" + prefix + "perform` cooldowns.\nID: `tc`, `timecrunch`", false);
         }
         e.getChannel().sendMessage(builder.build()).queue();
     }
@@ -181,7 +181,7 @@ public class Upgrades {
         EmbedBuilder builder = new EmbedBuilder()
                 .setColor(Color.BLUE)
                 .setFooter("User balance: " + data[0] + "\nUse `" + prefix + "buy [ID]` to buy an upgrade!", e.getJDA().getSelfUser().getAvatarUrl())
-                .addField("More Students (" + data[81] + ")", "Price: " + (long) Math.pow(2, Double.parseDouble(data[81])) * 1000000 + "\nEffect: +2 500:violin:/hour, +20% violins from `" + prefix + "teach`\nID: `students`", false)
+                .addField("More Students (" + data[81] + ")", "Price: " + (long) (Math.pow(2, Double.parseDouble(data[81])) * 1000000) + "\nEffect: +2 500:violin:/hour, +20% violins from `" + prefix + "teach`\nID: `students`", false)
                 .addField("Higher Lesson Rates (" + data[82] + "/5)", "Price: " + 2000000 * Long.parseLong(data[82] + 1) + "\nEffect: +4 000:violin:/hour, +12.5% violins from `" + prefix + "teach`\nID: `pricing`", false)
                 .addField("Teacher Training (" + data[80] + "/10)", "Price: " + 1250000 * Long.parseLong(data[80] + 1) + "\nEffect: +1 500:violin:/hour, +7.5% violins from `" + prefix + "teach`\nID: `training`", false);
         if (Boolean.parseBoolean(data[83])) {

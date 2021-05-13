@@ -20,7 +20,7 @@ public class Gamble {
         try {
             bet = Long.parseLong(message[2]);
         } catch (Exception exception) {
-            e.getChannel().sendMessage("You must bet something, I'm not giving away free violins.\nCommand format: `gamble [type] [amount]").queue();
+            e.getChannel().sendMessage("You must bet something, I'm not giving away free violins.\nCommand format: `gamble [type] [amount]`").queue();
             throw new IllegalArgumentException();
         }
         if (time < Long.parseLong(data[3])) {

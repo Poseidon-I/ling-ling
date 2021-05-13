@@ -65,8 +65,8 @@ public class Buy {
                 case "tuba" -> ProcessUpgrade(e, 250000 * (Long.parseLong(data[29]) + 1), 20, 29, 2, "Tuba", data);
                 case "timpani" -> ProcessUpgrade(e, 400000 * (Long.parseLong(data[30]) + 1), 60, 30, 2, "Timpani", data);
                 case "percussion" -> ProcessUpgrade(e, 100000 * (Long.parseLong(data[31]) + 1), 10, 31, 2, "Percussion", data);
-                case "first" -> ProcessUpgrade(e, 600000 * (Long.parseLong(data[32]) + 1), 70, 32, 20, "First Violin", data);
-                case "second" -> ProcessUpgrade(e, 500000 * (Long.parseLong(data[33]) + 1), 60, 33, 20, "Second Violin", data);
+                case "first" -> ProcessUpgrade(e, 600000 * (Long.parseLong(data[32])), 70, 32, 20, "First Violin", data);
+                case "second" -> ProcessUpgrade(e, 500000 * (Long.parseLong(data[33])), 60, 33, 20, "Second Violin", data);
                 case "cello" -> ProcessUpgrade(e, 500000 * (Long.parseLong(data[34]) + 1), 50, 34, 15, "Cello", data);
                 case "db", "doublebass" -> ProcessUpgrade(e, 500000 * (Long.parseLong(data[35]) + 1), 50, 35, 5, "Double Bass", data);
                 case "piano" -> ProcessUpgrade(e, 1000000 * (Long.parseLong(data[36]) + 1), 110, 36, 2, "Piano", data);
@@ -76,7 +76,7 @@ public class Buy {
                 case "bass" -> ProcessUpgrade(e, 75000 * (Long.parseLong(data[41]) + 1), 20, 41, 4, "Bass Vocalist", data);
                 case "soloist" -> ProcessUpgrade(e, 400000 * (Long.parseLong(data[42]) + 1), 60, 42, 4, "Solo Vocalist", data);
                 case "conductor" -> ProcessUpgrade(e, (long) (Math.pow(5, Integer.parseInt(data[44])) * 100000), 200, 44, 5, "Conductor Musicality", data);
-                case "advertisement", "ad" -> ProcessUpgrade(e, 100000 * (Long.parseLong(data[45])), 100, 45, 20, "Advertising", data);
+                case "advertisement", "ad" -> ProcessUpgrade(e, 100000 * (Long.parseLong(data[45]) + 1), 100, 45, 20, "Advertising", data);
                 case "tickets" -> ProcessUpgrade(e, (long) (Math.pow(2, Integer.parseInt(data[46])) * 2000000), 1000, 46, 5, "Ticket Cost", data);
                 case "certificate" -> {
                     if(Long.parseLong(data[12]) < 7500) {

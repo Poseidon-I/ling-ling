@@ -65,7 +65,7 @@ public class Economy {
                 assert user != null;
                 board.append("**").append(i + 1).append(". ").append(user.getName()).append("**#").append(user.getDiscriminator()).append(" `").append(user.getId()).append("`: ").append(entry[i].split(" ")[1]).append(" ").append(emoji).append("\n");
             } catch (Exception exception) {
-                board.append(entry[i]);
+                board.append("**").append(entry[i]);
             }
         }
         if (place >= 11) {
