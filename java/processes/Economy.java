@@ -25,13 +25,15 @@ public class Economy {
                     reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
                     currentData = reader.readLine();
                     reader.close();
+                    if(currentData.equals("BANNED")) {
+                        continue;
+                    }
                 } catch (Exception exception) {
                     continue;
                 }
                 user = file.getName();
                 pos = user.lastIndexOf(".");
                 user = user.substring(0, pos);
-                assert currentData != null;
                 String[] temp = currentData.split(" ");
                 long num;
                 try {
@@ -81,20 +83,18 @@ public class Economy {
     public Economy(GuildMessageReceivedEvent e, String[] message, char prefix) {
         String[] data = new String[0];
         boolean hasData;
-        boolean isBanned = false;
         try {
             BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt"));
             hasData = true;
             data = reader.readLine().split(" ");
-            if(data.length == 1 && data[0].equals("BANNED")) {
-                isBanned = true;
-            }
             reader.close();
         } catch (Exception exception) {
             hasData = false;
-            e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+            if(!message[0].equals("start")) {
+                e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+            }
         }
-        if (message[0].equals("start") && !hasData && !isBanned) {
+        if (message[0].equals("start") && !hasData) {
             File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt");
             try {
                 file.createNewFile();
@@ -104,7 +104,7 @@ public class Economy {
             try {
                 PrintWriter newData = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
                 long time = System.currentTimeMillis();
-                newData.print("0 " + time + " 0 " + time + " 0 " + time + " 0 " + time + " " + time + " false false 0 0 0 0 0 0 0 false false false 0 0 0 0 false 0 0 0 0 0 0 1 1 0 0 0 false 0 0 0 0 0 0 0 0 0 0 " + time + " " + (time + 86400000) + " false 0 0 0 0 0 false false false false false false 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0");
+                newData.print("0 0 0 0 0 0 0 0 0 false false 0 0 0 0 0 0 0 false false false 0 0 0 0 false 0 0 0 0 0 0 1 1 0 0 0 false 0 0 0 0 0 0 0 0 0 0 0 0 false 0 0 0 0 0 false false false false false false 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 false 0 0 0 0 false false");
                 newData.close();
                 e.getChannel().sendMessage("Your profile has been created!  Run `" + prefix + "help 3` for a list of economy commands!").queue();
             } catch (Exception exception) {
@@ -112,9 +112,6 @@ public class Economy {
             }
         } else if (message[0].equals("start")) {
             e.getChannel().sendMessage("You already have a save, don't try to outsmart me").queue();
-        }
-        if(isBanned) {
-            e.getChannel().sendMessage("You are banned from using this bot.").queue();
         }
         switch (message[0]) {
             case "upgrades", "up", "u", "shop" -> new Upgrades(e, data, prefix);

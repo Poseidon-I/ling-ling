@@ -8,7 +8,7 @@ public class Buy {
         if(Boolean.parseBoolean(data[index])) {
             e.getChannel().sendMessage("You already purchased `" + item + "`!").queue();
         } else if(violins < cost) {
-            e.getChannel().sendMessage("You do not have enough violins to purchase `" + item + "`!\nYou need " + cost + ":violin:, you only have " + violins + ":violin:").queue();
+            e.getChannel().sendMessage("You do not have enough violins to purchase `" + item + "`!\nYou need `" + cost + "`:violin:, you only have `" + violins + "`:violin:").queue();
         } else {
             data[0] = String.valueOf(violins - cost);
             data[12] = String.valueOf(Long.parseLong(data[12]) + add);
@@ -52,37 +52,37 @@ public class Buy {
         if (hasOrchestra && !boughtItem) {
             boughtItem = true;
             switch (message[1]) {
-                case "piccolo" -> ProcessBooleanUpgrade(e, 300000, 30, 20, "Piccolo", data);
-                case "contrabassoon", "cb" -> ProcessBooleanUpgrade(e, 400000, 30, 25, "ContraBassoon", data);
-                case "harp" -> ProcessBooleanUpgrade(e, 500000, 80, 37, "Harp", data);
-                case "flute" -> ProcessUpgrade(e, 400000 * (Long.parseLong(data[21]) + 1), 60, 21, 4, "Flute", data);
-                case "oboe" -> ProcessUpgrade(e, 400000 * (Long.parseLong(data[22]) + 1), 60, 22, 4, "Oboe", data);
-                case "clarinet" -> ProcessUpgrade(e, 400000 * (Long.parseLong(data[23]) + 1), 50, 23, 4, "Clarinet", data);
-                case "bassoon" -> ProcessUpgrade(e, 400000 * (Long.parseLong(data[24]) + 1), 40, 24, 4, "Bassoon", data);
-                case "horn" -> ProcessUpgrade(e, 400000 * (Long.parseLong(data[26]) + 1), 40, 26, 8, "French Horn", data);
-                case "trumpet" -> ProcessUpgrade(e, 300000 * (Long.parseLong(data[27]) + 1), 30, 27, 4, "Trumpet", data);
-                case "trombone" -> ProcessUpgrade(e, 250000 * (Long.parseLong(data[28]) + 1), 20, 28, 6, "Trombone", data);
-                case "tuba" -> ProcessUpgrade(e, 250000 * (Long.parseLong(data[29]) + 1), 20, 29, 2, "Tuba", data);
-                case "timpani" -> ProcessUpgrade(e, 400000 * (Long.parseLong(data[30]) + 1), 60, 30, 2, "Timpani", data);
+                case "piccolo" -> ProcessBooleanUpgrade(e, 250000, 30, 20, "Piccolo", data);
+                case "contrabassoon", "cb" -> ProcessBooleanUpgrade(e, 300000, 30, 25, "ContraBassoon", data);
+                case "harp" -> ProcessBooleanUpgrade(e, 400000, 80, 37, "Harp", data);
+                case "flute" -> ProcessUpgrade(e, 300000 * (Long.parseLong(data[21]) + 1), 60, 21, 4, "Flute", data);
+                case "oboe" -> ProcessUpgrade(e, 300000 * (Long.parseLong(data[22]) + 1), 60, 22, 4, "Oboe", data);
+                case "clarinet" -> ProcessUpgrade(e, 250000 * (Long.parseLong(data[23]) + 1), 50, 23, 4, "Clarinet", data);
+                case "bassoon" -> ProcessUpgrade(e, 250000 * (Long.parseLong(data[24]) + 1), 40, 24, 4, "Bassoon", data);
+                case "horn" -> ProcessUpgrade(e, 250000 * (Long.parseLong(data[26]) + 1), 40, 26, 8, "French Horn", data);
+                case "trumpet" -> ProcessUpgrade(e, 200000 * (Long.parseLong(data[27]) + 1), 30, 27, 4, "Trumpet", data);
+                case "trombone" -> ProcessUpgrade(e, 200000 * (Long.parseLong(data[28]) + 1), 20, 28, 6, "Trombone", data);
+                case "tuba" -> ProcessUpgrade(e, 200000 * (Long.parseLong(data[29]) + 1), 20, 29, 2, "Tuba", data);
+                case "timpani" -> ProcessUpgrade(e, 300000 * (Long.parseLong(data[30]) + 1), 60, 30, 2, "Timpani", data);
                 case "percussion" -> ProcessUpgrade(e, 100000 * (Long.parseLong(data[31]) + 1), 10, 31, 2, "Percussion", data);
-                case "first" -> ProcessUpgrade(e, 600000 * (Long.parseLong(data[32])), 70, 32, 20, "First Violin", data);
-                case "second" -> ProcessUpgrade(e, 500000 * (Long.parseLong(data[33])), 60, 33, 20, "Second Violin", data);
-                case "cello" -> ProcessUpgrade(e, 500000 * (Long.parseLong(data[34]) + 1), 50, 34, 15, "Cello", data);
-                case "db", "doublebass" -> ProcessUpgrade(e, 500000 * (Long.parseLong(data[35]) + 1), 50, 35, 5, "Double Bass", data);
-                case "piano" -> ProcessUpgrade(e, 1000000 * (Long.parseLong(data[36]) + 1), 110, 36, 2, "Piano", data);
+                case "first" -> ProcessUpgrade(e, 500000 * (Long.parseLong(data[32])), 70, 32, 20, "First Violin", data);
+                case "second" -> ProcessUpgrade(e, 400000 * (Long.parseLong(data[33])), 60, 33, 20, "Second Violin", data);
+                case "cello" -> ProcessUpgrade(e, 400000 * (Long.parseLong(data[34]) + 1), 50, 34, 15, "Cello", data);
+                case "db", "doublebass" -> ProcessUpgrade(e, 400000 * (Long.parseLong(data[35]) + 1), 50, 35, 5, "Double Bass", data);
+                case "piano" -> ProcessUpgrade(e, 750000 * (Long.parseLong(data[36]) + 1), 110, 36, 2, "Piano", data);
                 case "soprano" -> ProcessUpgrade(e, 100000 * (Long.parseLong(data[38]) + 1), 30, 38, 20, "Soprano Vocalist", data);
                 case "alto" -> ProcessUpgrade(e, 75000 * (Long.parseLong(data[39]) + 1), 20, 39, 20, "Alto Vocalist", data);
                 case "tenor" -> ProcessUpgrade(e, 75000 * (Long.parseLong(data[40]) + 1), 20, 40, 20, "Tenor Vocalist", data);
                 case "bass" -> ProcessUpgrade(e, 75000 * (Long.parseLong(data[41]) + 1), 20, 41, 4, "Bass Vocalist", data);
-                case "soloist" -> ProcessUpgrade(e, 400000 * (Long.parseLong(data[42]) + 1), 60, 42, 4, "Solo Vocalist", data);
-                case "conductor" -> ProcessUpgrade(e, (long) (Math.pow(5, Integer.parseInt(data[44])) * 100000), 200, 44, 5, "Conductor Musicality", data);
+                case "soloist" -> ProcessUpgrade(e, 300000 * (Long.parseLong(data[42]) + 1), 60, 42, 4, "Solo Vocalist", data);
+                case "conductor" -> ProcessUpgrade(e, (long) (Math.pow(4, Integer.parseInt(data[44])) * 100000), 200, 44, 2147483647, "Conductor Musicality", data);
                 case "advertisement", "ad" -> ProcessUpgrade(e, 100000 * (Long.parseLong(data[45]) + 1), 100, 45, 20, "Advertising", data);
-                case "tickets" -> ProcessUpgrade(e, (long) (Math.pow(2, Integer.parseInt(data[46])) * 2000000), 1000, 46, 5, "Ticket Cost", data);
+                case "tickets" -> ProcessUpgrade(e, (long) (Math.pow(2, Integer.parseInt(data[46])) * 1000000), 1000, 46, 2147483647, "Ticket Cost", data);
                 case "certificate" -> {
                     if(Long.parseLong(data[12]) < 7500) {
                         e.getChannel().sendMessage("You do not have neough hourly income to become a teacher!").queue();
                     } else {
-                        ProcessBooleanUpgrade(e, 250000000, 10000, 78, "Teacher's Certificate", data);
+                        ProcessBooleanUpgrade(e, 200000000, 10000, 78, "Teacher's Certificate", data);
                     }
                 }
                 default -> boughtItem = false;
@@ -93,15 +93,15 @@ public class Buy {
             switch (message[1]) {
                 case "1" -> ProcessBooleanUpgrade(e, 3000000, 0, 9, "Ling Ling Insurance - Plan 1 - Full Security", data);
                 case "2" -> ProcessBooleanUpgrade(e, 3000000, 0, 10, "Ling Ling Insurance - Plan 2 - Partial Security", data);
-                case "timecrunch", "tc" -> ProcessBooleanUpgrade(e, 150000000, 0, 50, "Time Crunch", data);
-                case "efficiency", "ep" -> ProcessUpgrade(e, (long) (Math.pow(1.125, Integer.parseInt(data[2])) * 250), 0, 2, 100, "Efficient Practising", data);
+                case "timecrunch", "tc" -> ProcessBooleanUpgrade(e, 120000000, 0, 50, "Time Crunch", data);
+                case "efficiency", "ep" -> ProcessUpgrade(e, (long) (Math.pow(1.1, Integer.parseInt(data[2])) * 400), 0, 2, 2147483647, "Efficient Practising", data);
                 case "lucky", "lm" -> ProcessUpgrade(e, (long) (Math.pow(1.25, Integer.parseInt(data[4])) * 1000), 0, 4, 50, "Lucky Musician", data);
                 case "robbing", "sr" -> ProcessUpgrade(e, (long) (Math.pow(1.4, Integer.parseInt(data[6])) * 5000), 0 , 6, 30, "Sophisticated Robbing", data);
-                case "violin", "v" -> ProcessUpgrade(e, (long) (Math.pow(3.5, Integer.parseInt(data[13])) * 1000), 600, 13, 10, "Violin Quality", data);
-                case "skill", "s" -> ProcessUpgrade(e, (long) (Math.pow(2.25, Integer.parseInt(data[14])) * 500), 240, 14, 15, "Skill Level", data);
-                case "lesson", "l" -> ProcessUpgrade(e, (long) (Math.pow(2.75, Integer.parseInt(data[15])) * 700), 150, 15, 12, "Lesson Quality", data);
-                case "string", "str" -> ProcessUpgrade(e, (long) (Math.pow(1.8, Integer.parseInt(data[16])) * 400), 100, 16, 20, "String Quality", data);
-                case "bow", "b" -> ProcessUpgrade(e, (long) (Math.pow(3.5, Integer.parseInt(data[17])) * 500), 200, 17, 10, "Bow Quality", data);
+                case "violin", "v" -> ProcessUpgrade(e, (long) (Math.pow(3, Integer.parseInt(data[13])) * 1000), 600, 13, 2147483647, "Violin Quality", data);
+                case "skill", "s" -> ProcessUpgrade(e, (long) (Math.pow(2, Integer.parseInt(data[14])) * 500), 240, 14, 2147483647, "Skill Level", data);
+                case "lesson", "l" -> ProcessUpgrade(e, (long) (Math.pow(2.5, Integer.parseInt(data[15])) * 750), 150, 15, 2147483647, "Lesson Quality", data);
+                case "string", "str" -> ProcessUpgrade(e, (long) (Math.pow(1.75, Integer.parseInt(data[16])) * 500), 100, 16, 2147483647, "String Quality", data);
+                case "bow", "b" -> ProcessUpgrade(e, (long) (Math.pow(3, Integer.parseInt(data[17])) * 750), 200, 17, 2147483647, "Bow Quality", data);
                 case "math" -> ProcessBooleanUpgrade(e, 10000000, 6500, 18, "Math Tutoring", data);
                 case "orchestra", "o" -> {
                     if (Long.parseLong(data[12]) < 7500) {
@@ -112,9 +112,9 @@ public class Buy {
                 }
                 case "concert", "hall" -> {
                     if (!hasOrchestra) {
-                        ProcessUpgrade(e, (long) (Math.pow(10, Integer.parseInt(data[43])) * 10000), 300, 43, 2, "Concert Hall Quality", data);
+                        ProcessUpgrade(e, (long) (Math.pow(5, Integer.parseInt(data[43])) * 50000), 300, 43, 2, "Concert Hall Quality", data);
                     } else {
-                        ProcessUpgrade(e, (long) (Math.pow(10, Integer.parseInt(data[43])) * 10000), 300, 43, 5, "Concert Hall Quality", data);
+                        ProcessUpgrade(e, (long) (Math.pow(5, Integer.parseInt(data[43])) * 50000), 300, 43, 2147483647, "Concert Hall Quality", data);
                     }
                 }
                 default -> boughtItem = false;

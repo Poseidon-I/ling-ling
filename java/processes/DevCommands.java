@@ -137,16 +137,17 @@ public class DevCommands {
                     } catch (Exception exception) {
                         continue;
                     }
-                    data[73] = "0";
-                    try {
-                        writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
-                        writer.print(data[0]);
-                        for(int i = 1; i < data.length; i ++) {
-                            writer.print(" " + data[i]);
+                    if(data.length == 78) {
+                        try {
+                            writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
+                            for(int i = 0; i < 78; i ++) {
+                                writer.print(data[i] + " ");
+                            }
+                            writer.print("false 0 0 0 0 false false");
+                            writer.close();
+                        } catch (Exception exception) {
+                            //nothing here lol
                         }
-                        writer.close();
-                    } catch (Exception exception) {
-                        //nothing here lol
                     }
                 }
             }*/

@@ -33,8 +33,8 @@ public class Unban {
                 .setColor(Color.BLUE)
                 .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
                 .addField("Moderator: " + e.getAuthor().getName(), "User: " + user.getName() + "#" + user.getDiscriminator() + "\nReason: " + reason, false)
-                .setTitle("__**BLACKLIST Info**__");
+                .setTitle("__**Unban Info**__");
         Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("709632179340312597")).getTextChannelById("800613646380040233")).sendMessage(builder.build()).queue();
-        e.getChannel().sendMessage(":white_check_mark: " + user.getName() + " was successfully unblacklisted!").queue();
+        e.getChannel().sendMessage(":white_check_mark: " + user.getName() + " was successfully unbanned!").queue();
     }
 }

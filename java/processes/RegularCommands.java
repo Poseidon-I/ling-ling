@@ -9,9 +9,6 @@ import java.util.Objects;
 
 public class RegularCommands {
     public RegularCommands(GuildMessageReceivedEvent e, String[] message, char prefix, boolean isDev, String target, String targetPing, String[] serverSettings) {
-        if (Objects.requireNonNull(e.getMember()).hasPermission(Permission.ADMINISTRATOR) || isDev) {
-            new AdminCommands(e, message, prefix);
-        }
         boolean ranCommand = true;
         switch (message[0]) {
             case "help" -> new Help(e, prefix);
@@ -37,8 +34,12 @@ public class RegularCommands {
             case "rules" -> e.getChannel().sendMessage("```ini\n[ LING LING BOT RULES ]```\n1. Do not spam commands, spam autoresponse triggers, excessively ping users, or send messages to trigger luthier or any sort of action that may cause the bot to crash.  This is punishable by warn and up to a save reset.\n\n2. Do not abuse bugs or exploits.  If a bug/exploit is found, **IMMEDIATELY** report it to @Stradivarius Violin#6156.  Any instance of bug/exploit abuse can warrant an immediate save reset, and in some cases or for repeat offenders, a permanent bot ban.\n\n3. Some parts of the bot were written to poke fun at others.  However, if taken too far, you will be punished based on how severe your actions were.\n\n4. Read the #update-log before bothering anyone as to why something changed or why the bot is offline.\n\n***All bot mods are allowed to take bot moderation actions in any server and can give users bot warnings even if the action was not against the server rules.***").queue();
             default -> ranCommand = false;
         }
-        if(serverSettings[2].equals("true")) {
-            new LevelCommands(e, message);
+
+        if (Objects.requireNonNull(e.getMember()).hasPermission(Permission.ADMINISTRATOR) && !ranCommand || isDev && !ranCommand) {
+            ranCommand = AdminCommands.ACommands(e, message, prefix);
+        }
+        if(serverSettings[2].equals("true") && !ranCommand) {
+            ranCommand = LevelCommands.LCommands(e, message);
         }
         if(!ranCommand) {
             new Economy(e, message, prefix);

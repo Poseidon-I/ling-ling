@@ -39,10 +39,10 @@ public class Use {
                     e.getChannel().sendMessage("You scourge your pantry but find no rice.  Then you remember you don't have any more.").queue();
                 } else {
                     data[51] = String.valueOf(Long.parseLong(data[51]) - 1);
-                    data[0] = String.valueOf(violins + income);
-                    data[75] = String.valueOf(violinsEarned);
+                    data[0] = String.valueOf(violins + income * 2);
+                    data[75] = String.valueOf(violinsEarned + income * 2);
                     new SaveData(e, data);
-                    e.getChannel().sendMessage("You ate rice, which turned out to be Blessed Rice.  The God of Rice gave you " + income + ":violin:").queue();
+                    e.getChannel().sendMessage("You ate rice, which turned out to be Blessed Rice.  The God of Rice gave you " + income * 2 + ":violin:").queue();
                 }
             }
             case "tea" -> {
@@ -50,11 +50,9 @@ public class Use {
                     e.getChannel().sendMessage("You scourge your pantry but find no more bubble tea.  Then you remember you don't have any more.").queue();
                 } else {
                     data[62] = String.valueOf(Long.parseLong(data[62]) - 1);
-                    violins += income * 4;
-                    violinsEarned += income * 4;
-                    e.getChannel().sendMessage("You drank some Bubble Tea.  Brett and Eddy approved and gave you " + income * 4 + ":violin:").queue();
-                    data[0] = String.valueOf(violins);
-                    data[75] = String.valueOf(violinsEarned);
+                    data[0] = String.valueOf(violins + income * 6);
+                    data[75] = String.valueOf(violinsEarned + income * 6);
+                    e.getChannel().sendMessage("You drank some Bubble Tea.  Brett and Eddy approved and gave you " + income * 6 + ":violin:").queue();
                     new SaveData(e, data);
                 }
             }

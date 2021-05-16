@@ -7,17 +7,19 @@ public class HourlyIncome {
         BufferedReader reader;
         File directory = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
         File[] files = directory.listFiles();
-        String[] data = null;
+        String[] data   ;
         assert files != null;
         for(File file : files) {
             try {
                 reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
                 data = reader.readLine().split(" ");
                 reader.close();
+                if(data[0].equals("BANNED")) {
+                    continue;
+                }
             } catch (Exception exception) {
-                //nothing here lol
+                continue;
             }
-            assert data != null;
             try {
                 long violins = Long.parseLong(data[0]);
                 long income = Long.parseLong(data[12]);

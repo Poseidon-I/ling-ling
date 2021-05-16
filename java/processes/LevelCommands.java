@@ -14,8 +14,9 @@ import java.util.Map;
 import java.util.Objects;
 
 public class LevelCommands {
-    public LevelCommands(GuildMessageReceivedEvent e, String[] message) {
+    public static boolean LCommands(GuildMessageReceivedEvent e, String[] message) {
         BufferedReader reader;
+        boolean ranCommand = true;
         switch (message[0]) {
             case "rank" -> {
                 if (message.length == 1) {
@@ -122,6 +123,8 @@ public class LevelCommands {
                     e.getChannel().sendMessage(builder.build()).queue();
                 }
             }
+            default -> ranCommand = false;
         }
+        return ranCommand;
     }
 }

@@ -50,10 +50,10 @@ public class Ban {
                     .setColor(Color.BLUE)
                     .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
                     .addField("Moderator: " + e.getAuthor().getName(), "User: " + user.getName() + "#" + user.getDiscriminator() + "\nReason: " + reason, false)
-                    .setTitle("__**BLACKLIST Info**__");
+                    .setTitle("__**BAN Info**__");
             Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("709632179340312597")).getTextChannelById("800613646380040233")).sendMessage(builder.build()).queue();
-            user.openPrivateChannel().complete().sendMessage("You were blacklisted for" + reason + ".").queue();
-            e.getChannel().sendMessage(":hammer: " + user.getName() + " was successfully blacklisted!").queue();
+            user.openPrivateChannel().complete().sendMessage("You were banned for" + reason + ".").queue();
+            e.getChannel().sendMessage(":hammer: " + user.getName() + " was successfully banned!").queue();
         } else {
             e.getChannel().sendMessage("Imagine trying to ban a developer smh").queue();
         }
