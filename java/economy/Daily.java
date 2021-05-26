@@ -17,10 +17,10 @@ public class Daily {
                 e.getChannel().sendMessage("I can't give out violins that fast, wait " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
             } else {
                 long streak = Long.parseLong(data[47]);
-                /*if (time > Long.parseLong(data[48])) {
+                if (time > Long.parseLong(data[48])) {
                     e.getChannel().sendMessage("Oh no!  Your streak was reset!").queue();
                     streak = 0;
-                }*/
+                }
                 long base = 50000 + (streak * 500);
                 data[0] = String.valueOf(Long.parseLong(data[0]) + base);
                 data[75] = String.valueOf(Long.parseLong(data[75]) + base);

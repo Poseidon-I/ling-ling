@@ -29,7 +29,7 @@ public class Balance {
                         .setColor(Color.BLUE)
                         .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
                         .setTitle(user.getName() + "'s Profile")
-                        .addField("General Stats", "Balance: " + line[0] + ":violin:\nLing Ling Medals: " + line[55] + ":military_medal:\nHourly Income: " + line[65] + ":violin:/hour", false)
+                        .addField("General Stats", "Balance: " + line[0] + ":violin:\nLing Ling Medals: " + line[55] + ":military_medal:\nHourly Income: " + line[12] + ":violin:/hour", false)
                         .addField("Medals", ":first_place:" + line[54] + "\n:second_place:" + line[53] + "\n:third_place:" + line[52], false);
                 e.getChannel().sendMessage(builder.build()).queue();
                 reader.close();

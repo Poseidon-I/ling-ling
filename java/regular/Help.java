@@ -15,17 +15,13 @@ public class Help {
                 case "2" -> builder.addField("Help List Page 2 - Utility\nRun `" + prefix + "help <commandName>` to view a command in depth",
                         "**`rules`**\n`poll`\n`checkdm`\n`invite`\n`faq`\n`serversettings`\n`support`\n`code`\n`prefix`", false);
                 case "3" -> builder.addField("Help List Page 3 - Economy Commands\nRun `" + prefix + "help <commandName>` to view a command in depth.",
-                        "`start`\n`scales`\n``practice`\n`rehearse`\n`perform`\n`daily`\n`gamble`\n`balance`\n`profile`\n`stats`\n`inventory`\n`cooldowns`\n`rob`\n`upgrades`\n`buy`\n`use`\n`leaderboard`", false);
-                case "4" -> builder.addField("Help List Page 4 - Leveling Commands\nRun `" + prefix + "help <commandName>` to view a command in depth\nThis module requres the server setting `leveling` to be set to `true`.", "`rank`\n`levelsettings`\n`levels`\n`setlevel`\n`rolerewards`", false);
+                        "`start`\n`balance`\n`profile`\n`stats`\n`inventory`\n`cooldowns`\n`upgrades`\n`buy`\n`use`\n`leaderboard`", false);
+                case "4" -> builder.addField("Help List Page 4 - Income Commands\nRun `" + prefix + "help <commandName>` to view a command in depth.",
+                        "\n`scales`\n``practice`\n`rehearse`\n`perform`\n`teach`\n`daily`\n`gamble`\n`rob`", false);
                 case "5" -> builder.addField("Help List Page 5 - Bot Moderation Commands\nOnly Bot Mods and Bot Admins have access to these commands.",
                         "`lookdata`\n`editdata`\n`luthier`\n`give`\n`resetincomes`\n`warn`\n`resetsave`\n`ban`\n`unban`", false);
                 case "6" -> builder.addField("Help List Page 6 - Dev-Only Commands\nOnly Developers have access to these commands.\nThis page exists for people who are curious.",
                         "`status`\n`activity`\n`updateservers`\n`updateusers`\n`purgeusers`\n`restart`", false);
-                case "rank" -> builder.addField("Rank Command", "Syntax: `" + prefix + "rank`\nUsage: Shows you your level and XP amount in the server.", false);
-                case "levelsettings" -> builder.addField("LevelSettings Command", "Syntax: `" + prefix + "levelsettings [min | max | cooldown | blacklist] [amount | add | remove | clear] <channel>`\nUsage: A variety of commands to configure the leveling experience in a server.\nDefault values are Minimum 15, Maximum 25, Cooldown 60.\nRestrictions: Usable only by members with the `ADMINISTRATOR` permission.\nExample: `" + prefix + "levelsettings min 10`\nExample: `" + prefix + "levelsettings blacklist add #spam`", false);
-                case "rolerewards" -> builder.addField("RoleRewards Command", "Syntax: `" + prefix + "rolerewards [add | remove] <level> <role>`\nUsage: View and/or edit role rewards.\nRestrictions: Editing role rewards can only be done by members with the `ADMINISTRATOR` permission.\nExample: `" + prefix + "rolerewards add 5 734697413901680691`\nExample: `" + prefix + "rolerewards remove 12`", false);
-                case "setlevel" -> builder.addField("SetLevel Command", "Syntax: `" + prefix + "setlevel <user> <level>`\nUsage: Sets the level of a user.\nRestrictions: Usable only by members with the `ADMINISTRATOR` permission.\nExample: `" + prefix + "setlevel 488487157372157962 10`", false);
-                case "levels" -> builder.addField("Levels Command", "Syntax: `" + prefix + "levels`\nUsage: Shows the 10 people with the most XP in a server.\nAliases: `" + prefix + "levellb`", false);
                 case "cooldowns" -> builder.addField("Cooldowns Command", "Syntax: `" + prefix + "cooldowns`\nUsage: Shows you the cooldowns of most commands.\nAliases: `" + prefix + "c`", false);
                 case "faq" -> builder.addField("FAQ Command", "Syntax: `" + prefix + "faq [item]`\nUsage: Shows answers  to frequently asked questions.\nExample: `" + prefix + "faq rob`", false);
                 case "use" -> builder.addField("Use Command", "Syntax: `" + prefix + "use <id>`\nUsage: Uses usable items like Ling Ling Insurance.\nExample: `" + prefix + "use 1`", false);

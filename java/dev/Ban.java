@@ -21,16 +21,16 @@ public class Ban {
         e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
         User user = null;
         try {
-            user = e.getMessage().getMentionedUsers().get(0);
-        } catch (Exception exception) {
-            try {
-                user = e.getJDA().getUserById(message[1]);
-            } catch (Exception exception1) {
-                e.getChannel().sendMessage("You tried to blacklist a non-existant user.  You should know better smh.").queue();
-            }
+            user = e.getJDA().getUserById(message[1]);
+        } catch (Exception exception1) {
+            e.getChannel().sendMessage("You tried to blacklist a non-existant user.  You should know better smh.").queue();
         }
         assert user != null;
-        if(!user.getId().equals("619989388109152256") && !user.getId().equals("488487157372157962")) {
+        if(user.getId().equals(e.getAuthor().getId())) {
+            e.getChannel().sendMessage("Imagine trying to ban yourself, how dumb are you???").queue();
+        } else if(user.getId().equals("619989388109152256") && user.getId().equals("488487157372157962")) {
+            e.getChannel().sendMessage("Imagine trying to ban a developer smh").queue();
+        } else {
             try {
                 PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + user.getId() + ".txt")));
                 writer.print("BANNED");
@@ -46,6 +46,7 @@ public class Ban {
                     //nothing here lol
                 }
             }
+            e.getChannel().sendMessage(":hammer: " + user.getName() + " was successfully banned!").queue();
             EmbedBuilder builder = new EmbedBuilder()
                     .setColor(Color.BLUE)
                     .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
@@ -53,9 +54,6 @@ public class Ban {
                     .setTitle("__**BAN Info**__");
             Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("709632179340312597")).getTextChannelById("800613646380040233")).sendMessage(builder.build()).queue();
             user.openPrivateChannel().complete().sendMessage("You were banned for" + reason + ".").queue();
-            e.getChannel().sendMessage(":hammer: " + user.getName() + " was successfully banned!").queue();
-        } else {
-            e.getChannel().sendMessage("Imagine trying to ban a developer smh").queue();
         }
     }
 }

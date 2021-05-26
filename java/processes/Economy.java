@@ -71,7 +71,7 @@ public class Economy {
             }
         }
         if (place >= 11) {
-            board.append("\n**").append(place).append(". You** ").append(userNum).append(" ").append(emoji);
+            board.append("\n**").append(place).append(". You**: ").append(userNum).append(" ").append(emoji);
         }
         EmbedBuilder builder = new EmbedBuilder()
                 .setColor(Color.BLUE)
@@ -90,9 +90,6 @@ public class Economy {
             reader.close();
         } catch (Exception exception) {
             hasData = false;
-            if(!message[0].equals("start")) {
-                e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-            }
         }
         if (message[0].equals("start") && !hasData) {
             File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt");
@@ -103,7 +100,6 @@ public class Economy {
             }
             try {
                 PrintWriter newData = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
-                long time = System.currentTimeMillis();
                 newData.print("0 0 0 0 0 0 0 0 0 false false 0 0 0 0 0 0 0 false false false 0 0 0 0 false 0 0 0 0 0 0 1 1 0 0 0 false 0 0 0 0 0 0 0 0 0 0 0 0 false 0 0 0 0 0 false false false false false false 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 false 0 0 0 0 false false");
                 newData.close();
                 e.getChannel().sendMessage("Your profile has been created!  Run `" + prefix + "help 3` for a list of economy commands!").queue();
@@ -114,22 +110,118 @@ public class Economy {
             e.getChannel().sendMessage("You already have a save, don't try to outsmart me").queue();
         }
         switch (message[0]) {
-            case "upgrades", "up", "u", "shop" -> new Upgrades(e, data, prefix);
-            case "buy" -> new Buy(e, data);
-            case "orchestra", "o" -> new Orchestra(e, data);
-            case "cooldowns", "c" -> new Cooldowns(e, data);
-            case "use" -> new Use(e, data, prefix);
-            case "scales", "s" -> new Scales(e, data);
-            case "practice", "p" -> new Practise(e, data);
-            case "rehearse", "r" -> new Rehearse(e, data);
-            case "perform", "pf" -> new Perform(e, data);
-            case "daily", "d" -> new Daily(e, data);
-            case "teach" -> new Teach(e, data);
-            case "rob" -> new Rob(e, data);
-            case "gamble", "bet" -> new Gamble(e, data);
-            case "inventory", "inv" -> new Inventory(e, data);
-            case "profile", "balance", "bal", "b" -> new Balance(e, data);
-            case "stats" -> new Stats(e, data);
+            case "upgrades", "up", "u", "shop" -> {
+                if (!hasData) {
+                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                } else {
+                    new Upgrades(e, data, prefix);
+                }
+            }
+            case "buy" -> {
+                if (!hasData) {
+                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                } else {
+                    new Buy(e, data);
+                }
+            }
+            case "orchestra", "o" -> {
+                if (!hasData) {
+                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                } else {
+                    new Orchestra(e, data);
+                }
+            }
+            case "cooldowns", "c" -> {
+                if (!hasData) {
+                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                } else {
+                    new Cooldowns(e, data);
+                }
+            }
+            case "use" -> {
+                if (!hasData) {
+                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                } else {
+                    new Use(e, data, prefix);
+                }
+            }
+            case "scales", "s" -> {
+                if (!hasData) {
+                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                } else {
+                    new Scales(e, data);
+                }
+            }
+            case "practice", "p" -> {
+                if (!hasData) {
+                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                } else {
+                    new Practise(e, data);
+                }
+            }
+            case "rehearse", "r" -> {
+                if (!hasData) {
+                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                } else {
+                    new Rehearse(e, data);
+                }
+            }
+            case "perform", "pf" -> {
+                if (!hasData) {
+                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                } else {
+                    new Perform(e, data);
+                }
+            }
+            case "daily", "d" -> {
+                if (!hasData) {
+                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                } else {
+                    new Daily(e, data);
+                }
+            }
+            case "teach" -> {
+                if (!hasData) {
+                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                } else {
+                    new Teach(e, data);
+                }
+            }
+            case "rob" -> {
+                if (!hasData) {
+                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                } else {
+                    new Rob(e, data);
+                }
+            }
+            case "gamble", "bet" -> {
+                if (!hasData) {
+                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                } else {
+                    new Gamble(e, data);
+                }
+            }
+            case "inventory", "inv" -> {
+                if (!hasData) {
+                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                } else {
+                    new Inventory(e, data);
+                }
+            }
+            case "profile", "balance", "bal", "b" -> {
+                if (!hasData) {
+                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                } else {
+                    new Balance(e, data);
+                }
+            }
+            case "stats" -> {
+                if (!hasData) {
+                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                } else {
+                    new Stats(e, data);
+                }
+            }
             case "leaderboard", "lb" -> {
                 try {
                     switch (message[1]) {

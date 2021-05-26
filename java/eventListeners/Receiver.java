@@ -2,16 +2,17 @@ package eventListeners;
 
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.jetbrains.annotations.NotNull;
 import processes.*;
 
 import java.io.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
-@SuppressWarnings("ConstantConditions")
 public class Receiver extends ListenerAdapter {
-    public void onGuildMessageReceived(GuildMessageReceivedEvent e) {
+    public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent e) {
         boolean isBanned = false;
         try {
             BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt"));
@@ -23,62 +24,61 @@ public class Receiver extends ListenerAdapter {
         } catch (Exception exception) {
             //nothing here lol
         }
-        if (!isBanned) {
-            Random random = new Random();
-            BufferedReader reader;
-            PrintWriter writer;
-            String[] message = e.getMessage().getContentRaw().toLowerCase().split(" ");
-            String[] data = new String[0];
-            boolean isDev = e.getAuthor().getId().equals("619989388109152256") || e.getAuthor().getId().equals("488487157372157962") || e.getAuthor().getId().equals("706933826193981612") || e.getAuthor().getId().equals("733409243222507670");
+        Random random = new Random();
+        BufferedReader reader;
+        PrintWriter writer;
+        String[] message = e.getMessage().getContentRaw().toLowerCase().split(" ");
+        String[] data = new String[0];
+        boolean isDev = e.getAuthor().getId().equals("619989388109152256") || e.getAuthor().getId().equals("488487157372157962") || e.getAuthor().getId().equals("706933826193981612");
 
-            //LOAD SERVER MEMBERS ONLY ONCE
+        //LOAD SERVER MEMBERS ONLY ONCE
+        try {
+            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\loadedservers.txt"));
+            String line = reader.readLine();
+            reader.close();
             try {
-                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\loadedservers.txt"));
-                String line = reader.readLine();
-                reader.close();
-                try {
-                    List<String> loaded = Arrays.asList(line.split(" "));
-                    if (!loaded.contains(e.getGuild().getId()) || e.getJDA().getSelfUser().getId().equals("772582345944334356")) {
-                        e.getGuild().loadMembers();
-                        line += " " + e.getGuild().getId();
-                    }
-                } catch (Exception exception) {
+                List<String> loaded = Arrays.asList(line.split(" "));
+                if (!loaded.contains(e.getGuild().getId()) || e.getJDA().getSelfUser().getId().equals("772582345944334356")) {
                     e.getGuild().loadMembers();
-                    line = e.getGuild().getId();
+                    line += " " + e.getGuild().getId();
                 }
-                writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\loadedservers.txt")));
-                writer.print(line);
-                writer.close();
-            } catch (Exception exception1) {
-                //nothing here lol
+            } catch (Exception exception) {
+                e.getGuild().loadMembers();
+                line = e.getGuild().getId();
             }
+            writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\loadedservers.txt")));
+            writer.print(line);
+            writer.close();
+        } catch (Exception exception1) {
+            //nothing here lol
+        }
 
-            //HOURLY
-            long time = 0;
+        //HOURLY
+        long time = 0;
+        try {
+            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\hourly.txt"));
+            time = Long.parseLong(reader.readLine());
+            reader.close();
+        } catch (Exception exception) {
+            //nothing here lol
+        }
+        if (System.currentTimeMillis() > time) {
+            time += 3600000;
+            new HourlyIncome();
             try {
-                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\hourly.txt"));
-                time = Long.parseLong(reader.readLine());
-                reader.close();
+                PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\hourly.txt")));
+                pw.print(time);
+                pw.close();
             } catch (Exception exception) {
                 //nothing here lol
             }
-            if (System.currentTimeMillis() > time) {
-                time += 3600000;
-                new HourlyIncome();
-                try {
-                    PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\hourly.txt")));
-                    pw.print(time);
-                    pw.close();
-                } catch (Exception exception) {
-                    //nothing here lol
-                }
-                if (time % 86400000 == 0) {
-                    e.getJDA().getGuildById("709632179340312597").getTextChannelById("717484601328533565").sendMessage("Bot Restarting!").queue();
-                    e.getJDA().shutdownNow();
-                    new StartBot();
-                }
+            if (time % 86400000 == 0) {
+                Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("709632179340312597")).getTextChannelById("717484601328533565")).sendMessage("Bot Restarting!").queue();
+                e.getJDA().shutdownNow();
+                new StartBot();
             }
-
+        }
+        if (!isBanned) {
             //LUTHIER
             if (!e.getAuthor().isBot()) {
                 try {
@@ -96,7 +96,7 @@ public class Receiver extends ListenerAdapter {
                 new DevCommands(e, message, 2);
             } else if (e.getAuthor().getId().equals("497916210315264014")) {
                 new DevCommands(e, message, 1);
-            } else if (e.getAuthor().getId().equals("630574049566785547")) {
+            } else if (e.getAuthor().getId().equals("630574049566785547") || e.getAuthor().getId().equals("433715464674476034")) {
                 new DevCommands(e, message, 0);
             } else {
                 new DevCommands(e, message, -1);
@@ -119,9 +119,6 @@ public class Receiver extends ListenerAdapter {
                 }
             }
             if (!e.getAuthor().isBot()) {
-                if (data[2].equals("true") && !e.getAuthor().isBot()) {
-                    new Leveling(e);
-                }
                 if (data[0].equals("true") && !e.getAuthor().isBot()) {
                     new Autoresponse(e);
                 }
@@ -146,7 +143,7 @@ public class Receiver extends ListenerAdapter {
                     }
                 }
                 try {
-                    if (e.getMessage().getMentionedUsers().get(0).getId().equals("733409243222507670")) {
+                    if (e.getMessage().getMentionedUsers().get(0).getId().equals("733409243222507670") || e.getMessage().getContentRaw().equals("!prefix")) {
                         e.getChannel().sendMessage("Hello!  My prefix in this server is `" + prefix + "`\nIf you have other issues, run `" + prefix + "support` to get an invite to the support server!").queue();
                     }
                 } catch (Exception exception) {
@@ -187,39 +184,12 @@ public class Receiver extends ListenerAdapter {
                             throw new IllegalArgumentException();
                         }
                         message[0] = message[0].substring(1);
-                        new RegularCommands(e, message, prefix, isDev, target, targetPing, data);
+                        new RegularCommands(e, message, prefix, isDev, target, targetPing);
                     }
                 } catch (Exception exception) {
                     //nothing here lol
                 }
             }
-            //V I O L A
-        /*assert data != null;
-        if (data[1].equals("true")) {
-            if (e.getChannel().getName().contains("announcement")) {
-                try {
-                    e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1FB").queue();
-                    e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue();
-                    e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F4").queue();
-                    e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F1").queue();
-                    e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E6").queue();
-                } catch(Exception exception) {
-                    //nothing here lol
-                }
-            } else {
-                try {
-                    if (random.nextDouble() <= 0.025) {
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1FB").queue();
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1EE").queue();
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F4").queue();
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1F1").queue();
-                        e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F1E6").queue();
-                    }
-                }catch(Exception exception) {
-                    //nothing here lol
-                }
-            }
-        }*/
         }
     }
 }

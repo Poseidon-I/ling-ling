@@ -26,7 +26,12 @@ public class Warn {
             }
         }
         assert user != null;
-        if(!user.getId().equals("488487157372157962") && !user.getId().equals("619989388109152256")) {
+        if(user.getId().equals(e.getAuthor().getId())) {
+            e.getChannel().sendMessage("Imagine trying to warn yourself, how dum are you???").queue();
+        } else if(user.getId().equals("619989388109152256") && user.getId().equals("488487157372157962")) {
+            e.getChannel().sendMessage("Imagine trying to warn a developer smh").queue();
+        } else {
+            e.getChannel().sendMessage(":warning: " + user.getName() + " was successfully warned!").queue();
             EmbedBuilder builder = new EmbedBuilder()
                     .setColor(Color.BLUE)
                     .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
@@ -34,9 +39,6 @@ public class Warn {
                     .setTitle("__**Bot Warning Info**__");
             Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("709632179340312597")).getTextChannelById("800613646380040233")).sendMessage(builder.build()).queue();
             user.openPrivateChannel().complete().sendMessage("You have received an official bot warning for" + reason + ".  Continuation of this action will result in a save file reset and/or a bot ban.").queue();
-            e.getChannel().sendMessage(":warning: " + user.getName() + " was successfully warned!").queue();
-        } else {
-            e.getChannel().sendMessage("Imagine trying to warn a developer smh").queue();
         }
     }
 }

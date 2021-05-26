@@ -8,7 +8,7 @@ import java.io.FileReader;
 
 public class PurgeUsers {
     public PurgeUsers(GuildMessageReceivedEvent e) {
-        e.getChannel().sendMessage("Purging saves for users with no violins...").queue();
+        e.getChannel().sendMessage("Purging saves for users with no violins or income...").queue();
         File directory = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
         File[] files = directory.listFiles();
         if (files != null) {

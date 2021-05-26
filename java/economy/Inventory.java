@@ -17,14 +17,14 @@ public class Inventory {
                     .setColor(Color.BLUE)
                     .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
                     .setTitle(e.getAuthor().getName() + "'s Inventory")
-                    .addField("Rice :rice:", "Count: " + data[51] + "\nUsage: Gives you 1 hour of income.\nID: `rice`", false)
-                    .addField("Bubble Tea :bubble_tea:", "Count: " + data[62] + "\nUsage: Gives you 4 hours of income.\nID: `tea`", false)
+                    .addField("Rice :rice:", "Count: " + data[51] + "\nUsage: Gives you 2 hours of income.\nID: `rice`", false)
+                    .addField("Bubble Tea :bubble_tea:", "Count: " + data[62] + "\nUsage: Gives you 6 hours of income.\nID: `tea`", false)
                     .addField("Ling Ling Blessing :angel:", "Count: " + data[63] + "\nUsage: Gives you 24 hours of income and 1-3 Ling Ling Medals.\nID: `blessing`", false);
             e.getChannel().sendMessage(builder.build()).queue();
         } else {
             User target = Objects.requireNonNull(e.getJDA().getUserById(message[1]));
             try {
-                BufferedReader reader = new BufferedReader(new FileReader("Ling Ling Bot Data\\Economy Data\\" + target.getId() + ".txt"));
+                BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + target.getId() + ".txt"));
                 String[] line = reader.readLine().split(" ");
                 EmbedBuilder builder = new EmbedBuilder()
                         .setColor(Color.BLUE)

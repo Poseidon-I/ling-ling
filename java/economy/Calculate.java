@@ -13,6 +13,10 @@ public class Calculate {
                 base *= 1.1;
             }
             if (Objects.requireNonNull(e.getMember()).getRoles().contains(e.getGuild().getRoleById("734697410273607751"))) {
+                base *= 1.25;
+            } else if (Objects.requireNonNull(e.getMember()).getRoles().contains(e.getGuild().getRoleById("845121274958184499"))) {
+                base *= 1.2;
+            } else if (Objects.requireNonNull(e.getMember()).getRoles().contains(e.getGuild().getRoleById("845121187741958166"))) {
                 base *= 1.15;
             } else if (Objects.requireNonNull(e.getMember()).getRoles().contains(e.getGuild().getRoleById("734697411074719765"))) {
                 base *= 1.11;

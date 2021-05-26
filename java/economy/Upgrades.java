@@ -41,7 +41,7 @@ public class Upgrades {
                     .addField("Conductor Musicality (" + data[44] + ")", "Price: " + (long) (Math.pow(4, Double.parseDouble(data[44])) * 100000) + "\nEffect: +200:violin:/hour\nID: `conductor`, `musicality`", false)
                     .addField("Ticket Price (" + data[46] + ")", "Price: " + (long) (Math.pow(2, Double.parseDouble(data[46])) * 1000000) + "\nEffect: +1000:violin:/hour\nID: `tickets`", false)
                     .addField("Advertising (" + data[45] + "/20)", "Price: " + 100000 * (Long.parseLong(data[45]) + 1) + "\nEffect: +100:violin:/hour\nID: `advertisement`, `ad`", false)
-                    .addField("Teaching Certificate", "Price: 250 000 000\nIncome Requirement: 40 000:violin:/hr\nEffect: +10 000:violin:/hr, access to `" + prefix + "teach` command\nID: `certificate`", false)
+                    .addField("Teaching Certificate", "Price: 200 000 000\nIncome Requirement: 40 000:violin:/hr\nEffect: +10 000:violin:/hr, access to `" + prefix + "teach` command\nID: `certificate`", false)
                     .setTitle("__**Miscellaneous Orchestra Items**__");
         } else {
             builder = new EmbedBuilder()
@@ -75,9 +75,9 @@ public class Upgrades {
             builder.addField("Ling Ling Insurance - Plan 2 - Half Security (0/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect only 95% of your violins from being stolen but you don't pay any insurance costs.\nID: `2`", false);
         }
         if(Boolean.parseBoolean(data[50])) {
-            builder.addField("Time Crunch (1/1)", "Price: 150 000 000\nEffect: Decreases `" + prefix + "practice`, `" + prefix + "rehearse`, and `" + prefix + "perform` cooldowns.\nID: `tc`, `timecrunch`", false);
+            builder.addField("Time Crunch (1/1)", "Price: 120 000 000\nEffect: Decreases `" + prefix + "practice`, `" + prefix + "rehearse`, and `" + prefix + "perform` cooldowns.\nID: `tc`, `timecrunch`", false);
         } else {
-            builder.addField("Time Crunch (0/1)", "Price: 150 000 000\nEffect: Decreases `" + prefix + "practice`, `" + prefix + "rehearse`, and `" + prefix + "perform` cooldowns.\nID: `tc`, `timecrunch`", false);
+            builder.addField("Time Crunch (0/1)", "Price: 120 000 000\nEffect: Decreases `" + prefix + "practice`, `" + prefix + "rehearse`, and `" + prefix + "perform` cooldowns.\nID: `tc`, `timecrunch`", false);
         }
         e.getChannel().sendMessage(builder.build()).queue();
     }
@@ -166,9 +166,9 @@ public class Upgrades {
                 .addField("Pianists (" + data[36] + "/2)", "Price: " + 750000 * (Long.parseLong(data[36]) + 1) + "\nEffect: +110:violin:/hour\nID: `piano`", false)
                 .setTitle("__**Strings**__");
         if(Boolean.parseBoolean(data[37])) {
-            builder.addField("Harp (1/1)", "Price: 500 000\nEffect: +80:violin:/hour\nID: `harp`", false);
+            builder.addField("Harp (1/1)", "Price: 400 000\nEffect: +80:violin:/hour\nID: `harp`", false);
         } else {
-            builder.addField("Harp (0/1)", "Price: 500 000\nEffect: +80:violin:/hour\nID: `harp`", false);
+            builder.addField("Harp (0/1)", "Price: 400 000\nEffect: +80:violin:/hour\nID: `harp`", false);
         }
         e.getChannel().sendMessage(builder.build()).queue();
     }

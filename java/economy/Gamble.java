@@ -14,7 +14,7 @@ public class Gamble {
         long gambleL = Long.parseLong(data[4]);
         long income = Long.parseLong(data[12]);
         boolean hasHigherMulti = Boolean.parseBoolean(data[58]);
-        //long violinsEarned = Long.parseLong(data[66]);
+        long violinsEarned = Long.parseLong(data[66]);
         Random random = new Random();
         String[] message = e.getMessage().getContentRaw().split(" ");
         try {
@@ -48,11 +48,11 @@ public class Gamble {
                         double chance = random.nextDouble();
                         if (chance > 0.5) {
                             violins -= bet;
-                            //violinsEarned -= bet;
+                            violinsEarned -= bet;
                             e.getChannel().sendMessage("You lost " + bet + ":violin:\n*The generator rolled " + chance + ", you need less than 0.5 to win.*\nYou now have " + violins + ":violin:").queue();
                         } else if (chance <= 0.5) {
                             violins += bet * (1 + multi);
-                            //violinsEarned += bet * (1 + multi);
+                            violinsEarned += bet * (1 + multi);
                             e.getChannel().sendMessage("You won " + bet + ":violin:\nYour " + multi * 100 + "% multiplier earned you an extra " + (long) (bet * multi) + ":violin:\n*The generator rolled " + chance + ".*\nYou now have " + violins + ":violin:").queue();
                         }
                     }
@@ -102,12 +102,12 @@ public class Gamble {
                         if (payout != -1) {
                             builder.addField(name, ":white_check_mark: You **win**!  Payout: " + payout + ":violin:\nYour " + multi * 100 + "% multiplier earned you an extra " + (long) (payout * multi) + ":violin:", false);
                             violins += payout * (1 + multi);
-                            //violinsEarned += payout * (1 + multi);
+                            violinsEarned += payout * (1 + multi);
 
                         } else {
                             builder.addField(name, ":x: You **lose**!  You lost " + bet + ":violin:", false);
                             violins -= bet;
-                            //violinsEarned -= bet;
+                            violinsEarned -= bet;
                         }
                         e.getChannel().sendMessage(builder.build()).queue();
                     }
@@ -158,11 +158,11 @@ public class Gamble {
                             StringBuilder breakdown = new StringBuilder().append("Lose 5:violin:: ").append(payouts[0]).append("\nNo Prize: ").append(payouts[1]).append("\nGain 2:violin:: ").append(payouts[2]).append("\nGain 5:violin:: ").append(payouts[3]).append("\nGain 10:violin:: ").append(payouts[4]).append("\nGain 25:violin:: ").append(payouts[5]).append("\nGain 50:violin:: ").append(payouts[6]).append("\nGain 100:violin:: ").append(payouts[7]).append("\nGain 200:violin:: ").append(payouts[8]).append("\nGain 500:violin:: ").append(payouts[9]);
                             if (payout > 0) {
                                 violins += payout * (1 + multi);
-                                //violinsEarned += payout * (1 + multi);
+                                violinsEarned += payout * (1 + multi);
                                 e.getChannel().sendMessage("You scratched " + numTickets + " tickets and gained " + payout + ":violin:\nYour " + multi * 100 + "% multiplier earned you an extra " + (long) (payout * multi) + ":violin:\n\n**__Ticket Breakdown__**\n" + breakdown).queue();
                             } else {
                                 violins += payout;
-                                //violinsEarned += payout;
+                                violinsEarned += payout;
                                 e.getChannel().sendMessage("You scratched " + numTickets + " tickets and lost " + payout * -1 + ":violin:\n\n**__Ticket Breakdown__**\n" + breakdown).queue();
                             }
                         }
@@ -173,7 +173,7 @@ public class Gamble {
                 e.getChannel().sendMessage("You must choose one of the three gambling options: `rng`, `scratch`, or `slots`").queue();
             }
             data[0] = String.valueOf(violins);
-            //data[66] = String.valueOf(violinsEarned);
+            data[66] = String.valueOf(violinsEarned);
             new SaveData(e, data);
         }
     }

@@ -73,13 +73,13 @@ public class Buy {
                 case "soprano" -> ProcessUpgrade(e, 100000 * (Long.parseLong(data[38]) + 1), 30, 38, 20, "Soprano Vocalist", data);
                 case "alto" -> ProcessUpgrade(e, 75000 * (Long.parseLong(data[39]) + 1), 20, 39, 20, "Alto Vocalist", data);
                 case "tenor" -> ProcessUpgrade(e, 75000 * (Long.parseLong(data[40]) + 1), 20, 40, 20, "Tenor Vocalist", data);
-                case "bass" -> ProcessUpgrade(e, 75000 * (Long.parseLong(data[41]) + 1), 20, 41, 4, "Bass Vocalist", data);
+                case "bass" -> ProcessUpgrade(e, 75000 * (Long.parseLong(data[41]) + 1), 20, 41, 20, "Bass Vocalist", data);
                 case "soloist" -> ProcessUpgrade(e, 300000 * (Long.parseLong(data[42]) + 1), 60, 42, 4, "Solo Vocalist", data);
                 case "conductor" -> ProcessUpgrade(e, (long) (Math.pow(4, Integer.parseInt(data[44])) * 100000), 200, 44, 2147483647, "Conductor Musicality", data);
                 case "advertisement", "ad" -> ProcessUpgrade(e, 100000 * (Long.parseLong(data[45]) + 1), 100, 45, 20, "Advertising", data);
                 case "tickets" -> ProcessUpgrade(e, (long) (Math.pow(2, Integer.parseInt(data[46])) * 1000000), 1000, 46, 2147483647, "Ticket Cost", data);
                 case "certificate" -> {
-                    if(Long.parseLong(data[12]) < 7500) {
+                    if(Long.parseLong(data[12]) < 40000) {
                         e.getChannel().sendMessage("You do not have neough hourly income to become a teacher!").queue();
                     } else {
                         ProcessBooleanUpgrade(e, 200000000, 10000, 78, "Teacher's Certificate", data);
