@@ -72,8 +72,7 @@ public class Rob {
                     baseRob = 5000000;
                 }
                 if (insurance == 1) {
-                    e.getChannel().sendMessage("You try to rob " + name + " only to notice that Ling Ling Security is present.  You try to escape but you are caught and kicked from the estate.  You are fined " + (long) (violins * 0.05) + ":violin:.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
-                    violins -= violins * 0.05;
+                    e.getChannel().sendMessage("You try to rob " + name + " only to notice that Ling Ling Security is present.  You try to escape but you are caught and kicked from the estate.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
                     if (opponentShield) {
                         try {
                             user.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") tried to rob you!  Luckily, insurance protected you and you only paid " + (long) (baseRob * 0.075) + ":violin: in insurance costs.  Your Steal Shield protected " + (long) (baseRob * 0.075) + ":violin: from being paid.").queue();

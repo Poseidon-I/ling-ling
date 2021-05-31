@@ -124,7 +124,7 @@ public class DevCommands {
                     e.getChannel().sendMessage("**403 FORBIDDEN**\nYou do not have permission to run this command.").queue();
                 }
             }
-            /*case "!custom" -> {
+           /* case "!custom" -> {
                 File directory = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
                 File[] files = directory.listFiles();
                 assert files != null;
@@ -137,18 +137,20 @@ public class DevCommands {
                     } catch (Exception exception) {
                         continue;
                     }
-                    if(data.length == 78) {
-                        try {
-                            writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
-                            for(int i = 0; i < 78; i ++) {
-                                writer.print(data[i] + " ");
+                        if (!data[78].equals("true") && !data[78].equals("false")) {
+                            try {
+                                writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
+                                for (int i = 0; i < 78; i++) {
+                                    writer.print(data[i] + " ");
+                                }
+                                writer.print("false");
+                                for (int i = 79; i < 85; i++) {
+                                    writer.print(" " + data[i]);
+                                }
+                            } catch (Exception exception) {
+                                //nothing here lol
                             }
-                            writer.print("false 0 0 0 0 false false");
-                            writer.close();
-                        } catch (Exception exception) {
-                            //nothing here lol
                         }
-                    }
                 }
             }*/
             case "!warn" -> {

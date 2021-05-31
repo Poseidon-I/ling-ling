@@ -13,15 +13,20 @@ public class Gamble {
         long violins = Long.parseLong(data[0]);
         long gambleL = Long.parseLong(data[4]);
         long income = Long.parseLong(data[12]);
+        long max = income * 10;
         boolean hasHigherMulti = Boolean.parseBoolean(data[58]);
         long violinsEarned = Long.parseLong(data[66]);
         Random random = new Random();
         String[] message = e.getMessage().getContentRaw().split(" ");
-        try {
-            bet = Long.parseLong(message[2]);
-        } catch (Exception exception) {
-            e.getChannel().sendMessage("You must bet something, I'm not giving away free violins.\nCommand format: `gamble [type] [amount]`").queue();
-            throw new IllegalArgumentException();
+        if(message[2].equals("max")) {
+            bet = Math.min(violins, max);
+        } else {
+            try {
+                bet = Long.parseLong(message[2]);
+            } catch (Exception exception) {
+                e.getChannel().sendMessage("You must bet something, I'm not giving away free violins.\nCommand format: `gamble [type] [amount]`").queue();
+                throw new IllegalArgumentException();
+            }
         }
         if (time < Long.parseLong(data[3])) {
             long milliseconds = Long.parseLong(data[3]) - time;
@@ -32,10 +37,12 @@ public class Gamble {
             e.getChannel().sendMessage("You can't bet more than you have, don't try to outsmart me.").queue();
         } else if (bet < 0) {
             e.getChannel().sendMessage("You can't bet a negative number, don't try breaking me.").queue();
+        } else if(max < 4000) {
+            e.getChannel().sendMessage("You cannot gamble yet!  You must have at least 400:violin:/hour income to be able to gamble.").queue();
         } else if (bet < 4000) {
             e.getChannel().sendMessage("If you're going to bet less than 4000:violin:, go away and stop wasting my time.").queue();
-        } else if (bet > income * 10) {
-            e.getChannel().sendMessage("You cannot bet more than " + income * 10 + ":violin:  To raise this cap, upgrade your hourly income!").queue();
+        } else if (bet > max) {
+            e.getChannel().sendMessage("You cannot bet more than " + max + ":violin:  To raise this cap, upgrade your hourly income!").queue();
         } else {
             try {
                 double multi = 0.005 * gambleL;

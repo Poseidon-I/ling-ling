@@ -28,7 +28,7 @@ public class Teach {
                     data[76] = String.valueOf(Long.parseLong(data[76]) + 0.5);
                 }
                 data[0] = String.valueOf(Long.parseLong(data[0]) + base);
-                data[78] = String.valueOf(time + 1);
+                data[79] = String.valueOf(time + 3540000);
                 data[75] = String.valueOf(Long.parseLong(data[75]) + base);
                 new SaveData(e, data);
             }

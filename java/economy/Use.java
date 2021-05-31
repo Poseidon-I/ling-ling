@@ -59,7 +59,7 @@ public class Use {
                 } else if(useAmount > Long.parseLong(data[62])) {
                     e.getChannel().sendMessage("You cannot consume more bubble tea than you have.").queue();
                 } else {
-                    data[51] = String.valueOf(Long.parseLong(data[62]) - useAmount);
+                    data[62] = String.valueOf(Long.parseLong(data[62]) - useAmount);
                     data[0] = String.valueOf(violins + income * 6 * useAmount);
                     data[75] = String.valueOf(violinsEarned + income * 6 * useAmount);
                     new SaveData(e, data);

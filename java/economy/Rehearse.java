@@ -91,12 +91,12 @@ public class Rehearse {
                         data[64] = String.valueOf(Long.parseLong(data[64]) + 43200000);
                         data[1] = String.valueOf(Long.parseLong(data[1]) + 43200000);
                     } else if (num > 0.005) {
-                        e.getChannel().sendMessage("You decided to fake your solo.  Of course it didn't work and Ling Ling fined you " + violins * (income / 150000) + ":violin:").queue();
-                        violins -= violins * (income / 150000);
+                        e.getChannel().sendMessage("You decided to fake your solo.  Of course it didn't work and Ling Ling fined you " + violins * 0.9 + ":violin:").queue();
+                        violins *= 0.1;
                         base = 0;
                     } else {
-                        e.getChannel().sendMessage("You dropped your violin.  How shameful.  All cooldowns except daily and gamble have had one day added to them, and you were fined " + violins * (income / 75000) + ":violin: for being careless in public.").queue();
-                        violins -= violins * (income / 75000);
+                        e.getChannel().sendMessage("You dropped your violin.  How shameful.  All cooldowns except daily and gamble have had one day added to them, and you were fined " + violins * 0.95 + ":violin: for being careless in public.").queue();
+                        violins *= 0.05;
                         base = 0;
                         time += 86400000;
                         data[1] = String.valueOf(time);

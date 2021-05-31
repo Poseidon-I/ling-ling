@@ -65,9 +65,9 @@ public class Upgrades {
                 .addField("Sophisticated Robbing (" + data[6] + "/30)", "Price: " + (long) (Math.pow(1.4, Double.parseDouble(data[6])) * 5000) + "\nEffect: Increases your chance of a successful `" + prefix + "rob` by 0.5%.\nID: `sophisticated`, `robbing`, `sr`", false)
                 .setTitle("__**Other Miscellaneous Upgrades**__");
         if (Boolean.parseBoolean(data[9])) {
-            builder.addField("Ling Ling Insurance - Plan 1 - Full Security (1/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect all your violins from being stolen.  You pay a 15% insurance cost and the robber is fined 5% of their balance.\nID: `1`", false);
+            builder.addField("Ling Ling Insurance - Plan 1 - Full Security (1/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect all your violins from being stolen.  You pay a 15% insurance cost.\nID: `1`", false);
         } else {
-            builder.addField("Ling Ling Insurance - Plan 1 - Full Security (0/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect all your violins from being stolen.  You pay a 15% insurance cost and the robber is fined 5% of their balance.\nID: `1`", false);
+            builder.addField("Ling Ling Insurance - Plan 1 - Full Security (0/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect all your violins from being stolen.  You pay a 15% insurance cost.\nID: `1`", false);
         }
         if (Boolean.parseBoolean(data[10])) {
             builder.addField("Ling Ling Insurance - Plan 2 - Half Security (1/1)", "Price: 3 000 000\nEffect: When someone uses `" + prefix + "rob` on you, will protect only 95% of your violins from being stolen but you don't pay any insurance costs.\nID: `2`", false);

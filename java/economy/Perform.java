@@ -106,12 +106,12 @@ public class Perform {
                     newData[64] = String.valueOf(Long.parseLong(data[64]) + 43200000);
                     newData[1] = String.valueOf(Long.parseLong(data[1]) + 43200000);
                 } else if (num > 0.005) {
-                    e.getChannel().sendMessage("You decided to fake your performance.  Of course it didn't work and Ling Ling fined you " + violins * (income / 100000) + ":violin:").queue();
-                    violins -= violins * (income / 100000);
+                    e.getChannel().sendMessage("You decided to fake your performance.  Of course it didn't work and Ling Ling fined you " + violins * 0.95 + ":violin:").queue();
+                    violins *= 0.05;
                     base = 0;
                 } else {
                     e.getChannel().sendMessage("You dropped your violin.  How shameful.  All cooldowns except daily and gamble have had one day added to them, and you were fined pretty much your entire balance for being careless on stage.").queue();
-                    violins *= 0.025;
+                    violins *= 0.01;
                     base = 0;
                     time += 86400000;
                     newData[1] = String.valueOf(time);
