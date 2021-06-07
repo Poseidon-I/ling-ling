@@ -27,13 +27,8 @@ public class StartBot {
             jda = JDABuilder.createDefault(rdr.readLine(), GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGE_REACTIONS)
                     .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS, CacheFlag.ONLINE_STATUS)
                     .setMemberCachePolicy(MemberCachePolicy.ALL)
-                    .addEventListeners(new Autoroles())
-                    .addEventListeners(new Autounrole())
                     .addEventListeners(new Disconnect())
-                    .addEventListeners(new Join())
-                    .addEventListeners(new Leave())
                     .addEventListeners(new Receiver())
-                    .addEventListeners(new BotJoin())
                     .build();
             jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
             jda.getPresence().setActivity(Activity.playing("violin forty hours a day."));

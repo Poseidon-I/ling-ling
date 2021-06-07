@@ -180,7 +180,7 @@ public class Economy {
                     new Daily(e, data);
                 }
             }
-            case "teach" -> {
+            case "teach", "t" -> {
                 if (!hasData) {
                     e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
                 } else {

@@ -243,10 +243,8 @@ public class Upgrades {
                     case "7" -> TeacherUpgrades(e, data, prefix);
                     case "8" -> OtherMiscUpgrades(e, data, prefix);
                     case "9" -> MedalUpgrades(e, data, prefix);
-
                     default -> e.getChannel().sendMessage("You did not provide a valid page number!  Current Pages\n`1` for Income Upgrades\n`2` for Woodwinds\n`3` for Brass and Percussion\n`4` for Strings\n`5` for Choir\n`6` for Miscellaneous Orchestra Items\n`7` for Teacher Upgrades\n`8` for Other Miscellaneous Upgrades\n`9` for Medal Upgrades").queue();
                 }
-
             }
         }
     }

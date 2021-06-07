@@ -31,7 +31,7 @@ public class Kill {
             throw new IllegalArgumentException();
         }
         Random random = new Random();
-        i = random.nextInt(53);
+        i = random.nextInt(73);
         if (i == 0) {
             e.getChannel().sendMessage(targetPing + " thought it was a good idea to play the sousaphone after eating chili pepper").queue();
         } else if (i == 1) {
@@ -136,6 +136,46 @@ public class Kill {
             e.getChannel().sendMessage(targetPing + " is so bad at minecraft they managed to die in one second in Peaceful Mode.  On a Superflat world.").queue();
         } else if (i == 51) {
             e.getChannel().sendMessage(targetPing + " tried playing their piccolo solo but it broke so many eardrums that the conductor threw them off the stage into the audience headfirst.  Everyone laughed.").queue();
+        } else if (i == 52) {
+            e.getChannel().sendMessage(targetPing + " was shot by " + e.getAuthor().getName() + " using [ 15 Notes a Second woB-X ].").queue();
+        } else if (i == 53) {
+            e.getChannel().sendMessage(targetPing + " walked into a cactus whilst trying to escape Chicken.").queue();
+        } else if (i == 54) {
+            e.getChannel().sendMessage(targetPing + " experienced Kinetic Energy.").queue();
+        } else if (i == 55) {
+            e.getChannel().sendMessage(targetPing + " died.  While flying over unloaded chunks.").queue();
+        } else if (i == 56) {
+            e.getChannel().sendMessage(targetPing + " was blown up by " + e.getAuthor().getName() + " using Ling Ling's Wrath.").queue();
+        } else if (i == 57) {
+            e.getChannel().sendMessage(targetPing + " was killed by Intentional Game Design [MCPE-28723]").queue();
+        } else if (i == 58) {
+            e.getChannel().sendMessage(targetPing + " was squashed by a falling anvil.").queue();
+        } else if (i == 59) {
+            e.getChannel().sendMessage(targetPing + " went off with a bang due to a firework fired from [ 15 Notes a Second woB-X ] by " + e.getAuthor().getName()).queue();
+        } else if (i == 60) {
+            e.getChannel().sendMessage(targetPing + " tried to swim in lava.").queue();
+        } else if (i == 61) {
+            e.getChannel().sendMessage(targetPing + " was struck by lightning.").queue();
+        } else if (i == 62) {
+            e.getChannel().sendMessage(targetPing + " discovered the floor was lava.").queue();
+        } else if (i == 63) {
+            e.getChannel().sendMessage(targetPing + " walked into danger zone due to " + e.getAuthor().getName()).queue();
+        } else if (i == 64) {
+            e.getChannel().sendMessage(targetPing + " was squashed by " + e.getAuthor().getName()).queue();
+        } else if (i == 65) {
+            e.getChannel().sendMessage(targetPing + " was poked to death by a sweet berry bush whilst trying to escape " + e.getAuthor().getName()).queue();
+        } else if (i == 66) {
+            e.getChannel().sendMessage(targetPing + " was killed by [ 15 Notes a Second Chestplate ] trying to hurt " + e.getAuthor().getName()).queue();
+        } else if (i == 67) {
+            e.getChannel().sendMessage(targetPing + " was impaled by " + e.getAuthor().getName() + " with [ Zeus's Trident ]").queue();
+        } else if (i == 68) {
+            e.getChannel().sendMessage(targetPing + " didn't want to live in the same world as " + e.getAuthor().getName()).queue();
+        } else if (i == 69) {
+            e.getChannel().sendMessage(targetPing + " was roasted in dragon breath.").queue();
+        } else if (i == 70) {
+            e.getChannel().sendMessage(targetPing + " was killed by even more magic.").queue();
+        } else if (i == 71) {
+            e.getChannel().sendMessage(targetPing + " was too soft for this world (" + e.getAuthor().getName() + " helped)").queue();
         } else {
             e.getChannel().sendMessage(targetPing + " stepped on a landmine and suffered major injuries.").queue();
         }

@@ -96,32 +96,14 @@ public class Receiver extends ListenerAdapter {
                 new DevCommands(e, message, 2);
             } else if (e.getAuthor().getId().equals("497916210315264014")) {
                 new DevCommands(e, message, 1);
-            } else if (e.getAuthor().getId().equals("630574049566785547") || e.getAuthor().getId().equals("433715464674476034")) {
+            } else if (e.getAuthor().getId().equals("433715464674476034")) {
                 new DevCommands(e, message, 0);
             } else {
                 new DevCommands(e, message, -1);
             }
 
             //ALL COMMANDS
-            try {
-                reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt"));
-                data = reader.readLine().split(" ");
-                reader.close();
-            } catch (Exception exception) {
-                File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Server\\" + e.getGuild().getId() + ".txt");
-                try {
-                    file.createNewFile();
-                    PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
-                    pw.print("true true false");
-                    pw.close();
-                } catch (Exception exception1) {
-                    //nothing here lol
-                }
-            }
             if (!e.getAuthor().isBot()) {
-                if (data[0].equals("true") && !e.getAuthor().isBot()) {
-                    new Autoresponse(e);
-                }
                 String server = "";
                 char prefix = '!';
                 if (!isDev) {
@@ -143,7 +125,7 @@ public class Receiver extends ListenerAdapter {
                     }
                 }
                 try {
-                    if (e.getMessage().getMentionedUsers().get(0).getId().equals("733409243222507670") || e.getMessage().getContentRaw().equals("!prefix")) {
+                    if (e.getMessage().getContentRaw().equals("!prefix") || e.getMessage().getMentionedUsers().get(0).getId().equals("733409243222507670")) {
                         e.getChannel().sendMessage("Hello!  My prefix in this server is `" + prefix + "`\nIf you have other issues, run `" + prefix + "support` to get an invite to the support server!").queue();
                     }
                 } catch (Exception exception) {

@@ -96,13 +96,6 @@ public class DevCommands {
                     e.getChannel().sendMessage("**403 FORBIDDEN**\nYou do not have permission to run this command.").queue();
                 }
             }
-            case "!updateservers" -> {
-                if(permLevel == 2) {
-                    new UpdateServers(e);
-                } else {
-                    e.getChannel().sendMessage("**403 FORBIDDEN**\nYou do not have permission to run this command.").queue();
-                }
-            }
             case "!updateusers" -> {
                 if(permLevel == 2) {
                     new UpdateUsers(e);
