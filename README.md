@@ -13,3 +13,5 @@
 - You may not look thorugh the code soley to find and abuse bugs.
 
 **Using any code in unpermitted ways will earn you a permanent bot and server ban, and possibly action taken against you by Discord depending on severity.**
+
+Note: Not every single update is uploaded, and minor versions will often be skipped over.  Do not report any bugs that have already been marked fixed in the update log.
