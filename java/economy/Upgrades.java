@@ -87,32 +87,32 @@ public class Upgrades {
                 .setColor(Color.BLUE)
                 .setFooter("Medals: " + data[55] + "\nEarn medals from `" + prefix + "perform`!", e.getJDA().getSelfUser().getAvatarUrl());
         if(Boolean.parseBoolean(data[56])) {
-            builder.addField("Extra Income :white_check_mark:", "Needed: 5:military_medal:\nEffect: +8000:violin:/hour", false);
+            builder.addField("Extra Income :white_check_mark:", "Effect: +8000:violin:/hour", false);
         } else {
             builder.addField("Extra Income", "Needed: 5:military_medal:\nEffect: +8000:violin:/hour", false);
         }
         if(Boolean.parseBoolean(data[57])) {
-            builder.addField("Extra Command Income :white_check_mark:", "Needed: 10:military_medal:\nEffect: x2 income from commands", false);
+            builder.addField("Extra Command Income :white_check_mark:", "Effect: x2 income from commands", false);
         } else {
             builder.addField("Extra Command Income", "Needed: 10:military_medal:\nEffect: x2 income from commands", false);
         }
         if(Boolean.parseBoolean(data[58])) {
-            builder.addField("Higher Gamble Multiplier :white_check_mark:", "Needed: 15:military_medal:\nEffect: +5% `" + prefix + "gamble` multiplier", false);
+            builder.addField("Higher Gamble Limit :white_check_mark:", "Effect: +20% `" + prefix + "gamble` cap", false);
         } else {
-            builder.addField("Higher Gamble Multiplier", "Needed: 15:military_medal:\nEffect: +5% `" + prefix + "gamble` multiplier", false);
+            builder.addField("Higher Gamble Limit", "Needed: 15:military_medal:\nEffect: +20% `" + prefix + "gamble` cap", false);
         }
         if(Boolean.parseBoolean(data[59])) {
-            builder.addField("Higher Rob Success Rate :white_check_mark:", "Needed: 25:military_medal:\nEffect: +2.5% chance at successfully robbing someone.  Does NOT bypass Ling Ling Insurance", false);
+            builder.addField("Higher Rob Success Rate :white_check_mark:", "Effect: +2.5% chance at successfully robbing someone.  Does NOT bypass Ling Ling Insurance", false);
         } else {
             builder.addField("Higher Rob Success Rate", "Needed: 25:military_medal:\nEffect: +2.5% chance at successfully robbing someone.  Does NOT bypass Ling Ling Insurance", false);
         }
         if(Boolean.parseBoolean(data[60])) {
-            builder.addField("Steal Shield :white_check_mark:", "Needed: 35:military_medal:\nEffect: Advanced technology takes back 50% of violins when you get robbed.", false);
+            builder.addField("Steal Shield :white_check_mark:", "Effect: Advanced technology takes back 50% of violins when you get robbed.", false);
         } else {
             builder.addField("Steal Shield", "Needed: 35:military_medal:\nEffect: Advanced technology takes back 50% of violins when you get robbed.", false);
         }
         if(Boolean.parseBoolean(data[61])) {
-            builder.addField("Violin Duplicator :white_check_mark:", "Needed: 50:military_medal:\nEffect: The Vengeful God of Ben Lee duplicates all violins stolen", false);
+            builder.addField("Violin Duplicator :white_check_mark:", "Effect: The Vengeful God of Ben Lee duplicates all violins stolen", false);
         } else {
             builder.addField("Violin Duplicator", "Needed: 50:military_medal:\nEffect: The Vengeful God of Ben Lee duplicates all violins stolen", false);
         }
@@ -212,39 +212,43 @@ public class Upgrades {
         if(message.length == 0) {
             e.getChannel().sendMessage("You must provide a page number!").queue();
         } else {
-            if(!Boolean.parseBoolean(data[19])) {
-                switch (message[1]) {
-                    case "1" -> IncomeUpgrades(e, data, prefix);
-                    case "2" -> OrchMiscUpgrades(e, data, prefix);
-                    case "3" -> OtherMiscUpgrades(e, data, prefix);
-                    case "4" -> MedalUpgrades(e, data, prefix);
-                    default -> e.getChannel().sendMessage("You did not provide a valid page number!  Current Pages\n`1` for Income Upgrades\n`2` for Miscellaneous Orchestra Items\n`3` for Other Miscellaneous Upgrades\n`4` for Medal Upgrades").queue();
+            try {
+                if (!Boolean.parseBoolean(data[19])) {
+                    switch (message[1]) {
+                        case "1" -> IncomeUpgrades(e, data, prefix);
+                        case "2" -> OrchMiscUpgrades(e, data, prefix);
+                        case "3" -> OtherMiscUpgrades(e, data, prefix);
+                        case "4" -> MedalUpgrades(e, data, prefix);
+                        default -> e.getChannel().sendMessage("You did not provide a valid page number!  Current Pages\n`1` for Income Upgrades\n`2` for Miscellaneous Orchestra Items\n`3` for Other Miscellaneous Upgrades\n`4` for Medal Upgrades").queue();
+                    }
+                } else if (!Boolean.parseBoolean(data[78])) {
+                    switch (message[1]) {
+                        case "1" -> IncomeUpgrades(e, data, prefix);
+                        case "2" -> Woodwinds(e, data, prefix);
+                        case "3" -> Brass(e, data, prefix);
+                        case "4" -> Strings(e, data, prefix);
+                        case "5" -> Choir(e, data, prefix);
+                        case "6" -> OrchMiscUpgrades(e, data, prefix);
+                        case "7" -> OtherMiscUpgrades(e, data, prefix);
+                        case "8" -> MedalUpgrades(e, data, prefix);
+                        default -> e.getChannel().sendMessage("You did not provide a valid page number!  Current Pages\n`1` for Income Upgrades\n`2` for Woodwinds\n`3` for Brass and Percussion\n`4` for Strings\n`5` for Choir\n`6` for Miscellaneous Orchestra Items\n`7` for Other Miscellaneous Upgrades\n`8` for Medal Upgrades").queue();
+                    }
+                } else {
+                    switch (message[1]) {
+                        case "1" -> IncomeUpgrades(e, data, prefix);
+                        case "2" -> Woodwinds(e, data, prefix);
+                        case "3" -> Brass(e, data, prefix);
+                        case "4" -> Strings(e, data, prefix);
+                        case "5" -> Choir(e, data, prefix);
+                        case "6" -> OrchMiscUpgrades(e, data, prefix);
+                        case "7" -> TeacherUpgrades(e, data, prefix);
+                        case "8" -> OtherMiscUpgrades(e, data, prefix);
+                        case "9" -> MedalUpgrades(e, data, prefix);
+                        default -> e.getChannel().sendMessage("You did not provide a valid page number!  Current Pages\n`1` for Income Upgrades\n`2` for Woodwinds\n`3` for Brass and Percussion\n`4` for Strings\n`5` for Choir\n`6` for Miscellaneous Orchestra Items\n`7` for Teacher Upgrades\n`8` for Other Miscellaneous Upgrades\n`9` for Medal Upgrades").queue();
+                    }
                 }
-            } else if(!Boolean.parseBoolean(data[78])) {
-                switch (message[1]) {
-                    case "1" -> IncomeUpgrades(e, data, prefix);
-                    case "2" -> Woodwinds(e, data, prefix);
-                    case "3" -> Brass(e, data, prefix);
-                    case "4" -> Strings(e, data, prefix);
-                    case "5" -> Choir(e, data, prefix);
-                    case "6" -> OrchMiscUpgrades(e, data, prefix);
-                    case "7" -> OtherMiscUpgrades(e, data, prefix);
-                    case "8" -> MedalUpgrades(e, data, prefix);
-                    default -> e.getChannel().sendMessage("You did not provide a valid page number!  Current Pages\n`1` for Income Upgrades\n`2` for Woodwinds\n`3` for Brass and Percussion\n`4` for Strings\n`5` for Choir\n`6` for Miscellaneous Orchestra Items\n`7` for Other Miscellaneous Upgrades\n`8` for Medal Upgrades").queue();
-                }
-            } else {
-                switch (message[1]) {
-                    case "1" -> IncomeUpgrades(e, data, prefix);
-                    case "2" -> Woodwinds(e, data, prefix);
-                    case "3" -> Brass(e, data, prefix);
-                    case "4" -> Strings(e, data, prefix);
-                    case "5" -> Choir(e, data, prefix);
-                    case "6" -> OrchMiscUpgrades(e, data, prefix);
-                    case "7" -> TeacherUpgrades(e, data, prefix);
-                    case "8" -> OtherMiscUpgrades(e, data, prefix);
-                    case "9" -> MedalUpgrades(e, data, prefix);
-                    default -> e.getChannel().sendMessage("You did not provide a valid page number!  Current Pages\n`1` for Income Upgrades\n`2` for Woodwinds\n`3` for Brass and Percussion\n`4` for Strings\n`5` for Choir\n`6` for Miscellaneous Orchestra Items\n`7` for Teacher Upgrades\n`8` for Other Miscellaneous Upgrades\n`9` for Medal Upgrades").queue();
-                }
+            } catch (Exception exception) {
+                e.getChannel().sendMessage("You have to provide a page number for this to work.  Try `" + prefix + "upgrades 1`!").queue();
             }
         }
     }

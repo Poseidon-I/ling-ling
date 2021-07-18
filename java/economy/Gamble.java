@@ -13,8 +13,13 @@ public class Gamble {
         long violins = Long.parseLong(data[0]);
         long gambleL = Long.parseLong(data[4]);
         long income = Long.parseLong(data[12]);
-        long max = income * 10;
         boolean hasHigherMulti = Boolean.parseBoolean(data[58]);
+        long max;
+        if(hasHigherMulti) {
+             max = income * 12;
+        } else {
+            max = income * 10;
+        }
         long violinsEarned = Long.parseLong(data[66]);
         Random random = new Random();
         String[] message = e.getMessage().getContentRaw().split(" ");
@@ -46,9 +51,6 @@ public class Gamble {
         } else {
             try {
                 double multi = 0.005 * gambleL;
-                if (hasHigherMulti) {
-                    multi += 0.05;
-                }
                 data[3] = String.valueOf(time + 9500);
                 switch (message[1]) {
                     case "rng" -> {

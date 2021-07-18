@@ -22,10 +22,11 @@ public class FAQ {
                 case "scratch" -> builder.addField(":tickets: What are the payouts for scratch tickets?", "__**Chances to Draw Certain Tickets**__\nLose 5:violin:: 50%\nNo Prize: 25%\nGain 2:violin:: 15%\nGain 5:violin:: 5%\nGain 10:violin:: 3%\nGain 25:violin:: 1%\nGain 50:violin:: 0.5%\nGain 100:violin:: 0.3%\nGain 200:violin:: 0.1%\nGain 500:violin:: 0.075%\n1 000 000:violin: Jackpot: 0.025%", false);
                 case "robchance" -> builder.addField(":cop: What are the chances to succeed in a rob?", "Your chance is determined by your balance and the target's balance.  The exact chance of **failing** is your balance divided by the sum of your balance and the target's balance.  There is a cap of 5 000 000:violin: during a robbery that can be stolen, and there is no cap on how much you can be fined for failing.\n\ntl;dr - the more you have, the harder it is to succeed in robbing someone", false);
                 case "leveling" -> builder.addField(":chart_with_upwards_trend: What happened to Leveling and server settings?", "Leveling was moved to a new bot that can be invited using `!invite` (use your server's prefix).  All other server settings were completely removed in an effort to save resources.", false);
+                case "notworking" -> builder.addField(":ping_pong: Why can't I rob/look up another user?", "People hate pings, so the ability to rob/look up users by ping was removed a long time ago.  You must use the User ID of the person you want to rob/look up.  If you don't know how to find the User ID, click this link: <https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID->", false);
                 default -> builder.addField("You entered an invalid entry!  FAQ Entries", "Use `" + prefix + "faq [item]` to view a page in depth.\n\n`rob` `give` `luthier` `hourly` `orchestra` `rehearse` `delete` `slots` `scratch`", false);
             }
         } catch(Exception exception) {
-            builder.addField("FAQ Entries", "Use `" + prefix + "faq [item]` to view a page in depth.\n\n`rob` `give` `luthier` `hourly` `orchestra` `rehearse` `delete` `slots` `scratch` `robchance`", false);
+            builder.addField("FAQ Entries", "Use `" + prefix + "faq [item]` to view a page in depth.\n\n`rob` `give` `luthier` `hourly` `orchestra` `rehearse` `delete` `slots` `scratch` `robchance` `leveling` `notworking`", false);
         }
         e.getChannel().sendMessage(builder.build()).queue();
     }

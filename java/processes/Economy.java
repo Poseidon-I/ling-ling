@@ -11,7 +11,7 @@ import java.io.*;
 public class Economy {
     public static void leaderboard(String emoji, String what, GuildMessageReceivedEvent e, int dataPosition, long userNum) {
         BufferedReader reader;
-        File directory = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
+        File directory = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
         File[] files = directory.listFiles();
         String[] entry = new String[0];
         long place = 1;
@@ -75,8 +75,9 @@ public class Economy {
         }
         EmbedBuilder builder = new EmbedBuilder()
                 .setColor(Color.BLUE)
-                .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl());
-        builder.addField("**__" + what + " in the World__**", board.toString(), false);
+                .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
+                .setTitle("__**Global Leaderboard**__")
+                .addField("**" + what + " in the World**", board.toString(), false);
         e.getChannel().sendMessage(builder.build()).queue();
     }
 
@@ -84,7 +85,7 @@ public class Economy {
         String[] data = new String[0];
         boolean hasData;
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt"));
             hasData = true;
             data = reader.readLine().split(" ");
             reader.close();
@@ -92,7 +93,7 @@ public class Economy {
             hasData = false;
         }
         if (message[0].equals("start") && !hasData) {
-            File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt");
+            File file = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt");
             try {
                 file.createNewFile();
             } catch (Exception exception) {
@@ -100,7 +101,7 @@ public class Economy {
             }
             try {
                 PrintWriter newData = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
-                newData.print("0 0 0 0 0 0 0 0 0 false false 0 0 0 0 0 0 0 false false false 0 0 0 0 false 0 0 0 0 0 0 1 1 0 0 0 false 0 0 0 0 0 0 0 0 0 0 0 0 false 0 0 0 0 0 false false false false false false 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 false 0 0 0 0 false false");
+                newData.print("0 0 0 0 0 0 0 0 0 false false 0 0 0 0 0 0 0 false false false 0 0 0 0 false 0 0 0 0 0 0 1 1 0 0 0 false 0 0 0 0 0 0 0 0 0 0 false false false 0 0 0 0 0 false false false false false false 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 false 0 0 0 0 false false 0 0 0 0 0 0 0 false");
                 newData.close();
                 e.getChannel().sendMessage("Your profile has been created!  Run `" + prefix + "help 3` for a list of economy commands!").queue();
             } catch (Exception exception) {
@@ -222,6 +223,20 @@ public class Economy {
                     new Stats(e, data);
                 }
             }
+            case "claim" -> {
+                if (!hasData) {
+                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                } else {
+                    new Vote(e, data);
+                }
+            }
+            case "gift" -> {
+                if (!hasData) {
+                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
+                } else {
+                    new Gift(e, data);
+                }
+            }
             case "leaderboard", "lb" -> {
                 try {
                     switch (message[1]) {
@@ -237,12 +252,14 @@ public class Economy {
                         case "rehearsals" -> leaderboard(":musical_score:", "Most Rehearsals Attended", e, 72, Long.parseLong(data[72]));
                         case "performances" -> leaderboard(":microphone:", "Most Performances", e, 73, Long.parseLong(data[73]));
                         case "earnings" -> leaderboard(":violin:", "Most Hardworking Users", e, 75, Long.parseLong(data[75]));
-                        case "teach" -> leaderboard(":teacher:", "Most Influential Users", e, 76, Long.parseLong(data[76]));
+                        case "teach" -> leaderboard(":teacher:", "Most Influential Users", e, 76, (long) Double.parseDouble(data[76]));
                         case "luthier" -> leaderboard(":question:", "Best Unscramblers", e, 77, Long.parseLong(data[77]));
+                        case "gift" -> leaderboard(":gift:", "Most Generous Users", e, 85, Long.parseLong(data[85]));
+                        case "vote" -> leaderboard(":ballot_box:", "Most Outspoken Users", e, 88, Long.parseLong(data[88]));
                         default -> e.getChannel().sendMessage("You must provide a valid leaderboard type.  Run the command with no arguments for a list of leaderboards.").queue();
                     }
                 } catch (Exception exception) {
-                    e.getChannel().sendMessage("**__Leaderboard Types__**\n\n`violins`: Richest Users\n`income`: Highest Hourly Incomes\n`streak`: Longest Daily Streaks\n`medals`: Users with Most Ling Ling Medals\n`winnings`: Users with Highest Net Gamble Winnings\n`million`: Users with Most Million Violin Tickets\n`rob`: Users with Highest Violins Robbed\n`scales`: Users with Most Scales Played\n`hours`: Users with Most Hours Practised\n`rehearsals`: Users with Most Rehearsals Attended\n`performances`: Users with Most Performances\n`teach`: Users with the Most Hours Taught\n`earnings`: Users who Earned the Most Violins\n`luthier`: Users with Most Luthier Unscrambles").queue();
+                    e.getChannel().sendMessage("**__Leaderboard Types__**\n\n`violins`: Richest Users\n`income`: Highest Hourly Incomes\n`streak`: Longest Daily Streaks\n`medals`: Users with Most Ling Ling Medals\n`winnings`: Users with Highest Net Gamble Winnings\n`million`: Users with Most Million Violin Tickets\n`rob`: Users with Highest Violins Robbed\n`scales`: Users with Most Scales Played\n`hours`: Users with Most Hours Practised\n`rehearsals`: Users with Most Rehearsals Attended\n`performances`: Users with Most Performances\n`teach`: Users with the Most Hours Taught\n`earnings`: Users who Earned the Most Violins\n`luthier`: Users with Most Luthier Unscrambles\n`gift`: Users that have given the most Gifts\n`vote`: Users that have voted the most").queue();
                 }
             }
         }

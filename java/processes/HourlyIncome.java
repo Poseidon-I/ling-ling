@@ -5,7 +5,7 @@ import java.io.*;
 public class HourlyIncome {
     public HourlyIncome() {
         BufferedReader reader;
-        File directory = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
+        File directory = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
         File[] files = directory.listFiles();
         String[] data   ;
         assert files != null;

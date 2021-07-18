@@ -112,10 +112,10 @@ public class Cooldowns {
             builder.addField("**Perform**", "`" + Reformat(hours) + ":" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`", false);
         }
 
-        //daily
-        milliseconds = Long.parseLong(data[48]) - time;
+        //vote
+        milliseconds = Long.parseLong(data[89]) - time + 3600000;
         if (milliseconds < 0) {
-            builder.addField("**Daily**", ":white_check_mark:", false);
+            builder.addField("**Vote**", ":white_check_mark:\n`WARNING: May be inaccurate`", false);
         } else {
             hours = milliseconds / 3600000;
             milliseconds -= hours * 3600000;
@@ -123,7 +123,7 @@ public class Cooldowns {
             milliseconds -= minutes * 60000;
             seconds = milliseconds / 1000;
             milliseconds -= seconds * 1000;
-            builder.addField("**Daily**", "`" + Reformat(hours) + ":" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`", false);
+            builder.addField("**Vote**", "`" + Reformat(hours) + ":" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`\n`WARNING: May be inaccurate`", false);
         }
         builder.setTitle("__**Cooldowns**__");
         e.getChannel().sendMessage(builder.build()).queue();

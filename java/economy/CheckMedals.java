@@ -8,13 +8,13 @@ public class CheckMedals {
         if (!Boolean.parseBoolean(data[56]) && medals >= 5) {
             e.getChannel().sendMessage("You achieved 5:military_medal:!  Congratulations!  You have received an extra 8 000 hourly income!").queue();
             data[56] = "true";
+            data[12] = String.valueOf(Long.parseLong(data[12]) + 8000);
         } else if (!Boolean.parseBoolean(data[57]) && medals >= 10) {
             e.getChannel().sendMessage("You achieved 10:military_medal:!  Congratulations!  You now have 2x income from most commands!").queue();
             data[57] = "true";
         } else if (!Boolean.parseBoolean(data[58]) && medals >= 15) {
-            e.getChannel().sendMessage("You have achieved 15:military_medal:!  Congratulations!  You now have an extra 5% gambling multiplier!").queue();
-            data[58] = "true";
-        } else if (!Boolean.parseBoolean(data[59]) && medals >= 25) {
+            e.getChannel().sendMessage("You have achieved 15:military_medal:!  Congratulations!  Your gambling cap has been raised by 20%!").queue();
+            data[58] = "true";      } else if (!Boolean.parseBoolean(data[59]) && medals >= 25) {
             e.getChannel().sendMessage("You have achieved 25:military_medal:!  Congratulations!  You now have a 2.5% greater chance to succeed at robbing another user!  Note that this does **NOT** circumvent Ling Ling Insurance").queue();
             data[59] = "true";
         } else if (!Boolean.parseBoolean(data[60]) && medals >= 35) {

@@ -9,7 +9,7 @@ public class UpdateUsers {
         String[] message = e.getMessage().getContentRaw().split(" ");
         if (message.length > 1 && message[1].equals("confirm")) {
             e.getChannel().sendMessage("Updating saves for all users...").queue();
-            File directory = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
+            File directory = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
             File[] files = directory.listFiles();
             StringBuilder append = new StringBuilder();
             for (int i = 2; i < message.length; i++) {

@@ -123,17 +123,17 @@ public class Perform {
             } else {
                 num = random.nextDouble();
                 if (num > 0.5) {
-                    base *= 10;
+                    base *= 8;
                     newData[55] = String.valueOf(Long.parseLong(data[55]) + 1);
                     newData[52] = String.valueOf(Long.parseLong(data[52]) + 1);
                     e.getChannel().sendMessage(":trophy: Your performance won third place in the Ling Ling Competition.  Your earnings were tripled to " + base + " and you walked away with 1:military_medal: and a third place trophy :third_place:").queue();
                 } else if (num > 0.2) {
-                    base *= 25;
+                    base *= 15;
                     newData[55] = String.valueOf(Long.parseLong(data[55]) + 2);
                     newData[53] = String.valueOf(Long.parseLong(data[53]) + 1);
                     e.getChannel().sendMessage(":trophy: Your performance won second place.  Your earnings were multiplied by 15 to " + base + " and you walked away with 2:military_medal: and a second place trophy :second_place:").queue();
                 } else {
-                    base *= 100;
+                    base *= 50;
                     newData[55] = String.valueOf(Long.parseLong(data[55]) + 3);
                     newData[54] = String.valueOf(Long.parseLong(data[54]) + 1);
                     e.getChannel().sendMessage(":trophy: Your performance won first place.  Congratulations!  Your earnings were multiplied by 100 to " + base + " and you walked away with **3**:military_medal: and a FIRST place trophy :first_place:").queue();

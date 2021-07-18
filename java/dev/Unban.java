@@ -27,7 +27,7 @@ public class Unban {
             }
         }
         assert user != null;
-        File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + user.getId() + ".txt");
+        File file = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + user.getId() + ".txt");
         file.delete();
         e.getChannel().sendMessage(":white_check_mark: " + user.getName() + " was successfully unbanned!").queue();
         EmbedBuilder builder = new EmbedBuilder()
@@ -35,6 +35,6 @@ public class Unban {
                 .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
                 .addField("Moderator: " + e.getAuthor().getName(), "User: " + user.getName() + "#" + user.getDiscriminator() + "\nReason: " + reason, false)
                 .setTitle("__**Unban Info**__");
-        Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("709632179340312597")).getTextChannelById("800613646380040233")).sendMessage(builder.build()).queue();
+        Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage(builder.build()).queue();
     }
 }

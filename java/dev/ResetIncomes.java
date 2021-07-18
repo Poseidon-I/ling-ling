@@ -10,7 +10,7 @@ public class ResetIncomes {
         if (!e.getAuthor().isBot()) {
             e.getChannel().sendMessage("Maually overriding automatic user save reset...").queue();
         }
-        File directory = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
+        File directory = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
         File[] files = directory.listFiles();
         if (files != null) {
             for (File file : files) {

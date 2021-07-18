@@ -2,11 +2,13 @@ package processes;
 
 import dev.Luthier;
 import dev.*;
-import dev.ResetSave;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
+import java.awt.*;
 import java.io.*;
 import java.util.Objects;
 
@@ -51,7 +53,7 @@ public class DevCommands {
                     String userData;
                     String target = message[1];
                     try {
-                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + target + ".txt"));
+                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + target + ".txt"));
                         userData = reader.readLine();
                         e.getChannel().sendMessage(Objects.requireNonNull(e.getJDA().getUserById(target)).getName() + "'s data: " + userData).queue();
                         reader.close();
@@ -71,10 +73,21 @@ public class DevCommands {
                     }
                     userData.deleteCharAt(userData.length() - 1);
                     try {
-                        writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + id + ".txt")));
+                        User user = e.getJDA().getUserById(id);
+                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + id + ".txt"));
+                        String oldData = reader.readLine();
+                        reader.close();
+                        writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + id + ".txt")));
                         writer.print(userData);
                         writer.close();
                         e.getChannel().sendMessage("Successfully edited the data of " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName()).queue();
+                        assert user != null;
+                        EmbedBuilder builder = new EmbedBuilder()
+                                .setColor(Color.BLUE)
+                                .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
+                                .addField("Moderator: " + e.getAuthor().getName(), "User: " + user.getName() + "#" + user.getDiscriminator() + "\nOld Data: " + oldData + "\nNew Data: " + userData, false)
+                                .setTitle("__**Save File Direct Edit Info**__");
+                        Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage(builder.build()).queue();
                     } catch (Exception exception) {
                         e.getChannel().sendMessage("This user save doesn't exist!").queue();
                     }
@@ -117,8 +130,8 @@ public class DevCommands {
                     e.getChannel().sendMessage("**403 FORBIDDEN**\nYou do not have permission to run this command.").queue();
                 }
             }
-           /* case "!custom" -> {
-                File directory = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
+            /*case "!custom" -> {
+                File directory = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
                 File[] files = directory.listFiles();
                 assert files != null;
                 for (File file : files) {
@@ -130,20 +143,18 @@ public class DevCommands {
                     } catch (Exception exception) {
                         continue;
                     }
-                        if (!data[78].equals("true") && !data[78].equals("false")) {
-                            try {
-                                writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
-                                for (int i = 0; i < 78; i++) {
-                                    writer.print(data[i] + " ");
-                                }
-                                writer.print("false");
-                                for (int i = 79; i < 85; i++) {
-                                    writer.print(" " + data[i]);
-                                }
-                            } catch (Exception exception) {
-                                //nothing here lol
-                            }
+                    try {
+                        writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
+                        data[48] = "false";
+                        data[49] = "false";
+                        writer.print(data[0]);
+                        for (int i = 1; i < data.length; i ++) {
+                            writer.print(" " + data[i]);
                         }
+                        writer.close();
+                    } catch (Exception exception) {
+                        //nothing here lol
+                    }
                 }
             }*/
             case "!warn" -> {

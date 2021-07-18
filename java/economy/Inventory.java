@@ -17,14 +17,21 @@ public class Inventory {
                     .setColor(Color.BLUE)
                     .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
                     .setTitle(e.getAuthor().getName() + "'s Inventory")
-                    .addField("Rice :rice:", "Count: " + data[51] + "\nUsage: Gives you 2 hours of income.\nID: `rice`", false)
-                    .addField("Bubble Tea :bubble_tea:", "Count: " + data[62] + "\nUsage: Gives you 6 hours of income.\nID: `tea`", false)
-                    .addField("Ling Ling Blessing :angel:", "Count: " + data[63] + "\nUsage: Gives you 24 hours of income and 1-3 Ling Ling Medals.\nID: `blessing`", false);
+                    .addField("Rice :rice:", "Count: " + data[51] + "\nUsage: Gives you 2 hours of income.\nID: `rice`", true)
+                    .addField("Bubble Tea :bubble_tea:", "Count: " + data[62] + "\nUsage: Gives you 6 hours of income.\nID: `tea`", true)
+                    .addField("Ling Ling Blessing :angel:", "Count: " + data[63] + "\nUsage: Gives you 24 hours of income and 1-3 Ling Ling Medals.\nID: `blessing`", true)
+                    .addField("Gift Box :gift:", "Count: " + data[87] + "\nUsage: Gives you semi-valuable random items, as decided by the RNG Gods.\nID: `gift`", true)
+                    .addField("Vote Box :ballot_box:", "Count: " + data[90] + "\nUsage: Gives you random items, as decided by the RNG Gods.\nID: `vote`", true);
+            if(data[91].equals("0")) {
+                builder.addField("???", "Count: 0\nUsage: ???", true);
+            } else {
+                builder.addField("GOD Box :fireworks:", "Count: " + data[91] + "\nUsage: Gives you extremely valuable random items, as decided by the RNG Gods.  You can only get one Ling Ling Medal per day.\nID: `god`", true);
+            }
             e.getChannel().sendMessage(builder.build()).queue();
         } else {
             User target = Objects.requireNonNull(e.getJDA().getUserById(message[1]));
             try {
-                BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + target.getId() + ".txt"));
+                BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + target.getId() + ".txt"));
                 String[] line = reader.readLine().split(" ");
                 EmbedBuilder builder = new EmbedBuilder()
                         .setColor(Color.BLUE)
@@ -32,7 +39,14 @@ public class Inventory {
                         .setTitle(target.getName() + "'s Inventory")
                         .addField("Rice :rice:", "Count: " + line[51], false)
                         .addField("Bubble Tea :bubble_tea:", "Count: " + line[62], false)
-                        .addField("Ling Ling Blessing :angel:", "Count: " + line[63], false);
+                        .addField("Ling Ling Blessing :angel:", "Count: " + line[63], false)
+                        .addField("Gift Box :gift:", "Count: " + line[87], false)
+                        .addField("Vote Box :ballot_box:", "Count: " + line[90], false);
+                if(data[91].equals("0")) {
+                    builder.addField("???", "Count: 0", false);
+                } else {
+                    builder.addField("GOD Box :fireworks:", "Count: " + data[91], false);
+                }
                 e.getChannel().sendMessage(builder.build()).queue();
                 reader.close();
             } catch (Exception exception) {

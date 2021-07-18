@@ -10,7 +10,7 @@ public class Luthier {
         try {
             switch (message[1]) {
                 case "setup" -> {
-                    File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt");
+                    File file = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt");
                     try {
                         file.createNewFile();
                         PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
@@ -29,7 +29,7 @@ public class Luthier {
                     }
                     luthierData.deleteCharAt(luthierData.length() - 1);
                     try {
-                        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + id + ".txt")));
+                        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + id + ".txt")));
                         writer.print(luthierData);
                         writer.close();
                         e.getChannel().sendMessage("Successfully edited the data of Luthier for " + e.getGuild().getName()).queue();
@@ -40,7 +40,7 @@ public class Luthier {
                 case "add" -> {
                     String[] data = new String[0];
                     try {
-                        BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt"));
+                        BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt"));
                         data = reader.readLine().split(" ");
                         reader.close();
                     } catch (Exception exception1) {
@@ -52,7 +52,7 @@ public class Luthier {
                         luthierData.append(" ").append(data[i]);
                     }
                     try {
-                        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt")));
+                        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt")));
                         writer.print(luthierData);
                         writer.close();
                         e.getChannel().sendMessage("Successfully added " + message[2] + "x multiplier to " + e.getGuild().getName() + ".  New multiplier: " + (Long.parseLong(data[1]) + add)).queue();
@@ -64,7 +64,7 @@ public class Luthier {
         } catch (Exception exception) {
             String luthierData;
             try {
-                BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt"));
+                BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt"));
                 luthierData = reader.readLine();
                 e.getChannel().sendMessage("Luthier Settings for " + e.getGuild().getName() + ": " + luthierData).queue();
                 reader.close();

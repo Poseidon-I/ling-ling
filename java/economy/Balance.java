@@ -23,7 +23,7 @@ public class Balance {
         } else {
             User user = Objects.requireNonNull(e.getJDA().getUserById(message[1]));
             try {
-                BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + user.getId() + ".txt"));
+                BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + user.getId() + ".txt"));
                 String[] line = reader.readLine().split(" ");
                 EmbedBuilder builder = new EmbedBuilder()
                         .setColor(Color.BLUE)

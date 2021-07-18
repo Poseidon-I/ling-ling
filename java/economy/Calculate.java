@@ -12,6 +12,9 @@ public class Calculate {
             if (Objects.requireNonNull(e.getMember()).getRoles().contains(e.getGuild().getRoleById("755910677075460206"))) {
                 base *= 1.1;
             }
+            if(e.getMember().getRoles().contains(e.getGuild().getRoleById("852752096733429781"))) {
+                base *= 1.3;
+            }
             if (Objects.requireNonNull(e.getMember()).getRoles().contains(e.getGuild().getRoleById("734697410273607751"))) {
                 base *= 1.25;
             } else if (Objects.requireNonNull(e.getMember()).getRoles().contains(e.getGuild().getRoleById("845121274958184499"))) {

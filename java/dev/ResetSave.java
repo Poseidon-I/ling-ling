@@ -29,10 +29,10 @@ public class ResetSave {
         assert user != null;
         if(user.getId().equals(e.getAuthor().getId())) {
             e.getChannel().sendMessage("Imagine trying to reset your own save, how dumb are you???").queue();
-        } else if(user.getId().equals("619989388109152256") && user.getId().equals("488487157372157962")) {
+        } else if(user.getId().equals("619989388109152256") || user.getId().equals("488487157372157962")) {
             e.getChannel().sendMessage("Imagine trying to reset the save of a developer smh").queue();
         } else {
-            File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + user.getId() + ".txt");
+            File file = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + user.getId() + ".txt");
             file.delete();
             e.getChannel().sendMessage(":warning: " + user.getName() + "'s save was successfully reset!").queue();
             EmbedBuilder builder = new EmbedBuilder()
@@ -40,7 +40,7 @@ public class ResetSave {
                     .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
                     .addField("Moderator: " + e.getAuthor().getName(), "User: " + user.getName() + "#" + user.getDiscriminator() + "\nReason: " + reason, false)
                     .setTitle("__**Save Reset Info**__");
-            Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("709632179340312597")).getTextChannelById("800613646380040233")).sendMessage(builder.build()).queue();
+            Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage(builder.build()).queue();
             user.openPrivateChannel().complete().sendMessage("Your save was reset for" + reason + ".  Continuation of this action will result in a bot ban.").queue();
         }
     }

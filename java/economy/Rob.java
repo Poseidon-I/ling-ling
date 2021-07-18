@@ -35,7 +35,7 @@ public class Rob {
             }
             String[] targetdata;
             try {
-                BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + user.getId() + ".txt"));
+                BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + user.getId() + ".txt"));
                 targetdata = reader.readLine().split(" ");
                 reader.close();
             } catch (Exception exception) {
@@ -172,7 +172,7 @@ public class Rob {
             }
             data[5] = String.valueOf(time + 57540000);
             try {
-                PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + user.getId() + ".txt")));
+                PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + user.getId() + ".txt")));
                 writer.print(targetViolins);
                 for (int i = 1; i < targetdata.length; i++) {
                     if (i != 69) {

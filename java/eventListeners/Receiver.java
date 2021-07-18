@@ -3,7 +3,10 @@ package eventListeners;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import processes.*;
+import processes.DevCommands;
+import processes.HourlyIncome;
+import processes.Luthier;
+import processes.RegularCommands;
 
 import java.io.*;
 import java.util.Arrays;
@@ -15,7 +18,7 @@ public class Receiver extends ListenerAdapter {
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent e) {
         boolean isBanned = false;
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt"));
             String[] data = reader.readLine().split(" ");
             if (data.length == 1 && data[0].equals("BANNED")) {
                 isBanned = true;
@@ -28,12 +31,12 @@ public class Receiver extends ListenerAdapter {
         BufferedReader reader;
         PrintWriter writer;
         String[] message = e.getMessage().getContentRaw().toLowerCase().split(" ");
-        String[] data = new String[0];
+        String[] data;
         boolean isDev = e.getAuthor().getId().equals("619989388109152256") || e.getAuthor().getId().equals("488487157372157962") || e.getAuthor().getId().equals("706933826193981612");
 
         //LOAD SERVER MEMBERS ONLY ONCE
         try {
-            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\loadedservers.txt"));
+            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\loadedservers.txt"));
             String line = reader.readLine();
             reader.close();
             try {
@@ -46,7 +49,7 @@ public class Receiver extends ListenerAdapter {
                 e.getGuild().loadMembers();
                 line = e.getGuild().getId();
             }
-            writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\loadedservers.txt")));
+            writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\loadedservers.txt")));
             writer.print(line);
             writer.close();
         } catch (Exception exception1) {
@@ -56,7 +59,7 @@ public class Receiver extends ListenerAdapter {
         //HOURLY
         long time = 0;
         try {
-            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\hourly.txt"));
+            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\hourly.txt"));
             time = Long.parseLong(reader.readLine());
             reader.close();
         } catch (Exception exception) {
@@ -65,24 +68,47 @@ public class Receiver extends ListenerAdapter {
         if (System.currentTimeMillis() > time) {
             time += 3600000;
             new HourlyIncome();
+            Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage("Hourly Incomes Sent!").queue();
             try {
-                PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\hourly.txt")));
+                PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\hourly.txt")));
                 pw.print(time);
                 pw.close();
             } catch (Exception exception) {
                 //nothing here lol
             }
             if (time % 86400000 == 0) {
-                Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("709632179340312597")).getTextChannelById("717484601328533565")).sendMessage("Bot Restarting!").queue();
-                e.getJDA().shutdownNow();
-                new StartBot();
+                File directory = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
+                File[] files = directory.listFiles();
+                assert files != null;
+                for(File file : files) {
+                    try {
+                        reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
+                        data = reader.readLine().split(" ");
+                        reader.close();
+                    } catch (Exception exception) {
+                        continue;
+                    }
+                    try {
+                        writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
+                        data[48] = "false";
+                        data[49] = "false";
+                        data[92] = "false";
+                        for (String datum : data) {
+                            writer.print(datum + " ");
+                        }
+                        writer.close();
+                    } catch (Exception exception) {
+                        //nothing here lol
+                    }
+                }
+                Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage("Daily and Gifts Reset!").queue();
             }
         }
         if (!isBanned) {
             //LUTHIER
             if (!e.getAuthor().isBot()) {
                 try {
-                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt"));
+                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".txt"));
                     data = reader.readLine().split(" ");
                     reader.close();
                     new Luthier(e, data);
@@ -109,11 +135,11 @@ public class Receiver extends ListenerAdapter {
                 if (!isDev) {
                     try {
                         server = e.getGuild().getId();
-                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Prefixes\\" + server + ".txt"));
+                        reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Prefixes\\" + server + ".txt"));
                         prefix = (char) reader.read();
                         reader.close();
                     } catch (Exception exception) {
-                        File file = new File("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Prefixes\\" + server + ".txt");
+                        File file = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Prefixes\\" + server + ".txt");
                         try {
                             file.createNewFile();
                             writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
@@ -136,13 +162,6 @@ public class Receiver extends ListenerAdapter {
                         String target = "";
                         String targetPing = "";
                         try {
-                            reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\Ling_Ling_Bot\\Ling Ling Bot Data\\Settings\\Server\\" + server + ".txt"));
-                            data = reader.readLine().split(" ");
-                            reader.close();
-                        } catch (Exception exception) {
-                            //nothing here lol
-                        }
-                        try {
                             target = e.getMessage().getMentionedUsers().get(0).getId();
                             targetPing = e.getMessage().getMentionedUsers().get(0).getName();
                         } catch (Exception exception) {
@@ -150,7 +169,7 @@ public class Receiver extends ListenerAdapter {
                                 target = message[1];
                                 targetPing = message[1];
                             } catch (Exception exception1) {
-                                if (data[1].equals("true") && random.nextDouble() < 0.025) {
+                                if (random.nextDouble() < 0.025) {
                                     e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), "U+1F3BB").queue();
                                 }
                             }
