@@ -1,4 +1,4 @@
-package economy;
+package economy; 
 
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
