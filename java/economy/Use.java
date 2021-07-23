@@ -183,56 +183,7 @@ public class Use {
                     }
                 }
                 case "god" -> {
-                    if (Long.parseLong(data[91]) <= 0) {
-                        e.getChannel().sendMessage("You already used all your vote boxes, vote for the bot to get more!").queue();
-                    } else if (income == 0) {
-                        e.getChannel().sendMessage("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").queue();
-                    } else {
-                        data[91] = String.valueOf(Long.parseLong(data[91]) - 1);
-                        Random random = new Random();
-                        double rng = random.nextDouble();
-                        if(data[92].equals("true")) {
-                            if(rng < 0.3) {
-                                int received = random.nextInt(11) + 10;
-                                data[62] = String.valueOf(Long.parseLong(data[62]) + received);
-                                e.getChannel().sendMessage("You received " + received + ":tea: from your Gift Box!").queue();
-                            } else if(rng < 0.6) {
-                                int received = random.nextInt(11) + 20;
-                                data[51] = String.valueOf(Long.parseLong(data[51]) + received);
-                                e.getChannel().sendMessage("You received " + received + ":rice: from your Gift Box!").queue();
-                            } else {
-                                long hourly = Long.parseLong(data[12]);
-                                long min = hourly * 24;
-                                long received = random.nextInt((int) min) + min;
-                                data[0] = String.valueOf(Long.parseLong(data[0]) + received);
-                                e.getChannel().sendMessage("You received " + received + ":violin: from your Gift Box!").queue();
-                            }
-                        } else {
-                            if(rng < 0.3) {
-                                data[92] = "true";
-                                int received = random.nextInt(4) + 3;
-                                data[63] = String.valueOf(Long.parseLong(data[63]) + received);
-                                e.getChannel().sendMessage("You received " + received + ":angel: from your GOD Box!").queue();
-                            } else if(rng < 0.4) {
-                                data[92] = "true";
-                                data[55] = String.valueOf(Long.parseLong(data[55]) + 1);
-                                long max = Long.parseLong(data[12]) / 20000;
-                                long min = Long.parseLong(data[12]) / 50000;
-                                long received = random.nextInt((int) (max - min + 1)) + min;
-                                e.getChannel().sendMessage("You received " + received + ":military_medal: from your GOD Box!").queue();
-                                data = CheckMedals.Medals(e, data);
-                            } else if(rng < 0.7) {
-                                int received = random.nextInt(11) + 10;
-                                data[62] = String.valueOf(Long.parseLong(data[62]) + received);
-                                e.getChannel().sendMessage("You received " + received + ":tea: from your GOD Box!").queue();
-                            } else {
-                                int received = random.nextInt(11) + 20;
-                                data[51] = String.valueOf(Long.parseLong(data[51]) + received);
-                                e.getChannel().sendMessage("You received " + received + ":rice: from your GOD Box!").queue();
-                            }
-                        }
-                        new SaveData(e, data);
-                    }
+                    // [ redacted ]
                 }
                 default -> e.getChannel().sendMessage("You can't use something that doesn't exist, that doesn't make sense.").queue();
             }
