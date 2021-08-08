@@ -1,17 +1,15 @@
+***THIS REPOSITORY WAS MADE FOR PEOPLE WHO ARE CURIOUS ON HOW THE BOT WORKS.  THE FOLLOWING PERMITTED USE IS THE ONLY CASE WHERE TAKING CODE IS OK WITHOUT PERMISSION.  ALL OTHER COPYING IS PROHIBITED UNLESS PERMISSION IS OBTAINED FROM ME (AND ONLY ME) BY MESSAGING ME ON DISCORD IN DMS ONLY.***
+
 ```diff
-+ Permitted Uses of Code
++ Permitted Use of Code
 ```
-- You may take portions of code (up to ~5 lines per file) to use in your own project.
-- You may use more than 5 lines if you have permission.  You can obtain permission by DMing me `Stradivarius Violin#6156` with the reason for use and what you are using it for.
-- You may post `Luthier.java` if your server members have trouble figuring out the words.
-- You may look through the code to find bugs to report, finding enough bugs might just get you rewarded :)
+- Posting `Luthier.java` **as a pinned message in your luthier channel** is the only allowed action without permission.
+- Looking through the code is also allowed, and if you find a few bugs and report them I might reward you :)
 
 ```diff
 - Unpermitted Uses of Code
 ```
-- You may not use more than one file per project for your own purposes.
-- You may not look thorugh the code soley to find and abuse bugs.
-
-**Using any code in unpermitted ways will earn you a permanent bot and server ban, and possibly action taken against you by Discord depending on severity.**
+- All other copying of code is banned and can lead to a ticket opened against you on Discord as well as a permanent bot and server ban.
+- You may not look thorugh the code soley to find and abuse/exploit bugs/vulnerabilities.  This will warrant, at minimum, a save reset.
 
 Note: Not every single update is uploaded, and minor versions will often be skipped over.  Do not report any bugs that have already been marked fixed in the update log.
