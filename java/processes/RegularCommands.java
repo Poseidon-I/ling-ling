@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import regular.*;
 
+import java.io.File;
 import java.util.Objects;
 
 public class RegularCommands {
@@ -33,7 +34,7 @@ public class RegularCommands {
             case "poll" -> new Poll(e);
             case "emojify" -> new Emojify(e);
             case "invite" -> e.getChannel().sendMessage("You can add the bot to your server using the below link:\n<https://discord.com/api/oauth2/authorize?client_id=733409243222507670&permissions=268725312&scope=bot>\n\nWant the leveling bot?  Use this link: <https://discord.com/api/oauth2/authorize?client_id=846098752191332373&permissions=268454912&scope=bot>").queue();
-            case "vote" -> e.getChannel().sendMessage("You can vote for the bot here: <https://top.gg/bot/733409243222507670/vote>.\nYou can vote for the support server here to get a 10% command boost in the server: <https://top.gg/servers/670725611207262219/vote>").queue();
+            case "vote", "v" -> e.getChannel().sendMessage("You can vote for the bot here: <https://top.gg/bot/733409243222507670/vote>.  Remember to `" + prefix + "claim` your reward after you're done!\n\nYou can vote for the support server here to get a 10% command boost in the server: <https://top.gg/servers/670725611207262219/vote>").queue();
             case "rules" -> e.getChannel().sendMessage("```ini\n[ LING LING BOT RULES ]```\n1. Do not spam commands, spam autoresponse triggers, excessively ping users, or send messages to trigger luthier or any sort of action that may cause the bot to crash.  This is punishable by warn and up to a save reset.\n\n2. Do not abuse bugs or exploits.  If a bug/exploit is found, **IMMEDIATELY** report it to @Stradivarius Violin#6156.  Any instance of bug/exploit abuse can warrant an immediate save reset, and in some cases or for repeat offenders, a permanent bot ban.\n\n3. Some parts of the bot were written to poke fun at others.  However, if taken too far, you will be punished based on how severe your actions were.\n\n4. Read the #update-log before bothering anyone as to why something changed or why the bot is offline.\n\n***All bot mods/admins are allowed to take bot moderation actions in any server and can give users bot and verbal warnings even if the action was not against the server rules.  Being mod/admin in a server does not make you immune to punishments relating to the bot, and your server will be punished if a mod/admin of that server tries to impede bot moderation.***").queue();
             case "prefix" -> {
                 if(isAdmin || isDev) {
@@ -41,6 +42,12 @@ public class RegularCommands {
                 } else {
                     e.getChannel().sendMessage("**403 FORBIDDEN**\nYou do not have permission to run this command.").queue();
                 }
+            }
+            case "botstats" -> {
+                int serverCount = e.getJDA().getSelfUser().getMutualGuilds().size();
+                File[] files = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data").listFiles();
+                assert files != null;
+                e.getChannel().sendMessage("Servers: " + serverCount + "\nUsers: " + files.length).queue();
             }
             default -> ranCommand = false;
         }

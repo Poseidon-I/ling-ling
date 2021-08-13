@@ -10,7 +10,6 @@ public class Perform {
         Random random = new Random();
         long violins = Long.parseLong(data[0]);
         long violinsEarned = Long.parseLong(data[75]);
-        String[] newData = data;
         if (time < Long.parseLong(data[8])) {
             long milliseconds = Long.parseLong(data[8]) - time;
             long days = milliseconds / 86400000;
@@ -23,25 +22,26 @@ public class Perform {
             milliseconds -= seconds * 1000;
             e.getChannel().sendMessage("Don't tire yourself with two performances a week!  Wait " + days + " days " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
         } else {
+            boolean badEvent = false;
             long base = Calculate.CalculateAmount(e, data, random.nextInt(1001) + 4500);
             double num = random.nextDouble();
-            if (num > 0.8) {
+            if (num > 0.75) {
                 violins += base;
                 violinsEarned += base;
                 e.getChannel().sendMessage("You performed your solo and earned " + base + ":violin:").queue();
-            } else if (num > 0.55) {
+            } else if (num > 0.5) {
                 num = random.nextDouble();
                 if (num > 0.5) {
-                    newData[51] = String.valueOf(Long.parseLong(data[51]) + 9);
+                    data[51] = String.valueOf(Long.parseLong(data[51]) + 9);
                     e.getChannel().sendMessage("Your paycheck contained 9:rice: instead of violins.").queue();
                 } else if (num > 0.1) {
-                    newData[62] = String.valueOf(Long.parseLong(data[62]) + 4);
+                    data[62] = String.valueOf(Long.parseLong(data[62]) + 4);
                     e.getChannel().sendMessage("You found 4:bubble_tea: after you performed.").queue();
                 } else {
-                    newData[63] = String.valueOf(Long.parseLong(data[63]) + 1);
+                    data[63] = String.valueOf(Long.parseLong(data[63]) + 1);
                     e.getChannel().sendMessage("Ling Ling enjoyed your performance and blessed you.").queue();
                 }
-            } else if (num > 0.25) {
+            } else if (num > 0.2) {
                 num = random.nextDouble();
                 if (num > 0.65) {
                     e.getChannel().sendMessage("Your teacher approved your performance.  Your tiger mom saw the comment, and gave you " + (long) (base * 0.1) + ":violin: in addition to the " + base + ":violin: that you earned.").queue();
@@ -103,10 +103,11 @@ public class Perform {
                     e.getChannel().sendMessage("Your performance was for a competition, and you only won Honorable Mention.  Your tiger mom Kung-Paos your chicken and takes half your earnings, in addition to another " + income + " for being so mediocre.").queue();
                 } else if (num > 0.015) {
                     e.getChannel().sendMessage("Your chin rest popped off your violin!  You take your violin to the luthier, who informs you that the violin will have to stay overnight.  You are not able to practise anything for 12 hours.").queue();
-                    newData[64] = String.valueOf(Long.parseLong(data[64]) + 43200000);
-                    newData[1] = String.valueOf(Long.parseLong(data[1]) + 43200000);
+                    data[64] = String.valueOf(Long.parseLong(data[64]) + 43200000);
+                    data[1] = String.valueOf(Long.parseLong(data[1]) + 43200000);
+                    badEvent = true;
                 } else if (num > 0.005) {
-                    e.getChannel().sendMessage("You decided to fake your performance.  Of course it didn't work and Ling Ling fined you " + violins * 0.95 + ":violin:").queue();
+                    e.getChannel().sendMessage("You decided to fake your performance.  Of course it didn't work and Ling Ling fined you " + (long) (violins * 0.95) + ":violin:").queue();
                     violins *= 0.05;
                     base = 0;
                 } else {
@@ -114,44 +115,45 @@ public class Perform {
                     violins *= 0.01;
                     base = 0;
                     time += 86400000;
-                    newData[1] = String.valueOf(time);
-                    newData[7] = String.valueOf(time);
-                    newData[8] = String.valueOf(time);
-                    newData[64] = String.valueOf(time);
+                    data[1] = String.valueOf(time + 86400000);
+                    data[7] = String.valueOf(time + 86400000);
+                    data[8] = String.valueOf(time + 86400000);
+                    data[64] = String.valueOf(time + 86400000);
+                    badEvent = true;
                 }
                 violinsEarned += base;
             } else {
                 num = random.nextDouble();
                 if (num > 0.5) {
-                    base *= 8;
-                    newData[55] = String.valueOf(Long.parseLong(data[55]) + 1);
-                    newData[52] = String.valueOf(Long.parseLong(data[52]) + 1);
-                    e.getChannel().sendMessage(":trophy: Your performance won third place in the Ling Ling Competition.  Your earnings were tripled to " + base + " and you walked away with 1:military_medal: and a third place trophy :third_place:").queue();
+                    base *= 5;
+                    data[55] = String.valueOf(Long.parseLong(data[55]) + 1);
+                    data[52] = String.valueOf(Long.parseLong(data[52]) + 1);
+                    e.getChannel().sendMessage(":trophy: Your performance won third place in the Ling Ling Competition.  Your earnings were multiplied by 5 to " + base + " and you walked away with 1:military_medal: and a third place trophy :third_place:").queue();
                 } else if (num > 0.2) {
-                    base *= 15;
-                    newData[55] = String.valueOf(Long.parseLong(data[55]) + 2);
-                    newData[53] = String.valueOf(Long.parseLong(data[53]) + 1);
-                    e.getChannel().sendMessage(":trophy: Your performance won second place.  Your earnings were multiplied by 15 to " + base + " and you walked away with 2:military_medal: and a second place trophy :second_place:").queue();
+                    base *= 10;
+                    data[55] = String.valueOf(Long.parseLong(data[55]) + 2);
+                    data[53] = String.valueOf(Long.parseLong(data[53]) + 1);
+                    e.getChannel().sendMessage(":trophy: Your performance won second place.  Your earnings were multiplied by 10 to " + base + " and you walked away with 2:military_medal: and a second place trophy :second_place:").queue();
                 } else {
-                    base *= 50;
-                    newData[55] = String.valueOf(Long.parseLong(data[55]) + 3);
-                    newData[54] = String.valueOf(Long.parseLong(data[54]) + 1);
-                    e.getChannel().sendMessage(":trophy: Your performance won first place.  Congratulations!  Your earnings were multiplied by 100 to " + base + " and you walked away with **3**:military_medal: and a FIRST place trophy :first_place:").queue();
+                    base *= 20;
+                    data[55] = String.valueOf(Long.parseLong(data[55]) + 3);
+                    data[54] = String.valueOf(Long.parseLong(data[54]) + 1);
+                    e.getChannel().sendMessage(":trophy: Your performance won first place.  Congratulations!  Your earnings were multiplied by 20 to " + base + " and you walked away with **3**:military_medal: and a FIRST place trophy :first_place:").queue();
                 }
             }
             violins += base;
             violinsEarned += base;
-            //noinspection ConstantConditions
-            newData = CheckMedals.Medals(e, newData);
-            newData[0] = String.valueOf(violins);
-            newData[75] = String.valueOf(violinsEarned);
-            if (Boolean.parseBoolean(data[50])) {
-                newData[8] = String.valueOf(time + 215940000);
-            } else {
-                newData[8] = String.valueOf(time + 302340000);
+            data[0] = String.valueOf(violins);
+            data[75] = String.valueOf(violinsEarned);
+            if(!badEvent) {
+                if (Boolean.parseBoolean(data[50])) {
+                    data[8] = String.valueOf(time + 215940000);
+                } else {
+                    data[8] = String.valueOf(time + 302340000);
+                }
             }
-            newData[73] = String.valueOf(Long.parseLong(data[73]) + 1);
-            new SaveData(e, newData);
+            data[73] = String.valueOf(Long.parseLong(data[73]) + 1);
+            new SaveData(e, data);
         }
     }
 }

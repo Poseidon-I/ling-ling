@@ -18,17 +18,46 @@ public class Buy {
         }
     }
 
-    public static void ProcessUpgrade(GuildMessageReceivedEvent e, long cost, long  add, int index, long maxAmount, String item, String[] data) {
+    public static void ProcessUpgrade(GuildMessageReceivedEvent e, long cost, long add, int index, long maxAmount, String item, String[] data) {
         long violins = Long.parseLong(data[0]);
         if (Long.parseLong(data[index]) == maxAmount) {
             e.getChannel().sendMessage("You already purchased the maximum amount of `" + item + "`!").queue();
         } else if (violins < cost) {
-            e.getChannel().sendMessage("You do not have enough violins to purchase `" + item + "`!\nYou need " + cost + ":violin:, you only have " + data[0] + ":violin:").queue();
+            e.getChannel().sendMessage("You do not have enough violins to purchase `" + item + "`!\nYou need `" + cost + "`:violin:, you only have `" + data[0] + "`:violin:").queue();
         } else {
             data[0] = String.valueOf(violins - cost);
             data[12] = String.valueOf(Long.parseLong(data[12]) + add);
             data[index] = String.valueOf(Long.parseLong(data[index]) + 1);
             e.getChannel().sendMessage("Successfully purchased item `" + item + " #" + data[index] + "` for `" + cost + "`:violin:\nYou have `" + data[0] + "`:violin: left.").queue();
+            new SaveData(e, data);
+        }
+    }
+
+    public static void ProcessMedalUpgrade(GuildMessageReceivedEvent e, long cost, int index, String item, String[] data) {
+        long medals = Long.parseLong(data[55]);
+        if (medals < cost) {
+            e.getChannel().sendMessage("You do not have enough Ling Ling Medals to purchase `" + item + "`!\nYou need " + cost + ":military_medal:, you only have " + medals + ":military_medal:").queue();
+        } else {
+            data[55] = String.valueOf(medals - cost);
+            data[index] = String.valueOf(Long.parseLong(data[index]) + 1);
+            if(index == 56) {
+                data[12] = String.valueOf(Long.parseLong(data[12]) + 2500);
+            }
+            e.getChannel().sendMessage("Successfully purchased item `" + item + " #" + data[index] + "` for `" + cost + "`:military_medal:\nYou have `" + data[55] + "`:military_medal: left.").queue();
+            new SaveData(e, data);
+        }
+    }
+
+    public static void ProcessMedalBooleanUpgrade(GuildMessageReceivedEvent e, long cost, int index, String item, String[] data) {
+        long medals = Long.parseLong(data[55]);
+        if(Boolean.parseBoolean(data[index])) {
+            e.getChannel().sendMessage("You already purchased `" + item + "`!").queue();
+        } else if(medals < cost) {
+            e.getChannel().sendMessage("You do not have enough Ling Ling Medals to purchase `" + item + "`!\nYou need `" + cost + "`:military_medal:, you only have `" + medals + "`:military_medal:").queue();
+        } else {
+            data[55] = String.valueOf(medals - cost);
+            data[index] = "true";
+            e.getChannel().sendMessage("Successfully purchased item `" + item + "` for `" + cost + "`:military_medal:\nYou have `" + data[55] + "`:military_medal: left.").queue();
             new SaveData(e, data);
         }
     }
@@ -43,9 +72,9 @@ public class Buy {
             switch(message[1]) {
                 case "longer" -> ProcessBooleanUpgrade(e, 25000000, 0, 84, "Longer Lessons", data);
                 case "studio" -> ProcessBooleanUpgrade(e, 25000000, 5000, 83, "Teaching Studio", data);
-                case "training" -> ProcessUpgrade(e, 1250000 * (Long.parseLong(data[80]) + 1), 1500, 80, 10, "Teacher Training", data);
-                case "pricing" -> ProcessUpgrade(e, 2000000 * (Long.parseLong(data[82]) + 1), 4000, 82, 5, "Higher Lesson Rates", data);
-                case "students" -> ProcessUpgrade(e, (long) Math.pow(2, Double.parseDouble(data[81])) * 1000000, 2500, 81, 2147483647, "Student", data);
+                case "training" -> ProcessUpgrade(e, 1250000 * (Long.parseLong(data[80]) + 1), 1000, 80, 10, "Teacher Training", data);
+                case "pricing" -> ProcessUpgrade(e, 2000000 * (Long.parseLong(data[82]) + 1), 3000, 82, 5, "Higher Lesson Rates", data);
+                case "students" -> ProcessUpgrade(e, (long) Math.pow(2, Double.parseDouble(data[81])) * 1000000, 2000, 81, 2147483647, "Student", data);
                 default -> boughtItem = false;
             }
         }
@@ -75,14 +104,14 @@ public class Buy {
                 case "tenor" -> ProcessUpgrade(e, 75000 * (Long.parseLong(data[40]) + 1), 20, 40, 20, "Tenor Vocalist", data);
                 case "bass" -> ProcessUpgrade(e, 75000 * (Long.parseLong(data[41]) + 1), 20, 41, 20, "Bass Vocalist", data);
                 case "soloist" -> ProcessUpgrade(e, 300000 * (Long.parseLong(data[42]) + 1), 60, 42, 4, "Solo Vocalist", data);
-                case "conductor", "musicality" -> ProcessUpgrade(e, (long) (Math.pow(4, Integer.parseInt(data[44])) * 100000), 200, 44, 2147483647, "Conductor Musicality", data);
+                case "conductor", "musicality" -> ProcessUpgrade(e, (long) (Math.pow(4, Long.parseLong(data[44])) * 100000), 200, 44, 2147483647, "Conductor Musicality", data);
                 case "advertisement", "ad" -> ProcessUpgrade(e, 100000 * (Long.parseLong(data[45]) + 1), 100, 45, 20, "Advertising", data);
-                case "tickets" -> ProcessUpgrade(e, (long) (Math.pow(2, Integer.parseInt(data[46])) * 1000000), 1000, 46, 2147483647, "Ticket Cost", data);
+                case "tickets" -> ProcessUpgrade(e, (long) (Math.pow(2, Long.parseLong(data[46])) * 1000000), 1000, 46, 2147483647, "Ticket Cost", data);
                 case "certificate" -> {
                     if(Long.parseLong(data[12]) < 40000) {
                         e.getChannel().sendMessage("You do not have neough hourly income to become a teacher!").queue();
                     } else {
-                        ProcessBooleanUpgrade(e, 200000000, 10000, 78, "Teacher's Certificate", data);
+                        ProcessBooleanUpgrade(e, 200000000, 5000, 78, "Teacher's Certificate", data);
                     }
                 }
                 default -> boughtItem = false;
@@ -94,15 +123,21 @@ public class Buy {
                 case "1" -> ProcessBooleanUpgrade(e, 3000000, 0, 9, "Ling Ling Insurance - Plan 1 - Full Security", data);
                 case "2" -> ProcessBooleanUpgrade(e, 3000000, 0, 10, "Ling Ling Insurance - Plan 2 - Partial Security", data);
                 case "timecrunch", "tc" -> ProcessBooleanUpgrade(e, 120000000, 0, 50, "Time Crunch", data);
-                case "efficiency", "ep" -> ProcessUpgrade(e, (long) (Math.pow(1.1, Integer.parseInt(data[2])) * 400), 0, 2, 2147483647, "Efficient Practising", data);
-                case "lucky", "lm" -> ProcessUpgrade(e, (long) (Math.pow(1.25, Integer.parseInt(data[4])) * 1000), 0, 4, 50, "Lucky Musician", data);
-                case "robbing", "sr" -> ProcessUpgrade(e, (long) (Math.pow(1.4, Integer.parseInt(data[6])) * 5000), 0 , 6, 30, "Sophisticated Robbing", data);
-                case "violin", "v" -> ProcessUpgrade(e, (long) (Math.pow(3, Integer.parseInt(data[13])) * 1000), 600, 13, 2147483647, "Violin Quality", data);
-                case "skill", "s" -> ProcessUpgrade(e, (long) (Math.pow(2, Integer.parseInt(data[14])) * 500), 240, 14, 2147483647, "Skill Level", data);
-                case "lesson", "l" -> ProcessUpgrade(e, (long) (Math.pow(2.5, Integer.parseInt(data[15])) * 750), 150, 15, 2147483647, "Lesson Quality", data);
-                case "string", "str" -> ProcessUpgrade(e, (long) (Math.pow(1.75, Integer.parseInt(data[16])) * 500), 100, 16, 2147483647, "String Quality", data);
-                case "bow", "b" -> ProcessUpgrade(e, (long) (Math.pow(3, Integer.parseInt(data[17])) * 750), 200, 17, 2147483647, "Bow Quality", data);
+                case "efficiency", "ep" -> ProcessUpgrade(e, (long) (Math.pow(1.1, Long.parseLong(data[2])) * 400), 0, 2, 2147483647, "Efficient Practising", data);
+                case "lucky", "lm" -> ProcessUpgrade(e, (long) (Math.pow(1.25, Long.parseLong(data[4])) * 1000), 0, 4, 50, "Lucky Musician", data);
+                case "robbing", "sr" -> ProcessUpgrade(e, (long) (Math.pow(1.4, Long.parseLong(data[6])) * 5000), 0 , 6, 30, "Sophisticated Robbing", data);
+                case "violin", "v" -> ProcessUpgrade(e, (long) (Math.pow(3, Long.parseLong(data[13])) * 1000), 600, 13, 2147483647, "Violin Quality", data);
+                case "skill", "s" -> ProcessUpgrade(e, (long) (Math.pow(2, Long.parseLong(data[14])) * 500), 240, 14, 2147483647, "Skill Level", data);
+                case "lesson", "l" -> ProcessUpgrade(e, (long) (Math.pow(2.5, Long.parseLong(data[15])) * 750), 150, 15, 2147483647, "Lesson Quality", data);
+                case "string", "str" -> ProcessUpgrade(e, (long) (Math.pow(1.75, Long.parseLong(data[16])) * 500), 100, 16, 2147483647, "String Quality", data);
+                case "bow", "b" -> ProcessUpgrade(e, (long) (Math.pow(3, Long.parseLong(data[17])) * 750), 200, 17, 2147483647, "Bow Quality", data);
                 case "math" -> ProcessBooleanUpgrade(e, 10000000, 6500, 18, "Math Tutoring", data);
+                case "income" -> ProcessMedalUpgrade(e, (Long.parseLong(data[56]) + 1), 56, "Extra Income", data);
+                case "commandincome" -> ProcessMedalUpgrade(e, (long) Math.pow(2, Long.parseLong(data[57])), 57, "Extra Command Income", data);
+                case "gamblelimit" -> ProcessMedalUpgrade(e, (Long.parseLong(data[58]) + 1), 58, "Higher Gamble Limit", data);
+                case "robsuccess" -> ProcessMedalUpgrade(e, (long) Math.pow(2, Long.parseLong(data[59])), 59, "Higher Rob Success Rate", data);
+                case "shield" -> ProcessMedalBooleanUpgrade(e, 10, 60, "Steal Shield", data);
+                case "duplicator" -> ProcessMedalBooleanUpgrade(e, 15, 61, "Violin Duplicator", data);
                 case "orchestra", "o" -> {
                     if (Long.parseLong(data[12]) < 7500) {
                         e.getChannel().sendMessage("You do not have enough hourly income to hire an orchestra!").queue();
@@ -112,9 +147,9 @@ public class Buy {
                 }
                 case "concert", "hall" -> {
                     if (!hasOrchestra) {
-                        ProcessUpgrade(e, (long) (Math.pow(5, Integer.parseInt(data[43])) * 50000), 300, 43, 2, "Concert Hall Quality", data);
+                        ProcessUpgrade(e, (long) (Math.pow(5, Long.parseLong(data[43])) * 50000), 300, 43, 2, "Concert Hall Quality", data);
                     } else {
-                        ProcessUpgrade(e, (long) (Math.pow(5, Integer.parseInt(data[43])) * 50000), 300, 43, 2147483647, "Concert Hall Quality", data);
+                        ProcessUpgrade(e, (long) (Math.pow(5, Long.parseLong(data[43])) * 50000), 300, 43, 2147483647, "Concert Hall Quality", data);
                     }
                 }
                 default -> boughtItem = false;

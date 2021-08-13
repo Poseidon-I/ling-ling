@@ -10,7 +10,7 @@ public class Vote {
     public static void GiveRewards(GuildMessageReceivedEvent e, String[] data, int numBoxes) {
         data[90] = String.valueOf(Long.parseLong(data[90]) + numBoxes);
         data[88] = String.valueOf(Long.parseLong(data[88]) + 1);
-        data[89] = String.valueOf(System.currentTimeMillis() + 39600000);
+        data[89] = String.valueOf(System.currentTimeMillis() + 41400000);
         e.getChannel().sendMessage("Thank you for voting!  You have received **" + numBoxes + "** Vote Boxes!").queue();
         new SaveData(e, data);
     }
@@ -26,7 +26,7 @@ public class Vote {
                         .botId("733409243222507670")
                         .build();
             } catch (Exception exception) {
-                //nothing here lol
+                e.getChannel().sendMessage("top.gg shit no look at me\nping/DM a bot mod and they'll give you your reward").queue();
             }
             String id = e.getAuthor().getId();
             assert api != null;

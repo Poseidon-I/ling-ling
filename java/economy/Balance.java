@@ -19,7 +19,7 @@ public class Balance {
                     .setTitle(e.getAuthor().getName() + "'s Profile");
             builder.addField("General Stats", "Balance: " + data[0] + ":violin:\nLing Ling Medals: " + data[55] + ":military_medal:\nHourly Income: " + data[12] + ":violin:/hour", false);
             builder.addField("Medals", ":first_place:" + data[54] + "\n:second_place:" + data[53] + "\n:third_place:" + data[52], false);
-            e.getChannel().sendMessage(builder.build()).queue();
+            e.getChannel().sendMessageEmbeds(builder.build()).queue();
         } else {
             User user = Objects.requireNonNull(e.getJDA().getUserById(message[1]));
             try {
@@ -31,7 +31,7 @@ public class Balance {
                         .setTitle(user.getName() + "'s Profile")
                         .addField("General Stats", "Balance: " + line[0] + ":violin:\nLing Ling Medals: " + line[55] + ":military_medal:\nHourly Income: " + line[12] + ":violin:/hour", false)
                         .addField("Medals", ":first_place:" + line[54] + "\n:second_place:" + line[53] + "\n:third_place:" + line[52], false);
-                e.getChannel().sendMessage(builder.build()).queue();
+                e.getChannel().sendMessageEmbeds(builder.build()).queue();
                 reader.close();
             } catch (Exception exception) {
                 e.getChannel().sendMessage("This save file does not exist!").queue();

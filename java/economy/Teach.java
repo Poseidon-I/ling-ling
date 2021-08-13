@@ -45,9 +45,9 @@ public class Teach {
                 if (Boolean.parseBoolean(data[57])) {
                     base *= 2;
                 }
-                base *= Math.pow(1.2, Long.parseLong(data[81]));
-                base *= Math.pow(1.125, Long.parseLong(data[82]));
-                base *= Math.pow(1.075, Long.parseLong(data[80]));
+                base *= Math.pow(1.15, Long.parseLong(data[81]));
+                base *= Math.pow(1.1, Long.parseLong(data[82]));
+                base *= Math.pow(1.05, Long.parseLong(data[80]));
                 if(data[84].equals("true")) {
                     base *= 2;
                     e.getChannel().sendMessage("You taught a student for an hour and earned " + base + ":violin:").queue();

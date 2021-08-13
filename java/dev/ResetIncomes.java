@@ -61,13 +61,13 @@ public class ResetIncomes {
                     long conductor = Long.parseLong(data[44]);
                     long advertising = Long.parseLong(data[45]);
                     long tickets = Long.parseLong(data[46]);
-                    boolean moreIncome = Boolean.parseBoolean(data[56]);
+                    long moreIncome = Long.parseLong(data[56]);
                     boolean hasCertificate = Boolean.parseBoolean(data[78]);
                     long training = Long.parseLong(data[80]);
                     long students = Long.parseLong(data[81]);
                     long pricing = Long.parseLong(data[82]);
                     boolean hasStudio = Boolean.parseBoolean(data[83]);
-                    income = violinQuality * 600 + skillLevel * 240 + lessonQuality * 150 + stringQuality * 100 + bowQuality * 200 + flute * 60 + oboe * 50 + clarinet * 40 + bassoon * 40 + horn * 40 + trumpet * 30 + trombone * 20 + tuba * 20 + timpani * 60 + percussion * 10 + first * 70 + second * 60 + cello * 50 + stringBass * 50 + piano * 110 + soprano * 30 + alto * 20 + tenor * 20 + bass * 20 + soloists * 60 + hallLevel * 300 + conductor * 200 + advertising * 100 + tickets * 1000 + training * 1500 + students * 2500 + pricing * 4000;
+                    income = moreIncome * 2500 + violinQuality * 600 + skillLevel * 240 + lessonQuality * 150 + stringQuality * 100 + bowQuality * 200 + flute * 60 + oboe * 50 + clarinet * 40 + bassoon * 40 + horn * 40 + trumpet * 30 + trombone * 20 + tuba * 20 + timpani * 60 + percussion * 10 + first * 70 + second * 60 + cello * 50 + stringBass * 50 + piano * 110 + soprano * 30 + alto * 20 + tenor * 20 + bass * 20 + soloists * 60 + hallLevel * 300 + conductor * 200 + advertising * 100 + tickets * 1000 + training * 1000 + students * 2000 + pricing * 3000;
                     if (hasMath) {
                         income += 6500;
                     }
@@ -85,11 +85,8 @@ public class ResetIncomes {
                     if (harp) {
                         income += 80;
                     }
-                    if (moreIncome) {
-                        income += 8000;
-                    }
                     if (hasCertificate) {
-                        income += 10000;
+                        income += 5000;
                     }
                     if (hasStudio) {
                         income += 5000;

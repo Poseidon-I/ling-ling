@@ -66,12 +66,22 @@ public class Give {
                 newValue = Long.parseLong(userData.split(" ")[index]) + add;
                 e.getChannel().sendMessage("Successfully gave " + add + ":ballot_box: to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName() + ".  New amount: " + newValue).queue();
             }
-            case "god" -> {
+            case "kit" -> {
                 index = 91;
                 newValue = Long.parseLong(userData.split(" ")[index]) + add;
-                e.getChannel().sendMessage("Successfully gave " + add + ":fireworks: to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName() + ".  New amount: " + newValue).queue();
+                e.getChannel().sendMessage("Successfully gave " + add + " Standard Musician Kits to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName() + ".  New amount: " + newValue).queue();
             }
-            default -> e.getChannel().sendMessage("Invalid currency/item.  Valid items: `violin` `rice` `medal` `tea` `blessing` `gift` `vote` `god`").queue();
+            case "llbox" -> {
+                index = 92;
+                newValue = Long.parseLong(userData.split(" ")[index]) + add;
+                e.getChannel().sendMessage("Successfully gave " + add + " Ling Ling Boxes to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName() + ".  New amount: " + newValue).queue();
+            }
+            case "crazybox" -> {
+                index = 93;
+                newValue = Long.parseLong(userData.split(" ")[index]) + add;
+                e.getChannel().sendMessage("Successfully gave " + add + " Crazy Person Boxes to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName() + ".  New amount: " + newValue).queue();
+            }
+            default -> e.getChannel().sendMessage("Invalid currency/item.  Valid items: `violin` `rice` `medal` `tea` `blessing` `gift` `vote` `kit` `llbox` `crazybox`").queue();
         }
         StringBuilder newData = new StringBuilder();
         for (int i = 0; i < userData.split(" ").length; i++) {
@@ -96,6 +106,6 @@ public class Give {
                 .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
                 .addField("Moderator: " + e.getAuthor().getName(), "User: " + user.getName() + "#" + user.getDiscriminator() + "\nItem type: " + message[2] + "\nAmount given: " + message[3], false)
                 .setTitle("__**Currency Alteration Info**__");
-        Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage(builder.build()).queue();
+        Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
     }
 }

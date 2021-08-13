@@ -18,7 +18,7 @@ public class PurgeUsers {
                     BufferedReader reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
                     String line = reader.readLine();
                     reader.close();
-                    if (line.equals("0 0 0 0 0 0 0 0 0 false false 0 0 0 0 0 0 0 false false false 0 0 0 0 false 0 0 0 0 0 0 1 1 0 0 0 false 0 0 0 0 0 0 0 0 0 0 false false false 0 0 0 0 0 false false false false false false 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 false 0 0 0 0 false false 0 0 0 0 0 0 0 false")) {
+                    if (line.equals("0 0 0 0 0 0 0 0 0 false false 0 0 0 0 0 0 0 false false false 0 0 0 0 false 0 0 0 0 0 0 1 1 0 0 0 false 0 0 0 0 0 0 0 0 0 0 false false false 0 0 0 0 0 0 0 0 0 false false 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 false 0 0 0 0 false false 0 0 0 0 0 0 0 0 0 false false false 1")) {
                         file.delete();
                         deleted++;
                     }

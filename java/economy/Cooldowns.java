@@ -26,7 +26,7 @@ public class Cooldowns {
         long time = System.currentTimeMillis();
         EmbedBuilder builder = new EmbedBuilder()
                 .setColor(Color.BLUE)
-                .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl());
+                .setFooter("Daily and Gift reset at 00:00 UTC\nLing Ling", e.getJDA().getSelfUser().getAvatarUrl());
         //rob
         long milliseconds = Long.parseLong(data[5]) - time;
         long seconds;
@@ -113,7 +113,7 @@ public class Cooldowns {
         }
 
         //vote
-        milliseconds = Long.parseLong(data[89]) - time + 3600000;
+        milliseconds = Long.parseLong(data[89]) - time + 1800000;
         if (milliseconds < 0) {
             builder.addField("**Vote**", ":white_check_mark:\n`WARNING: May be inaccurate`", false);
         } else {
@@ -126,6 +126,6 @@ public class Cooldowns {
             builder.addField("**Vote**", "`" + Reformat(hours) + ":" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`\n`WARNING: May be inaccurate`", false);
         }
         builder.setTitle("__**Cooldowns**__");
-        e.getChannel().sendMessage(builder.build()).queue();
+        e.getChannel().sendMessageEmbeds(builder.build()).queue();
     }
 }

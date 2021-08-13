@@ -45,11 +45,9 @@ public class Rob {
             long violins = Long.parseLong(data[0]);
             long targetViolins = Long.parseLong(targetdata[0]);
             long targetLostToRob = Long.parseLong(targetdata[69]);
+            long extraChance = Long.parseLong(data[59]);
             double failChance = (double) violins / (targetViolins + violins);
-            failChance -= 0.005 * Long.parseLong(data[6]);
-            if (Boolean.parseBoolean(data[59])) {
-                failChance -= 0.025;
-            }
+            failChance -= 0.004 * (Long.parseLong(data[6]) + extraChance);
             double num = random.nextDouble();
             long insurance = Long.parseLong(targetdata[11]);
             boolean opponentShield = Boolean.parseBoolean(targetdata[60]);
@@ -94,27 +92,9 @@ public class Rob {
                     }
                 } else if (insurance == 2) {
                     if (opponentShield) {
-                        e.getChannel().sendMessage("You successfully robbed " + name + " but ran into a Steal Shield.  You only managed to get away with " + (long) (baseRob * 0.025) + ":violin: before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
+                        e.getChannel().sendMessage("You successfully robbed " + name + " but ran into a Steal Shield.  You only managed to get away with " + (long) (baseRob * 0.05) + ":violin: before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
                         try {
-                            user.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") just robbed " + (long) (baseRob * 0.025) + ":violin: from you!  Your Ling Ling insurance protected " + (long) (baseRob * 0.95) + ":violin: and your Steal Shield protected " + (long) (baseRob * 0.025) + ":violin:").queue();
-                        } catch (Exception exception) {
-                            e.getChannel().sendMessage(name + " had their DMs closed and got fined 1:violin: as a resource-wasting fee.").queue();
-                            targetViolins--;
-                        }
-                        targetViolins -= baseRob * 0.025;
-                        if (Boolean.parseBoolean(data[61])) {
-                            e.getChannel().sendMessage("Your violin duplicator doubled your earnings.").queue();
-                            violins += baseRob * 0.05;
-                            robEarnings += baseRob * 0.05;
-                        } else {
-                            violins += baseRob * 0.025;
-                            robEarnings += baseRob * 0.025;
-                        }
-                        targetLostToRob += baseRob * 0.025;
-                    } else {
-                        e.getChannel().sendMessage("You successfully robbed " + name + " but only managed to get away with " + (long) (baseRob * 0.05) + ":violin: before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
-                        try {
-                            user.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") just robbed " + (long) (baseRob * 0.05) + ":violin: from you!  Your Ling Ling insurance protected " + (long) (baseRob * 0.95) + ":violin:").queue();
+                            user.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") just robbed " + (long) (baseRob * 0.05) + ":violin: from you!  Your Ling Ling insurance protected " + (long) (baseRob * 0.9) + ":violin: and your Steal Shield protected " + (long) (baseRob * 0.05) + ":violin:").queue();
                         } catch (Exception exception) {
                             e.getChannel().sendMessage(name + " had their DMs closed and got fined 1:violin: as a resource-wasting fee.").queue();
                             targetViolins--;
@@ -129,6 +109,24 @@ public class Rob {
                             robEarnings += baseRob * 0.05;
                         }
                         targetLostToRob += baseRob * 0.05;
+                    } else {
+                        e.getChannel().sendMessage("You successfully robbed " + name + " but only managed to get away with " + (long) (baseRob * 0.1) + ":violin: before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*").queue();
+                        try {
+                            user.openPrivateChannel().complete().sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") just robbed " + (long) (baseRob * 0.1) + ":violin: from you!  Your Ling Ling insurance protected " + (long) (baseRob * 0.9) + ":violin:").queue();
+                        } catch (Exception exception) {
+                            e.getChannel().sendMessage(name + " had their DMs closed and got fined 1:violin: as a resource-wasting fee.").queue();
+                            targetViolins--;
+                        }
+                        targetViolins -= baseRob * 0.1;
+                        if (Boolean.parseBoolean(data[61])) {
+                            e.getChannel().sendMessage("Your violin duplicator doubled your earnings.").queue();
+                            violins += baseRob * 0.2;
+                            robEarnings += baseRob * 0.2;
+                        } else {
+                            violins += baseRob * 0.1;
+                            robEarnings += baseRob * 0.1;
+                        }
+                        targetLostToRob += baseRob * 0.1;
                     }
                 } else {
                     if (opponentShield) {

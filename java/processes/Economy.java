@@ -78,7 +78,7 @@ public class Economy {
                 .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
                 .setTitle("__**Global Leaderboard**__")
                 .addField("**" + what + " in the World**", board.toString(), false);
-        e.getChannel().sendMessage(builder.build()).queue();
+        e.getChannel().sendMessageEmbeds(builder.build()).queue();
     }
 
     public Economy(GuildMessageReceivedEvent e, String[] message, char prefix) {
@@ -101,7 +101,7 @@ public class Economy {
             }
             try {
                 PrintWriter newData = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
-                newData.print("0 0 0 0 0 0 0 0 0 false false 0 0 0 0 0 0 0 false false false 0 0 0 0 false 0 0 0 0 0 0 1 1 0 0 0 false 0 0 0 0 0 0 0 0 0 0 false false false 0 0 0 0 0 false false false false false false 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 false 0 0 0 0 false false 0 0 0 0 0 0 0 false");
+                newData.print("0 0 0 0 0 0 0 0 0 false false 0 0 0 0 0 0 0 false false false 0 0 0 0 false 0 0 0 0 0 0 1 1 0 0 0 false 0 0 0 0 0 0 0 0 0 0 false false false 0 0 0 0 0 0 0 0 0 false false 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 false 0 0 0 0 false false 0 0 0 0 0 0 0 0 0 false false false 1");
                 newData.close();
                 e.getChannel().sendMessage("Your profile has been created!  Run `" + prefix + "help 3` for a list of economy commands!").queue();
             } catch (Exception exception) {
@@ -110,6 +110,7 @@ public class Economy {
         } else if (message[0].equals("start")) {
             e.getChannel().sendMessage("You already have a save, don't try to outsmart me").queue();
         }
+
         switch (message[0]) {
             case "upgrades", "up", "u", "shop" -> {
                 if (!hasData) {

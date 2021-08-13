@@ -29,7 +29,7 @@ public class Orchestra {
                     .addField("**Choir**", data[38] + " Sopranos\n" + data[39] + " Altos\n" + data[40] + " Tenors\n" + data[41] + " Basses\n" + data[42] + " Vocal Soloists", true)
                     .addField("**Other**", temp3 + " Harp\n" + data[31] + " Percussionists\n" + data[30] + " Timpanists", true)
                     .setColor(Color.BLUE);
-            e.getChannel().sendMessage(builder.build()).queue();
+            e.getChannel().sendMessageEmbeds(builder.build()).queue();
         } else {
             e.getChannel().sendMessage("You don't have an orchestra yet!").queue();
         }

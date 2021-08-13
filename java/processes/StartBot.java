@@ -1,6 +1,9 @@
 package processes;
 
-import eventListeners.*;
+import eventListeners.Disconnect;
+import eventListeners.Receiver;
+import eventListeners.RoleAdded;
+import eventListeners.RoleRemoved;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -29,6 +32,8 @@ public class StartBot {
                     .setMemberCachePolicy(MemberCachePolicy.ALL)
                     .addEventListeners(new Disconnect())
                     .addEventListeners(new Receiver())
+                    .addEventListeners(new RoleAdded())
+                    .addEventListeners(new RoleRemoved())
                     .useSharding(0, 1)
                     .build();
             jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);

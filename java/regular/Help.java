@@ -13,16 +13,18 @@ public class Help {
             switch (message[1]) {
                 case "1" -> builder.addField("Help List Page 1 - Fun\nRun `" + prefix + "help <commandName>` to view a command in depth", "`joke`\n`kill`\n`emojify`", false);
                 case "2" -> builder.addField("Help List Page 2 - Utility\nRun `" + prefix + "help <commandName>` to view a command in depth",
-                        "**`rules`**\n`poll`\n`checkdm`\n`invite`\n`faq`\n`support`\n`code`\n`prefix`", false);
+                        "**`rules`**\n`poll`\n`checkdm`\n`invite`\n`faq`\n`support`\n`code`\n`prefix`\n`botstats`", false);
                 case "3" -> builder.addField("Help List Page 3 - Economy Commands\nRun `" + prefix + "help <commandName>` to view a command in depth.",
-                        "`start`\n`balance`\n`profile`\n`stats`\n`inventory`\n`cooldowns`\n`upgrades`\n`buy`\n`use`\n`leaderboard`", false);
+                        "`start`\n`balance`\n`profile`\n`stats`\n`inventory`\n`cooldowns`\n`upgrades`\n`buy`\n`use`\n`claim` (1% success rate)\n`gift`\n`leaderboard`", false);
                 case "4" -> builder.addField("Help List Page 4 - Income Commands\nRun `" + prefix + "help <commandName>` to view a command in depth.",
                         "\n`scales`\n`practice`\n`rehearse`\n`perform`\n`teach`\n`daily`\n`gamble`\n`rob`", false);
                 case "5" -> builder.addField("Help List Page 5 - Bot Moderation Commands\nOnly Bot Mods and Bot Admins have access to these commands.",
                         "`lookdata`\n`editdata`\n`luthier`\n`give`\n`resetincomes`\n`warn`\n`resetsave`\n`ban`\n`unban`", false);
                 case "6" -> builder.addField("Help List Page 6 - Dev-Only Commands\nOnly Developers have access to these commands.\nThis page exists for people who are curious.",
-                        "`status`\n`activity`\n`updateusers`\n`purgeusers`\n`restart`", false);
-                case "cooldowns" -> builder.addField("Cooldowns Command", "Syntax: `" + prefix + "cooldowns`\nUsage: Shows you the cooldowns of most commands.\nAliases: `" + prefix + "c`", false);
+                        "`status`\n`activity`\n`updateusers`\n`updateroles`\n`setpermlevel`\n`purgeusers`\n`restart`", false);
+                case "updateroles" -> builder.addField("UpdateRoles Command", "Syntax: `!updateroles`\nUsage: Updates role multipliers/booster status of users in the support server.\nRestrictions: Usable only by Developers in the Support Server.", false);
+                case "setpermlevel" -> builder.addField("SetPermLevel Command", "Syntax: `!setpermlevel [id] [level]`\nUsage: Sets the permission level of the specified user.  `0` for none, `1` for mod, `2` for Admin\nAliases: `" + prefix + "c`", false);
+                case "cooldowns" -> builder.addField("Cooldowns Command", "Syntax: `" + prefix + "cooldowns`\nUsage: Shows you the cooldowns of most commands.\nRestrictions: Usable only by Developers.", false);
                 case "faq" -> builder.addField("FAQ Command", "Syntax: `" + prefix + "faq [item]`\nUsage: Shows answers  to frequently asked questions.\nExample: `" + prefix + "faq rob`", false);
                 case "use" -> builder.addField("Use Command", "Syntax: `" + prefix + "use <id> [num]`\nUsage: Uses usable items like Ling Ling Insurance.  Consumable items like rice can be used in bulk.\nExample: `" + prefix + "use rice 5`", false);
                 case "upgrades" -> builder.addField("Upgrades Command", "Syntax: `" + prefix + "upgrades [page]`\nUsage: Shows you a page of the shop.  Must include a page number.\nAliases: `" + prefix + "up`, `" + prefix + "u`, `" + prefix + "shop`\nExample: `" + prefix + "upgrades 2`", false);
@@ -32,7 +34,7 @@ public class Help {
                 case "updateusers" -> builder.addField("UpdateUsers Command", "Syntax: `!updateusers <confirm> [Data to Append]`\nUsage: Updates the economy save format.\nRestrictions: Usable only by Developers.", false);
                 case "purgeusers" -> builder.addField("PurgeUsers Command", "Syntax: `!purgeusers`\nUsage: Deletes all economy save files for users with 0 violins.\nRestricitons: Usable only by Developers.", false);
                 case "resetincomes" -> builder.addField("ResetIncomes Command", "Syntax: `!resetincomes`\nUsage: Manually resets all incomes.\nRestricitons: Usable only by Bot Admins and above.", false);
-                case "give" -> builder.addField("Give Command", "Syntax: `!give [id] [type] [amount]\nUsage: Gives the user an amount of the specified currency.\nValid values: `violin`, `medal`, `rice`, `tea`, `blessing`\nRestrictions: Usable only by Bot Moderators and above.", false);
+                case "give" -> builder.addField("Give Command", "Syntax: `!give [id] [type] [amount]`\nUsage: Gives the user an amount of the specified currency.\nValid values: `violin`, `medal`, `rice`, `tea`, `blessing`, `gift`, `vote`, `kit`, `llbox`, `crazybox`\nRestrictions: Usable only by Bot Moderators and above.", false);
                 case "lookdata" -> builder.addField("LookData Command", "Syntax: `!lookdata <userID>`\nUsage: Shows the profile of a user.\nRestrictions: Usable only by Bot Moderators and above.", false);
                 case "luthier" -> builder.addField("Luthier Command", "Syntax: `!luthier <setup | edit | add> [New Data]`\nUsage: Sets up, edits, or adds multi for a server's Luthier.\nRestrictions: Usable only by Bot Admins and above.", false);
                 case "leaderboard" -> builder.addField("Leaderboard Command", "Syntax: `" + prefix + "leaderboard [type]`\nUsage: Shows the leaderboard for a specific data point.\nAliases: `" + prefix + "lb`\nExample: `" + prefix + "lb violins`", false);
@@ -43,7 +45,7 @@ public class Help {
                 case "daily" -> builder.addField("Daily Command", "Syntax: `" + prefix + "daily`\nUsage: Get a daily dose of violins!  Run the command many days in a row to start gaining a streak and get even more violins!\nCooldown: 0-24h\nAliases: `" + prefix + "d`", false);
                 case "rob" -> builder.addField("Rob Command", "Syntax: `" + prefix + "rob <user>`\nUsage: Robs the user.  Beware that the more violins you have than the target, the harder it is to succeed!\nCooldown: 16h\nExample: `" + prefix + "rob 488487157372157962`", false);
                 case "gift" -> builder.addField("Gift Command", "Syntax: `" + prefix + "gift <user>`\nUsage: Gifts the user a Gift Box.\nCooldown: 0-24h\nExample: `" + prefix + "gift 488487157372157962`", false);
-                case "claim" -> builder.addField("Claim Command", "Syntax: `" + prefix + "claim`\nUsage: Claims a Vote Box after you vote.\nCooldown: 11h", false);
+                case "claim" -> builder.addField("Claim Command", "Syntax: `" + prefix + "claim`\nUsage: Claims a Vote Box after you vote.  If top.gg is being a bitch, ping/DM a bot mod evidence of vote to receive your reward.\nCooldown: 11h", false);
                 case "teach" -> builder.addField("Teach Command", "Syntax: `" + prefix + "teach`\nUsage: Teach a student to earn more violins!  Not affected by Efficient Practising, instead it has its own upgrades to improve the payout.\nRestrictions: Usable only by people with a Teaching Certificate.\nCooldown: 1h\nAliases: `" + prefix + "t`", false);
                 case "start" -> builder.addField("Start Command", "Syntax: `" + prefix + "start`\nUsage: Creates a profile for the user.  This can only be used once.", false);
                 case "gamble" -> builder.addField("Gamble Command", "Syntax: `" + prefix + "gamble [type] [amount | max]`\nUsage: Bets the amount using the gamemode specified.  You can only bet up to 10x your hourly income.  Writing `max` in place of the amount will bet the maximum allowed.\nGambling Options: `rng` `slots` `scratch`\nCooldown: 10s\nAliases: `" + prefix + "bet`\nExample: `" + prefix + "gamble slots 4000`", false);
@@ -66,14 +68,15 @@ public class Help {
                 case "support" -> builder.addField("Support Command", "Syntax: `" + prefix + "support`\nUsage: Gives a link to the support server.", false);
                 case "code" -> builder.addField("Code Command", "Syntax: `" + prefix + "code`\nUsage: Gives a link to view the open-source bot code.", false);
                 case "rules" -> builder.addField("Rules Command", "Syntax: `" + prefix + "rules`\nUsage: View the bot's rules.  By using the bot, you agree to following these rules and can be subject to punishment for breaking them knowingly or unknowingly.", false);
-                case "vote" -> builder.addField("Vote Command", "Syntax: `" + prefix + "vote`\nUsage: Gives a link to vote for the bot and the support server.", false);
+                case "vote" -> builder.addField("Vote Command", "Syntax: `" + prefix + "vote`\nUsage: Gives a link to vote for the bot and the support server.  Remember to `" + prefix + "claim` when you finish!\nAliases: `" + prefix + "v`", false);
                 case "prefix" -> builder.addField("Prefix Command", "Syntax: `!prefix [new]`\nUsage: Shows the current prefix.  Append a character to change the prefix.  This is the only command that will retain `!` across all servers.\nRestrictions: The prefix can only be changed by members with the `ADMINISTRATOR` permission.\nExample: `!prefix $`", false);
+                case "botstats" -> builder.addField("BotStats Command", "Syntax: `!botstats`\nUsage: Shows the number of servers the bot is in and the number of profiles that have been created.", false);
                 default -> builder.addField("Help List", "Page or command `" + message[1] + "` does not exist!  Run `" + prefix + "help` to see a list of pages.", false);
             }
         } catch(Exception exception) {
             builder.addField("Help List", "Use `" + prefix + "help [page]` to view further commands!" +
                     "\n\n`1` - Fun Commands\n`2` - Utility Commands\n`3` - Economy Commands\n`4` - Income Commands\n`5` - Bot Moderation Commands\n`6` - Dev-Only Commands", false);
         }
-        e.getChannel().sendMessage(builder.build()).queue();
+        e.getChannel().sendMessageEmbeds(builder.build()).queue();
     }
 }

@@ -1,5 +1,6 @@
 package eventListeners;
 
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -92,7 +93,7 @@ public class Receiver extends ListenerAdapter {
                         writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
                         data[48] = "false";
                         data[49] = "false";
-                        data[92] = "false";
+                        data[94] = "false";
                         for (String datum : data) {
                             writer.print(datum + " ");
                         }
@@ -101,6 +102,10 @@ public class Receiver extends ListenerAdapter {
                         //nothing here lol
                     }
                 }
+                int users = files.length;
+                VoiceChannel channel = Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getVoiceChannelById("839877827838476289");
+                assert channel != null;
+                channel.getManager().setName(users + " Ling Ling Wannabes").queue();
                 Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage("Daily and Gifts Reset!").queue();
             }
         }
@@ -119,13 +124,15 @@ public class Receiver extends ListenerAdapter {
 
             //DEV COMMANDS
             if (isDev) {
-                new DevCommands(e, message, 2);
-            } else if (e.getAuthor().getId().equals("497916210315264014")) {
-                new DevCommands(e, message, 1);
-            } else if (e.getAuthor().getId().equals("433715464674476034")) {
-                new DevCommands(e, message, 0);
+                new DevCommands(e, 3);
             } else {
-                new DevCommands(e, message, -1);
+                try {
+                    reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt"));
+                    new DevCommands(e, Integer.parseInt(reader.readLine().split(" ")[65]));
+                    reader.close();
+                } catch(Exception exception) {
+                    //nothing here lol
+                }
             }
 
             //ALL COMMANDS

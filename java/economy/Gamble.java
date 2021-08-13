@@ -13,13 +13,9 @@ public class Gamble {
         long violins = Long.parseLong(data[0]);
         long gambleL = Long.parseLong(data[4]);
         long income = Long.parseLong(data[12]);
-        boolean hasHigherMulti = Boolean.parseBoolean(data[58]);
+        long higherMulti = Long.parseLong(data[58]);
         long max;
-        if(hasHigherMulti) {
-             max = income * 12;
-        } else {
-            max = income * 10;
-        }
+        max = income * (10 + higherMulti);
         long violinsEarned = Long.parseLong(data[66]);
         Random random = new Random();
         String[] message = e.getMessage().getContentRaw().split(" ");
@@ -99,7 +95,7 @@ public class Gamble {
                                 payout *= 40;
                             }
                         } else if (slots[0] == slots[1] || slots[1] == slots[2] || slots[2] == slots[0]) {
-                            payout *= 1.1;
+                            //nothing changes
                         } else {
                             payout = -1;
                         }
@@ -118,62 +114,58 @@ public class Gamble {
                             violins -= bet;
                             violinsEarned -= bet;
                         }
-                        e.getChannel().sendMessage(builder.build()).queue();
+                        e.getChannel().sendMessageEmbeds(builder.build()).queue();
                     }
                     case "scratch" -> {
                         long[] payouts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-                        if (bet % 50 != 0) {
-                            e.getChannel().sendMessage("You must bet a multiple of 50 because scratch tickets cost 50:violin: each.").queue();
-                        } else {
-                            long numTickets = bet / 50;
-                            long payout = 0;
-                            for (long i = 0; i < numTickets; i++) {
-                                double chance = random.nextDouble();
-                                if (chance > 0.5) {
-                                    payout -= 5;
-                                    payouts[0]++;
-                                } else if (chance > 0.25) {
-                                    payouts[1]++;
-                                } else if (chance > 0.1) {
-                                    payout += 2;
-                                    payouts[2]++;
-                                } else if (chance > 0.05) {
-                                    payout += 5;
-                                    payouts[3]++;
-                                } else if (chance > 0.02) {
-                                    payout += 10;
-                                    payouts[4]++;
-                                } else if (chance > 0.01) {
-                                    payout += 25;
-                                    payouts[5]++;
-                                } else if (chance > 0.005) {
-                                    payout += 50;
-                                    payouts[6]++;
-                                } else if (chance > 0.002) {
-                                    payout += 100;
-                                    payouts[7]++;
-                                } else if (chance > 0.001) {
-                                    payout += 200;
-                                    payouts[8]++;
-                                } else if (chance > 0.000025) {
-                                    payout += 500;
-                                    payouts[9]++;
-                                } else {
-                                    payout += 1000000;
-                                    e.getChannel().sendMessage("You hit the 1 000 000:violin: jackpot!").queue();
-                                    data[67] = String.valueOf(Long.parseLong(data[67]) + 1);
-                                }
-                            }
-                            StringBuilder breakdown = new StringBuilder().append("Lose 5:violin:: ").append(payouts[0]).append("\nNo Prize: ").append(payouts[1]).append("\nGain 2:violin:: ").append(payouts[2]).append("\nGain 5:violin:: ").append(payouts[3]).append("\nGain 10:violin:: ").append(payouts[4]).append("\nGain 25:violin:: ").append(payouts[5]).append("\nGain 50:violin:: ").append(payouts[6]).append("\nGain 100:violin:: ").append(payouts[7]).append("\nGain 200:violin:: ").append(payouts[8]).append("\nGain 500:violin:: ").append(payouts[9]);
-                            if (payout > 0) {
-                                violins += payout * (1 + multi);
-                                violinsEarned += payout * (1 + multi);
-                                e.getChannel().sendMessage("You scratched " + numTickets + " tickets and gained " + payout + ":violin:\nYour " + multi * 100 + "% multiplier earned you an extra " + (long) (payout * multi) + ":violin:\n\n**__Ticket Breakdown__**\n" + breakdown).queue();
+                        long numTickets = bet / 50;
+                        long payout = 0;
+                        for (long i = 0; i < numTickets; i++) {
+                            double chance = random.nextDouble();
+                            if (chance > 0.5) {
+                                payout -= 5;
+                                payouts[0]++;
+                            } else if (chance > 0.25) {
+                                payouts[1]++;
+                            } else if (chance > 0.1) {
+                                payout += 2;
+                                payouts[2]++;
+                            } else if (chance > 0.05) {
+                                payout += 5;
+                                payouts[3]++;
+                            } else if (chance > 0.02) {
+                                payout += 10;
+                                payouts[4]++;
+                            } else if (chance > 0.01) {
+                                payout += 25;
+                                payouts[5]++;
+                            } else if (chance > 0.005) {
+                                payout += 50;
+                                payouts[6]++;
+                            } else if (chance > 0.002) {
+                                payout += 100;
+                                payouts[7]++;
+                            } else if (chance > 0.001) {
+                                payout += 200;
+                                payouts[8]++;
+                            } else if (chance > 0.000025) {
+                                payout += 500;
+                                payouts[9]++;
                             } else {
-                                violins += payout;
-                                violinsEarned += payout;
-                                e.getChannel().sendMessage("You scratched " + numTickets + " tickets and lost " + payout * -1 + ":violin:\n\n**__Ticket Breakdown__**\n" + breakdown).queue();
+                                payout += 1000000;
+                                e.getChannel().sendMessage("You hit the 1 000 000:violin: jackpot!").queue();
+                                data[67] = String.valueOf(Long.parseLong(data[67]) + 1);
                             }
+                        }
+                        StringBuilder breakdown = new StringBuilder().append("Lose 5:violin:: ").append(payouts[0]).append("\nNo Prize: ").append(payouts[1]).append("\nGain 2:violin:: ").append(payouts[2]).append("\nGain 5:violin:: ").append(payouts[3]).append("\nGain 10:violin:: ").append(payouts[4]).append("\nGain 25:violin:: ").append(payouts[5]).append("\nGain 50:violin:: ").append(payouts[6]).append("\nGain 100:violin:: ").append(payouts[7]).append("\nGain 200:violin:: ").append(payouts[8]).append("\nGain 500:violin:: ").append(payouts[9]);
+                        if (payout > 0) {
+                            violins += payout * (1 + multi);
+                            violinsEarned += payout * (1 + multi);
+                            e.getChannel().sendMessage("You scratched " + numTickets + " tickets and gained " + payout + ":violin:\nYour " + multi * 100 + "% multiplier earned you an extra " + (long) (payout * multi) + ":violin:\n\n**__Ticket Breakdown__**\n" + breakdown).queue();
+                        } else {
+                            violins += payout;
+                            violinsEarned += payout;
+                            e.getChannel().sendMessage("You scratched " + numTickets + " tickets and lost " + payout * -1 + ":violin:\n\n**__Ticket Breakdown__**\n" + breakdown).queue();
                         }
                     }
                     default -> e.getChannel().sendMessage("You must choose one of the three gambling options: `rng`, `scratch`, or `slots`").queue();
