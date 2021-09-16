@@ -1,268 +1,59 @@
 package processes;
 
 import economy.*;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-import java.awt.*;
-import java.io.*;
-
 public class Economy {
-    public static void leaderboard(String emoji, String what, GuildMessageReceivedEvent e, int dataPosition, long userNum) {
-        BufferedReader reader;
-        File directory = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
-        File[] files = directory.listFiles();
-        String[] entry = new String[0];
-        long place = 1;
-        if (files != null) {
-            entry = new String[]{e.getAuthor().getAsMention() + ": " + userNum + " " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n"};
-            for (File file : files) {
-                String currentData;
-                String user;
-                int pos;
-                try {
-                    reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
-                    currentData = reader.readLine();
-                    reader.close();
-                    if(currentData.equals("BANNED")) {
-                        continue;
-                    }
-                } catch (Exception exception) {
-                    continue;
-                }
-                user = file.getName();
-                pos = user.lastIndexOf(".");
-                user = user.substring(0, pos);
-                String[] temp = currentData.split(" ");
-                long num;
-                try {
-                    num = Long.parseLong(temp[dataPosition]);
-                } catch (Exception exception) {
-                    num = (long) Double.parseDouble(temp[dataPosition]);
-                }
-                if (num == 0) {
-                    continue;
-                }
-                for (int i = 0; i < 10; i++) {
-                    if (num > Long.parseLong(entry[i].split(" ")[1]) && !user.equals(e.getAuthor().getId())) {
-                        System.arraycopy(entry, i, entry, i + 1, 9 - i);
-                        entry[i] = "<@" + user + ">: " + num + " " + emoji + "\n";
-                        if (num > userNum) {
-                            place++;
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-        StringBuilder board = new StringBuilder();
-        for (int i = 0; i < 10; i++) {
-            if (entry[i].contains("<@0>")) {
-                break;
-            }
-            try {
-                String id = entry[i].split(" ")[0];
-                User user = e.getJDA().getUserById(id.substring(2, id.length() - 2));
-                assert user != null;
-                board.append("**").append(i + 1).append(". ").append(user.getName()).append("**#").append(user.getDiscriminator()).append(" `").append(user.getId()).append("`: ").append(entry[i].split(" ")[1]).append(" ").append(emoji).append("\n");
-            } catch (Exception exception) {
-                board.append("**").append(entry[i]);
-            }
-        }
-        if (place >= 11) {
-            board.append("\n**").append(place).append(". You**: ").append(userNum).append(" ").append(emoji);
-        }
-        EmbedBuilder builder = new EmbedBuilder()
-                .setColor(Color.BLUE)
-                .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
-                .setTitle("__**Global Leaderboard**__")
-                .addField("**" + what + " in the World**", board.toString(), false);
-        e.getChannel().sendMessageEmbeds(builder.build()).queue();
-    }
-
-    public Economy(GuildMessageReceivedEvent e, String[] message, char prefix) {
-        String[] data = new String[0];
-        boolean hasData;
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt"));
-            hasData = true;
-            data = reader.readLine().split(" ");
-            reader.close();
-        } catch (Exception exception) {
-            hasData = false;
-        }
-        if (message[0].equals("start") && !hasData) {
-            File file = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".txt");
-            try {
-                file.createNewFile();
-            } catch (Exception exception) {
-                e.getChannel().sendMessage("You already have a save, don't try to outsmart me").queue();
-            }
-            try {
-                PrintWriter newData = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
-                newData.print("0 0 0 0 0 0 0 0 0 false false 0 0 0 0 0 0 0 false false false 0 0 0 0 false 0 0 0 0 0 0 1 1 0 0 0 false 0 0 0 0 0 0 0 0 0 0 false false false 0 0 0 0 0 0 0 0 0 false false 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 false 0 0 0 0 false false 0 0 0 0 0 0 0 0 0 false false false 1");
-                newData.close();
-                e.getChannel().sendMessage("Your profile has been created!  Run `" + prefix + "help 3` for a list of economy commands!").queue();
-            } catch (Exception exception) {
-                e.getChannel().sendMessage("Something went wrong creating the file.  Run `" + prefix + "support` for a link to the support server to get in contact with the developer.").queue();
-            }
-        } else if (message[0].equals("start")) {
-            e.getChannel().sendMessage("You already have a save, don't try to outsmart me").queue();
-        }
-
-        switch (message[0]) {
-            case "upgrades", "up", "u", "shop" -> {
-                if (!hasData) {
-                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                } else {
-                    new Upgrades(e, data, prefix);
-                }
-            }
-            case "buy" -> {
-                if (!hasData) {
-                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                } else {
-                    new Buy(e, data);
-                }
-            }
-            case "orchestra", "o" -> {
-                if (!hasData) {
-                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                } else {
-                    new Orchestra(e, data);
-                }
-            }
-            case "cooldowns", "c" -> {
-                if (!hasData) {
-                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                } else {
-                    new Cooldowns(e, data);
-                }
-            }
-            case "use" -> {
-                if (!hasData) {
-                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                } else {
-                    new Use(e, data, prefix);
-                }
-            }
-            case "scales", "s" -> {
-                if (!hasData) {
-                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                } else {
-                    new Scales(e, data);
-                }
-            }
-            case "practice", "p" -> {
-                if (!hasData) {
-                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                } else {
-                    new Practise(e, data);
-                }
-            }
-            case "rehearse", "r" -> {
-                if (!hasData) {
-                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                } else {
-                    new Rehearse(e, data);
-                }
-            }
-            case "perform", "pf" -> {
-                if (!hasData) {
-                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                } else {
-                    new Perform(e, data);
-                }
-            }
-            case "daily", "d" -> {
-                if (!hasData) {
-                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                } else {
-                    new Daily(e, data);
-                }
-            }
-            case "teach", "t" -> {
-                if (!hasData) {
-                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                } else {
-                    new Teach(e, data);
-                }
-            }
-            case "rob" -> {
-                if (!hasData) {
-                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                } else {
-                    new Rob(e, data);
-                }
-            }
-            case "gamble", "bet" -> {
-                if (!hasData) {
-                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                } else {
-                    new Gamble(e, data);
-                }
-            }
-            case "inventory", "inv" -> {
-                if (!hasData) {
-                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                } else {
-                    new Inventory(e, data);
-                }
-            }
-            case "profile", "balance", "bal", "b" -> {
-                if (!hasData) {
-                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                } else {
-                    new Balance(e, data);
-                }
-            }
-            case "stats" -> {
-                if (!hasData) {
-                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                } else {
-                    new Stats(e, data);
-                }
-            }
-            case "claim" -> {
-                if (!hasData) {
-                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                } else {
-                    new Vote(e, data);
-                }
-            }
-            case "gift" -> {
-                if (!hasData) {
-                    e.getChannel().sendMessage("You don't even have a save file, what are you doing???  Run `" + prefix + "start` to get one!").queue();
-                } else {
-                    new Gift(e, data);
-                }
-            }
-            case "leaderboard", "lb" -> {
-                try {
-                    switch (message[1]) {
-                        case "violins" -> leaderboard(":violin:", "Richest Users", e, 0, Long.parseLong(data[0]));
-                        case "streak" -> leaderboard(":calendar:", "Longest Daily Streaks", e, 47, Long.parseLong(data[47]));
-                        case "medals" -> leaderboard(":military_medal:", "Most Ling Ling Worthy Users", e, 55, Long.parseLong(data[55]));
-                        case "income" -> leaderboard(":violin:/hour", "Highest Hourly Incomes", e, 12, Long.parseLong(data[12]));
-                        case "winnings" -> leaderboard(":moneybag:", "Best Gamblers", e, 66, Long.parseLong(data[66]));
-                        case "million" -> leaderboard(":tickets:", "Luckiest Users", e, 67, Long.parseLong(data[67]));
-                        case "rob" -> leaderboard(":violin:", "Most Heartless Users", e, 68, Long.parseLong(data[68]));
-                        case "scales" -> leaderboard(":scales:", "Most Scales Playes", e, 70, Long.parseLong(data[70]));
-                        case "hours" -> leaderboard(":clock2:", "Most Hours Practised", e, 71, (long) Double.parseDouble(data[71]));
-                        case "rehearsals" -> leaderboard(":musical_score:", "Most Rehearsals Attended", e, 72, Long.parseLong(data[72]));
-                        case "performances" -> leaderboard(":microphone:", "Most Performances", e, 73, Long.parseLong(data[73]));
-                        case "earnings" -> leaderboard(":violin:", "Most Hardworking Users", e, 75, Long.parseLong(data[75]));
-                        case "teach" -> leaderboard(":teacher:", "Most Influential Users", e, 76, (long) Double.parseDouble(data[76]));
-                        case "luthier" -> leaderboard(":question:", "Best Unscramblers", e, 77, Long.parseLong(data[77]));
-                        case "gift" -> leaderboard(":gift:", "Most Generous Users", e, 85, Long.parseLong(data[85]));
-                        case "vote" -> leaderboard(":ballot_box:", "Most Outspoken Users", e, 88, Long.parseLong(data[88]));
-                        default -> e.getChannel().sendMessage("You must provide a valid leaderboard type.  Run the command with no arguments for a list of leaderboards.").queue();
-                    }
-                } catch (Exception exception) {
-                    e.getChannel().sendMessage("**__Leaderboard Types__**\n\n`violins`: Richest Users\n`income`: Highest Hourly Incomes\n`streak`: Longest Daily Streaks\n`medals`: Users with Most Ling Ling Medals\n`winnings`: Users with Highest Net Gamble Winnings\n`million`: Users with Most Million Violin Tickets\n`rob`: Users with Highest Violins Robbed\n`scales`: Users with Most Scales Played\n`hours`: Users with Most Hours Practised\n`rehearsals`: Users with Most Rehearsals Attended\n`performances`: Users with Most Performances\n`teach`: Users with the Most Hours Taught\n`earnings`: Users who Earned the Most Violins\n`luthier`: Users with Most Luthier Unscrambles\n`gift`: Users that have given the most Gifts\n`vote`: Users that have voted the most").queue();
-                }
-            }
-        }
-    }
+	public Economy(GuildMessageReceivedEvent e, String[] message, char prefix) {
+		switch(message[0]) {
+			case "start" -> new Start(e, prefix);
+			case "upgrades", "up", "u", "shop" -> new Upgrades(e, prefix);
+			case "buy" -> new Buy(e);
+			case "cooldowns", "c" -> new Cooldowns(e);
+			case "use" -> new Use(e, prefix);
+			case "scales", "s" -> new Scales(e);
+			case "practice", "p" -> new Practise(e);
+			case "rehearse", "r" -> new Rehearse(e);
+			case "perform", "pf" -> new Perform(e);
+			case "daily", "d" -> new Daily(e);
+			case "teach", "t" -> new Teach(e);
+			case "rob" -> new Rob(e);
+			case "gamble", "bet" -> new Gamble(e);
+			case "inventory", "inv" -> new Inventory(e);
+			case "profile", "balance", "bal", "b" -> new Balance(e);
+			case "stats" -> new Stats(e);
+			case "claim" -> new Vote(e);
+			case "gift" -> new Gift(e);
+			case "deposit" -> new Deposit(e);
+			case "withdraw", "with" -> new Withdraw(e);
+			case "loan" -> new Loan(e);
+			case "payloan" -> new PayLoan(e);
+			case "leaderboard", "lb" -> {
+				String[] data = LoadData.loadData(e, "Economy Data");
+				try {
+					switch(message[1]) {
+						case "violins" -> new Leaderboard(":violin:", "Richest Users", e, 0, Long.parseLong(data[0]));
+						case "streak" -> new Leaderboard(":calendar:", "Longest Daily Streaks", e, 47, Long.parseLong(data[47]));
+						case "medals" -> new Leaderboard(":military_medal:", "Most Ling Ling Worthy Users", e, 55, Long.parseLong(data[55]));
+						case "income" -> new Leaderboard(":violin:/hour", "Highest Hourly Incomes", e, 12, Long.parseLong(data[12]));
+						case "winnings" -> new Leaderboard(":moneybag:", "Best Gamblers", e, 66, Long.parseLong(data[66]));
+						case "million" -> new Leaderboard(":tickets:", "Luckiest Users", e, 67, Long.parseLong(data[67]));
+						case "rob" -> new Leaderboard(":violin:", "Most Heartless Users", e, 68, Long.parseLong(data[68]));
+						case "scales" -> new Leaderboard(":scales:", "Most Scales Playes", e, 70, Long.parseLong(data[70]));
+						case "hours" -> new Leaderboard(":clock2:", "Most Hours Practised", e, 71, (long) Double.parseDouble(data[71]));
+						case "rehearsals" -> new Leaderboard(":musical_score:", "Most Rehearsals Attended", e, 72, Long.parseLong(data[72]));
+						case "performances" -> new Leaderboard(":microphone:", "Most Performances", e, 73, Long.parseLong(data[73]));
+						case "earnings" -> new Leaderboard(":violin:", "Most Hardworking Users", e, 75, Long.parseLong(data[75]));
+						case "teach" -> new Leaderboard(":teacher:", "Most Influential Users", e, 76, (long) Double.parseDouble(data[76]));
+						case "luthier" -> new Leaderboard(":question:", "Best Unscramblers", e, 77, Long.parseLong(data[77]));
+						case "gift" -> new Leaderboard(":gift:", "Most Generous Users", e, 85, Long.parseLong(data[85]));
+						case "vote" -> new Leaderboard(":ballot_box:", "Most Outspoken Users", e, 88, Long.parseLong(data[88]));
+						default -> e.getChannel().sendMessage("You must provide a valid leaderboard type.  Run the command with no arguments for a list of leaderboards.").queue();
+					}
+				} catch(Exception exception) {
+					e.getChannel().sendMessage("**__Leaderboard Types__**\n\n`violins`: Richest Users\n`income`: Highest Hourly Incomes\n`streak`: Longest Daily Streaks\n`medals`: Users with Most Ling Ling Medals\n`winnings`: Users with Highest Net Gamble Winnings\n`million`: Users with Most Million Violin Tickets\n`rob`: Users with Highest Violins Robbed\n`scales`: Users with Most Scales Played\n`hours`: Users with Most Hours Practised\n`rehearsals`: Users with Most Rehearsals Attended\n`performances`: Users with Most Performances\n`teach`: Users with the Most Hours Taught\n`earnings`: Users who Earned the Most Violins\n`luthier`: Users with Most Luthier Unscrambles\n`gift`: Users that have given the most Gifts\n`vote`: Users that have voted the most").queue();
+				}
+			}
+		}
+	}
 }

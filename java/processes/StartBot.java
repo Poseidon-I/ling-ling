@@ -17,29 +17,29 @@ import java.io.File;
 import java.io.FileReader;
 
 public class StartBot {
-    public StartBot() {
-        File file = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\loadedservers.txt");
-        try {
-            file.delete();
-            file.createNewFile();
-        } catch (Exception exception1) {
-            //nothing here lol
-        }
-        JDA jda;
-        try (BufferedReader rdr = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\token.txt"))) {
-            jda = JDABuilder.createDefault(rdr.readLine(), GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGE_REACTIONS)
-                    .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS, CacheFlag.ONLINE_STATUS)
-                    .setMemberCachePolicy(MemberCachePolicy.ALL)
-                    .addEventListeners(new Disconnect())
-                    .addEventListeners(new Receiver())
-                    .addEventListeners(new RoleAdded())
-                    .addEventListeners(new RoleRemoved())
-                    .useSharding(0, 1)
-                    .build();
-            jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
-            jda.getPresence().setActivity(Activity.playing("violin forty hours a day."));
-        } catch(Exception exception) {
-            //nothing here lol
-        }
-    }
+	public StartBot() {
+		File file = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\loadedservers.txt");
+		try {
+			file.delete();
+			file.createNewFile();
+		} catch(Exception exception1) {
+			//nothing here lol
+		}
+		JDA jda;
+		try(BufferedReader rdr = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\token.txt"))) {
+			jda = JDABuilder.createDefault(rdr.readLine(), GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGE_REACTIONS)
+					.disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS, CacheFlag.ONLINE_STATUS)
+					.setMemberCachePolicy(MemberCachePolicy.ALL)
+					.addEventListeners(new Disconnect())
+					.addEventListeners(new Receiver())
+					.addEventListeners(new RoleAdded())
+					.addEventListeners(new RoleRemoved())
+					.useSharding(0, 1)
+					.build();
+			jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
+			jda.getPresence().setActivity(Activity.playing("violin forty hours a day."));
+		} catch(Exception exception) {
+			//well fuck
+		}
+	}
 }
