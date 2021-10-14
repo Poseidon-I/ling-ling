@@ -1,0 +1,88 @@
+RNGesus Incarnate for Boxes
+
+
+Rice
+
+2hr Income
+
+
+Tea
+
+6hr Income
+
+
+Blessing
+
+24hr Income
+
+100% - Medals
+	50% - 1 Medal
+	30% - 2 Medals
+	20% - 3 Medals
+
+
+Vote Box
+
+60% - 4-8hr Income
+30% - 1-3 Rice
+10% - 1 Tea
+
+
+Gift Box
+
+IF MEDAL HAS NOT BEEN RECEIVED TODAY
+50% - 6-12hr Income
+30% - 2-5 Rice
+15% - 1-3 Tea
+ 5% - 1 Medal
+ 
+OTHERWISE
+50% - 6-12hr Income
+30% - 2-5 Rice
+20% - 1-3 Tea
+
+
+Musician Kit
+
+IF MEDAL HAS NOT BEEN RECEIVED TODAY
+33% - 10-15 Rice
+33% - 8-12 Tea
+33% - 1 Blessing
+ 1% - 1-5 Medals, max medals chance at 150 000 income, gauranteed at 250 000 income
+ 
+OTHERWISE
+40% - 8-16hr Income
+30% - 10-15 Rice
+30% - 8-12 Tea
+
+
+Ling Ling Box
+
+IF MEDAL HAS NOT BEEN RECEIVED TODAY
+30% - 15-25 Rice
+30% - 10-15 Tea
+30% - 2-4 Blessings f  fv  fv  vffv  fv vf f   v     v
+ 9% - 1-10 Medals, max medals chance at 250 000 income, gauranteed at 400 000 income
+ 1% - 1x Luthier
+
+OTHERWISE
+39% - 12-24hr Income
+30% - 15-25 Rice
+30% - 10-15 Tea
+ 1% - 1x Luthier
+ 
+ 
+Crazy Person Box
+
+IF MEDAL HAS NOT BEEN RECEIVED TODAY
+30% - 1-15 Medals, max medals chance at 300 000 income, gauranteed at 450 000 income
+20% - 20-30 Rice
+20% - 12-20 Tea
+20% - 4-8 Blessings
+10% - 3x Luthier
+
+OTHERWISE
+30% - 18-36hr Income
+30% - 20-30 Rice
+30% - 12-20 Tea
+10% - 3x Luthier
