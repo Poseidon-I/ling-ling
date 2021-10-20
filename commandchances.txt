@@ -100,3 +100,32 @@ Teach
 ! Certificate Required
 Cooldown: 60M
 Base Amount: 35 000-45 000
+
+
+Scratch
+
+EACH ticket has the following chances
+ -5: 50%
+  0: 25%
+ +2: 15%
+ +5: 5.0%
++10: 3.0%
++25: 1.0%
++50: 0.5%
+100: 0.3%
+200: 0.1%
+500: 0.1%
+1mil: 1/40000
+
+
+Slot Machine
+
+2 of the same thing will pay your bet.
+3 Trumpets will pay 2.5x your bet.
+3 Violins will pay 5x your bet.
+3 r/lingling40hrs will pay 10x your bet.
+3 TwoSet will pay 15x your bet.
+3 Ling Ling will pay 25x your bet.
+3 Strad Spam will pay 40x your bet.
+
+All emojis have an equal chance to appear in each of the slots.
