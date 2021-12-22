@@ -98,16 +98,12 @@ public class Receiver extends ListenerAdapter {
 				new DevCommands(e, isDev);
 				
 				//ALL COMMANDS
-				try {
-					if(e.getMessage().getContentRaw().split(" ")[0].equals("!prefix") || e.getMessage().getContentRaw().split(" ")[0].equals("<@733409243222507670>")) {
-						char prefix = Prefix.GetPrefix(e);
-						e.getChannel().sendMessage("Hello!  My prefix in this server is `" + prefix + "`\nIf you have other issues, run `" + prefix + "support` to get an invite to the support server!").queue();
-					}
-				} catch(Exception exception) {
-					//nothing here lol
+				char prefix = Prefix.GetPrefix(e);
+				if(e.getMessage().getContentRaw().equals("!prefix") || e.getMessage().getContentRaw().equals("<@733409243222507670>")) {
+					e.getChannel().sendMessage("Hello!  My prefix in this server is `" + prefix + "`\nIf you have other issues, run `" + prefix + "support` to get an invite to the support server!").queue();
 				}
 				try {
-					if(message[0].charAt(0) == Prefix.GetPrefix(e)) {
+					if(message[0].charAt(0) == prefix) {
 						if(e.getMessage().getContentRaw().contains("@everyone") || e.getMessage().getContentRaw().contains("@here") || e.getMessage().getContentRaw().contains("<@&")) {
 							e.getChannel().sendMessage("why the hell did you ping here, everyone, or a role").queue();
 							throw new IllegalArgumentException();

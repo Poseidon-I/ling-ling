@@ -21,7 +21,7 @@ public class Help {
 				case "4" -> builder.addField("Help List Page 4 - Income Commands\nRun `" + prefix + "help <commandName>` to view a command in depth.",
 						"\n`scales`\n`practice`\n`rehearse`\n`perform`\n`teach`\n`daily`\n`gamble`\n`rob`", false);
 				case "5" -> builder.addField("Help List Page 5 - Bot Moderation Commands\nOnly Bot Mods and Bot Admins have access to these commands.",
-						"**__`Bot Mod Commands`__**\n`give`\n`warn`\n`resetsave`\n\n**__`Bot Admin Commands`__**\n`luthier`\n`resetincomes`\n`ban`\n`unban`", false);
+						"**__`Bot Mod Commands`__**\n`give`\n`warn`\n`resetsave`\n\n**__`Bot Admin Commands`__**\n`luthier`\n`resetincomes`\n`ban`\n`unban`\n`updateluthierchance`", false);
 				case "6" -> builder.addField("Help List Page 6 - Dev-Only Commands\nOnly Developers have access to these commands.\nThis page exists for people who are curious.",
 						"`status`\n`activity`\n~~`updateusers`~~\n`updateroles`\n`setpermlevel`\n**`forcestop`**", false);
 				case "updateroles" -> builder.addField("UpdateRoles Command", "Syntax: `!updateroles`\nUsage: Updates role multipliers/booster status of users in the support server.\nRestrictions: Usable only by Developers in the Support Server.", false);
@@ -74,6 +74,7 @@ public class Help {
 				case "loan" -> builder.addField("Loan Command", "Syntax: `!loan`\nUsage: Take out a loan, amount is based on your hourly income.  You can also use this to check how much you owe.", false);
 				case "payloan" -> builder.addField("PayLoan Command", "Syntax: `!payloan [amount | max]`\nUsage: Pays back a specified amount, or everything in your wallet.", false);
 				case "resetdaily" -> builder.addField("ResetDaily Command", "Syntax: `!resetdaily`\nUsage: Gives everyone more time to run `!daily`\nRestrictions: Usable only by Developers.", false);
+				case "updateluthierchance" -> builder.addField("UpdateLuthierChance Command", "Syntax: `!updateluthierchance`\nUsage: Updates the luthier spawn chance manually\nRestrictions: Usable only by Admins and above.", false);
 				default -> builder.addField("Help List", "Page or command `" + message[1] + "` does not exist!  Run `" + prefix + "help` to see a list of pages.", false);
 			}
 		} catch(Exception exception) {

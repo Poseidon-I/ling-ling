@@ -44,7 +44,7 @@ public class Economy {
 							case "winnings" -> new Leaderboard(":moneybag:", "Best Gamblers", e, "winnings", (long) data.get("winnings"));
 							case "million" -> new Leaderboard(":tickets:", "Luckiest Users", e, "millions", (long) data.get("millions"));
 							case "rob" -> new Leaderboard(":violin:", "Most Heartless Users", e, "robbed", (long) data.get("robbed"));
-							case "scales" -> new Leaderboard(":scales:", "Most Scales Playes", e, "scalesPlayed", (long) data.get("scalesPlayed"));
+							case "scales" -> new Leaderboard(":scales:", "Most Scales Played", e, "scalesPlayed", (long) data.get("scalesPlayed"));
 							case "hours" -> new Leaderboard(":clock2:", "Most Hours Practised", e, "hoursPractised", (long) data.get("hoursPractised"));
 							case "rehearsals" -> new Leaderboard(":musical_score:", "Most Rehearsals Attended", e, "rehearsals", (long) data.get("rehearsals"));
 							case "performances" -> new Leaderboard(":microphone:", "Most Performances", e, "performances", (long) data.get("performances"));

@@ -37,6 +37,9 @@ public class ResetDaily {
 				//nothing here lol
 			}
 		}
+		
+		new UpdateLuthierChance(e);
+		
 		if(e.getJDA().getSelfUser().getId().equals("733409243222507670")) {
 			int users = files.length;
 			VoiceChannel channel = Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getVoiceChannelById("839877827838476289");

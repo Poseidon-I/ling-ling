@@ -1,6 +1,6 @@
 package processes;
 
-import admin.Prefix;
+import admin.SetPrefix;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -58,9 +58,9 @@ public class RegularCommands {
 			case "prefix" -> {
 				if(message.length > 1) {
 					if(isAdmin || isDev) {
-						new Prefix(e);
+						new SetPrefix(e);
 					} else {
-						e.getChannel().sendMessage("**403 FORBIDDEN**\nYou do not have permission to run this command.").queue();
+						e.getChannel().sendMessage(":no_entry: **403 FORBIDDEN** :no_entry:\nYou do not have permission to run this command.").queue();
 					}
 				}
 			}

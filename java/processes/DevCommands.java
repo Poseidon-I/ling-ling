@@ -78,6 +78,13 @@ public class DevCommands {
 					e.getChannel().sendMessage(":no_entry: **403 FORBIDDEN** :no_entry:\nYou do not have permission to run this command.").queue();
 				}
 			}
+			case "!updateluthierchance" -> {
+				if(CheckPermLevel(e, isDev) >= 2) {
+					new UpdateLuthierChance(e);
+				} else {
+					e.getChannel().sendMessage(":no_entry: **403 FORBIDDEN** :no_entry:\nYou do not have permission to run this command.").queue();
+				}
+			}
 			/*case "!updateusers" -> {
 				if(CheckPermLevel(e, isDev) == 3) {
 					new UpdateUsers(e);
@@ -155,6 +162,7 @@ public class DevCommands {
 						BufferedReader reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
 						oldData = reader.readLine().split(" ");
 						reader.close();
+						file.delete();
 						reader = new BufferedReader(new FileReader("Ling Ling Bot Data\\Bank Data\\" + file.getName()));
 						bankData = reader.readLine().split(" ");
 						reader.close();
@@ -165,124 +173,124 @@ public class DevCommands {
 					
 					JSONObject data = new JSONObject();
 					data.put("violins", Long.parseLong(oldData[0]));
-					data.put("bank", 0);
-					data.put("loan", 0);
-					data.put("medals", 4095);
-					data.put("thirdPlace", 0);
-					data.put("secondPlace", 0);
-					data.put("firstPlace", 0);
+					data.put("bank", Long.parseLong(bankData[0]));
+					data.put("loan", Long.parseLong(bankData[3]));
+					data.put("medals", Long.parseLong(oldData[55]));
+					data.put("thirdPlace", Long.parseLong(oldData[52]));
+					data.put("secondPlace", Long.parseLong(oldData[53]));
+					data.put("firstPlace", Long.parseLong(oldData[54]));
 					
-					data.put("rice", 10);
-					data.put("tea", 10);
-					data.put("blessings", 10);
-					data.put("voteBox", 10);
-					data.put("giftBox", 10);
-					data.put("kits", 10);
-					data.put("linglingBox", 10);
-					data.put("crazyBox", 10);
+					data.put("rice", Long.parseLong(oldData[51]));
+					data.put("tea", Long.parseLong(oldData[62]));
+					data.put("blessings", Long.parseLong(oldData[63]));
+					data.put("voteBox", Long.parseLong(oldData[90]));
+					data.put("giftBox", Long.parseLong(oldData[87]));
+					data.put("kits", Long.parseLong(oldData[91]));
+					data.put("linglingBox", Long.parseLong(oldData[92]));
+					data.put("crazyBox", Long.parseLong(oldData[93]));
 					
-					data.put("income", 0);
-					data.put("streak", 0);
-					data.put("earnings", 0);
-					data.put("winnings", 0);
-					data.put("millions", 0);
-					data.put("robbed", 0);
-					data.put("lostToRob", 0);
-					data.put("scalesPlayed", 0);
-					data.put("hoursPractised", 0.0);
-					data.put("rehearsals", 0);
-					data.put("performances", 0);
-					data.put("hoursTaught", 0.0);
-					data.put("maxStreak", 0);
-					data.put("votes", 0);
-					data.put("luthiers", 0);
-					data.put("giftsGiven", 0);
-					data.put("giftsReceived", 0);
-					data.put("interestEarned", 0);
-					data.put("penaltiesIncurred", 0);
+					data.put("income", Long.parseLong(oldData[12]));
+					data.put("streak", Long.parseLong(oldData[47]));
+					data.put("earnings", Long.parseLong(oldData[75]));
+					data.put("winnings", Long.parseLong(oldData[66]));
+					data.put("millions", Long.parseLong(oldData[67]));
+					data.put("robbed", Long.parseLong(oldData[68]));
+					data.put("lostToRob", Long.parseLong(oldData[69]));
+					data.put("scalesPlayed", Long.parseLong(oldData[70]));
+					data.put("hoursPractised", Double.parseDouble(oldData[71]));
+					data.put("rehearsals", Long.parseLong(oldData[72]));
+					data.put("performances", Long.parseLong(oldData[73]));
+					data.put("hoursTaught", Double.parseDouble(oldData[76]));
+					data.put("maxStreak", Long.parseLong(oldData[74]));
+					data.put("votes", Long.parseLong(oldData[88]));
+					data.put("luthiers", Long.parseLong(oldData[77]));
+					data.put("giftsGiven", Long.parseLong(oldData[85]));
+					data.put("giftsReceived", Long.parseLong(oldData[86]));
+					data.put("interestEarned", Long.parseLong(oldData[10]));
+					data.put("penaltiesIncurred", Long.parseLong(oldData[11]));
 					
-					data.put("betCD", 0);
-					data.put("scaleCD", 0);
-					data.put("practiceCD", 0);
-					data.put("teachCD", 0);
-					data.put("rehearseCD", 0);
-					data.put("performCD", 0);
-					data.put("robCD", 0);
-					data.put("voteCD", 0);
-					data.put("hadDailyToday", false);
-					data.put("hadGiftToday", false);
+					data.put("betCD", Long.parseLong(oldData[3]));
+					data.put("scaleCD", Long.parseLong(oldData[64]));
+					data.put("practiceCD", Long.parseLong(oldData[1]));
+					data.put("teachCD", Long.parseLong(oldData[79]));
+					data.put("rehearseCD", Long.parseLong(oldData[7]));
+					data.put("performCD", Long.parseLong(oldData[8]));
+					data.put("robCD", Long.parseLong(oldData[5]));
+					data.put("voteCD", Long.parseLong(oldData[89]));
+					data.put("hadDailyToday", Boolean.parseBoolean(oldData[48]));
+					data.put("hadGiftToday", Boolean.parseBoolean(oldData[49]));
 					
-					data.put("efficiency", 0);
-					data.put("luck", 0);
-					data.put("sophistication", 0);
-					data.put("insurance", false);
-					data.put("timeCrunch", false);
+					data.put("efficiency", Long.parseLong(oldData[2]));
+					data.put("luck", Long.parseLong(oldData[4]));
+					data.put("sophistication", Long.parseLong(oldData[6]));
+					data.put("insurance", Boolean.parseBoolean(oldData[9]));
+					data.put("timeCrunch", Boolean.parseBoolean(oldData[50]));
 					
-					data.put("violinQuality", 0);
-					data.put("skills", 0);
-					data.put("lessonQuality", 0);
-					data.put("stringQuality", 0);
-					data.put("bowQuality", 0);
-					data.put("math", false);
+					data.put("violinQuality", Long.parseLong(oldData[13]));
+					data.put("skills", Long.parseLong(oldData[14]));
+					data.put("lessonQuality", Long.parseLong(oldData[15]));
+					data.put("stringQuality", Long.parseLong(oldData[16]));
+					data.put("bowQuality", Long.parseLong(oldData[17]));
+					data.put("math", Boolean.parseBoolean(oldData[18]));
 					
-					data.put("orchestra", false);
+					data.put("orchestra", Boolean.parseBoolean(oldData[19]));
 					
-					data.put("piccolo", false);
-					data.put("flute", 0);
-					data.put("oboe", 0);
-					data.put("clarinet", 0);
-					data.put("bassoon", 0);
-					data.put("contraBassoon", false);
+					data.put("piccolo", Boolean.parseBoolean(oldData[20]));
+					data.put("flute", Long.parseLong(oldData[21]));
+					data.put("oboe", Long.parseLong(oldData[22]));
+					data.put("clarinet", Long.parseLong(oldData[23]));
+					data.put("bassoon", Long.parseLong(oldData[24]));
+					data.put("contraBassoon", Boolean.parseBoolean(oldData[25]));
 					
-					data.put("horn", 0);
-					data.put("trumpet", 0);
-					data.put("trombone", 0);
-					data.put("tuba", 0);
-					data.put("timpani", 0);
-					data.put("percussion", 0);
+					data.put("horn", Long.parseLong(oldData[26]));
+					data.put("trumpet", Long.parseLong(oldData[27]));
+					data.put("trombone", Long.parseLong(oldData[28]));
+					data.put("tuba", Long.parseLong(oldData[29]));
+					data.put("timpani", Long.parseLong(oldData[30]));
+					data.put("percussion", Long.parseLong(oldData[31]));
 					
-					data.put("violin1", 1);
-					data.put("violin2", 1);
-					data.put("cello", 0);
-					data.put("doubleBass", 0);
-					data.put("piano", 0);
-					data.put("harp", false);
+					data.put("violin1", Long.parseLong(oldData[32]));
+					data.put("violin2", Long.parseLong(oldData[33]));
+					data.put("cello", Long.parseLong(oldData[34]));
+					data.put("doubleBass", Long.parseLong(oldData[35]));
+					data.put("piano", Long.parseLong(oldData[36]));
+					data.put("harp", Boolean.parseBoolean(oldData[37]));
 					
-					data.put("soprano", 0);
-					data.put("alto", 0);
-					data.put("tenor", 0);
-					data.put("bass", 0);
-					data.put("soloist", 0);
+					data.put("soprano", Long.parseLong(oldData[38]));
+					data.put("alto", Long.parseLong(oldData[39]));
+					data.put("tenor", Long.parseLong(oldData[40]));
+					data.put("bass", Long.parseLong(oldData[41]));
+					data.put("soloist", Long.parseLong(oldData[42]));
 					
-					data.put("hall", 0);
-					data.put("conductor", 0);
-					data.put("tickets", 0);
-					data.put("advertising", 0);
+					data.put("hall", Long.parseLong(oldData[43]));
+					data.put("conductor", Long.parseLong(oldData[44]));
+					data.put("tickets", Long.parseLong(oldData[46]));
+					data.put("advertising", Long.parseLong(oldData[45]));
 					
-					data.put("certificate", false);
-					data.put("students", 0);
-					data.put("lessonCharge", 0);
-					data.put("training", 0);
-					data.put("studio", false);
-					data.put("longerLessons", false);
+					data.put("certificate", Boolean.parseBoolean(oldData[78]));
+					data.put("students", Long.parseLong(oldData[81]));
+					data.put("lessonCharge", Long.parseLong(oldData[82]));
+					data.put("training", Long.parseLong(oldData[80]));
+					data.put("studio", Boolean.parseBoolean(oldData[83]));
+					data.put("longerLessons", Boolean.parseBoolean(oldData[84]));
 					
-					data.put("moreIncome", 0);
-					data.put("moreCommandIncome", 0);
-					data.put("moreMulti", 0);
-					data.put("moreRob", 0);
-					data.put("shield", false);
-					data.put("duplicator", false);
+					data.put("moreIncome", Long.parseLong(oldData[56]));
+					data.put("moreCommandIncome", Long.parseLong(oldData[57]));
+					data.put("moreMulti", Long.parseLong(oldData[58]));
+					data.put("moreRob", Long.parseLong(oldData[59]));
+					data.put("shield", Boolean.parseBoolean(oldData[60]));
+					data.put("duplicator", Boolean.parseBoolean(oldData[61]));
 					
-					data.put("storage", 0);
-					data.put("moreInterest", false);
-					data.put("lessPenalty", false);
+					data.put("storage", Long.parseLong(bankData[1]));
+					data.put("moreInterest", Boolean.parseBoolean(bankData[2]));
+					data.put("lessPenalty", Boolean.parseBoolean(bankData[4]));
 					
 					data.put("banned", false);
-					data.put("perms", 0);
-					data.put("medalToday", false);
-					data.put("retainDaily", true);
-					data.put("isBooster", false);
-					data.put("serverLevel", 1.0);
+					data.put("perms", Long.parseLong(oldData[65]));
+					data.put("medalToday", Boolean.parseBoolean(oldData[94]));
+					data.put("retainDaily", Boolean.parseBoolean(oldData[95]));
+					data.put("isBooster", Boolean.parseBoolean(oldData[96]));
+					data.put("serverLevel", Double.parseDouble(oldData[97]));
 					
 					try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Economy Data\\" + file.getName().substring(0, file.getName().length() - 4) + ".json")) {
 						writer.write(data.toJSONString());
@@ -291,21 +299,39 @@ public class DevCommands {
 						//nothing here lol
 					}
 				}
-				e.getChannel().sendMessage("Custom command completed!").queue();
 				
-				/*
-				Economy Data Folder
-
-    
-				ex. 100 16000000000 50 16000000000 25 16000000000 15 16000000000 16000000000 true 0 0 10000 5 5 5 5 5 true true true 1 1 1 1 true 1 1 1 1 1 1 20 20 15 5 2 true 20 20 20 20 4 5 5 20 5 0 true false true 0 3 2 1 10 2 2 2 1 true false 0 0 16000000000 0 0 0 0 0 0 0.0 0 0 0 0 0 0 0 true 0 0 0 0 true true 1 1 1 1 16000000000 1 0 0 0 false true true 2
-
-
- 				Bank Data Folder
-
-    			[0] violins storageLevel hasHigherInterest loanAmount hasLowerLoanInterest
-
-				ex. 10000 2 true 0 5 false
-				*/
+				directory = new File("Ling Ling Bot Data\\Settings\\Luthier");
+				files = directory.listFiles();
+				assert files != null;
+				for(File file : files) {
+					String[] oldData;
+					try {
+						BufferedReader reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
+						oldData = reader.readLine().split(" ");
+						reader.close();
+						file.delete();
+					} catch(Exception exception) {
+						e.getChannel().sendMessage("Shit!\n" + file.getAbsolutePath()).queue();
+						continue;
+					}
+					
+					JSONObject object = new JSONObject();
+					
+					object.put("channel", oldData[0]);
+					object.put("multiplier", Long.parseLong(oldData[1]));
+					object.put("chance", Double.parseDouble(oldData[2]));
+					object.put("hasWord", Boolean.parseBoolean(oldData[3]));
+					object.put("word", oldData[4]);
+					object.put("amount", Long.parseLong(oldData[5]));
+					
+					try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Settings\\Luthier\\" + file.getName().substring(0, file.getName().length() - 4) + ".json")) {
+						writer.write(object.toJSONString());
+						writer.close();
+					} catch(Exception exception) {
+						//nothing here lol
+					}
+				}
+				e.getChannel().sendMessage("Custom command completed!").queue();
 			}
 		}
 	}
