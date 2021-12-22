@@ -1,14 +1,14 @@
 package economy;
 
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.json.simple.JSONObject;
 
 public class PayLoan {
 	public PayLoan(GuildMessageReceivedEvent e) {
-		String[] data = LoadData.loadData(e, "Economy Data");
-		String[] bankdata = LoadData.loadData(e, "Bank Data");
+		JSONObject data = LoadData.loadData(e);
 		String[] message = e.getMessage().getContentRaw().split(" ");
-		long violins = Long.parseLong(data[0]);
-		long owed = Long.parseLong(bankdata[3]);
+		long violins = (long) data.get("violins");
+		long owed = (long) data.get("loan");
 		long amount;
 		if(owed == 0) {
 			e.getChannel().sendMessage("You don't owe anything!").queue();
@@ -24,14 +24,13 @@ public class PayLoan {
 				}
 			}
 			if(amount > violins) {
-				e.getChannel().sendMessage("You can't pay more than what you have, don't think I'm stupid, I have a octuple degree in Maths").queue();
+				e.getChannel().sendMessage("You can't pay more than what you have, don't think I'm stupid, I have a quadragintuple PhD in Mathematics").queue();
 			} else {
 				amount = Math.min(amount, owed);
-				bankdata[3] = String.valueOf(owed - amount);
-				data[0] = String.valueOf(violins - amount);
-				e.getChannel().sendMessage("You paid back " + amount + ":violin:.  You now owe " + bankdata[3] + ":violin:.").queue();
-				new SaveData(e, data, "Economy Data");
-				new SaveData(e, bankdata, "Bank Data");
+				data.replace("loan", owed - amount);
+				data.replace("violins", violins - amount);
+				e.getChannel().sendMessage("You paid back " + amount + ":violin:.  You now owe " + (owed - amount) + ":violin:.").queue();
+				new SaveData(e, data);
 			}
 		}
 	}

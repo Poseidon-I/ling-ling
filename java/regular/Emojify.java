@@ -20,42 +20,42 @@ public class Emojify {
 		convert = new StringBuilder(convert.toString().toLowerCase());
 		StringBuilder send = new StringBuilder();
 		for(int i = 2; i < convert.length(); i++) {
-			char cur = convert.charAt(i);
-			if(cur == ' ') {
+			char current= convert.charAt(i);
+			if(current== ' ') {
 				send.append("<:linglingclock:747499551451250730> ");
-			} else if(cur == '1') {
+			} else if(current== '1') {
 				send.append(":one: ");
-			} else if(cur == '2') {
+			} else if(current== '2') {
 				send.append(":two: ");
-			} else if(cur == '3') {
+			} else if(current== '3') {
 				send.append(":three: ");
-			} else if(cur == '4') {
+			} else if(current== '4') {
 				send.append(":four: ");
-			} else if(cur == '5') {
+			} else if(current== '5') {
 				send.append(":five: ");
-			} else if(cur == '6') {
+			} else if(current== '6') {
 				send.append(":six: ");
-			} else if(cur == '7') {
+			} else if(current== '7') {
 				send.append(":seven: ");
-			} else if(cur == '8') {
+			} else if(current== '8') {
 				send.append(":eight: ");
-			} else if(cur == '9') {
+			} else if(current== '9') {
 				send.append(":nine: ");
-			} else if(cur == '0') {
+			} else if(current== '0') {
 				send.append(":zero: ");
-			} else if(cur == '?') {
+			} else if(current== '?') {
 				send.append(":grey_question: ");
-			} else if(cur == '!') {
+			} else if(current== '!') {
 				send.append(":grey_exclamation: ");
 			} else {
-				send.append(":regional_indicator_").append(cur).append(": ");
+				send.append(":regional_indicator_").append(current).append(": ");
 			}
 		}
 		send.append("\n<@").append(e.getAuthor().getId()).append(">");
 		try {
 			e.getChannel().sendMessage(send.toString()).queue();
 		} catch(Exception exception) {
-			e.getChannel().sendMessage("Your message ended up being over 2000 characters, try shortening it.").queue();
+			e.getChannel().sendMessage("Your message ended up being too long, try shortening it.").queue();
 		}
 		
 	}

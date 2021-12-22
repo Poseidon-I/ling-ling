@@ -1,4 +1,4 @@
-package dev;
+/*package dev;
 
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
@@ -35,3 +35,6 @@ public class UpdateUsers {
 		}
 	}
 }
+*/
+
+// this method will be updated at a later date to encompass deletion.  data types need to be implemented (int, boolean)

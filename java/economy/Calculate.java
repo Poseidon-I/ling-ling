@@ -1,23 +1,21 @@
 package economy;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-
-import java.util.Objects;
+import org.json.simple.JSONObject;
 
 public class Calculate {
-	public static long CalculateAmount(GuildMessageReceivedEvent e, String[] data, long base) {
-		base *= Math.pow(1.05, Long.parseLong(data[2]));
-		base *= Math.pow(1.1, Long.parseLong(data[43]));
-		base *= Math.pow(1.3, Long.parseLong(data[57]));
-		if(e.getGuild().getId().equals("670725611207262219")) {
-			if(Objects.requireNonNull(e.getMember()).getRoles().contains(e.getGuild().getRoleById("755910677075460206"))) {
-				base *= 1.1;
-			}
+	public static long CalculateAmount(JSONObject data, long base) {
+		long efficiency = (long) data.get("efficiency");
+		if(efficiency > 20) {
+			base *= Math.pow(1.1, 20) * Math.pow(1.04, efficiency - 20);
+		} else {
+			base *= Math.pow(1.1, efficiency);
 		}
-		if(data[96].equals("true")) {
+		base *= Math.pow(1.1, (long) data.get("hall"));
+		base *= Math.pow(1.25, (long) data.get("moreIncome"));
+		if((boolean) data.get("isBooster")) {
 			base *= 1.3;
 		}
-		base *= Double.parseDouble(data[97]);
-		return base;
+		double level = (double) data.get("serverLevel");
+		return (long) (base * level);
 	}
 }

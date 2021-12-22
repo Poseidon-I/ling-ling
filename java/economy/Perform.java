@@ -1,18 +1,19 @@
 package economy;
 
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.json.simple.JSONObject;
 
 import java.util.Random;
 
 public class Perform {
 	public Perform(GuildMessageReceivedEvent e) {
-		String[] data = LoadData.loadData(e, "Economy Data");
+		JSONObject data = LoadData.loadData(e);
 		long time = System.currentTimeMillis();
 		Random random = new Random();
-		long violins = Long.parseLong(data[0]);
-		long violinsEarned = Long.parseLong(data[75]);
-		if(time < Long.parseLong(data[8])) {
-			long milliseconds = Long.parseLong(data[8]) - time;
+		long violins = (long) data.get("violins");
+		long violinsEarned = (long) data.get("earnings");
+		if(time < (long) data.get("performCD")) {
+			long milliseconds = (long) data.get("performCD") - time;
 			long days = milliseconds / 86400000;
 			milliseconds -= days * 86400000;
 			long hours = milliseconds / 3600000;
@@ -24,25 +25,25 @@ public class Perform {
 			e.getChannel().sendMessage("Don't tire yourself with two performances a week!  Wait " + days + " days " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
 		} else {
 			boolean badEvent = false;
-			long base = Calculate.CalculateAmount(e, data, random.nextInt(1001) + 4500);
+			long base = Calculate.CalculateAmount(data, random.nextInt(1001) + 4500);
 			double num = random.nextDouble();
-			if(num > 0.75) {
+			if(num > 0.7) {
 				violins += base;
 				violinsEarned += base;
 				e.getChannel().sendMessage("You performed your solo and earned " + base + ":violin:").queue();
-			} else if(num > 0.5) {
+			} else if(num > 0.45) {
 				num = random.nextDouble();
 				if(num > 0.5) {
-					data[51] = String.valueOf(Long.parseLong(data[51]) + 9);
+					data.replace("rice", (long) data.get("rice") + 9);
 					e.getChannel().sendMessage("Your paycheck contained 9:rice: instead of violins.").queue();
-				} else if(num > 0.1) {
-					data[62] = String.valueOf(Long.parseLong(data[62]) + 4);
+				} else if(num > 0.15) {
+					data.replace("tea", (long) data.get("tea") + 9);
 					e.getChannel().sendMessage("You found 4:bubble_tea: after you performed.").queue();
 				} else {
-					data[63] = String.valueOf(Long.parseLong(data[63]) + 1);
+					data.replace("blessings", (long) data.get("blessings") + 9);
 					e.getChannel().sendMessage("Ling Ling enjoyed your performance and blessed you.").queue();
 				}
-			} else if(num > 0.2) {
+			} else if(num > 0.15) {
 				num = random.nextDouble();
 				if(num > 0.65) {
 					e.getChannel().sendMessage("Your teacher approved your performance.  Your tiger mom saw the comment, and gave you " + (long) (base * 0.1) + ":violin: in addition to the " + base + ":violin: that you earned.").queue();
@@ -72,7 +73,7 @@ public class Perform {
 				violinsEarned += base;
 			} else if(num > 0.05) {
 				num = random.nextDouble();
-				long income = Long.parseLong(data[12]);
+				long income = (long) data.get("income");
 				if(num > 0.8) {
 					violins -= income / 100;
 					base *= 0.5;
@@ -104,8 +105,9 @@ public class Perform {
 					e.getChannel().sendMessage("Your performance was for a competition, and you only won Honorable Mention.  Your tiger mom Kung-Paos your chicken and takes half your earnings, in addition to another " + income + " for being so mediocre.").queue();
 				} else if(num > 0.015) {
 					e.getChannel().sendMessage("Your chin rest popped off your violin!  You take your violin to the luthier, who informs you that the violin will have to stay overnight.  You are not able to practise anything for 12 hours.").queue();
-					data[64] = String.valueOf(Long.parseLong(data[64]) + 43200000);
-					data[1] = String.valueOf(Long.parseLong(data[1]) + 43200000);
+					time += 43200000;
+					data.replace("scaleCD", time);
+					data.replace("practiceCD", time);
 					badEvent = true;
 				} else if(num > 0.005) {
 					e.getChannel().sendMessage("You decided to fake your performance.  Of course it didn't work and Ling Ling fined you " + (long) (violins * 0.95) + ":violin:").queue();
@@ -116,10 +118,10 @@ public class Perform {
 					violins *= 0.01;
 					base = 0;
 					time += 86400000;
-					data[1] = String.valueOf(time + 86400000);
-					data[7] = String.valueOf(time + 86400000);
-					data[8] = String.valueOf(time + 86400000);
-					data[64] = String.valueOf(time + 86400000);
+					data.replace("scaleCD", time);
+					data.replace("practiceCD", time);
+					data.replace("rehearseCD", time);
+					data.replace("performCD", time);
 					badEvent = true;
 				}
 				violinsEarned += base;
@@ -127,34 +129,34 @@ public class Perform {
 				num = random.nextDouble();
 				if(num > 0.5) {
 					base *= 5;
-					data[55] = String.valueOf(Long.parseLong(data[55]) + 1);
-					data[52] = String.valueOf(Long.parseLong(data[52]) + 1);
+					data.replace("medals", (long) data.get("medals") + 1);
+					data.replace("thirdPlace", (long) data.get("thirdPlace") + 1);
 					e.getChannel().sendMessage(":trophy: Your performance won third place in the Ling Ling Competition.  Your earnings were multiplied by 5 to " + base + " and you walked away with 1:military_medal: and a third place trophy :third_place:").queue();
-				} else if(num > 0.2) {
+				} else if(num > 0.15) {
 					base *= 10;
-					data[55] = String.valueOf(Long.parseLong(data[55]) + 2);
-					data[53] = String.valueOf(Long.parseLong(data[53]) + 1);
+					data.replace("medals", (long) data.get("medals") + 2);
+					data.replace("secondPlace", (long) data.get("secondPlace") + 1);
 					e.getChannel().sendMessage(":trophy: Your performance won second place.  Your earnings were multiplied by 10 to " + base + " and you walked away with 2:military_medal: and a second place trophy :second_place:").queue();
 				} else {
 					base *= 20;
-					data[55] = String.valueOf(Long.parseLong(data[55]) + 3);
-					data[54] = String.valueOf(Long.parseLong(data[54]) + 1);
+					data.replace("medals", (long) data.get("medals") + 3);
+					data.replace("firstPlace", (long) data.get("firstPlace") + 1);
 					e.getChannel().sendMessage(":trophy: Your performance won first place.  Congratulations!  Your earnings were multiplied by 20 to " + base + " and you walked away with **3**:military_medal: and a FIRST place trophy :first_place:").queue();
 				}
 			}
 			violins += base;
 			violinsEarned += base;
-			data[0] = String.valueOf(violins);
-			data[75] = String.valueOf(violinsEarned);
+			data.replace("violins", violins);
+			data.replace("earnings", violinsEarned);
 			if(!badEvent) {
-				if(Boolean.parseBoolean(data[50])) {
-					data[8] = String.valueOf(time + 201600000);
+				if((boolean) data.get("timeCrunch")) {
+					data.replace("performCD", time + 201600000);
 				} else {
-					data[8] = String.valueOf(time + 302340000);
+					data.replace("performCD", time + 302340000);
 				}
 			}
-			data[73] = String.valueOf(Long.parseLong(data[73]) + 1);
-			new SaveData(e, data, "Economy Data");
+			data.replace("performances", (long) data.get("performances") + 1);
+			new SaveData(e, data);
 		}
 	}
 }

@@ -1,14 +1,12 @@
 package dev;
 
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.User;
+import economy.Start;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
-import java.awt.*;
-import java.io.BufferedWriter;
-import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.PrintWriter;
 import java.util.Objects;
 
 public class Ban {
@@ -18,42 +16,42 @@ public class Ban {
 		for(int i = 2; i < message.length; i++) {
 			reason.append(" ").append(message[i]);
 		}
-		e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-		User user = null;
-		try {
-			user = e.getJDA().getUserById(message[1]);
-		} catch(Exception exception1) {
-			e.getChannel().sendMessage("You tried to blacklist a non-existant user.  You should know better smh.").queue();
+		if(reason.isEmpty()) {
+			reason.append("None");
 		}
-		assert user != null;
-		if(user.getId().equals(e.getAuthor().getId())) {
+		e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
+		String id = message[1];
+		try {
+			Long.parseLong(id);
+		} catch(Exception exception) {
+			e.getChannel().sendMessage("You didn't provide a valid ID!").queue();
+			throw new IllegalArgumentException();
+		}
+		if(id.equals(e.getAuthor().getId())) {
 			e.getChannel().sendMessage("Imagine trying to ban yourself, how dumb are you???").queue();
-		} else if(user.getId().equals("619989388109152256") || user.getId().equals("488487157372157962")) {
+		} else if(id.equals("619989388109152256") || id.equals("488487157372157962")) {
 			e.getChannel().sendMessage("Imagine trying to ban a developer smh").queue();
 		} else {
-			try {
-				PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + user.getId() + ".txt")));
-				writer.print("BANNED");
+			JSONParser parser = new JSONParser();
+			JSONObject data;
+			try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + id + ".json")) {
+				data = (JSONObject) parser.parse(reader);
+				reader.close();
+				data.replace("banned", true);
+				FileWriter writer = new FileWriter("Ling Ling Bot Data\\Economy Data\\" + id + ".json");
+				writer.write(data.toJSONString());
 				writer.close();
 			} catch(Exception exception) {
-				File file = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + user.getId() + ".txt");
-				try {
-					file.createNewFile();
-					PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
-					writer.print("BANNED");
-					writer.close();
-				} catch(Exception exception1) {
-					//nothing here lol
-				}
+				new Start(e, id, true);
 			}
-			e.getChannel().sendMessage(":hammer: " + user.getName() + " was successfully banned!").queue();
-			EmbedBuilder builder = new EmbedBuilder()
-					.setColor(Color.BLUE)
-					.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
-					.addField("Moderator: " + e.getAuthor().getName(), "User: " + user.getName() + "#" + user.getDiscriminator() + "\nReason: " + reason, false)
-					.setTitle("__**BAN Info**__");
-			Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
-			user.openPrivateChannel().complete().sendMessage("You were banned for" + reason + ".").queue();
+			e.getChannel().sendMessage(":hammer: <@" + id + "> was successfully banned!").queue();
+			Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("734697505543159879")).sendMessage("""
+					:hammer: **THE BAN HAMMER HAS SPOKEN** :hammer:
+					            Someone has been banned.
+					
+					https://i.imgur.com/KTyk7EC.mp4""").queue();
+			Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().complete().sendMessage("You were banned.  Reason: " + reason).queue();
+			new LogCase(e, "BAN", id, reason.toString());
 		}
 	}
 }

@@ -1,110 +1,67 @@
 package dev;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.awt.*;
-import java.io.*;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Give {
 	public Give(GuildMessageReceivedEvent e) {
 		String[] message = e.getMessage().getContentRaw().split(" ");
-		String id = message[1];
+		String id;
+		try {
+			id = message[1];
+		} catch(Exception exception) {
+			e.getChannel().sendMessage("You didn't even provide a user, dummy.").queue();
+			throw new IllegalArgumentException();
+		}
 		long add;
 		try {
 			add = Long.parseLong(message[3]);
 		} catch(Exception exception) {
-			e.getChannel().sendMessage("You must specify which type of item to give, and the amount given must be a number.").queue();
+			e.getChannel().sendMessage("You can only give an integer amount of items, stupid.").queue();
 			throw new IllegalArgumentException();
 		}
-		long newValue = -1;
-		String userData;
-		int index = -1;
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + id + ".txt"));
-			userData = reader.readLine();
+		JSONParser parser = new JSONParser();
+		JSONObject data;
+		try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + id + ".json")) {
+			data = (JSONObject) parser.parse(reader);
 			reader.close();
 		} catch(Exception exception) {
-			e.getChannel().sendMessage("This user save doesn't exist!").queue();
+			e.getChannel().sendMessage("This save file doesn't exist!").queue();
 			throw new IllegalArgumentException();
 		}
-		switch(message[2]) {
-			case "violin" -> {
-				index = 0;
-				newValue = Long.parseLong(userData.split(" ")[index]) + add;
-				e.getChannel().sendMessage("Successfully gave " + add + ":violin: to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName() + ".  New amount: " + newValue).queue();
-			}
-			case "rice" -> {
-				index = 51;
-				newValue = Long.parseLong(userData.split(" ")[index]) + add;
-				e.getChannel().sendMessage("Successfully gave " + add + ":rice: to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName() + ".  New amount: " + newValue).queue();
-			}
-			case "medal" -> {
-				index = 55;
-				newValue = Long.parseLong(userData.split(" ")[index]) + add;
-				e.getChannel().sendMessage("Successfully gave " + add + ":military_medal: to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName() + ".  New amount: " + newValue).queue();
-			}
-			case "tea" -> {
-				index = 62;
-				newValue = Long.parseLong(userData.split(" ")[index]) + add;
-				e.getChannel().sendMessage("Successfully gave " + add + ":bubble_tea: to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName() + ".  New amount: " + newValue).queue();
-			}
-			case "blessing" -> {
-				index = 63;
-				newValue = Long.parseLong(userData.split(" ")[index]) + add;
-				e.getChannel().sendMessage("Successfully gave " + add + ":angel: to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName() + ".  New amount: " + newValue).queue();
-			}
-			case "gift" -> {
-				index = 87;
-				newValue = Long.parseLong(userData.split(" ")[index]) + add;
-				e.getChannel().sendMessage("Successfully gave " + add + ":gift: to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName() + ".  New amount: " + newValue).queue();
-			}
-			case "vote" -> {
-				index = 90;
-				newValue = Long.parseLong(userData.split(" ")[index]) + add;
-				e.getChannel().sendMessage("Successfully gave " + add + ":ballot_box: to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName() + ".  New amount: " + newValue).queue();
-			}
-			case "kit" -> {
-				index = 91;
-				newValue = Long.parseLong(userData.split(" ")[index]) + add;
-				e.getChannel().sendMessage("Successfully gave " + add + " Standard Musician Kits to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName() + ".  New amount: " + newValue).queue();
-			}
-			case "llbox" -> {
-				index = 92;
-				newValue = Long.parseLong(userData.split(" ")[index]) + add;
-				e.getChannel().sendMessage("Successfully gave " + add + " Ling Ling Boxes to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName() + ".  New amount: " + newValue).queue();
-			}
-			case "crazybox" -> {
-				index = 93;
-				newValue = Long.parseLong(userData.split(" ")[index]) + add;
-				e.getChannel().sendMessage("Successfully gave " + add + " Crazy Person Boxes to " + Objects.requireNonNull(e.getJDA().getUserById(id)).getName() + ".  New amount: " + newValue).queue();
-			}
-			default -> e.getChannel().sendMessage("Invalid currency/item.  Valid items: `violin` `rice` `medal` `tea` `blessing` `gift` `vote` `kit` `llbox` `crazybox`").queue();
-		}
-		StringBuilder newData = new StringBuilder();
-		for(int i = 0; i < userData.split(" ").length; i++) {
-			if(i == index) {
-				newData.append(newValue).append(" ");
-			} else {
-				newData.append(userData.split(" ")[i]).append(" ");
-			}
-		}
-		newData.deleteCharAt(newData.length() - 1);
+		String[] validElements = {"violins", "medals", "rice", "tea", "blessings", "voteBox", "giftBox", "kits", "linglingBox", "crazyBox"};
 		try {
-			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + id + ".txt")));
-			writer.print(newData);
+			if(Arrays.asList(validElements).contains(message[2])) {
+				long oldAmount = (long) data.get(message[2]);
+				data.replace(message[2], oldAmount + add);
+				e.getChannel().sendMessage("Successfully gave `" + add + "` " + message[2] + " to <@" + message[1] + ">").queue();
+			} else {
+				e.getChannel().sendMessage("You provided an invalid item!  Valid items to give: `violins`, `medals`, `rice`, `tea`, `blessings`, `voteBox`, `giftBox`, `kits`, `linglingBox`, `crazyBox`.").queue();
+			}
+		} catch(Exception exception) {
+			e.getChannel().sendMessage("You have to tell me what to give out, idiot, I can't give out nothing.").queue();
+			throw new IllegalArgumentException();
+		}
+		
+		try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Economy Data\\" + id + ".json")) {
+			writer.write(data.toJSONString());
 			writer.close();
 		} catch(Exception exception) {
 			//nothing here lol
 		}
-		User user = e.getJDA().getUserById(id);
-		assert user != null;
+		
 		EmbedBuilder builder = new EmbedBuilder()
 				.setColor(Color.BLUE)
 				.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
-				.addField("Moderator: " + e.getAuthor().getName(), "User: " + user.getName() + "#" + user.getDiscriminator() + "\nItem type: " + message[2] + "\nAmount given: " + message[3], false)
+				.addField("Moderator: " + e.getAuthor().getName(), "User: <@" + id + ">\nItem type: " + message[2] + "\nAmount given: " + message[3], false)
 				.setTitle("__**Currency Alteration Info**__");
 		Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
 	}

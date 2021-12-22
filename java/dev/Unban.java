@@ -1,40 +1,72 @@
 package dev;
 
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
-import java.awt.*;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Objects;
 
 public class Unban {
 	public Unban(GuildMessageReceivedEvent e) {
 		String[] message = e.getMessage().getContentRaw().split(" ");
-		StringBuilder reason = new StringBuilder();
-		for(int i = 2; i < message.length; i++) {
-			reason.append(" ").append(message[i]);
+		String id = message[1];
+		try {
+			Long.parseLong(id);
+		} catch(Exception exception) {
+			e.getChannel().sendMessage("You didn't provide a valid ID!").queue();
+			throw new IllegalArgumentException();
 		}
 		e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-		User user = null;
-		try {
-			user = e.getMessage().getMentionedUsers().get(0);
-		} catch(Exception exception) {
-			try {
-				user = e.getJDA().getUserById(message[1]);
-			} catch(Exception exception1) {
-				e.getChannel().sendMessage("You tried to unblacklist a non-existant user.  You should know better smh.").queue();
-			}
+		StringBuilder reason = new StringBuilder();
+		for(int i = 3; i < message.length; i++) {
+			reason.append(" ").append(message[i]);
 		}
-		assert user != null;
-		File file = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data\\" + user.getId() + ".txt");
-		file.delete();
-		e.getChannel().sendMessage(":white_check_mark: " + user.getName() + " was successfully unbanned!").queue();
-		EmbedBuilder builder = new EmbedBuilder()
-				.setColor(Color.BLUE)
-				.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
-				.addField("Moderator: " + e.getAuthor().getName(), "User: " + user.getName() + "#" + user.getDiscriminator() + "\nReason: " + reason, false)
-				.setTitle("__**Unban Info**__");
-		Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
+		if(reason.isEmpty()) {
+			reason.append("None");
+		}
+		JSONParser parser = new JSONParser();
+		JSONObject data;
+		File file = new File("Ling Ling Bot Data\\Economy Data\\" + id + ".json");
+		try(FileReader reader = new FileReader(file.getAbsolutePath())) {
+			data = (JSONObject) parser.parse(reader);
+			reader.close();
+		} catch(Exception exception) {
+			e.getChannel().sendMessage("File doesn't exist!  Looks like they never used the bot to begin with...").queue();
+			throw new IllegalArgumentException();
+		}
+		if((Boolean) data.get("banned")) {
+			boolean resetSave;
+			try {
+				resetSave = Boolean.parseBoolean(message[2]);
+			} catch(Exception exception) {
+				e.getChannel().sendMessage("You have to tell me whether you want to reset the save or not, dumb.").queue();
+				throw new IllegalArgumentException();
+			}
+			if(resetSave) {
+				file.delete();
+				reason.append("\nSave Reset: Yes");
+				Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().complete().sendMessage("You have been unbanned :fireworks:\nYour save was reset.").queue();
+			} else {
+				try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + id + ".json")) {
+					data = (JSONObject) parser.parse(reader);
+					reader.close();
+					data.replace("banned", false);
+					FileWriter writer = new FileWriter("Ling Ling Bot Data\\Economy Data\\" + id + ".json");
+					writer.write(data.toJSONString());
+					writer.close();
+				} catch(Exception exception) {
+					//nothing here lol
+				}
+				reason.append("\nSave Reset: No");
+				Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().complete().sendMessage("You have been unbanned :fireworks:\nYour save was not reset.").queue();
+			}
+			e.getChannel().sendMessage(":white_check_mark: <@" + id + "> was successfully unbanned!").queue();
+			new LogCase(e, "Unban", id, reason.toString());
+		} else {
+			e.getChannel().sendMessage("That user isn't even banned, stupid.").queue();
+		}
 	}
 }

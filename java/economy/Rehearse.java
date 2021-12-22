@@ -1,19 +1,20 @@
 package economy;
 
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.json.simple.JSONObject;
 
 import java.util.Random;
 
 public class Rehearse {
 	public Rehearse(GuildMessageReceivedEvent e) {
-		String[] data = LoadData.loadData(e, "Economy Data");
-		if(Boolean.parseBoolean(data[19])) {
+		JSONObject data = LoadData.loadData(e);
+		if((boolean) data.get("orchestra")) {
 			long time = System.currentTimeMillis();
 			Random random = new Random();
-			long violins = Long.parseLong(data[0]);
-			long violinsEarned = Long.parseLong(data[75]);
-			if(time < Long.parseLong(data[7])) {
-				long milliseconds = Long.parseLong(data[7]) - time;
+			long violins = (long) data.get("violins");
+			long violinsEarned = (long) data.get("earnings");
+			if(time < (long) data.get("rehearseCD")) {
+				long milliseconds = (long) data.get("rehearseCD") - time;
 				long hours = milliseconds / 3600000;
 				milliseconds -= hours * 3600000;
 				long minutes = milliseconds / 60000;
@@ -23,25 +24,25 @@ public class Rehearse {
 				e.getChannel().sendMessage("You don't have the time to go to rehearsal that often, wait " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
 			} else {
 				boolean badEvent = false;
-				long base = Calculate.CalculateAmount(e, data, random.nextInt(501) + 1750);
+				long base = Calculate.CalculateAmount(data, random.nextInt(501) + 1750);
 				double num = random.nextDouble();
-				if(num > 0.75) {
+				if(num > 0.7) {
 					violins += base;
 					e.getChannel().sendMessage("You rehearsed with your orchestra and earned " + base + ":violin:").queue();
 					violinsEarned += base;
-				} else if(num > 0.45) {
+				} else if(num > 0.4) {
 					num = random.nextDouble();
 					if(num > 0.5) {
-						data[51] = String.valueOf(Long.parseLong(data[51]) + 3);
+						data.replace("rice", (long) data.get("rice") + 3);
 						e.getChannel().sendMessage("You found 3:rice: after rehearsal but didn't get any violins.").queue();
-					} else if(num > 0.1) {
-						data[62] = String.valueOf(Long.parseLong(data[62]) + 2);
+					} else if(num > 0.15) {
+						data.replace("tea", (long) data.get("tea") + 2);
 						e.getChannel().sendMessage("You found 2:bubble_tea: after you went to rehearsal.").queue();
 					} else {
-						data[63] = String.valueOf(Long.parseLong(data[63]) + 1);
+						data.replace("blessings", (long) data.get("blessings") + 1);
 						e.getChannel().sendMessage("Ling Ling enjoyed your rehearsal session and blessed you.").queue();
 					}
-				} else if(num > 0.15) {
+				} else if(num > 0.1) {
 					num = random.nextDouble();
 					if(num > 0.65) {
 						e.getChannel().sendMessage("Your teacher approved your rehearsal.  Your tiger mom saw the comment, and gave you " + (long) (base * 0.1) + ":violin: in addition to the " + base + ":violin: that you earned.").queue();
@@ -62,7 +63,7 @@ public class Rehearse {
 					violins += base;
 					violinsEarned += base;
 				} else {
-					long income = Long.parseLong(data[12]);
+					long income = (long) data.get("income");
 					num = random.nextDouble();
 					if(num > 0.75) {
 						violins -= income / 100;
@@ -90,8 +91,9 @@ public class Rehearse {
 						e.getChannel().sendMessage("You had a memory blank during rehearsal.  Your tiger mom took all of your earnings, in addition to another " + income + " for shaming yourself.").queue();
 					} else if(num > 0.015) {
 						e.getChannel().sendMessage("Your chin rest popped off your violin!  You take your violin to the luthier, who informs you that the violin will have to stay overnight.  You are not able to practise for 12 hours.").queue();
-						data[64] = String.valueOf(Long.parseLong(data[64]) + 43200000);
-						data[1] = String.valueOf(Long.parseLong(data[1]) + 43200000);
+						time += 43200000;
+						data.replace("scaleCD", time);
+						data.replace("practiceCD", time);
 						badEvent = true;
 					} else if(num > 0.005) {
 						e.getChannel().sendMessage("You decided to fake your solo.  Of course it didn't work and Ling Ling fined you " + (long) (violins * 0.9) + ":violin:").queue();
@@ -102,27 +104,27 @@ public class Rehearse {
 						violins *= 0.05;
 						base = 0;
 						time += 86400000;
-						data[1] = String.valueOf(time + 86400000);
-						data[7] = String.valueOf(time + 86400000);
-						data[8] = String.valueOf(time + 86400000);
-						data[64] = String.valueOf(time + 86400000);
+						data.replace("scaleCD", time);
+						data.replace("practiceCD", time);
+						data.replace("rehearseCD", time);
+						data.replace("performCD", time);
 						badEvent = true;
 					}
 					violinsEarned += base;
 				}
 				violins += base;
 				violinsEarned += base;
-				data[0] = String.valueOf(violins);
-				data[75] = String.valueOf(violinsEarned);
+				data.replace("violins", violins);
+				data.replace("earnings", violinsEarned);
 				if(!badEvent) {
-					if(Boolean.parseBoolean(data[50])) {
-						data[7] = String.valueOf(time + 57600000);
+					if((boolean) data.get("timeCrunch")) {
+						data.replace("rehearseCD", time + 57600000);
 					} else {
-						data[7] = String.valueOf(time + 86340000);
+						data.replace("rehearseCD", time + 86340000);
 					}
 				}
-				data[72] = String.valueOf(Long.parseLong(data[72]) + 1);
-				new SaveData(e, data, "Economy Data");
+				data.replace("rehearsals", (long) data.get("rehearsals") + 1);
+				new SaveData(e, data);
 			}
 		} else {
 			e.getChannel().sendMessage("You must have an orchestra to rehearse with to use this command!").queue();

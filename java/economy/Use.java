@@ -2,18 +2,19 @@ package economy;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.json.simple.JSONObject;
 
 import java.awt.*;
 import java.util.Objects;
 import java.util.Random;
 
 public class Use {
-	public Use(GuildMessageReceivedEvent e, char prefix) {
-		String[] data = LoadData.loadData(e, "Economy Data");
+	public Use(GuildMessageReceivedEvent e) {
+		JSONObject data = LoadData.loadData(e);
 		String[] message = e.getMessage().getContentRaw().split(" ");
-		long income = Long.parseLong(data[12]);
-		long violins = Long.parseLong(data[0]);
-		long violinsEarned = Long.parseLong(data[75]);
+		long income = (long) data.get("income");
+		long violins = (long) data.get("violins");
+		long violinsEarned = (long) data.get("earnings");
 		long useAmount;
 		try {
 			useAmount = Long.parseLong(message[2]);
@@ -23,39 +24,39 @@ public class Use {
 		try {
 			switch(message[1]) {
 				case "rice" -> {
-					if(Long.parseLong(data[51]) <= 0) {
+					if((long) data.get("rice") <= 0) {
 						e.getChannel().sendMessage("You scourge your pantry but find no rice.  Then you remember you don't have any more.").queue();
-					} else if(useAmount > Long.parseLong(data[51])) {
+					} else if(useAmount > (long) data.get("rice")) {
 						e.getChannel().sendMessage("You cannot consume more rice than you have.").queue();
 					} else if(income == 0) {
 						e.getChannel().sendMessage("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").queue();
 					} else {
-						data[51] = String.valueOf(Long.parseLong(data[51]) - useAmount);
-						data[0] = String.valueOf(violins + income * 2 * useAmount);
-						data[75] = String.valueOf(violinsEarned + income * 2 * useAmount);
-						new SaveData(e, data, "Economy Data");
+						data.replace("rice", (long) data.get("rice") - useAmount);
+						data.replace("violins", violins + income * 2 * useAmount);
+						data.replace("earnings", violinsEarned + income * 2 * useAmount);
+						new SaveData(e, data);
 						e.getChannel().sendMessage("You ate " + useAmount + " Blessed Rice.  The God of Rice gave you " + income * 2 * useAmount + ":violin:").queue();
 					}
 				}
 				case "tea" -> {
-					if(Long.parseLong(data[62]) <= 0) {
+					if((long) data.get("tea") <= 0) {
 						e.getChannel().sendMessage("You scourge your pantry but find no more bubble tea.  Then you remember you don't have any more.").queue();
-					} else if(useAmount > Long.parseLong(data[62])) {
+					} else if(useAmount > (long) data.get("tea")) {
 						e.getChannel().sendMessage("You cannot consume more bubble tea than you have.").queue();
 					} else if(income == 0) {
 						e.getChannel().sendMessage("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").queue();
 					} else {
-						data[62] = String.valueOf(Long.parseLong(data[62]) - useAmount);
-						data[0] = String.valueOf(violins + income * 6 * useAmount);
-						data[75] = String.valueOf(violinsEarned + income * 6 * useAmount);
-						new SaveData(e, data, "Economy Data");
+						data.replace("tea", (long) data.get("tea") - useAmount);
+						data.replace("violins", violins + income * 6 * useAmount);
+						data.replace("earnings", violinsEarned + income * 6 * useAmount);
+						new SaveData(e, data);
 						e.getChannel().sendMessage("You drank " + useAmount + " Bubble Tea.  Brett and Eddy approved and gave you " + income * 6 * useAmount + ":violin:").queue();
 					}
 				}
 				case "blessing" -> {
-					if(Long.parseLong(data[63]) <= 0) {
+					if((long) data.get("blessings") <= 0) {
 						e.getChannel().sendMessage("You already used all your blessings, run more commands to get back into Ling Ling's good graces!").queue();
-					} else if(useAmount > Long.parseLong(data[63])) {
+					} else if(useAmount > (long) data.get("blessings")) {
 						e.getChannel().sendMessage("You cannot use more blessings than you have.").queue();
 					} else if(income == 0) {
 						e.getChannel().sendMessage("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").queue();
@@ -64,139 +65,133 @@ public class Use {
 							Random random = new Random();
 							double num = random.nextDouble();
 							if(num > 0.5) {
-								data[55] = String.valueOf(Long.parseLong(data[55]) + 1);
-								data[52] = String.valueOf(Long.parseLong(data[52]) + 1);
-								e.getChannel().sendMessage(":trophy: Your performance won third place in the Ling Ling Competition.  You walked away with 1:military_medal: and a third place trophy :third_place:").queue();
+								data.replace("medals", (long) data.get("medals") + 1);
+								e.getChannel().sendMessage("Ling Ling liked your performance.  You walked away with 1:military_medal: and " + income * 24 * useAmount + ":violin:").queue();
 							} else if(num > 0.2) {
-								data[55] = String.valueOf(Long.parseLong(data[55]) + 2);
-								data[53] = String.valueOf(Long.parseLong(data[53]) + 1);
-								e.getChannel().sendMessage(":trophy: Your performance won second place.  You walked away with 2:military_medal: and a second place trophy :second_place:").queue();
+								data.replace("medals", (long) data.get("medals") + 2);
+								e.getChannel().sendMessage("Ling Ling enjoyed your performance.  You walked away with 2:military_medal: and " + income * 24 * useAmount + ":violin:").queue();
 							} else {
-								data[55] = String.valueOf(Long.parseLong(data[55]) + 3);
-								data[54] = String.valueOf(Long.parseLong(data[54]) + 1);
-								e.getChannel().sendMessage(":trophy: Your performance won first place.  Congratulations!  You walked away with **3**:military_medal: and a FIRST place trophy :first_place:").queue();
+								data.replace("medals", (long) data.get("medals") + 3);
+								e.getChannel().sendMessage("Ling Ling greatly enjoyed your performance.  You walked away with **3**:military_medal: and " + income * 24 * useAmount + ":violin:").queue();
 							}
 						}
-						data[63] = String.valueOf(Long.parseLong(data[63]) - useAmount);
-						violins += income * 24 * useAmount;
-						violinsEarned += income * 24 * useAmount;
-						data[0] = String.valueOf(violins);
-						data[75] = String.valueOf(violinsEarned);
-						new SaveData(e, data, "Economy Data");
-						e.getChannel().sendMessage("Ling Ling blessed you and you received " + income * 24 * useAmount + ":violin:").queue();
+						data.replace("blessings", (long) data.get("blessings") - useAmount);
+						data.replace("violins", violins + income * 24 * useAmount);
+						data.replace("earnings", violinsEarned + income * 24 * useAmount);
+						new SaveData(e, data);
 					}
 				}
 				case "vote" -> {
-					if(Long.parseLong(data[90]) <= 0) {
+					if((long) data.get("voteBox") <= 0) {
 						e.getChannel().sendMessage("You already used all your vote boxes, vote for the bot to get more!").queue();
 					} else if(income == 0) {
 						e.getChannel().sendMessage("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").queue();
 					} else {
-						data[90] = String.valueOf(Long.parseLong(data[90]) - 1);
+						data.replace("voteBox", (long) data.get("voteBox") - 1);
 						Random random = new Random();
 						double rng = random.nextDouble();
 						if(rng < 0.1) {
-							data[62] = String.valueOf(Long.parseLong(data[62]) + 1);
+							data.replace("tea", (long) data.get("tea") + 1);
 							e.getChannel().sendMessage("You received 1:bubble_tea: from your Vote Box!").queue();
 						} else if(rng < 0.4) {
 							int received = random.nextInt(3) + 1;
-							data[51] = String.valueOf(Long.parseLong(data[51]) + received);
+							data.replace("rice", (long) data.get("rice") + received);
 							e.getChannel().sendMessage("You received " + received + ":rice: from your Vote Box!").queue();
 						} else {
-							long hourly = Long.parseLong(data[12]);
+							long hourly = (long) data.get("income");
 							long min = hourly * 4;
 							long received = random.nextInt((int) min) + min;
-							data[0] = String.valueOf(Long.parseLong(data[0]) + received);
+							data.replace("violins", (long) data.get("violins") + received);
 							e.getChannel().sendMessage("You received " + received + ":violin: from your Vote Box!").queue();
 						}
-						new SaveData(e, data, "Economy Data");
+						new SaveData(e, data);
 					}
 				}
 				case "gift" -> {
-					if(Long.parseLong(data[87]) <= 0) {
+					if((long) data.get("giftBox") <= 0) {
 						e.getChannel().sendMessage("You already used all your gift boxes, wait for some generous people to get more!").queue();
 					} else if(income == 0) {
 						e.getChannel().sendMessage("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").queue();
 					} else {
-						data[87] = String.valueOf(Long.parseLong(data[87]) - 1);
+						data.replace("giftBox", (long) data.get("giftBox") - 1);
 						Random random = new Random();
 						double rng = random.nextDouble();
-						if(data[94].equals("true")) {
+						if((boolean) data.get("medalToday")) {
 							if(rng < 0.2) {
 								int received = random.nextInt(3) + 1;
-								data[62] = String.valueOf(Long.parseLong(data[62]) + received);
+								data.replace("tea", (long) data.get("tea") + received);
 								e.getChannel().sendMessage("You received " + received + ":bubble_tea: from your Gift Box!").queue();
 							} else if(rng < 0.5) {
 								int received = random.nextInt(4) + 2;
-								data[51] = String.valueOf(Long.parseLong(data[51]) + received);
+								data.replace("rice", (long) data.get("rice") + received);
 								e.getChannel().sendMessage("You received " + received + ":rice: from your Gift Box!").queue();
 							} else {
-								long hourly = Long.parseLong(data[12]);
+								long hourly = (long) data.get("income");
 								long min = hourly * 6;
 								long received = random.nextInt((int) min) + min;
-								data[0] = String.valueOf(Long.parseLong(data[0]) + received);
+								data.replace("violins", (long) data.get("violins") + received);
 								e.getChannel().sendMessage("You received " + received + ":violin: from your Gift Box!").queue();
 							}
 						} else {
 							if(rng < 0.05) {
-								data[94] = "true";
-								data[55] = String.valueOf(Long.parseLong(data[55]) + 1);
+								data.replace("medalToday", true);
+								data.replace("medals", (long) data.get("medals") + 1);
 								e.getChannel().sendMessage("You received 1:military_medal: from your Gift Box!").queue();
 							} else if(rng < 0.2) {
 								int received = random.nextInt(3) + 1;
-								data[62] = String.valueOf(Long.parseLong(data[62]) + received);
+								data.replace("tea", (long) data.get("tea") + received);
 								e.getChannel().sendMessage("You received " + received + ":bubble_tea: from your Gift Box!").queue();
 							} else if(rng < 0.5) {
 								int received = random.nextInt(4) + 2;
-								data[51] = String.valueOf(Long.parseLong(data[51]) + received);
+								data.replace("rice", (long) data.get("rice") + received);
 								e.getChannel().sendMessage("You received " + received + ":rice: from your Gift Box!").queue();
 							} else {
-								long hourly = Long.parseLong(data[12]);
+								long hourly = (long) data.get("income");
 								long min = hourly * 6;
 								long received = random.nextInt((int) min) + min;
-								data[0] = String.valueOf(Long.parseLong(data[0]) + received);
+								data.replace("violins", (long) data.get("violins") + received);
 								e.getChannel().sendMessage("You received " + received + ":violin: from your Gift Box!").queue();
 							}
 						}
-						new SaveData(e, data, "Economy Data");
+						new SaveData(e, data);
 					}
 				}
 				case "kit" -> {
-					if(Long.parseLong(data[91]) <= 0) {
+					if((long) data.get("kits") <= 0) {
 						e.getChannel().sendMessage("You already used all your Musician Kits, donate again to get more!").queue();
 					} else if(income == 0) {
 						e.getChannel().sendMessage("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").queue();
 					} else {
-						data[91] = String.valueOf(Long.parseLong(data[91]) - 1);
+						data.replace("kits", (long) data.get("kits") - 1);
 						Random random = new Random();
 						double rng = random.nextDouble();
-						if(data[94].equals("true")) {
+						if((boolean) data.get("medalToday")) {
 							if(rng < 0.3) {
 								int received = random.nextInt(5) + 8;
-								data[62] = String.valueOf(Long.parseLong(data[62]) + received);
+								data.replace("tea", (long) data.get("tea") + received);
 								e.getChannel().sendMessage("You received " + received + ":bubble_tea: from your Musician Kit!").queue();
 							} else if(rng < 0.6) {
 								int received = random.nextInt(6) + 10;
-								data[51] = String.valueOf(Long.parseLong(data[51]) + received);
+								data.replace("rice", (long) data.get("rice") + received);
 								e.getChannel().sendMessage("You received " + received + ":rice: from your Musician Kit!").queue();
 							} else {
-								long hourly = Long.parseLong(data[12]);
+								long hourly = (long) data.get("income");
 								long min = hourly * 8;
 								long received = random.nextInt((int) min) + min;
-								data[0] = String.valueOf(Long.parseLong(data[0]) + received);
+								data.replace("violins", (long) data.get("violins") + received);
 								e.getChannel().sendMessage("You received " + received + ":violin: from your Musician Kit!").queue();
 							}
 						} else {
 							if(rng < 0.33) {
-								data[94] = "true";
+								data.replace("medalToday", true);
 								int received = random.nextInt(1) + 1;
-								data[63] = String.valueOf(Long.parseLong(data[63]) + received);
+								data.replace("blessings", (long) data.get("blessings") + received);
 								e.getChannel().sendMessage("You received " + received + ":angel: from your Musician Kit!").queue();
 							} else if(rng < 0.34) {
-								data[94] = "true";
-								data[55] = String.valueOf(Long.parseLong(data[55]) + 1);
-								long max = Long.parseLong(data[12]) / 30000;
-								long min = Long.parseLong(data[12]) / 50000;
+								data.replace("medalToday", true);
+								data.replace("medals", (long) data.get("medals") + 1);
+								long max = (long) data.get("income") / 30000;
+								long min = (long) data.get("income") / 50000;
 								long received = random.nextInt((int) (max - min + 1)) + min;
 								if(received > 5) {
 									received = 5;
@@ -204,40 +199,40 @@ public class Use {
 								e.getChannel().sendMessage("You received " + received + ":military_medal: from your Musician Kit!").queue();
 							} else if(rng < 0.67) {
 								int received = random.nextInt(5) + 8;
-								data[62] = String.valueOf(Long.parseLong(data[62]) + received);
+								data.replace("tea", (long) data.get("tea") + received);
 								e.getChannel().sendMessage("You received " + received + ":bubble_tea: from your Musician Kit!").queue();
 							} else {
 								int received = random.nextInt(6) + 10;
-								data[51] = String.valueOf(Long.parseLong(data[51]) + received);
+								data.replace("rice", (long) data.get("rice") + received);
 								e.getChannel().sendMessage("You received " + received + ":rice: from your Musician Kit!").queue();
 							}
 						}
-						new SaveData(e, data, "Economy Data");
+						new SaveData(e, data);
 					}
 				}
 				case "llbox" -> {
-					if(Long.parseLong(data[92]) <= 0) {
+					if((long) data.get("linglingBox") <= 0) {
 						e.getChannel().sendMessage("You already used all your Ling Ling Boxes, donate again to get more!").queue();
 					} else if(income == 0) {
 						e.getChannel().sendMessage("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").queue();
 					} else {
-						data[92] = String.valueOf(Long.parseLong(data[92]) - 1);
+						data.replace("linglingBox", (long) data.get("linglingBox") - 1);
 						Random random = new Random();
 						double rng = random.nextDouble();
-						if(data[94].equals("true")) {
+						if((boolean) data.get("medalToday")) {
 							if(rng < 0.39) {
-								long hourly = Long.parseLong(data[12]);
+								long hourly = (long) data.get("income");
 								long min = hourly * 12;
 								long received = random.nextInt((int) min) + min;
-								data[0] = String.valueOf(Long.parseLong(data[0]) + received);
+								data.replace("violins", (long) data.get("violins") + received);
 								e.getChannel().sendMessage("You received " + received + ":violin: from your Ling Ling Box!").queue();
 							} else if(rng < 0.69) {
 								int received = random.nextInt(11) + 15;
-								data[51] = String.valueOf(Long.parseLong(data[51]) + received);
+								data.replace("rice", (long) data.get("rice") + received);
 								e.getChannel().sendMessage("You received " + received + ":rice: from your Ling Ling Box!").queue();
 							} else if(rng < 0.99) {
 								int received = random.nextInt(6) + 10;
-								data[62] = String.valueOf(Long.parseLong(data[62]) + received);
+								data.replace("tea", (long) data.get("tea") + received);
 								e.getChannel().sendMessage("You received " + received + ":bubble_tea: from your Ling Ling Box!").queue();
 							} else {
 								String link = e.getChannel().sendMessage("You have received 1x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").complete().getJumpUrl();
@@ -250,10 +245,10 @@ public class Use {
 							}
 						} else {
 							if(rng < 0.09) {
-								data[94] = "true";
-								data[55] = String.valueOf(Long.parseLong(data[55]) + 1);
-								long max = Long.parseLong(data[12]) / 25000;
-								long min = Long.parseLong(data[12]) / 40000;
+								data.replace("medalToday", true);
+								data.replace("medals", (long) data.get("medals") + 1);
+								long max = (long) data.get("income") / 25000;
+								long min = (long) data.get("income") / 40000;
 								long received = random.nextInt((int) (max - min + 1)) + min;
 								if(received > 10) {
 									received = 10;
@@ -261,15 +256,15 @@ public class Use {
 								e.getChannel().sendMessage("You received " + received + ":military_medal: from your Ling Ling Box!").queue();
 							} else if(rng < 0.39) {
 								int received = random.nextInt(11) + 15;
-								data[51] = String.valueOf(Long.parseLong(data[51]) + received);
+								data.replace("rice", (long) data.get("rice") + received);
 								e.getChannel().sendMessage("You received " + received + ":rice: from your Ling Ling Box!").queue();
 							} else if(rng < 0.69) {
 								int received = random.nextInt(6) + 10;
-								data[62] = String.valueOf(Long.parseLong(data[62]) + received);
+								data.replace("tea", (long) data.get("tea") + received);
 								e.getChannel().sendMessage("You received " + received + ":bubble_tea: from your Ling Ling Box!").queue();
 							} else if(rng < 0.99) {
 								int received = random.nextInt(3) + 2;
-								data[63] = String.valueOf(Long.parseLong(data[63]) + received);
+								data.replace("blessings", (long) data.get("blessings") + received);
 								e.getChannel().sendMessage("You received " + received + ":angel: from your Ling Ling Box!").queue();
 							} else {
 								String link = e.getChannel().sendMessage("You have received 1x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").complete().getJumpUrl();
@@ -281,33 +276,33 @@ public class Use {
 								Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
 							}
 						}
-						new SaveData(e, data, "Economy Data");
+						new SaveData(e, data);
 					}
 				}
 				case "crazybox" -> {
-					if(Long.parseLong(data[93]) <= 0) {
+					if((long) data.get("crazyBox") <= 0) {
 						e.getChannel().sendMessage("You already used all your Crazy Person Boxes, donate again to get more!").queue();
 					} else if(income == 0) {
 						e.getChannel().sendMessage("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").queue();
 					} else {
-						data[93] = String.valueOf(Long.parseLong(data[93]) - 1);
+						data.replace("crazyBox", (long) data.get("crazyBox") - 1);
 						Random random = new Random();
 						double rng = random.nextDouble();
-						if(data[94].equals("true")) {
+						if((boolean) data.get("medalToday")) {
 							if(rng < 0.3) {
-								long hourly = Long.parseLong(data[12]);
+								long hourly = (long) data.get("income");
 								long min = hourly * 18;
 								long received = random.nextInt((int) min) + min;
-								data[0] = String.valueOf(Long.parseLong(data[0]) + received);
+								data.replace("violins", (long) data.get("violins") + received);
 								e.getChannel().sendMessage("You received " + received + ":violin: from your Crazy Person Box!").queue();
 								
 							} else if(rng < 0.6) {
 								int received = random.nextInt(11) + 20;
-								data[51] = String.valueOf(Long.parseLong(data[51]) + received);
+								data.replace("rice", (long) data.get("rice") + received);
 								e.getChannel().sendMessage("You received " + received + ":rice: from your Crazy Person Box!").queue();
 							} else if(rng < 0.9) {
 								int received = random.nextInt(9) + 12;
-								data[62] = String.valueOf(Long.parseLong(data[62]) + received);
+								data.replace("tea", (long) data.get("tea") + received);
 								e.getChannel().sendMessage("You received " + received + ":bubble_tea: from your Crazy Person Box!").queue();
 							} else {
 								String link = e.getChannel().sendMessage("You have received 3x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").complete().getJumpUrl();
@@ -320,10 +315,10 @@ public class Use {
 							}
 						} else {
 							if(rng < 0.3) {
-								data[94] = "true";
-								data[55] = String.valueOf(Long.parseLong(data[55]) + 1);
-								long max = Long.parseLong(data[12]) / 20000;
-								long min = Long.parseLong(data[12]) / 30000;
+								data.replace("medalToday", true);
+								data.replace("medals", (long) data.get("medals") + 1);
+								long max = (long) data.get("income") / 20000;
+								long min = (long) data.get("income") / 30000;
 								long received = random.nextInt((int) (max - min + 1)) + min;
 								if(received > 15) {
 									received = 15;
@@ -331,15 +326,15 @@ public class Use {
 								e.getChannel().sendMessage("You received " + received + ":military_medal: from your Crazy Person Box!").queue();
 							} else if(rng < 0.5) {
 								int received = random.nextInt(11) + 20;
-								data[51] = String.valueOf(Long.parseLong(data[51]) + received);
+								data.replace("rice", (long) data.get("rice") + received);
 								e.getChannel().sendMessage("You received " + received + ":rice: from your Crazy Person Box!").queue();
 							} else if(rng < 0.7) {
 								int received = random.nextInt(9) + 12;
-								data[62] = String.valueOf(Long.parseLong(data[62]) + received);
+								data.replace("tea", (long) data.get("tea") + received);
 								e.getChannel().sendMessage("You received " + received + ":bubble_tea: from your Crazy Person Box!").queue();
 							} else if(rng < 0.9) {
 								int received = random.nextInt(5) + 4;
-								data[63] = String.valueOf(Long.parseLong(data[63]) + received);
+								data.replace("blessings", (long) data.get("blessings") + received);
 								e.getChannel().sendMessage("You received " + received + ":angel: from your Crazy Person Box!").queue();
 							} else {
 								String link = e.getChannel().sendMessage("You have received 3x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").complete().getJumpUrl();
@@ -350,8 +345,8 @@ public class Use {
 										.setTitle("__**Luthier Pulled from Crazy Person Box**__");
 								Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
 							}
-							new SaveData(e, data, "Economy Data");
 						}
+						new SaveData(e, data);
 					}
 				}
 				default -> e.getChannel().sendMessage("You can't use something that doesn't exist, that doesn't make sense.").queue();

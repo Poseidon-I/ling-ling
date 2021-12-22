@@ -5,31 +5,22 @@ public class App {
 		new StartBot();
 	}
 }
+/* mods can warn/reset users and give/take currencies/items.
+ * admins can take all actions mods can, in addition to banning users and managing luthiers.  admins are handpicked
+ * yall know what owners/devs do, they are the only ones who can abuse their power :)
+ */
 
-//mods can warn users and give/take currencies/items.
-//admins can take all actions helpers can, in addition to banning users and resetting saves.  admins are handpicked
-//yall know what owners/devs do, they are the only ones who can abuse their power :)
+/*
+[0] violins workCooldown workLevel gambleCooldown gambleLevel robCooldown robLevel rehearseCooldown performCooldown owninsurance interestEarned amountPaidAsInterest
+[12] hourlyIncome violinQuality skillLevel lessonQuality stringQuality bowQuality hasMath
+[19] hasOrchestra piccolo flute oboe clarinet bassoon contrabassoon horn trumpet trombone tuba timpani percussion
+[32] first second cello bass piano harp S A T B soloists
+[43] hallLevel conductor advertising ticket streak hasHadDailyToday hasGiftedToday faster
+[51] rice thirdP secondP firstP medals extraIncome extraCommandIncome higherMulti higherRobrate stealShield violinDuplicator tea blessing scaleCooldown permLevel
+[66] netGambleWinnings millionDrawn robEarnings amountLost scales hoursPractised rehearsals performances maxDailyStreak violinsEarned hoursTaught luthiersUnscrambled
+[78] hasCertificate teachCooldown teacherTraining students lessonCharge hasStudio longerLessons
+[85] giftsGiven giftsReceived numGiftBoxes numVotes voteCooldown numVoteBoxes
+[91] numKits numLingLingBoxes numCrazyBoxes hasHadMedalToday ranDailyYesterday isBooster levelTier
 
-/* Economy Data Folder
-
-    [0] violins workCooldown workLevel gambleCooldown gambleLevel robCooldown robLevel rehearseCooldown performCooldown owninsurance interestEarned amountPaidAsInterest
-    [12] hourlyIncome violinQuality skillLevel lessonQuality stringQuality bowQuality hasMath
-    [19] hasOrchestra piccolo flute oboe clarinet bassoon contrabassoon horn trumpet trombone tuba timpani percussion
-    [32] first second cello bass piano harp S A T B soloists
-    [43] hallLevel conductor advertising ticket streak hasHadDailyToday hasGiftedToday faster
-    [51] rice thirdP secondP firstP medals extraIncome extraCommandIncome higherMulti higherRobrate stealShield violinDuplicator tea blessing scaleCooldown permLevel
-    [66] netGambleWinnings millionDrawn robEarnings amountLost scales hoursPractised rehearsals performances maxDailyStreak violinsEarned hoursTaught luthiersUnscrambled
-    [78] hasCertificate teachCooldown teacherTraining students lessonCharge hasStudio longerLessons
-    [85] giftsGiven giftsReceived numGiftBoxes numVotes voteCooldown numVoteBoxes
-    [91] numKits numLingLingBoxes numCrazyBoxes hasHadMedalToday ranDailyYesterday isBooster levelTier
-*/
-
-//ex. 100 16000000000 50 16000000000 25 16000000000 15 16000000000 16000000000 true 0 0 10000 5 5 5 5 5 true true true 1 1 1 1 true 1 1 1 1 1 1 20 20 15 5 2 true 20 20 20 20 4 5 5 20 5 0 true false true 0 3 2 1 10 2 2 2 1 true false 0 0 16000000000 0 0 0 0 0 0 0.0 0 0 0 0 0 0 0 true 0 0 0 0 true true 1 1 1 1 16000000000 1 0 0 0 false true true 2
-
-
-/* Bank Data Folder
-
-    [0] violins storageLevel hasHigherInterest loanAmount hasLowerLoanInterest
-*/
-
-//ex. 10000 2 true 0 5 false
+[0] violins storageLevel hasHigherInterest loanAmount hasLowerLoanInterest
+ */

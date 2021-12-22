@@ -3,57 +3,50 @@ package economy;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
 public class Leaderboard {
-	public Leaderboard(String emoji, String what, GuildMessageReceivedEvent e, int dataPosition, long userNum) {
-		BufferedReader reader;
-		File directory = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
+	public Leaderboard(String emoji, String what, GuildMessageReceivedEvent e, String index, long userNum) {
+		File directory = new File("Ling Ling Bot Data\\Economy Data");
 		File[] files = directory.listFiles();
-		String[] entry = new String[0];
 		long place = 1;
-		if(files != null) {
-			entry = new String[]{e.getAuthor().getAsMention() + ": " + userNum + " " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n"};
-			for(File file : files) {
-				String currentData;
-				String user;
-				int pos;
-				try {
-					reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
-					currentData = reader.readLine();
-					reader.close();
-					if(currentData.equals("BANNED")) {
-						continue;
-					}
-				} catch(Exception exception) {
+		String[] entry = {e.getAuthor().getAsMention() + ": " + userNum + " " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n"};
+		assert files != null;
+		for(File file : files) {
+			JSONParser parser = new JSONParser();
+			JSONObject data;
+			try(FileReader reader = new FileReader(file.getAbsolutePath())) {
+				data = (JSONObject) parser.parse(reader);
+				reader.close();
+				if((boolean) data.get("banned")) {
 					continue;
 				}
-				user = file.getName();
-				pos = user.lastIndexOf(".");
-				user = user.substring(0, pos);
-				String[] temp = currentData.split(" ");
-				long num;
-				try {
-					num = Long.parseLong(temp[dataPosition]);
-				} catch(Exception exception) {
-					num = (long) Double.parseDouble(temp[dataPosition]);
-				}
-				if(num == 0) {
-					continue;
-				}
-				for(int i = 0; i < 10; i++) {
-					if(num > Long.parseLong(entry[i].split(" ")[1]) && !user.equals(e.getAuthor().getId())) {
-						System.arraycopy(entry, i, entry, i + 1, 9 - i);
-						entry[i] = "<@" + user + ">: " + num + " " + emoji + "\n";
-						if(num > userNum) {
-							place++;
-						}
-						break;
+			} catch(Exception exception) {
+				continue;
+			}
+			String user = file.getName().substring(0, file.getName().lastIndexOf("."));
+			long num;
+			if(index.equals("medals")) {
+				num = (long) data.get("thirdPlace") + 2 * (long) data.get("secondPlace") + 3 * (long) data.get("firstPlace");
+			} else {
+				num = (long) data.get(index);
+			}
+			if(num == 0) {
+				continue;
+			}
+			for(int i = 0; i < 10; i++) {
+				if(num > Long.parseLong(entry[i].split(" ")[1]) && !user.equals(e.getAuthor().getId())) {
+					System.arraycopy(entry, i, entry, i + 1, 9 - i);
+					entry[i] = "<@" + user + ">: " + num + " " + emoji + "\n";
+					if(num > userNum) {
+						place++;
 					}
+					break;
 				}
 			}
 		}
