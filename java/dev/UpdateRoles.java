@@ -2,15 +2,16 @@ package dev;
 
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.*;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.List;
 
 public class UpdateRoles {
-	public UpdateRoles(GuildMessageReceivedEvent e) {
+	public UpdateRoles(MessageReceivedEvent e) {
 		if(e.getGuild().getId().equals("670725611207262219")) {
 			List<Member> list = e.getGuild().getMembers();
 			for(Member member : list) {
@@ -47,12 +48,12 @@ public class UpdateRoles {
 					writer.write(data.toJSONString());
 					writer.close();
 				} catch(Exception exception) {
-					e.getChannel().sendMessage("bruh").queue();
+					e.getMessage().reply("bruh").mentionRepliedUser(false).queue();
 				}
 			}
-			e.getChannel().sendMessage("Successfully force-updated role multipliers!").queue();
+			e.getMessage().reply("Successfully force-updated role multipliers!").mentionRepliedUser(false).queue();
 		} else {
-			e.getChannel().sendMessage("You can't use this command here!  Go to the support server stupid.").queue();
+			e.getMessage().reply("You can't use this command here!  Go to the support server stupid.").mentionRepliedUser(false).queue();
 		}
 	}
 }

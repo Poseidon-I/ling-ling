@@ -1,6 +1,6 @@
 package eventListeners;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
@@ -10,11 +10,10 @@ import processes.*;
 import java.io.*;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class Receiver extends ListenerAdapter {
-	public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent e) {
-		if(/*!e.getChannel().getId().equals("867617298918670366") && !e.getChannel().getId().equals("733437327225127074")*/true) {
+	public void onMessageReceived(@NotNull MessageReceivedEvent e) {
+		//if(!e.getChannel().getId().equals("867617298918670366") && !e.getChannel().getId().equals("733437327225127074")) {
 			String[] message = e.getMessage().getContentRaw().toLowerCase().split(" ");
 			boolean isDev = e.getAuthor().getId().equals("619989388109152256") || e.getAuthor().getId().equals("488487157372157962") || e.getAuthor().getId().equals("706933826193981612");
 			
@@ -54,17 +53,17 @@ public class Receiver extends ListenerAdapter {
 				
 				//RESET COOLDOWNS BOUND TO 12AM UTC
 				if(time % 86400000 == 0) {
-					new ResetDaily(e);
+					//new ResetDaily(e);
 				}
 				
 				//BANK SHIT
 				if(time % 259200000 == 0) {
 					new InterestPenalty();
-					Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage("Loan penalties applied; Interest awarded!").queue();
+					//Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage("Loan penalties applied; Interest awarded!").queue();
 				}
 				
 				time += 3600000;
-				Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage("Hourly Incomes Sent!").queue();
+				//Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage("Hourly Incomes Sent!").queue();
 				try {
 					PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("Ling Ling Bot Data\\hourly.txt")));
 					writer.print(time);
@@ -87,29 +86,28 @@ public class Receiver extends ListenerAdapter {
 				if(isDev) {
 					String string = e.getMessage().getContentRaw();
 					if(string.equalsIgnoreCase("bad bot")) {
-						e.getChannel().sendMessage("sowwy strad").queue();
+						e.getMessage().reply("sowwy strad").queue();
 					} else if(string.equalsIgnoreCase("good bot")) {
-						e.getChannel().sendMessage("senkyoo strad").queue();
+						e.getMessage().reply("senkyoo strad").queue();
 					} else if(string.equalsIgnoreCase("right bot?")) {
-						e.getChannel().sendMessage("yes strad").queue();
+						e.getMessage().reply("yes strad").queue();
 					}
 				}
 				
-				new DevCommands(e, isDev);
-				
 				//ALL COMMANDS
 				char prefix = Prefix.GetPrefix(e);
+				if(isDev) {
+					prefix = '!';
+				}
 				if(e.getMessage().getContentRaw().equals("!prefix") || e.getMessage().getContentRaw().equals("<@733409243222507670>")) {
-					e.getChannel().sendMessage("Hello!  My prefix in this server is `" + prefix + "`\nIf you have other issues, run `" + prefix + "support` to get an invite to the support server!").queue();
+					e.getMessage().reply("Hello!  My prefix in this server is `" + prefix + "`\nIf you have other issues, run `" + prefix + "support` to get an invite to the support server!").mentionRepliedUser(false).queue();
 				}
 				try {
 					if(message[0].charAt(0) == prefix) {
 						if(e.getMessage().getContentRaw().contains("@everyone") || e.getMessage().getContentRaw().contains("@here") || e.getMessage().getContentRaw().contains("<@&")) {
-							e.getChannel().sendMessage("why the hell did you ping here, everyone, or a role").queue();
-							throw new IllegalArgumentException();
+							e.getMessage().reply("why the hell did you ping here, everyone, or a role").mentionRepliedUser(false).queue();
 						} else if(e.getAuthor().getName().contains("@everyone") || e.getAuthor().getName().contains("@here") || e.getAuthor().getName().contains("<@&") || e.getAuthor().getName().contains("nigg")) {
-							e.getChannel().sendMessage("no using the bot unless you have a good name :)").queue();
-							throw new IllegalArgumentException();
+							e.getMessage().reply("no using the bot unless you have a good name :)").mentionRepliedUser(false).queue();
 						} else {
 							message[0] = message[0].substring(1);
 							new RegularCommands(e, message, isDev);
@@ -119,6 +117,6 @@ public class Receiver extends ListenerAdapter {
 					//nothing here lol
 				}
 			}
-		}
+		//}
 	}
 }

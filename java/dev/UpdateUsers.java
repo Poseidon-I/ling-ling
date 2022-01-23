@@ -1,40 +1,46 @@
-/*package dev;
+package dev;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
 
 public class UpdateUsers {
-	public UpdateUsers(GuildMessageReceivedEvent e) {
+	public UpdateUsers(MessageReceivedEvent e) {
 		String[] message = e.getMessage().getContentRaw().split(" ");
-		if(message.length > 1 && message[1].equals("confirm")) {
-			e.getChannel().sendMessage("Updating saves for all users...").queue();
-			File directory = new File("C:\\Users\\ying\\Desktop\\,\\Ling_Ling_Bot\\Ling Ling Bot Data\\Economy Data");
-			File[] files = directory.listFiles();
-			StringBuilder append = new StringBuilder();
-			for(int i = 2; i < message.length; i++) {
-				append.append(" ").append(message[i]);
-			}
-			if(files != null) {
-				for(File file : files) {
-					try {
-						BufferedReader reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
-						String currentData = reader.readLine();
-						reader.close();
-						PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath())));
-						writer.print(currentData + append);
-						writer.close();
-					} catch(Exception exception) {
-						//nothing here lol
-					}
-				}
-				e.getChannel().sendMessage("Successfully updated saves for all users!").queue();
-			}
-		} else {
-			e.getChannel().sendMessage("Please type `!updateusers confirm` to confirm that you would like to update all data to the latest version.").queue();
+		String dataType;
+		try {
+			dataType = message[1];
+		} catch(Exception exception) {
+			e.getMessage().reply("You have to specify a data type, dumbass").mentionRepliedUser(false).queue();
+			return;
 		}
+		String name;
+		try {
+			name = message[1];
+		} catch(Exception exception) {
+			e.getMessage().reply("You have to give a name, can't just call it nothing, can you?").mentionRepliedUser(false).queue();
+			return;
+		}
+		File directory = new File("Ling Ling Bot Data\\Economy Data");
+		File[] files = directory.listFiles();
+		assert files != null;
+		for(File file : files) {
+			JSONParser parser = new JSONParser();
+			JSONObject data;
+			try (FileReader reader = new FileReader(file.getAbsolutePath())) {
+				data = (JSONObject) parser.parse(reader);
+			} catch(Exception exception) {
+				continue;
+			}
+			switch(dataType) {
+				case "boolean" -> data.put(name, false);
+				case "double" -> data.put(name, 0.0);
+				case "int" -> data.put(name, 0);
+			}
+		}
+		e.getMessage().reply("Successfully added data value `" + name + "` with type `" + dataType + "` to all users.").mentionRepliedUser(false).queue();
 	}
 }
-*/
-
-// this method will be updated at a later date to encompass deletion.  data types need to be implemented (int, boolean)

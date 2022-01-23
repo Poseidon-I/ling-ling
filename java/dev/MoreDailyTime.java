@@ -1,13 +1,15 @@
 package dev;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 
 public class MoreDailyTime {
-	public MoreDailyTime(GuildMessageReceivedEvent e) {
+	public MoreDailyTime(MessageReceivedEvent e) {
 		File directory = new File("Ling Ling Bot Data\\Economy Data");
 		File[] files = directory.listFiles();
 		assert files != null;
@@ -26,6 +28,6 @@ public class MoreDailyTime {
 				//nothing here lol
 			}
 		}
-		e.getChannel().sendMessage("Gave everyone +1 Day to run `!daily`").queue();
+		e.getMessage().reply("Gave everyone +1 Day to run `!daily`").mentionRepliedUser(false).queue();
 	}
 }

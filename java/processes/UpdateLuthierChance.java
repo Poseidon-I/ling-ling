@@ -1,6 +1,6 @@
 package processes;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -10,13 +10,16 @@ import java.io.FileWriter;
 import java.util.Objects;
 
 public class UpdateLuthierChance {
-	public UpdateLuthierChance(GuildMessageReceivedEvent e) {
+	public UpdateLuthierChance(MessageReceivedEvent e) {
 		File directory = new File("Ling Ling Bot Data\\Settings\\Luthier");
 		File[] files = directory.listFiles();
 		assert files != null;
 		for(File file : files) {
 			JSONParser parser = new JSONParser();
 			JSONObject data;
+			if(file.getName().contains("670725611207262219")) {
+				continue;
+			}
 			try(FileReader reader = new FileReader(file.getAbsolutePath())) {
 				data = (JSONObject) parser.parse(reader);
 				reader.close();
@@ -24,7 +27,7 @@ public class UpdateLuthierChance {
 				continue;
 			}
 			try {
-				data.replace("chance", Objects.requireNonNull(e.getJDA().getGuildById(file.getName().substring(0, files.length - 4))).getMemberCount());
+				data.replace("chance", Numbers.LuthierChance(Objects.requireNonNull(e.getJDA().getGuildById(file.getName().substring(0, file.getName().lastIndexOf(".")))).getMemberCount()));
 			} catch(Exception exception) {
 				continue;
 			}
@@ -35,6 +38,9 @@ public class UpdateLuthierChance {
 			} catch(Exception exception) {
 				//nothing here lol
 			}
+		}
+		if(e.getMessage().getContentRaw().equals("!updateluthierchance")) {
+			e.getMessage().reply("Successfully updated Luthier chances for all servers").mentionRepliedUser(false).queue();
 		}
 	}
 }

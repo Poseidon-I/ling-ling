@@ -1,37 +1,43 @@
 package economy;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.json.simple.JSONObject;
+import processes.Numbers;
 
 public class Loan {
-	public Loan(GuildMessageReceivedEvent e) {
+	public Loan(MessageReceivedEvent e) {
 		JSONObject data = LoadData.loadData(e);
 		String[] message = e.getMessage().getContentRaw().split(" ");
-		long loan;
-		long maxLoan = 100 * (long) data.get("income");
-		if(message[1].equals("max")) {
-			loan = maxLoan;
-		} else {
-			try {
-				loan = Long.parseLong(message[1]);
-			} catch(Exception exception) {
-				e.getChannel().sendMessage("You have to either input `max` or an integer.").queue();
-				throw new IllegalArgumentException();
-			}
-			if(loan > maxLoan) {
-				e.getChannel().sendMessage("You can only borrow a maximum of " + maxLoan + ":violin:.  Increase your hourly income to get a higher limit!").queue();
-				throw new IllegalArgumentException();
-			}
-			
-		}
 		long balance = (long) data.get("loan");
 		if(balance > 0) {
-			e.getChannel().sendMessage("You still have an outstanding balance of " + balance + ":violin:!").queue();
+			e.getMessage().reply("You still have an outstanding balance of " + Numbers.FormatNumber(balance) + ":violin:!").mentionRepliedUser(false).queue();
 		} else {
+			long loan;
+			try {
+				long maxLoan = 100 * (long) data.get("income");
+				if (message[1].equals("max")) {
+					loan = maxLoan;
+				} else {
+					try {
+						loan = Long.parseLong(message[1]);
+					} catch (Exception exception) {
+						e.getMessage().reply("You have to either input `max` or an integer.").mentionRepliedUser(false).queue();
+						return;
+					}
+					if (loan > maxLoan) {
+						e.getMessage().reply("You can only borrow a maximum of " + Numbers.FormatNumber(maxLoan) + ":violin:.  Increase your hourly income to get a higher limit!").mentionRepliedUser(false).queue();
+						return;
+					}
+				}
+			} catch(Exception exception) {
+				e.getMessage().reply("You have to either input `max` or an integer.").mentionRepliedUser(false).queue();
+				return;
+			}
 			data.replace("loan", loan);
 			data.replace("violins", (long) data.get("violins") + loan);
-			e.getChannel().sendMessage("You have borrowed " + loan + ":violin: from the bank.  Remember to pay back the violins otherwise penalties will bite your back!").queue();
+			e.getMessage().reply("You have borrowed " + Numbers.FormatNumber(loan) + ":violin: from the bank.  Remember to pay back the violins otherwise penalties will bite your back!").mentionRepliedUser(false).queue();
 			new SaveData(e, data);
 		}
+		
 	}
 }

@@ -1,12 +1,13 @@
 package economy;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.json.simple.JSONObject;
+import processes.Numbers;
 
 import java.util.Random;
 
 public class Teach {
-	public Teach(GuildMessageReceivedEvent e) {
+	public Teach(MessageReceivedEvent e) {
 		JSONObject data = LoadData.loadData(e);
 		if((boolean) data.get("certificate")) {
 			long time = System.currentTimeMillis();
@@ -17,7 +18,7 @@ public class Teach {
 				milliseconds -= minutes * 60000;
 				long seconds = milliseconds / 1000;
 				milliseconds -= seconds * 1000;
-				e.getChannel().sendMessage("Chill, you can't teach two students at once!  Wait " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
+				e.getMessage().reply("Chill, you can't teach two students at once!  Wait " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").mentionRepliedUser(false).queue();
 			} else {
 				long base = random.nextInt(10001) + 35000;
 				base *= Math.pow(1.15, (long) data.get("students"));
@@ -25,19 +26,20 @@ public class Teach {
 				base *= Math.pow(1.05, (long) data.get("training"));
 				if((boolean) data.get("longerLessons")) {
 					base *= 2;
-					e.getChannel().sendMessage("You taught a student for an hour and earned " + base + ":violin:").queue();
+					e.getMessage().reply("You taught a student for an hour and earned " + Numbers.FormatNumber(base) + ":violin:").mentionRepliedUser(false).queue();
 					data.replace("hoursTaught", (double) data.get("hoursTaught") + 1);
 				} else {
-					e.getChannel().sendMessage("You taught a student for a half-hour and earned " + base + ":violin:").queue();
+					e.getMessage().reply("You taught a student for a half-hour and earned " + Numbers.FormatNumber(base) + ":violin:").mentionRepliedUser(false).queue();
 					data.replace("hoursTaught", (double) data.get("hoursTaught") + 0.5);
 				}
 				data.replace("violins", (long) data.get("violins") + base);
 				data.replace("teachCD", time + 3540000);
 				data.replace("earnings", (long) data.get("earnings") + base);
+				RNGesus.Lootbox(e, data);
 				new SaveData(e, data);
 			}
 		} else {
-			e.getChannel().sendMessage("You must be certified to teach before you can use this command!").queue();
+			e.getMessage().reply("You must be certified to teach before you can use this command!").mentionRepliedUser(false).queue();
 		}
 	}
 }

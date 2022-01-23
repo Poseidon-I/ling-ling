@@ -1,14 +1,13 @@
 package regular;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Emojify {
-	public Emojify(GuildMessageReceivedEvent e) {
+	public Emojify(MessageReceivedEvent e) {
 		String[] message = e.getMessage().getContentRaw().split(" ");
-		e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
 		StringBuilder convert = new StringBuilder("> ");
 		if(message.length == 1) {
-			e.getChannel().sendMessage("how are we going to emojify nothing dum dum").queue();
+			e.getMessage().reply("how are we going to emojify nothing dum dum").mentionRepliedUser(false).queue();
 		}
 		for(int i = 1; i < message.length; i++) {
 			if(i + 1 == message.length) {
@@ -53,9 +52,10 @@ public class Emojify {
 		}
 		send.append("\n<@").append(e.getAuthor().getId()).append(">");
 		try {
+			e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
 			e.getChannel().sendMessage(send.toString()).queue();
 		} catch(Exception exception) {
-			e.getChannel().sendMessage("Your message ended up being too long, try shortening it.").queue();
+			e.getMessage().reply("Your message ended up being too long, try shortening it.").mentionRepliedUser(false).queue();
 		}
 		
 	}

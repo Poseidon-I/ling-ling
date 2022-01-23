@@ -1,13 +1,13 @@
 package regular;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import processes.Prefix;
 
 import java.awt.*;
 
 public class Help {
-	public Help(GuildMessageReceivedEvent e) {
+	public Help(MessageReceivedEvent e) {
 		char prefix = Prefix.GetPrefix(e);
 		String[] message = e.getMessage().getContentRaw().split(" ");
 		EmbedBuilder builder = new EmbedBuilder().setColor(Color.BLUE).setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl()).setTitle("__**Ling Ling Bot Help**__");
@@ -15,7 +15,7 @@ public class Help {
 			switch(message[1]) {
 				case "1" -> builder.addField("Help List Page 1 - Fun\nRun `" + prefix + "help <commandName>` to view a command in depth", "`joke`\n`kill`\n`emojify`", false);
 				case "2" -> builder.addField("Help List Page 2 - Utility\nRun `" + prefix + "help <commandName>` to view a command in depth",
-						"**`rules`**\n`poll`\n`checkdm`\n`invite`\n`faq`\n`support`\n`website`\n`prefix`\n`botstats`", false);
+						"**`rules`**\n`staff`\n`poll`\n`checkdm`\n`invite`\n`faq`\n`support`\n`website`\n`prefix`\n`botstats`", false);
 				case "3" -> builder.addField("Help List Page 3 - Economy Commands\nRun `" + prefix + "help <commandName>` to view a command in depth.",
 						"**__`Profile Commands`__**\n`start`\t`profile`\n`stats`\t`inventory`\n\n**__`Gameplay Commands`__**\n`cooldowns`\t`upgrades`\n`buy`\t`use`\n`claim`\t`gift`\n`leaderboard`\n\n**__`Bank Commands`__**\n`deposit`\t`withdraw`\n`loan`\t`payloan`", false);
 				case "4" -> builder.addField("Help List Page 4 - Income Commands\nRun `" + prefix + "help <commandName>` to view a command in depth.",
@@ -67,11 +67,12 @@ public class Help {
 				case "website" -> builder.addField("Website Command", "Syntax: `" + prefix + "website`\nUsage: Gives a link to view the bot's website.  Does not guarantee a non-shit website.", false);
 				case "rules" -> builder.addField("Rules Command", "Syntax: `" + prefix + "rules`\nUsage: View the bot's rules.  By using the bot, you agree to following these rules and can be subject to punishment for breaking them knowingly or unknowingly.", false);
 				case "vote" -> builder.addField("Vote Command", "Syntax: `" + prefix + "vote`\nUsage: Gives a link to vote for the bot and the support server.  Remember to `" + prefix + "claim` when you finish!\nAliases: `" + prefix + "v`", false);
+				case "staff" -> builder.addField("Staff Command", "Syntax: `" + prefix + "staff`\nUsage: Shows the bot's moderation staff.  You may DM any of them for help at any time.", false);
 				case "prefix" -> builder.addField("Prefix Command", "Syntax: `!prefix [new]`\nUsage: Shows the current prefix.  Append a character to change the prefix.  This is the only command that will retain `!` across all servers.\nRestrictions: The prefix can only be changed by members with the `ADMINISTRATOR` permission.\nExample: `!prefix $`", false);
 				case "botstats" -> builder.addField("BotStats Command", "Syntax: `!botstats`\nUsage: Shows the number of servers the bot is in and the number of profiles that have been created.", false);
 				case "deposit" -> builder.addField("Deposit Command", "Syntax: `!deposit [amount | max]`\nUsage: Deposits violins into your bank account.  Use `max` to deposit the most possible.\nAliases: `" + prefix + "dep`", false);
 				case "withdraw" -> builder.addField("Withdraw Command", "Syntax: `!withdraw [amount | all]`\nUsage: Withdraws violins from your bank account.  Use `all` to withdraw everything.\nAliases: `" + prefix + "with`", false);
-				case "loan" -> builder.addField("Loan Command", "Syntax: `!loan`\nUsage: Take out a loan, amount is based on your hourly income.  You can also use this to check how much you owe.", false);
+				case "loan" -> builder.addField("Loan Command", "Syntax: `!loan [amount | max]`\nUsage: Take out a loan, maximum amount is based on your hourly income.  You can also use this to check how much you owe.", false);
 				case "payloan" -> builder.addField("PayLoan Command", "Syntax: `!payloan [amount | max]`\nUsage: Pays back a specified amount, or everything in your wallet.", false);
 				case "resetdaily" -> builder.addField("ResetDaily Command", "Syntax: `!resetdaily`\nUsage: Gives everyone more time to run `!daily`\nRestrictions: Usable only by Developers.", false);
 				case "updateluthierchance" -> builder.addField("UpdateLuthierChance Command", "Syntax: `!updateluthierchance`\nUsage: Updates the luthier spawn chance manually\nRestrictions: Usable only by Admins and above.", false);
@@ -81,6 +82,6 @@ public class Help {
 			builder.addField("Help List", "Use `" + prefix + "help [page]` to view further commands!" +
 					"\n\n`1` - Fun Commands\n`2` - Utility Commands\n`3` - Economy Commands\n`4` - Income Commands\n`5` - Bot Moderation Commands\n`6` - Dev-Only Commands", false);
 		}
-		e.getChannel().sendMessageEmbeds(builder.build()).queue();
+		e.getMessage().replyEmbeds(builder.build()).mentionRepliedUser(false).queue();
 	}
 }

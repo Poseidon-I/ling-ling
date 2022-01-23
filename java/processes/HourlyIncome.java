@@ -17,10 +17,10 @@ public class HourlyIncome {
 				data = (JSONObject) parser.parse(reader);
 				reader.close();
 				if((boolean) data.get("banned")) {
-					System.out.println("Problem File is " + file.getName());
 					continue;
 				}
 			} catch(Exception exception) {
+				System.out.println("Problem File is " + file.getName());
 				continue;
 			}
 			data.replace("violins", (long) data.get("violins") + (long) data.get("income"));

@@ -1,15 +1,17 @@
 package processes;
 
+import economy.RNGesus;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.*;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Random;
 
 public class Luthier {
-	public Luthier(GuildMessageReceivedEvent e, JSONObject data) {
+	public Luthier(MessageReceivedEvent e, JSONObject data) {
 		Random random = new Random();
 		if(!(boolean) data.get("hasWord")) {
 			double chance = (double) data.get("chance");
@@ -46,7 +48,7 @@ public class Luthier {
 					}
 				}
 				assert channel != null;
-				channel.sendMessage("Olaf is giving away violins!  Unscramble `" + send + "` to get " + money + ":violin:").queue();
+				channel.sendMessage("Olaf is giving away violins!  Unscramble `" + send + "` to get " + Numbers.FormatNumber(money) + ":violin:").queue();
 				data.replace("hasWord", true);
 				data.replace("amount", money);
 				data.replace("word", original);
@@ -68,7 +70,7 @@ public class Luthier {
 					reader.close();
 				} catch(Exception exception) {
 					e.getChannel().sendMessage("You don't even have a profile, where would you store your violins???  Run `" + Prefix.GetPrefix(e) + "start` **in a bot command channel** to get one!").queue();
-					throw new IllegalArgumentException();
+					return;
 				}
 				String name = e.getAuthor().getName();
 				if(name.contains("@everyone") || name.contains("@here") || name.contains("<@&") || name.contains("nigg")) {
@@ -77,7 +79,7 @@ public class Luthier {
 				userData.replace("violins", (long) userData.get("violins") + gain);
 				userData.replace("earnings", (long) userData.get("earnings") + gain);
 				userData.replace("luthiers", (long) userData.get("luthiers") + 1);
-				e.getChannel().sendMessage("**" + name + "** unscrambled `" + target + "` and gained " + gain + ":violin:").queue();
+				e.getChannel().sendMessage("**" + name + "** unscrambled `" + target + "` and gained " + Numbers.FormatNumber(gain) + ":violin:").queue();
 				
 				try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".json")) {
 					writer.write(userData.toJSONString());
@@ -86,6 +88,7 @@ public class Luthier {
 					//nothing here lol
 				}
 				data.replace("hasWord", false);
+				RNGesus.Lootbox(e, data);
 				try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".json")) {
 					writer.write(data.toJSONString());
 					writer.close();

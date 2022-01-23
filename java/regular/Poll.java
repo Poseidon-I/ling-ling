@@ -1,11 +1,10 @@
 package regular;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Poll {
-	public Poll(GuildMessageReceivedEvent e) {
+	public Poll(MessageReceivedEvent e) {
 		String fullMessage = e.getMessage().getContentRaw();
-		e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
 		int i = 7;
 		StringBuilder send = new StringBuilder("**POLL:  ");
 		try {
@@ -14,8 +13,8 @@ public class Poll {
 				i++;
 			}
 		} catch(Exception exception) {
-			e.getChannel().sendMessage("You need to end your title with a `\"`, or you did not properly start your title with `\"`").queue();
-			throw new IllegalArgumentException();
+			e.getMessage().reply("You need to end your title with a `\"`, or you did not properly start your title with `\"`").mentionRepliedUser(false).queue();
+			return;
 		}
 		send.append("**\n`A:` ");
 		i += 3;
@@ -34,15 +33,16 @@ public class Poll {
 				}
 			}
 		} catch(Exception exception) {
-			e.getChannel().sendMessage("You need to end your options portion with a `\"`, or you did not properly start your options portion with `\"`").queue();
-			throw new IllegalArgumentException();
+			e.getMessage().reply("You need to end your options portion with a `\"`, or you did not properly start your options portion with `\"`").mentionRepliedUser(false).queue();
+			return;
 		}
 		send.append("\nPoll created by ").append(e.getAuthor().getName()).append("#").append(e.getAuthor().getDiscriminator());
 		String react = "";
 		if(options > 20) {
-			e.getChannel().sendMessage("Please limit your polls to 20 options or less.").queue();
+			e.getMessage().reply("Please limit your polls to 20 options or less.").mentionRepliedUser(false).queue();
 		} else {
-			react = e.getChannel().sendMessage(send.toString()).complete().getId();
+			e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
+			react = e.getMessage().reply(send.toString()).complete().getId();
 		}
 		int hex = 127462;
 		for(int j = 0; j < options; j++) {

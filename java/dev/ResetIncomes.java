@@ -1,13 +1,15 @@
 package dev;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 
 public class ResetIncomes {
-	public ResetIncomes(GuildMessageReceivedEvent e) {
+	public ResetIncomes(MessageReceivedEvent e) {
 		File directory = new File("Ling Ling Bot Data\\Economy Data");
 		File[] files = directory.listFiles();
 		if(files != null) {
@@ -106,7 +108,7 @@ public class ResetIncomes {
 					//nothing here lol
 				}
 			}
-			e.getChannel().sendMessage("Incomes successfully reset!").queue();
+			e.getMessage().reply("Incomes successfully reset!").mentionRepliedUser(false).queue();
 		}
 	}
 }

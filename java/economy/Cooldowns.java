@@ -1,7 +1,7 @@
 package economy;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
@@ -25,7 +25,7 @@ public class Cooldowns {
 		return newString;
 	}
 	
-	public Cooldowns(GuildMessageReceivedEvent e) {
+	public Cooldowns(MessageReceivedEvent e) {
 		try {
 			JSONObject data = LoadData.loadData(e);
 			long time = System.currentTimeMillis();
@@ -161,7 +161,7 @@ public class Cooldowns {
 				builder.addField("**Vote**", "`" + Reformat(hours) + ":" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`\n`WARNING: May be inaccurate`", true);
 			}
 			builder.setTitle("__**Cooldowns**__");
-			e.getChannel().sendMessageEmbeds(builder.build()).queue();
+			e.getMessage().replyEmbeds(builder.build()).mentionRepliedUser(false).queue();
 		} catch(Exception exception) {
 			exception.printStackTrace();
 		}
