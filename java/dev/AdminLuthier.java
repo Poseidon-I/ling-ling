@@ -56,6 +56,7 @@ public class AdminLuthier {
 								FileWriter writer = new FileWriter("Ling Ling Bot Data\\Settings\\Luthier\\" + id + ".json");
 								writer.write(data.toJSONString());
 								writer.close();
+								e.getMessage().reply("Successfully changed the channel for " + e.getGuild().getName() + " to <#" + message[3] + ">").mentionRepliedUser(false).queue();
 							}
 							case "word" -> {
 								String word = message[3].toLowerCase();
@@ -69,6 +70,7 @@ public class AdminLuthier {
 								FileWriter writer = new FileWriter("Ling Ling Bot Data\\Settings\\Luthier\\" + id + ".json");
 								writer.write(data.toJSONString());
 								writer.close();
+								e.getMessage().reply("Successfully changed the word for " + e.getGuild().getName() + " to `" + word + "`").mentionRepliedUser(false).queue();
 							}
 							case "multiplier" -> {
 								long newValue;

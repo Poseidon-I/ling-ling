@@ -30,7 +30,7 @@ public class Cooldowns {
 			JSONObject data = LoadData.loadData(e);
 			long time = System.currentTimeMillis();
 			EmbedBuilder builder = new EmbedBuilder()
-					.setColor(Color.BLUE)
+					.setColor(Color.decode((String) data.get("color")))
 					.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl());
 			//rob
 			long milliseconds = (long) data.get("robCD") - time;

@@ -15,21 +15,26 @@ public class Gamble {
 		long time = System.currentTimeMillis();
 		long violins = (long) data.get("violins");
 		long gambleL = (long) data.get("luck");
-		long income = (long) data.get("income");
+		long income = Math.min((long) data.get("income"), 100000);
 		long higherMulti = (long) data.get("moreMulti");
 		long max = income * (10 + higherMulti);
 		long winnings = (long) data.get("winnings");
 		Random random = new Random();
 		String[] message = e.getMessage().getContentRaw().split(" ");
-		if(message[2].equals("max")) {
-			bet = Math.min(violins, max);
-		} else {
-			try {
-				bet = Long.parseLong(message[2]);
-			} catch(Exception exception) {
-				e.getMessage().reply("You must bet something, I'm not giving away free violins.\nCommand format: `gamble [type] [amount]`").mentionRepliedUser(false).queue();
-				return;
+		try {
+			if(message[2].equals("max")) {
+				bet = Math.min(violins, max);
+			} else {
+				try {
+					bet = Long.parseLong(message[2]);
+				} catch(Exception exception) {
+					e.getMessage().reply("You must bet something, I'm not giving away free violins.\nCommand format: `gamble [type] [amount]`").mentionRepliedUser(false).queue();
+					return;
+				}
 			}
+		} catch(Exception exception) {
+			e.getMessage().reply("You must bet something, how dumb do you think I am?").mentionRepliedUser(false).queue();
+			return;
 		}
 		long cooldown = (long) data.get("betCD");
 		if(time < cooldown) {
@@ -57,15 +62,22 @@ public class Gamble {
 						if(chance > 0.5) {
 							violins -= bet;
 							winnings -= bet;
-							e.getMessage().reply("You lost " + Numbers.FormatNumber(bet) + ":violin:\n*The generator rolled " + chance + ", you need less than 0.5 to win.*\nYou now have " + Numbers.FormatNumber(violins) + ":violin:").mentionRepliedUser(false).queue();
+							if((boolean) data.get("extraInfo")) {
+								e.getMessage().reply("You lost `" + Numbers.FormatNumber(bet) + "`:violin:\n*The generator rolled `" + chance + "`, you need less than `0.5` to win.*\nYou now have `" + Numbers.FormatNumber(violins) + "`:violin:").mentionRepliedUser(false).queue();
+							} else {
+								e.getMessage().reply("You lost `" + Numbers.FormatNumber(bet) + "`:violin:\nYou now have `" + Numbers.FormatNumber(violins) + "`:violin:").mentionRepliedUser(false).queue();
+							}
 						} else {
 							violins += bet * (1 + multi);
 							winnings += bet * (1 + multi);
-							e.getMessage().reply("You won " + Numbers.FormatNumber(bet) + ":violin:\nYour " + multi * 100 + "% multiplier earned you an extra " + Numbers.FormatNumber((long) (bet * multi)) + ":violin:\n*The generator rolled " + chance + ".*\nYou now have " + Numbers.FormatNumber(violins) + ":violin:").mentionRepliedUser(false).queue();
+							if((boolean) data.get("extraInfo")) {
+								e.getMessage().reply("You won `" + Numbers.FormatNumber(bet) + "`:violin:\nYour `" + multi * 100 + "%` multiplier earned you an extra `" + Numbers.FormatNumber((long) (bet * multi)) + "`:violin:\n*The generator rolled `" + chance + "`.*\nYou now have `" + Numbers.FormatNumber(violins) + "`:violin:").mentionRepliedUser(false).queue();
+							} else {
+								e.getMessage().reply("You won `" + Numbers.FormatNumber(bet) + "`:violin:\nYour `" + multi * 100 + "%` multiplier earned you an extra `" + Numbers.FormatNumber((long) (bet * multi)) + "`:violin:\nYou now have `" + Numbers.FormatNumber(violins) + "`:violin:").mentionRepliedUser(false).queue();
+							}
 						}
 						data.replace("violins", violins);
 						data.replace("winnings", winnings);
-						RNGesus.Lootbox(e, data);
 						new SaveData(e, data);
 					}
 					case "slots" -> {
@@ -97,29 +109,28 @@ public class Gamble {
 							payout = -1;
 						}
 						EmbedBuilder builder = new EmbedBuilder()
-								.setColor(Color.BLUE)
+								.setColor(Color.decode((String) data.get("color")))
 								.setFooter("Ling Ling Bot", e.getJDA().getSelfUser().getAvatarUrl())
 								.setTitle("__**Slots for " + e.getAuthor().getName() + "**__");
 						String name = ":arrow_right: " + emojis[0] + " " + emojis[1] + " " + emojis[2] + " :arrow_left:\n_ _";
 						if(payout != -1) {
-							builder.addField(name, ":white_check_mark: You **win**!  Payout: " + Numbers.FormatNumber(payout) + ":violin:\nYour " + multi * 100 + "% multiplier earned you an extra " +  Numbers.FormatNumber((long) (payout * multi)) + ":violin:", false);
 							violins += payout * (1 + multi);
 							winnings += payout * (1 + multi);
+							builder.addField(name, ":white_check_mark: You **win**!  Payout: `" + Numbers.FormatNumber(payout) + "`:violin:\nYour `" + multi * 100 + "%` multiplier earned you an extra `" + Numbers.FormatNumber((long) (payout * multi)) + "`:violin:\nYou now have `" + Numbers.FormatNumber(violins) + "`:violin:", false);
 							
 						} else {
-							builder.addField(name, ":x: You **lose**!  You lost " + Numbers.FormatNumber(bet) + ":violin:", false);
 							violins -= bet;
 							winnings -= bet;
+							builder.addField(name, ":x: You **lose**!  You lost `" + Numbers.FormatNumber(bet) + "`:violin:\nYou now have `" + Numbers.FormatNumber(violins) + "`:violin:", false);
 						}
 						e.getMessage().replyEmbeds(builder.build()).mentionRepliedUser(ping).queue();
 						data.replace("violins", violins);
 						data.replace("winnings", winnings);
-						RNGesus.Lootbox(e, data);
 						new SaveData(e, data);
 					}
 					case "scratch" -> {
 						long[] payouts = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-						long numTickets = Math.min(bet / 100, 10000);
+						long numTickets = bet / 100;
 						long payout = 0;
 						boolean hasMillion = false;
 						for(long i = 0; i < numTickets; i++) {
@@ -141,43 +152,52 @@ public class Gamble {
 							} else if(chance > 0.01) { //1%
 								payout += 25;
 								payouts[5]++;
-							} else if(chance > 0.005) {//0.5%
+							} else if(chance > 0.005) { //0.5%
 								payout += 50;
 								payouts[6]++;
-							} else if(chance > 0.002) {//0.3%
+							} else if(chance > 0.002) { //0.3%
 								payout += 100;
 								payouts[7]++;
-							} else if(chance > 0.001) {//0.1%
+							} else if(chance > 0.001) { //0.1%
 								payout += 200;
 								payouts[8]++;
-							} else if(chance > 0.000001) {//0.1%
+							} else if(chance > 0.000001) { //0.1%
 								payout += 500;
 								payouts[9]++;
-							} else {
+							} else { // 1 in a million
 								if(!hasMillion) {
 									payout += 1000000;
-									e.getMessage().reply("**CRAZY RARE DROP**\nYou hit the 1 000 000:violin: jackpot!").mentionRepliedUser(true).queue();
+									e.getMessage().reply("**Very Rare Drop!**\nYou hit the 1 000 000:violin: jackpot!").mentionRepliedUser(true).queue();
+									data.replace("RNGesusWeight", (long) data.get("RNGesusWeight") + 3);
 									data.replace("millions", (long) data.get("millions") + 1);
 									hasMillion = true;
 								}
 							}
 						}
-						StringBuilder breakdown = new StringBuilder().append("Lose 5:violin:: ").append(payouts[0]).append("\nNo Prize: ").append(payouts[1]).append("\nGain 2:violin:: ").append(payouts[2]).append("\nGain 5:violin:: ").append(payouts[3]).append("\nGain 10:violin:: ").append(payouts[4]).append("\nGain 25:violin:: ").append(payouts[5]).append("\nGain 50:violin:: ").append(payouts[6]).append("\nGain 100:violin:: ").append(payouts[7]).append("\nGain 200:violin:: ").append(payouts[8]).append("\nGain 500:violin:: ").append(payouts[9]);
+						StringBuilder breakdown = new StringBuilder().append("\n\n**__Ticket Breakdown__**\nLose 5:violin:: ").append(payouts[0]).append("\nNo Prize: ").append(payouts[1]).append("\nGain 2:violin:: ").append(payouts[2]).append("\nGain 5:violin:: ").append(payouts[3]).append("\nGain 10:violin:: ").append(payouts[4]).append("\nGain 25:violin:: ").append(payouts[5]).append("\nGain 50:violin:: ").append(payouts[6]).append("\nGain 100:violin:: ").append(payouts[7]).append("\nGain 200:violin:: ").append(payouts[8]).append("\nGain 500:violin:: ").append(payouts[9]);
 						if(payout > 0) {
 							violins += payout * (1 + multi);
 							winnings += payout * (1 + multi);
-							e.getMessage().reply("You scratched " + Numbers.FormatNumber(numTickets) + " tickets and gained " + Numbers.FormatNumber(payout) + ":violin:\nYour " + multi * 100 + "% multiplier earned you an extra " + Numbers.FormatNumber((long) (payout * multi)) + ":violin:\n\n**__Ticket Breakdown__**\n" + breakdown).mentionRepliedUser(false).queue();
+							if((boolean) data.get("extraInfo")) {
+								e.getMessage().reply("You scratched `" + Numbers.FormatNumber(numTickets) + "` tickets and gained `" + Numbers.FormatNumber(payout) + "`:violin:\nYour `" + multi * 100 + "%` multiplier earned you an extra `" + Numbers.FormatNumber((long) (payout * multi)) + "`:violin:\nYou now have `" + Numbers.FormatNumber(violins) + "`:violin:" + breakdown).mentionRepliedUser(false).queue();
+							} else {
+								e.getMessage().reply("You scratched `" + Numbers.FormatNumber(numTickets) + "` tickets and gained `" + Numbers.FormatNumber(payout) + "`:violin:\nYour `" + multi * 100 + "%` multiplier earned you an extra `" + Numbers.FormatNumber((long) (payout * multi)) + "`:violin:\nYou now have `" + Numbers.FormatNumber(violins) + "`:violin:").mentionRepliedUser(false).queue();
+							}
 						} else {
 							violins += payout;
 							winnings += payout;
-							e.getMessage().reply("You scratched " + Numbers.FormatNumber(numTickets) + " tickets and lost " + Numbers.FormatNumber(payout * -1) + ":violin:\n\n**__Ticket Breakdown__**\n" + breakdown).mentionRepliedUser(false).queue();
+							if((boolean) data.get("extraInfo")) {
+								e.getMessage().reply("You scratched `" + Numbers.FormatNumber(numTickets) + "` tickets and lost `" + Numbers.FormatNumber(payout * -1) + "`:violin:\nYou now have `" + Numbers.FormatNumber(violins) + "`:violin:" + breakdown).mentionRepliedUser(false).queue();
+							} else {
+								e.getMessage().reply("You scratched `" + Numbers.FormatNumber(numTickets) + "` tickets and lost `" + Numbers.FormatNumber(payout * -1) + "`:violin:\nYou now have `" + Numbers.FormatNumber(violins) + "`:violin:").mentionRepliedUser(false).queue();
+							}
 						}
 						data.replace("violins", violins);
 						data.replace("winnings", winnings);
-						RNGesus.Lootbox(e, data);
 						new SaveData(e, data);
 					}
-					default -> e.getMessage().reply("You must choose one of the three gambling options: `rng`, `scratch`, or `slots`").mentionRepliedUser(false).queue();
+					default ->
+							e.getMessage().reply("You must choose one of the three gambling options: `rng`, `scratch`, or `slots`").mentionRepliedUser(false).queue();
 				}
 			} catch(Exception exception) {
 				e.getMessage().reply("You must choose one of the three gambling options: `rng`, `scratch`, or `slots`").mentionRepliedUser(false).queue();

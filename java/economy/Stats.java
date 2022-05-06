@@ -35,10 +35,10 @@ public class Stats {
 			user = "Someone";
 		}
 		EmbedBuilder builder = new EmbedBuilder()
-				.setColor(Color.BLUE)
+				.setColor(Color.decode((String) data.get("color")))
 				.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
 				.setTitle(user + "'s Stats");
-		builder.addField("**__Gambling__**", "**Net Winnings**: " + Numbers.FormatNumber(data.get("winnings")) + "\n**Million-Dollar Tickets Drawn**: " + Numbers.FormatNumber(data.get("millions")), false);
+		builder.addField("**__Gambling__**", "**Net Winnings**: " + Numbers.FormatNumber(data.get("winnings")) + "\n**Million-Dollar Tickets Drawn**: " + Numbers.FormatNumber(data.get("millions")) + "\n**Magic Find**: " + Numbers.FormatNumber(data.get("magicFind")) + "\n**RNGesus Weight**: " + Numbers.FormatNumber(data.get("RNGesusWeight")), false);
 		builder.addField("**__Robbing__**", "**Amount Earned from Robbing**: " + Numbers.FormatNumber(data.get("robbed")) + "\n**Amount Lost to Robbers**: " + Numbers.FormatNumber(data.get("lostToRob")), false);
 		builder.addField("**__Commands__**", "**Hours Practised**: " + Numbers.FormatNumber((long) (double) data.get("hoursPractised")) + "\n**Scales Played**: " + Numbers.FormatNumber(data.get("scalesPlayed")) + "\n**Rehearsals Attended**: " + Numbers.FormatNumber(data.get("rehearsals")) + "\n**Performances Given**: " + Numbers.FormatNumber(data.get("performances")) + "\n**Hours Taught: **" + Numbers.FormatNumber((long) (double) data.get("hoursTaught")), false);
 		builder.addField("**__Lootboxes__**", "**Gifts Given**: " + Numbers.FormatNumber(data.get("giftsGiven")) + "\n**Gifts Received**: " + Numbers.FormatNumber(data.get("giftsReceived")) + "\n**Number of Votes**: " + Numbers.FormatNumber(data.get("votes")), false);

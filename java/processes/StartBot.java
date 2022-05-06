@@ -2,8 +2,6 @@ package processes;
 
 import eventListeners.Disconnect;
 import eventListeners.Receiver;
-import eventListeners.RoleAdded;
-import eventListeners.RoleRemoved;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -26,14 +24,13 @@ public class StartBot {
 			//nothing here lol
 		}
 		JDA jda;
-		try(BufferedReader rdr = new BufferedReader(new FileReader("Ling Ling Bot Data\\betatoken.txt"))) {
+		try(BufferedReader rdr = new BufferedReader(new FileReader("Ling Ling Bot Data\\token.txt"))) {
 			jda = JDABuilder.createDefault(rdr.readLine(), GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGE_REACTIONS)
 					.disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS, CacheFlag.ONLINE_STATUS)
 					.setMemberCachePolicy(MemberCachePolicy.ALL)
 					.addEventListeners(new Disconnect())
 					.addEventListeners(new Receiver())
-					.addEventListeners(new RoleAdded())
-					.addEventListeners(new RoleRemoved())
+					//.addEventListeners(new NewReceiver())
 					.useSharding(0, 1)
 					.build();
 			jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);

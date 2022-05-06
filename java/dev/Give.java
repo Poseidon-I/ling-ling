@@ -37,7 +37,7 @@ public class Give {
 			e.getMessage().reply("This save file doesn't exist!").mentionRepliedUser(false).queue();
 			return;
 		}
-		String[] validElements = {"violins", "medals", "rice", "tea", "blessings", "voteBox", "giftBox", "kits", "linglingBox", "crazyBox"};
+		String[] validElements = {"violins", "medals", "rice", "tea", "blessings", "voteBox", "giftBox", "kits", "linglingBox", "crazyBox", "RNGesusBox"};
 		try {
 			if(Arrays.asList(validElements).contains(message[2])) {
 				String user;
@@ -49,8 +49,14 @@ public class Give {
 				long oldAmount = (long) data.get(message[2]);
 				data.replace(message[2], oldAmount + add);
 				e.getMessage().reply("Successfully gave `" + add + "` " + message[2] + " to " + user).mentionRepliedUser(false).queue();
+				EmbedBuilder builder = new EmbedBuilder()
+						.setColor(Color.BLUE)
+						.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
+						.addField("Moderator: " + e.getAuthor().getName(), "User: <@" + id + ">\nItem type: " + message[2] + "\nAmount given: " + message[3], false)
+						.setTitle("__**Currency Alteration Info**__");
+				Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).mentionRepliedUser(false).queue();
 			} else {
-				e.getMessage().reply("You provided an invalid item!  Valid items to give: `violins`, `medals`, `rice`, `tea`, `blessings`, `voteBox`, `giftBox`, `kits`, `linglingBox`, `crazyBox`.").mentionRepliedUser(false).queue();
+				e.getMessage().reply("You provided an invalid item!  Valid items to give: `violins`, `medals`, `rice`, `tea`, `blessings`, `voteBox`, `giftBox`, `kits`, `linglingBox`, `crazyBox`, `RNGesusBox`.").mentionRepliedUser(false).queue();
 			}
 		} catch(Exception exception) {
 			e.getMessage().reply("You have to tell me what to give out, idiot, I can't give out nothing.").mentionRepliedUser(false).queue();
@@ -63,12 +69,5 @@ public class Give {
 		} catch(Exception exception) {
 			//nothing here lol
 		}
-		
-		EmbedBuilder builder = new EmbedBuilder()
-				.setColor(Color.BLUE)
-				.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
-				.addField("Moderator: " + e.getAuthor().getName(), "User: <@" + id + ">\nItem type: " + message[2] + "\nAmount given: " + message[3], false)
-				.setTitle("__**Currency Alteration Info**__");
-		Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).mentionRepliedUser(false).queue();
 	}
 }

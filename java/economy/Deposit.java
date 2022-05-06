@@ -10,22 +10,23 @@ public class Deposit {
 		String[] message = e.getMessage().getContentRaw().split(" ");
 		long amount;
 		long wallet = (long) data.get("violins");
-		if(message[1].equals("max")) {
-			amount = wallet;
-		} else {
-			try {
-				amount = Long.parseLong(message[1]);
-			} catch(Exception exception) {
-				e.getMessage().reply("You have to either input `max` or an integer.").mentionRepliedUser(false).queue();
-				return;
+		try {
+			if(message[1].equals("max")) {
+				amount = wallet;
+			} else {
+				try {
+					amount = Long.parseLong(message[1]);
+				} catch(Exception exception) {
+					e.getMessage().reply("You have to either input `max` or an integer.").mentionRepliedUser(false).queue();
+					return;
+				}
 			}
-		}
-		if(amount > wallet) {
-			e.getMessage().reply("You can't deposit more than you have in your wallet, you fool.").mentionRepliedUser(false).queue();
-		} else if(amount < 1) {
-			e.getMessage().reply("Stop wasting my time trying to deposit a negative amount, shame on you").mentionRepliedUser(false).queue();
-		} else {
-				long max = 15000000 * (long) data.get("storage");
+			if(amount > wallet) {
+				e.getMessage().reply("You can't deposit more than you have in your wallet, you fool.").mentionRepliedUser(false).queue();
+			} else if(amount < 1) {
+				e.getMessage().reply("Stop wasting my time trying to deposit a negative amount, shame on you").mentionRepliedUser(false).queue();
+			} else {
+				long max = 20000000 * (long) data.get("storage");
 				long balance = (long) data.get("bank");
 				if(balance + amount > max) {
 					amount = max - balance;
@@ -38,6 +39,9 @@ public class Deposit {
 				data.replace("violins", wallet - amount);
 				data.replace("bank", balance);
 				new SaveData(e, data);
+			}
+		} catch(Exception exception) {
+			e.getMessage().reply("You have to deposit something.").mentionRepliedUser(false).queue();
 		}
 	}
 }

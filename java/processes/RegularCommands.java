@@ -18,6 +18,7 @@ public class RegularCommands {
 				case "faq" -> new FAQ(e);
 				case "website" -> e.getMessage().reply("Check out the website at <https://linglingdev.weebly.com/>").mentionRepliedUser(false).queue();
 				case "support" -> e.getMessage().reply("Join the support server at discord.gg/gNfPwa8").mentionRepliedUser(false).queue();
+				case "guide" -> e.getMessage().reply("The Beginner Guide can be found at <https://linglingdev.weebly.com/beginners-guide.html>, written by `bubblepotatochips#0498`").mentionRepliedUser(false).queue();
 				case "kill" -> new Kill(e);
 				case "joke" -> new Joke(e);
 				case "poll" -> new Poll(e);
@@ -33,9 +34,9 @@ public class RegularCommands {
 						███████║   ██║   ██║  ██║██║     ██║
 						╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝     ╚═╝
 						```
-						33. **Developer**: `Stradivarius Violin#6156`
-						34. **Bot Admins**: `JMusical#5262` `jacqueline#1343`
-						35. **Bot Mods**: `Penguin Irina#6514` `akc0303#5743`
+						**Developer**: `Stradivarius Violin#6156`
+						**Bot Admins**: `JMusical#5262` `jacqueline#1343`
+						**Bot Mods**: `Penguin Irina#6514` `akc0303#5743`
 						""").mentionRepliedUser(false).queue();
 				case "rules" -> e.getMessage().reply("""
 						```fix
@@ -83,6 +84,9 @@ public class RegularCommands {
 					File[] files = new File("Ling Ling Bot Data\\Economy Data").listFiles();
 					assert files != null;
 					e.getMessage().reply("Servers: " + serverCount + "\nUsers: " + files.length).mentionRepliedUser(false).queue();
+				}
+				case "settings" -> {
+					new UserSettings(e);
 				}
 				default -> new Economy(e, message);
 			}

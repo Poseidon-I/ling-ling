@@ -27,21 +27,21 @@ public class Rehearse {
 				boolean badEvent = false;
 				long base = Numbers.CalculateAmount(data, random.nextInt(501) + 1750);
 				double num = random.nextDouble();
-				if(num > 0.7) {
-					violins += base;
+				if(num > 0.65) {
 					e.getMessage().reply("You rehearsed with your orchestra and earned " + Numbers.FormatNumber(base)+ ":violin:").mentionRepliedUser(false).queue();
-					violinsEarned += base;
-				} else if(num > 0.4) {
+				} else if(num > 0.35) {
+					base = 0;
 					num = random.nextDouble();
-					if(num > 0.5) {
+					if(num > 0.45) {
 						data.replace("rice", (long) data.get("rice") + 3);
 						e.getMessage().reply("You found 3:rice: after rehearsal but didn't get any violins.").mentionRepliedUser(false).queue();
-					} else if(num > 0.15) {
+					} else if(num > 0.1) {
 						data.replace("tea", (long) data.get("tea") + 2);
 						e.getMessage().reply("You found 2:bubble_tea: after you went to rehearsal.").mentionRepliedUser(false).queue();
 					} else {
 						data.replace("blessings", (long) data.get("blessings") + 1);
 						e.getMessage().reply("**Rare Drop!**\nLing Ling enjoyed your rehearsal session and blessed you.").mentionRepliedUser(false).queue();
+						data.replace("RNGesusWeight", (long) data.get("RNGesusWeight") + 1);
 					}
 				} else if(num > 0.1) {
 					num = random.nextDouble();
@@ -58,53 +58,49 @@ public class Rehearse {
 						base *= 5;
 						e.getMessage().reply("It's raining violins!  You earned " + Numbers.FormatNumber(base)+ ":violin: you lucky dog").mentionRepliedUser(false).queue();
 					} else {
-						base *= 25;
+						base *= 15;
 						e.getMessage().reply("**Rare Drop!**\nLing Ling enjoyed your rehearsal but was displeased with some parts.  Nonetheless, he (she?) granted you with " + Numbers.FormatNumber(base)+ ":violin:").mentionRepliedUser(false).queue();
+						data.replace("RNGesusWeight", (long) data.get("RNGesusWeight") + 1);
 					}
-					violins += base;
-					violinsEarned += base;
 				} else {
 					long income = (long) data.get("income");
 					num = random.nextDouble();
 					if(num > 0.75) {
-						violins -= income / 100;
 						base *= 0.95;
-						violins += base;
+						base -= income / 100;
 						e.getMessage().reply("Oh no!  Your E String snapped during the rehearsal!  You had to borrow the concertmaster's violin, and only earned " + Numbers.FormatNumber(base)+ ":violin:  You eventually had to pay " + Numbers.FormatNumber(income / 100) + ":violin: for a new E String.").mentionRepliedUser(false).queue();
 					} else if(num > 0.55) {
 						base *= 0.9;
-						violins += base;
 						e.getMessage().reply("Your violin randomly went out of tune during the rehearsal.  You had to spend 4 minutes tuning it and were only able to earn " + Numbers.FormatNumber(base)+ ":violin:").mentionRepliedUser(false).queue();
 					} else if(num > 0.4) {
 						base *= 0.95;
 						e.getMessage().reply("The orchestra had music stand problems, and page turning wasn't the best either.  You only earned " + Numbers.FormatNumber(base)+ ":violin:").mentionRepliedUser(false).queue();
 					} else if(num > 0.25) {
 						base *= 0.5;
-						violins += base;
-						violins -= income / 10;
+						base -= income / 10;
 						e.getMessage().reply("You hurt your wrist during the rehearsal and only got half of the effectiveness.  You earned " + Numbers.FormatNumber(base)+ ":violin: but ended up paying " + Numbers.FormatNumber(income / 10) + ":violin: in hospital fees.").mentionRepliedUser(false).queue();
 					} else if(num > 0.15) {
 						base *= 0.2;
-						violins += base;
 						e.getMessage().reply("**OOF**\nYour bridge fell off during the rehearsal.  You spend the next half-hour trying to get it back on, and you only earned " + Numbers.FormatNumber(base)+ ":violin:").mentionRepliedUser(false).queue();
 					} else if(num > 0.05) {
-						violins -= income;
-						e.getMessage().reply("**OOF**\nYou had a memory blank during rehearsal.  Your tiger mom took all of your earnings, in addition to another " + Numbers.FormatNumber(income)+ " for shaming yourself.").mentionRepliedUser(false).queue();
+						base = -1 * income;
+						e.getMessage().reply("**OOF**\nYou had a memory blank during rehearsal.  Your tiger mom took all of your earnings, in addition to another " + Numbers.FormatNumber(income)+ ":violin: for shaming yourself.").mentionRepliedUser(false).queue();
 					} else if(num > 0.015) {
 						e.getMessage().reply(":regional_indicator_l:\nYour chin rest popped off your violin!  You take your violin to the luthier, who informs you that the violin will have to stay overnight.  You are not able to practise for 12 hours.").mentionRepliedUser(true).queue();
 						time += 43200000;
 						data.replace("scaleCD", time);
 						data.replace("practiceCD", time);
 						badEvent = true;
+						base = 0;
 					} else if(num > 0.005) {
 						e.getMessage().reply(":regional_indicator_l:\nYou decided to fake your solo.  Of course it didn't work and Ling Ling fined you " + Numbers.FormatNumber((long) (violins * 0.9)) + ":violin:").mentionRepliedUser(true).queue();
-						violins *= 0.1;
+						data.replace("violins", violins * 0.1);
 						base = 0;
 					} else {
 						e.getMessage().reply(":skull:\nYou dropped your violin.  How shameful.  All cooldowns except daily and gamble have had one day added to them, and you were fined " + Numbers.FormatNumber((long) (violins * 0.95))	 + ":violin: for being careless in public.").mentionRepliedUser(true).queue();
-						violins *= 0.05;
 						base = 0;
 						time += 86400000;
+						data.replace("violins", violins * 0.05);
 						data.replace("scaleCD", time);
 						data.replace("practiceCD", time);
 						data.replace("rehearseCD", time);
@@ -113,10 +109,8 @@ public class Rehearse {
 					}
 					violinsEarned += base;
 				}
-				violins += base;
-				violinsEarned += base;
-				data.replace("violins", violins);
-				data.replace("earnings", violinsEarned);
+				Numbers.CalculateLoan(data, base);
+				data.replace("earnings", violinsEarned + base);
 				if(!badEvent) {
 					if((boolean) data.get("timeCrunch")) {
 						data.replace("rehearseCD", time + 57600000);

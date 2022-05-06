@@ -50,9 +50,8 @@ public class Unban {
 			} catch(Exception exception) {
 				user = "Someone";
 			}
-			e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-			e.getChannel().sendMessage(":white_check_mark: " + user + " was successfully unbanned!").queue();
 			new LogCase(e, "Unban", id, reason.toString());
+			e.getChannel().sendMessage(":white_check_mark: " + user + " was successfully unbanned!").queue();
 			if(resetSave) {
 				file.delete();
 				reason.append("\nSave Reset: Yes");
@@ -72,6 +71,7 @@ public class Unban {
 				reason.append("\nSave Reset: No");
 				Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().queue((channel) -> channel.sendMessage("You have been unbanned :fireworks:\nYour save was not reset.").queue());
 			}
+			e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
 		} else {
 			e.getMessage().reply("That user isn't even banned, stupid.").mentionRepliedUser(false).queue();
 		}

@@ -41,7 +41,7 @@ public class Use {
                 }
                 case "tea" -> {
                     if ((long) data.get("tea") <= 0) {
-                        e.getMessage().reply("You scourge your pantry but find no more bubble tea.  Then you remember you don't have any more.").mentionRepliedUser(false).queue();
+                        e.getMessage().reply("You scourge your fridge but find no more bubble tea.  Then you remember you don't have any more.").mentionRepliedUser(false).queue();
                     } else if (useAmount > (long) data.get("tea")) {
                         e.getMessage().reply("You cannot consume more bubble tea than you have.").mentionRepliedUser(false).queue();
                     } else if (income == 0) {
@@ -133,7 +133,7 @@ public class Use {
                             if (rng < 0.05) {
                                 data.replace("medalToday", true);
                                 data.replace("medals", (long) data.get("medals") + 1);
-                                e.getMessage().reply("**Rare Drop!**\nYou received 1:military_medal: from your Gift Box!").mentionRepliedUser(false).queue();
+                                e.getMessage().reply("You received 1:military_medal: from your Gift Box!").mentionRepliedUser(false).queue();
                             } else if (rng < 0.2) {
                                 int received = random.nextInt(3) + 1;
                                 data.replace("tea", (long) data.get("tea") + received);
@@ -155,7 +155,7 @@ public class Use {
                 }
                 case "kit" -> {
                     if ((long) data.get("kits") <= 0) {
-                        e.getMessage().reply("You already used all your Musician Kits, donate again to get more!").mentionRepliedUser(false).queue();
+                        e.getMessage().reply("You already used all your Musician Kits, play the bot to earn more!").mentionRepliedUser(false).queue();
                     } else if (income == 0) {
                         e.getMessage().reply("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").mentionRepliedUser(false).queue();
                     } else {
@@ -186,14 +186,14 @@ public class Use {
                                 e.getMessage().reply("You received " + received + ":angel: from your Musician Kit!").mentionRepliedUser(false).queue();
                             } else if (rng < 0.34) {
                                 data.replace("medalToday", true);
-                                data.replace("medals", (long) data.get("medals") + 1);
                                 long max = (long) data.get("income") / 30000;
                                 long min = (long) data.get("income") / 50000;
                                 long received = random.nextInt((int) (max - min + 1)) + min;
                                 if (received > 5) {
                                     received = 5;
                                 }
-                                e.getMessage().reply("**Very Rare Drop!**\nYou received " + received + ":military_medal: from your Musician Kit!").mentionRepliedUser(false).queue();
+                                data.replace("medals", (long) data.get("medals") + received);
+                                e.getMessage().reply("You received " + received + ":military_medal: from your Musician Kit!").mentionRepliedUser(false).queue();
                             } else if (rng < 0.67) {
                                 int received = random.nextInt(5) + 8;
                                 data.replace("tea", (long) data.get("tea") + received);
@@ -209,7 +209,7 @@ public class Use {
                 }
                 case "llbox" -> {
                     if ((long) data.get("linglingBox") <= 0) {
-                        e.getMessage().reply("You already used all your Ling Ling Boxes, donate again to get more!").mentionRepliedUser(false).queue();
+                        e.getMessage().reply("You already used all your Ling Ling Boxes, play the bot to get more!").mentionRepliedUser(false).queue();
                     } else if (income == 0) {
                         e.getMessage().reply("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").mentionRepliedUser(false).queue();
                     } else {
@@ -232,24 +232,30 @@ public class Use {
                                 data.replace("tea", (long) data.get("tea") + received);
                                 e.getMessage().reply("You received " + received + ":bubble_tea: from your Ling Ling Box!").mentionRepliedUser(false).queue();
                             } else {
-                                String link = e.getMessage().reply("**CRAZY RARE DROP!**\nYou have received 1x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").mentionRepliedUser(true).complete().getJumpUrl();
-                                EmbedBuilder builder = new EmbedBuilder()
-                                        .setColor(Color.BLUE)
-                                        .setFooter("Ling Ling\nReact when Claimed", e.getJDA().getSelfUser().getAvatarUrl())
-                                        .addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), "Message Link: " + link, false)
-                                        .setTitle("__**Luthier Pulled from Ling Ling Box**__");
-                                Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
+                                if((boolean) data.get("mfLLBox")) {
+                                    String link = e.getMessage().reply("You have received 1x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").mentionRepliedUser(true).complete().getJumpUrl();
+                                    EmbedBuilder builder = new EmbedBuilder()
+                                            .setColor(Color.BLUE)
+                                            .setFooter("Ling Ling\nReact when Claimed", e.getJDA().getSelfUser().getAvatarUrl())
+                                            .addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), "Message Link: " + link, false)
+                                            .setTitle("__**Luthier Pulled from Ling Ling Box**__");
+                                    Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
+                                } else {
+                                    data.replace("mfLLBox", true);
+                                    data.replace("magicFind", (long) data.get("magicFind") + 1);
+                                    e.getMessage().reply("You found +1 Magic Find!").mentionRepliedUser(false).queue();
+                                }
                             }
                         } else {
                             if (rng < 0.09) {
                                 data.replace("medalToday", true);
-                                data.replace("medals", (long) data.get("medals") + 1);
                                 long max = (long) data.get("income") / 25000;
                                 long min = (long) data.get("income") / 40000;
                                 long received = random.nextInt((int) (max - min + 1)) + min;
                                 if (received > 10) {
                                     received = 10;
                                 }
+                                data.replace("medals", (long) data.get("medals") + received);
                                 e.getMessage().reply("You received " + received + ":military_medal: from your Ling Ling Box!").mentionRepliedUser(false).queue();
                             } else if (rng < 0.39) {
                                 int received = random.nextInt(11) + 15;
@@ -264,13 +270,19 @@ public class Use {
                                 data.replace("blessings", (long) data.get("blessings") + received);
                                 e.getMessage().reply("You received " + received + ":angel: from your Ling Ling Box!").mentionRepliedUser(false).queue();
                             } else {
-                                String link = e.getMessage().reply("**CRAZY RARE DROP!**\nYou have received 1x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").mentionRepliedUser(true).complete().getJumpUrl();
-                                EmbedBuilder builder = new EmbedBuilder()
-                                        .setColor(Color.BLUE)
-                                        .setFooter("Ling Ling\nReact when Claimed", e.getJDA().getSelfUser().getAvatarUrl())
-                                        .addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), "Message Link: " + link, false)
-                                        .setTitle("__**Luthier Pulled from Ling Ling Box**__");
-                                Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
+                                if((boolean) data.get("mfLLBoox")) {
+                                    String link = e.getMessage().reply("You have received 1x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").mentionRepliedUser(true).complete().getJumpUrl();
+                                    EmbedBuilder builder = new EmbedBuilder()
+                                            .setColor(Color.BLUE)
+                                            .setFooter("Ling Ling\nReact when Claimed", e.getJDA().getSelfUser().getAvatarUrl())
+                                            .addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), "Message Link: " + link, false)
+                                            .setTitle("__**Luthier Pulled from Ling Ling Box**__");
+                                    Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
+                                } else {
+                                    data.replace("mfLLBox", true);
+                                    data.replace("magicFind", (long) data.get("magicFind") + 1);
+                                    e.getMessage().reply("You found +1 Magic Find!").mentionRepliedUser(false).queue();
+                                }
                             }
                         }
                         new SaveData(e, data);
@@ -278,7 +290,7 @@ public class Use {
                 }
                 case "crazybox" -> {
                     if ((long) data.get("crazyBox") <= 0) {
-                        e.getMessage().reply("You already used all your Crazy Person Boxes, donate again to get more!").mentionRepliedUser(false).queue();
+                        e.getMessage().reply("You already used all your Crazy Person Boxes, play the bot to get more!").mentionRepliedUser(false).queue();
                     } else if (income == 0) {
                         e.getMessage().reply("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").mentionRepliedUser(false).queue();
                     } else {
@@ -302,24 +314,30 @@ public class Use {
                                 data.replace("tea", (long) data.get("tea") + received);
                                 e.getMessage().reply("You received " + received + ":bubble_tea: from your Crazy Person Box!").mentionRepliedUser(false).queue();
                             } else {
-                                String link = e.getMessage().reply("You have received 3x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").mentionRepliedUser(true).complete().getJumpUrl();
-                                EmbedBuilder builder = new EmbedBuilder()
-                                        .setColor(Color.BLUE)
-                                        .setFooter("Ling Ling\nReact when Claimed", e.getJDA().getSelfUser().getAvatarUrl())
-                                        .addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), "Message Link: " + link, false)
-                                        .setTitle("__**Luthier Pulled from Crazy Person Box**__");
-                                Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
+                                if((boolean) data.get("mfCrazyBox")) {
+                                    String link = e.getMessage().reply("You have received 3x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").mentionRepliedUser(true).complete().getJumpUrl();
+                                    EmbedBuilder builder = new EmbedBuilder()
+                                            .setColor(Color.BLUE)
+                                            .setFooter("Ling Ling\nReact when Claimed", e.getJDA().getSelfUser().getAvatarUrl())
+                                            .addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), "Message Link: " + link, false)
+                                            .setTitle("__**Luthier Pulled from Crazy Person Box**__");
+                                    Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
+                                } else {
+                                    data.replace("mfCrazyBox", true);
+                                    data.replace("magicFind", (long) data.get("magicFind") + 1);
+                                    e.getMessage().reply("You found +1 Magic Find!").mentionRepliedUser(false).queue();
+                                }
                             }
                         } else {
                             if (rng < 0.3) {
                                 data.replace("medalToday", true);
-                                data.replace("medals", (long) data.get("medals") + 1);
                                 long max = (long) data.get("income") / 20000;
                                 long min = (long) data.get("income") / 30000;
                                 long received = random.nextInt((int) (max - min + 1)) + min;
                                 if (received > 15) {
                                     received = 15;
                                 }
+                                data.replace("medals", (long) data.get("medals") + received);
                                 e.getMessage().reply("You received " + received + ":military_medal: from your Crazy Person Box!").mentionRepliedUser(false).queue();
                             } else if (rng < 0.5) {
                                 int received = random.nextInt(11) + 20;
@@ -334,13 +352,101 @@ public class Use {
                                 data.replace("blessings", (long) data.get("blessings") + received);
                                 e.getMessage().reply("You received " + received + ":angel: from your Crazy Person Box!").mentionRepliedUser(false).queue();
                             } else {
-                                String link = e.getMessage().reply("You have received 3x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").mentionRepliedUser(true).complete().getJumpUrl();
-                                EmbedBuilder builder = new EmbedBuilder()
-                                        .setColor(Color.BLUE)
-                                        .setFooter("Ling Ling\nReact when Claimed", e.getJDA().getSelfUser().getAvatarUrl())
-                                        .addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), "Message Link: " + link, false)
-                                        .setTitle("__**Luthier Pulled from Crazy Person Box**__");
-                                Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
+                                if((boolean) data.get("mfCrazyBox")) {
+                                    String link = e.getMessage().reply("You have received 3x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").mentionRepliedUser(true).complete().getJumpUrl();
+                                    EmbedBuilder builder = new EmbedBuilder()
+                                            .setColor(Color.BLUE)
+                                            .setFooter("Ling Ling\nReact when Claimed", e.getJDA().getSelfUser().getAvatarUrl())
+                                            .addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), "Message Link: " + link, false)
+                                            .setTitle("__**Luthier Pulled from Crazy Person Box**__");
+                                    Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
+                                } else {
+                                    data.replace("mfCrazyBox", true);
+                                    data.replace("magicFind", (long) data.get("magicFind") + 1);
+                                    e.getMessage().reply("You found +1 Magic Find!").mentionRepliedUser(false).queue();
+                                }
+                            }
+                        }
+                        new SaveData(e, data);
+                    }
+                }
+                case "rngesus" -> {
+                    if ((long) data.get("RNGesusBox") <= 0) {
+                        e.getMessage().reply("You already used all your RNGesus Boxes, pray to RNGesus to get more!").mentionRepliedUser(false).queue();
+                    } else if (income == 0) {
+                        e.getMessage().reply("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").mentionRepliedUser(false).queue();
+                    } else {
+                        data.replace("RNGesusBox", (long) data.get("RNGesusBox") - 1);
+                        Random random = new Random();
+                        double rng = random.nextDouble();
+                        if ((boolean) data.get("medalToday")) {
+                            if (rng < 0.3) {
+                                long hourly = (long) data.get("income");
+                                long min = hourly * 24;
+                                long received = random.nextInt((int) min) + min;
+                                data.replace("violins", (long) data.get("violins") + received);
+                                e.getMessage().reply("You received " + Numbers.FormatNumber(received) + ":violin: from your RNGesus Box!").mentionRepliedUser(false).queue();
+                    
+                            } else if (rng < 0.6) {
+                                int received = random.nextInt(16) + 30;
+                                data.replace("rice", (long) data.get("rice") + received);
+                                e.getMessage().reply("You received " + received + ":rice: from your RNGesus Box!").mentionRepliedUser(false).queue();
+                            } else if (rng < 0.9) {
+                                int received = random.nextInt(11) + 20;
+                                data.replace("tea", (long) data.get("tea") + received);
+                                e.getMessage().reply("You received " + received + ":bubble_tea: from your RNGesus Box!").mentionRepliedUser(false).queue();
+                            } else {
+                                if((boolean) data.get("mfRNGesusBox")) {
+                                    String link = e.getMessage().reply("You have received 5x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").mentionRepliedUser(true).complete().getJumpUrl();
+                                    EmbedBuilder builder = new EmbedBuilder()
+                                            .setColor(Color.BLUE)
+                                            .setFooter("Ling Ling\nReact when Claimed", e.getJDA().getSelfUser().getAvatarUrl())
+                                            .addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), "Message Link: " + link, false)
+                                            .setTitle("__**Luthier Pulled from RNGesus Box**__");
+                                    Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
+                                } else {
+                                    data.replace("mfRNGesusBox", true);
+                                    data.replace("magicFind", (long) data.get("magicFind") + 1);
+                                    e.getMessage().reply("You found +1 Magic Find!").mentionRepliedUser(false).queue();
+                                }
+                            }
+                        } else {
+                            if (rng < 0.3) {
+                                data.replace("medalToday", true);
+                                long max = (long) data.get("income") / 15000;
+                                long min = (long) data.get("income") / 20000;
+                                long received = random.nextInt((int) (max - min + 1)) + min;
+                                if (received > 25) {
+                                    received = 25;
+                                }
+                                data.replace("medals", (long) data.get("medals") + received);
+                                e.getMessage().reply("You received " + received + ":military_medal: from your RNGesus Box!").mentionRepliedUser(false).queue();
+                            } else if (rng < 0.5) {
+                                int received = random.nextInt(16) + 30;
+                                data.replace("rice", (long) data.get("rice") + received);
+                                e.getMessage().reply("You received " + received + ":rice: from your RNGesus Box!").mentionRepliedUser(false).queue();
+                            } else if (rng < 0.7) {
+                                int received = random.nextInt(11) + 20;
+                                data.replace("tea", (long) data.get("tea") + received);
+                                e.getMessage().reply("You received " + received + ":bubble_tea: from your RNGesus Box!").mentionRepliedUser(false).queue();
+                            } else if (rng < 0.9) {
+                                int received = random.nextInt(5) + 8;
+                                data.replace("blessings", (long) data.get("blessings") + received);
+                                e.getMessage().reply("You received " + received + ":angel: from your RNGesus Box!").mentionRepliedUser(false).queue();
+                            } else {
+                                if((boolean) data.get("mfRNGesusBox")) {
+                                    String link = e.getMessage().reply("You have received 5x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").mentionRepliedUser(true).complete().getJumpUrl();
+                                    EmbedBuilder builder = new EmbedBuilder()
+                                            .setColor(Color.BLUE)
+                                            .setFooter("Ling Ling\nReact when Claimed", e.getJDA().getSelfUser().getAvatarUrl())
+                                            .addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), "Message Link: " + link, false)
+                                            .setTitle("__**Luthier Pulled from RNGesus Box**__");
+                                    Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
+                                } else {
+                                    data.replace("mfRNGesusBox", true);
+                                    data.replace("magicFind", (long) data.get("magicFind") + 1);
+                                    e.getMessage().reply("You found +1 Magic Find!").mentionRepliedUser(false).queue();
+                                }
                             }
                         }
                         new SaveData(e, data);

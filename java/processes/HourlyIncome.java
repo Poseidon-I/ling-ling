@@ -23,7 +23,29 @@ public class HourlyIncome {
 				System.out.println("Problem File is " + file.getName());
 				continue;
 			}
-			data.replace("violins", (long) data.get("violins") + (long) data.get("income"));
+			long violins = (long) data.get("violins");
+			long income = (long) data.get("income");
+			long loan = (long) data.get("loan");
+			if(loan > income * 400) {
+				violins -= income * 0.3;
+				loan -= income * 1.3;
+			} else if(loan > income * 250) {
+				loan -= income;
+			} else if(loan > income * 100) {
+				violins += income * 0.3;
+				loan -= income * 0.7;
+			} else if(loan > 0) {
+				violins += income * 0.6;
+				loan -= income * 0.4;
+			} else {
+				violins += income;
+			}
+			if(loan < 0) {
+				violins -= loan;
+				loan = 0;
+			}
+			data.replace("violins", violins);
+			data.replace("loan", loan);
 			try(FileWriter writer = new FileWriter(file.getAbsolutePath())) {
 				writer.write(data.toJSONString());
 				writer.close();

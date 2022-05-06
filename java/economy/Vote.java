@@ -1,18 +1,14 @@
 package economy;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.discordbots.api.client.DiscordBotListAPI;
 import org.json.simple.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
 
 public class Vote {
 	public static void GiveRewards(MessageReceivedEvent e, JSONObject data, int numBoxes) {
 		data.replace("voteBox", (long) data.get("voteBox") + numBoxes);
 		data.replace("votes", (long) data.get("votes") + 1);
 		data.replace("voteCD", System.currentTimeMillis() + 41400000);
-		e.getMessage().reply("Thank you for voting!  You have received **" + numBoxes + "** Vote Boxes!").mentionRepliedUser(false).queue();
+		e.getMessage().reply("top.gg bad, here's your reward anyway, now please go vote at <https://top.gg/bot/733409243222507670/vote> if you haven't already\nYou have received **" + numBoxes + "** Vote Boxes!").mentionRepliedUser(false).queue();
 		if((long) data.get("votes") % 40 == 0) {
 			data.replace("medals", (long) data.get("medals") + 1);
 			e.getMessage().reply("You have voted " + data.get("votes") + " times!  Enjoy your Ling Ling Medal!").mentionRepliedUser(false).queue();
@@ -27,7 +23,7 @@ public class Vote {
 		if(time < (long) data.get("voteCD")) {
 			e.getMessage().reply("You claimed your reward too recently!  If you forgot to claim your reward after voting previously, this is a friendly reminder to claim your reward right after you vote.\n\n#dontbelikestrad").mentionRepliedUser(false).queue();
 		} else {
-			DiscordBotListAPI api = null;
+			/*DiscordBotListAPI api = null;
 			try(BufferedReader rdr = new BufferedReader(new FileReader("Ling Ling Bot Data\\top.txt"))) {
 				api = new DiscordBotListAPI.Builder()
 						.token(rdr.readLine())
@@ -51,7 +47,8 @@ public class Vote {
 				} else {
 					e.getMessage().reply("You have not voted yet!  Vote here:\n<https://top.gg/bot/733409243222507670/vote>").mentionRepliedUser(false).queue();
 				}
-			});
+			});*/
+			GiveRewards(e, data, 1);
 		}
 	}
 }

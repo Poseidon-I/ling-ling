@@ -34,16 +34,37 @@ public class InterestPenalty {
 			long balance = (long) data.get("bank");
 			if((boolean) data.get("moreInterest")) {
 				earned = (long) (balance * 0.02);
-				balance *= 1.02;
 			} else {
 				earned = (long) (balance * 0.01);
-				balance *= 1.01;
 			}
-			long max = (long) data.get("storage") * 15000000;
-			if(balance > max) {
-				earned -= balance - max;
-				balance = max;
+			long max = (long) data.get("storage") * 20000000;
+			if(earned + balance > max) {
+				earned -= (earned + balance) - max;
 			}
+			
+			long loan = (long) data.get("loan");
+			long income = (long) data.get("loan");
+			long violins = (long) data.get("violins");
+			if(loan > income * 400) {
+				violins -= earned * 4;
+				loan -= earned * 5;
+			} else if(loan > income * 250) {
+				violins -= earned;
+				loan -= earned * 2;
+			} else if(loan > income * 100) {
+				loan -= earned;
+			} else if(loan > 0) {
+				balance += earned * 0.5;
+				loan -= earned * 0.5;
+			} else {
+				balance += earned;
+			}
+			if(loan < 0) {
+				balance -= loan;
+				loan = 0;
+			}
+			data.replace("violins", violins);
+			data.replace("loan", loan);
 			data.replace("bank", balance);
 			data.replace("interestEarned", (long) data.get("interestEarned") + earned);
 			

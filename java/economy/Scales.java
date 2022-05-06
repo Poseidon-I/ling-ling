@@ -18,7 +18,7 @@ public class Scales {
 			e.getMessage().reply("Chill, you can't play two scales at once!  Wait " + seconds + " seconds " + milliseconds + " milliseconds!").mentionRepliedUser(false).queue();
 		} else {
 			long base = Numbers.CalculateAmount(data, random.nextInt(11) + 10);
-			data.replace("violins", (long) data.get("violins") + base);
+			Numbers.CalculateLoan(data, base);
 			if((boolean) data.get("timeCrunch")) {
 				data.replace("scaleCD", time + 64500);
 			} else {

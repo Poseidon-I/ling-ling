@@ -28,10 +28,10 @@ public class ResetIncomes {
 				long income = 0;
 				try {
 					income += 600 * (long) data.get("violinQuality");
-					income += 240 * (long) data.get("skills");
-					income += 150 * (long) data.get("lessonQuality");
-					income += 100 * (long) data.get("stringQuality");
-					income += 200 * (long) data.get("bowQuality");
+					income += 250 * (long) data.get("skills");
+					income += 200 * (long) data.get("lessonQuality");
+					income += 150 * (long) data.get("stringQuality");
+					income += 250 * (long) data.get("bowQuality");
 					if((Boolean) data.get("math")) {
 						income += 6500;
 					}
@@ -79,7 +79,7 @@ public class ResetIncomes {
 					income += 60 * (long) data.get("soloist");
 					
 					income += 300 * (long) data.get("hall");
-					income += 200 * (long) data.get("conductor");
+					income += 500 * (long) data.get("conductor");
 					income += 1000 * (long) data.get("tickets");
 					income += 100 * (long) data.get("advertising");
 					

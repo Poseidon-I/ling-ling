@@ -49,15 +49,15 @@ public class Ban {
 			} catch(Exception exception) {
 				user = "Someone";
 			}
-			e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-			e.getChannel().sendMessage(":hammer: " + user + " was successfully banned!").queue();
 			Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("734697505543159879")).sendMessage("""
 					:hammer: **THE BAN HAMMER HAS SPOKEN** :hammer:
 					            Someone has been banned.
 					
 					https://i.imgur.com/KTyk7EC.mp4""").queue();
 			new LogCase(e, "BAN", id, reason.toString());
+			e.getChannel().sendMessage(":hammer: " + user + " was successfully banned!").queue();
 			Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().queue((channel) -> channel.sendMessage("You were banned.  Reason: " + reason).queue());
+			e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
 		}
 	}
 }

@@ -16,131 +16,143 @@ public class Start {
 				return;
 			}
 			JSONObject data = new JSONObject();
-			data.put("violins", 0);
-			data.put("bank", 0);
-			data.put("loan", 0);
-			data.put("medals", 0);
-			data.put("thirdPlace", 0);
-			data.put("secondPlace", 0);
-			data.put("firstPlace", 0);
+			data.put("violins", 0L);
+			data.put("bank", 0L);
+			data.put("loan", 0L);
+			data.put("medals", 0L);
+			data.put("magicFind", 0L);
+			data.put("thirdPlace", 0L);
+			data.put("secondPlace", 0L);
+			data.put("firstPlace", 0L);
 			
-			data.put("rice", 0);
-			data.put("tea", 0);
-			data.put("blessings", 0);
-			data.put("voteBox", 0);
-			data.put("giftBox", 0);
-			data.put("kits", 0);
-			data.put("linglingBox", 0);
-			data.put("crazyBox", 0);
+			data.put("rice", 0L);
+			data.put("tea", 0L);
+			data.put("blessings", 0L);
+			data.put("voteBox", 0L);
+			data.put("giftBox", 0L);
+			data.put("kits", 0L);
+			data.put("linglingBox", 0L);
+			data.put("crazyBox", 0L);
+			data.put("RNGesusBox", 0L);
 			
-			data.put("income", 0);
-			data.put("streak", 0);
-			data.put("earnings", 0);
-			data.put("winnings", 0);
-			data.put("millions", 0);
-			data.put("robbed", 0);
-			data.put("lostToRob", 0);
-			data.put("scalesPlayed", 0);
+			data.put("income", 0L);
+			data.put("streak", 0L);
+			data.put("earnings", 0L);
+			data.put("winnings", 0L);
+			data.put("millions", 0L);
+			data.put("robbed", 0L);
+			data.put("lostToRob", 0L);
+			data.put("scalesPlayed", 0L);
 			data.put("hoursPractised", 0.0);
-			data.put("rehearsals", 0);
-			data.put("performances", 0);
+			data.put("rehearsals", 0L);
+			data.put("performances", 0L);
 			data.put("hoursTaught", 0.0);
-			data.put("maxStreak", 0);
-			data.put("votes", 0);
-			data.put("luthiers", 0);
-			data.put("giftsGiven", 0);
-			data.put("giftsReceived", 0);
-			data.put("interestEarned", 0);
-			data.put("penaltiesIncurred", 0);
+			data.put("maxStreak", 0L);
+			data.put("votes", 0L);
+			data.put("luthiers", 0L);
+			data.put("giftsGiven", 0L);
+			data.put("giftsReceived", 0L);
+			data.put("interestEarned", 0L);
+			data.put("penaltiesIncurred", 0L);
+			data.put("RNGesusWeight", 0L);
 			
-			data.put("betCD", 0);
-			data.put("scaleCD", 0);
-			data.put("practiceCD", 0);
-			data.put("teachCD", 0);
-			data.put("rehearseCD", 0);
-			data.put("performCD", 0);
-			data.put("robCD", 0);
-			data.put("voteCD", 0);
+			data.put("betCD", 0L);
+			data.put("scaleCD", 0L);
+			data.put("practiceCD", 0L);
+			data.put("teachCD", 0L);
+			data.put("rehearseCD", 0L);
+			data.put("performCD", 0L);
+			data.put("robCD", 0L);
+			data.put("voteCD", 0L);
 			data.put("hadDailyToday", false);
 			data.put("hadGiftToday", false);
 			
-			data.put("efficiency", 0);
-			data.put("luck", 0);
-			data.put("sophistication", 0);
+			data.put("efficiency", 0L);
+			data.put("luck", 0L);
+			data.put("sophistication", 0L);
 			data.put("insurance", false);
 			data.put("timeCrunch", false);
+			data.put("magicFindViolins", 0L);
 			
-			data.put("violinQuality", 0);
-			data.put("skills", 0);
-			data.put("lessonQuality", 0);
-			data.put("stringQuality", 0);
-			data.put("bowQuality", 0);
+			data.put("violinQuality", 0L);
+			data.put("skills", 0L);
+			data.put("lessonQuality", 0L);
+			data.put("stringQuality", 0L);
+			data.put("bowQuality", 0L);
 			data.put("math", false);
 			
 			data.put("orchestra", false);
 			
 			data.put("piccolo", false);
-			data.put("flute", 0);
-			data.put("oboe", 0);
-			data.put("clarinet", 0);
-			data.put("bassoon", 0);
+			data.put("flute", 0L);
+			data.put("oboe", 0L);
+			data.put("clarinet", 0L);
+			data.put("bassoon", 0L);
 			data.put("contraBassoon", false);
 			
-			data.put("horn", 0);
-			data.put("trumpet", 0);
-			data.put("trombone", 0);
-			data.put("tuba", 0);
-			data.put("timpani", 0);
-			data.put("percussion", 0);
+			data.put("horn", 0L);
+			data.put("trumpet", 0L);
+			data.put("trombone", 0L);
+			data.put("tuba", 0L);
+			data.put("timpani", 0L);
+			data.put("percussion", 0L);
 			
 			data.put("violin1", 1);
 			data.put("violin2", 1);
-			data.put("cello", 0);
-			data.put("doubleBass", 0);
-			data.put("piano", 0);
+			data.put("cello", 0L);
+			data.put("doubleBass", 0L);
+			data.put("piano", 0L);
 			data.put("harp", false);
 			
-			data.put("soprano", 0);
-			data.put("alto", 0);
-			data.put("tenor", 0);
-			data.put("bass", 0);
-			data.put("soloist", 0);
+			data.put("soprano", 0L);
+			data.put("alto", 0L);
+			data.put("tenor", 0L);
+			data.put("bass", 0L);
+			data.put("soloist", 0L);
 			
-			data.put("hall", 0);
-			data.put("conductor", 0);
-			data.put("tickets", 0);
-			data.put("advertising", 0);
+			data.put("hall", 0L);
+			data.put("conductor", 0L);
+			data.put("tickets", 0L);
+			data.put("advertising", 0L);
 			
 			data.put("certificate", false);
-			data.put("students", 0);
-			data.put("lessonCharge", 0);
-			data.put("training", 0);
+			data.put("students", 0L);
+			data.put("lessonCharge", 0L);
+			data.put("training", 0L);
 			data.put("studio", false);
 			data.put("longerLessons", false);
 			
-			data.put("moreIncome", 0);
-			data.put("moreCommandIncome", 0);
-			data.put("moreMulti", 0);
-			data.put("moreRob", 0);
+			data.put("moreIncome", 0L);
+			data.put("moreCommandIncome", 0L);
+			data.put("moreMulti", 0L);
+			data.put("moreRob", 0L);
 			data.put("shield", false);
 			data.put("duplicator", false);
+			data.put("magicFindMedals", 0L);
 			
-			data.put("storage", 0);
+			data.put("storage", 0L);
 			data.put("moreInterest", false);
 			data.put("lessPenalty", false);
 			
+			data.put("color", "#0000FF");
+			data.put("DMs", true);
+			data.put("extraInfo", false);
+			
 			data.put("banned", ban);
-			data.put("perms", 0);
+			data.put("perms", 0L);
 			data.put("medalToday", false);
 			data.put("retainDaily", true);
 			data.put("isBooster", false);
 			data.put("serverLevel", 1.0);
+			data.put("mfLLBox", false);
+			data.put("mfCrazyBox", false);
+			data.put("mfRNGesusBox", false);
 			
 			try(FileWriter writer = new FileWriter(file.getAbsolutePath())) {
 				writer.write(data.toJSONString());
 				writer.close();
 				if(!ban) {
-					e.getMessage().reply("Your profile has been created!  Run `!help 3` for a list of economy commands!").mentionRepliedUser(false).queue();
+					e.getMessage().reply("Your profile has been created!  Run `" + Prefix.GetPrefix(e) + "help 3` for a list of economy commands!").mentionRepliedUser(false).queue();
 				}
 			} catch(Exception exception) {
 				e.getMessage().reply("Something went wrong creating the file.  Run `" + Prefix.GetPrefix(e) + "support` for a link to the support server to get in contact with the developer.").mentionRepliedUser(false).queue();

@@ -36,10 +36,10 @@ public class ResetSave {
 					user = "Someone";
 				}
 				file.delete();
-				e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-				e.getChannel().sendMessage(":wastebasket: " + user + "'s save was successfully reset!").queue();
 				new LogCase(e, "Save Reset", id, reason.toString());
+				e.getChannel().sendMessage(":wastebasket: " + user + "'s save was successfully reset!").queue();
 				Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().queue((channel) -> channel.sendMessage("Your save was reset.  Reason: " + reason + "\nContinuation of this action may result in a bot ban.").queue());
+				e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
 			}
 		} else {
 			e.getMessage().reply("This save doesn't even exist, idiot.").mentionRepliedUser(false).queue();

@@ -32,11 +32,11 @@ public class Warn {
 			} catch(Exception exception) {
 				user = "Someone";
 			}
-			e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-			e.getChannel().sendMessage(":warning: " + user + " was successfully warned!").queue();
 			new LogCase(e, "Warn", id, reason.toString());
+			e.getChannel().sendMessage(":warning: " + user + " was successfully warned!").queue();
 			Objects.requireNonNull(e.getJDA().getUserById(id)).
 					openPrivateChannel().queue((channel) -> channel.sendMessage("You have received a warning.  Reason: " + reason + "\nContinuation of this action may result in a save file reset and/or a bot ban.").queue());
+			e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package regular;
 
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Poll {
@@ -37,17 +38,18 @@ public class Poll {
 			return;
 		}
 		send.append("\nPoll created by ").append(e.getAuthor().getName()).append("#").append(e.getAuthor().getDiscriminator());
-		String react = "";
+		Message message = null;
 		if(options > 20) {
 			e.getMessage().reply("Please limit your polls to 20 options or less.").mentionRepliedUser(false).queue();
+			return;
 		} else {
 			e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-			react = e.getMessage().reply(send.toString()).complete().getId();
+			message = e.getChannel().sendMessage(send.toString()).complete();
 		}
 		int hex = 127462;
 		for(int j = 0; j < options; j++) {
 			String unicode = "U+" + Integer.toHexString(hex);
-			e.getChannel().addReactionById(react, unicode).queue();
+			message.addReaction(unicode).queue();
 			hex++;
 		}
 		

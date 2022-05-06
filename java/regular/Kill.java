@@ -8,25 +8,39 @@ public class Kill {
 	public Kill(MessageReceivedEvent e) {
 		String[] message = e.getMessage().getContentRaw().split(" ");
 		StringBuilder targetBuilder = new StringBuilder();
+		StringBuilder useForChecks = new StringBuilder();
 		for(int i = 1; i < message.length; i++) {
 			if(!message[i].contains("<@")) {
 				targetBuilder.append(message[i]).append(" ");
+				useForChecks.append(message[i]);
 			} else {
 				e.getMessage().reply("Don't ping anybody, you idiot, go annoy yourself").mentionRepliedUser(false).queue();
 				return;
 			}
 		}
 		String target = targetBuilder.deleteCharAt(targetBuilder.length() - 1).toString();
+		String check = useForChecks.toString().toLowerCase();
 		String author = e.getAuthor().getName();
+		for(int i = 0; i < check.length(); i ++) {
+			int character = check.charAt(i);
+			if(character < 32 || character > 32 && character <  97 || character > 122) {
+				e.getMessage().reply("nope, i fixed this loophole, no more non-letter characters").mentionRepliedUser(false).queue();
+				return;
+			}
+		}
 		if(author.contains("@everyone") || author.contains("@here")) {
 			e.getMessage().reply("imagine trying to abuse me to cause a mass ping, shame on you").mentionRepliedUser(false).queue();
-		} else if(target.equalsIgnoreCase("i") || target.toLowerCase().contains("ling ling") || target.toLowerCase().contains("lingling") || target.contains("733409243222507670")) {
+		} else if(check.equalsIgnoreCase("i") || check.contains("ling") || check.contains("Iing") || check.contains("733409243222507670")) {
 			e.getMessage().reply("Nice try but you cannot kill me").mentionRepliedUser(false).queue();
-		} else if(target.toLowerCase().contains("strad") || target.toLowerCase().contains("dev") || target.toLowerCase().contains("jacqueline") || target.contains("619989388109152256") || target.contains("488487157372157962")) {
+		} else if(check.contains("strad") || check.contains("straf") || check.contains("dev") || check.contains("jacqueline") || check.contains("619989388109152256") || check.contains("488487157372157962")) {
 			e.getMessage().reply("Imagine trying to kill the devs smh").mentionRepliedUser(false).queue();
+		} else if(check.contains(author.toLowerCase()) || author.toLowerCase().contains(check) || check.contains("self")) {
+			e.getMessage().reply("Do not harm yourself.  I will not allow it.").mentionRepliedUser(false).queue();
+		} else if(check.contains("ludwig") || check.contains("beethoven")) {
+			e.getMessage().reply("killing the best composer ever is ILLEGAL.  i am banning you.").mentionRepliedUser(false).queue();
 		} else {
 			Random random = new Random();
-			int i = random.nextInt(68);
+			int i = random.nextInt(71);
 			switch(i) {
 				case 0 -> e.getMessage().reply("death.fell.accident.water").mentionRepliedUser(false).queue();
 				case 1 -> e.getMessage().reply(target + "'s ears were blasted apart with a piccolo playing 10000 Hz at fortissimo.").mentionRepliedUser(false).queue();
@@ -95,6 +109,9 @@ public class Kill {
 				case 64 -> e.getMessage().reply(target + " was roasted in dragon breath").mentionRepliedUser(false).queue();
 				case 65 -> e.getMessage().reply(":hammer: " + target + " was successfully banned!").mentionRepliedUser(false).queue();
 				case 66 -> e.getMessage().reply(target + " died and lost 9 223 372 036 854 775 807:violin:").mentionRepliedUser(false).queue();
+				case 67 -> e.getMessage().reply(target + " stepped on a lego.  Just a note for those who don't know: The difference between a lego and a landmine is that one kills you and the other is a landmine.").mentionRepliedUser(false).queue();
+				case 68 -> e.getMessage().reply(target + " suffered extreme lag, and got comboed and crit out by " + author).mentionRepliedUser(false).queue();
+				case 69 -> e.getMessage().reply(target + " was killed by a fish in the shadow realm.").mentionRepliedUser(false).queue();
 				default -> e.getMessage().reply("Ling Ling is a benevolent violinist god so nice try but no.").mentionRepliedUser(false).queue();
 			}
 		}

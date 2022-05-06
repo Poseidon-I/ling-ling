@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.FileReader;
 
 public class Leaderboard {
-    public Leaderboard(String emoji, String what, MessageReceivedEvent e, String index, long userNum) {
+    public Leaderboard(String emoji, String what, MessageReceivedEvent e, String index, long userNum, String color) {
         File directory = new File("Ling Ling Bot Data\\Economy Data");
         File[] files = directory.listFiles();
         long place = 1;
@@ -66,14 +66,14 @@ public class Leaderboard {
                 board.append("**").append(i + 1).append(". ").append(user.getName()).append("**#").append(user.getDiscriminator()).append(" `").append(user.getId()).append("`: ").append(Numbers.FormatNumber(Long.parseLong(entry[i].split(" ")[1]))).append(emoji).append("\n");
             } catch (Exception exception) {
                 String[] temp = entry[i].split(" ");
-                board.append("**").append(temp[0]).append(Numbers.FormatNumber(Long.parseLong(temp[1]))).append(temp[2]);
+                board.append("**").append(temp[0]).append(" ").append(Numbers.FormatNumber(Long.parseLong(temp[1]))).append(temp[2]);
             }
         }
         if (place >= 11) {
             board.append("\n**").append(place).append(". You**: ").append(Numbers.FormatNumber(userNum)).append(" ").append(emoji);
         }
         EmbedBuilder builder = new EmbedBuilder()
-                .setColor(Color.BLUE)
+                .setColor(Color.decode(color))
                 .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
                 .setTitle("__**Global Leaderboard**__")
                 .addField("**" + what + " in the World**", board.toString(), false);

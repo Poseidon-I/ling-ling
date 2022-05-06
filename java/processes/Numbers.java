@@ -36,15 +36,17 @@ public class Numbers {
 	
 	public static long CalculateAmount(JSONObject data, long base) {
 		long efficiency = (long) data.get("efficiency");
-		if(efficiency > 20) {
-			base *= Math.pow(1.1, 20) * Math.pow(1.04, efficiency - 20);
+		if(efficiency < 25) {
+			base *= Math.pow(1.08, efficiency);
+		} else if(efficiency < 150) {
+			base *= Math.pow(1.08, 25) * Math.pow(1.04, efficiency - 25);
 		} else {
-			base *= Math.pow(1.1, efficiency);
+			base *= Math.pow(1.08, 25) * Math.pow(1.04, 125) * Math.pow(1.02, efficiency - 150);
 		}
 		base *= Math.pow(1.1, (long) data.get("hall"));
 		base *= Math.pow(1.25, (long) data.get("moreIncome"));
 		if((boolean) data.get("isBooster")) {
-			base *= 1.3;
+			base *= 1.25;
 		}
 		double level = (double) data.get("serverLevel");
 		return (long) (base * level);
@@ -67,5 +69,32 @@ public class Numbers {
 		} else {
 			return (long) (cost * 0.5 + 210000000);
 		}
+	}
+	
+	public static void CalculateLoan(JSONObject data, long earned) {
+		long loan = (long) data.get("loan");
+		long income = (long) data.get("income");
+		long violins = (long) data.get("violins");
+		if(loan > income * 400) {
+			violins -= earned * 0.1;
+			loan -= earned * 1.1;
+		} else if(loan > income * 250) {
+			violins += earned * 0.2;
+			loan -= earned * 0.8;
+		} else if(loan > income * 100) {
+			violins += earned * 0.5;
+			loan -= earned * 0.5;
+		} else if(loan > 0) {
+			violins += earned * 0.8;
+			loan -= earned * 0.2;
+		} else {
+			violins += earned;
+		}
+		if(loan < 0) {
+			violins -= loan;
+			loan = 0;
+		}
+		data.replace("violins", violins);
+		data.replace("loan", loan);
 	}
 }

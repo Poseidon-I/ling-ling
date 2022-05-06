@@ -32,9 +32,9 @@ public class Teach {
 					e.getMessage().reply("You taught a student for a half-hour and earned " + Numbers.FormatNumber(base) + ":violin:").mentionRepliedUser(false).queue();
 					data.replace("hoursTaught", (double) data.get("hoursTaught") + 0.5);
 				}
-				data.replace("violins", (long) data.get("violins") + base);
 				data.replace("teachCD", time + 3540000);
 				data.replace("earnings", (long) data.get("earnings") + base);
+				Numbers.CalculateLoan(data, base);
 				RNGesus.Lootbox(e, data);
 				new SaveData(e, data);
 			}

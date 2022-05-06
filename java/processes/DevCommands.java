@@ -7,15 +7,10 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.attribute.FileTime;
 
 public class DevCommands {
-	public static int CheckPermLevel(MessageReceivedEvent e) {
+	public static long CheckPermLevel(MessageReceivedEvent e) {
 		if(e.getAuthor().getId().equals("619989388109152256") || e.getAuthor().getId().equals("488487157372157962")) {
 			return 3;
 		} else {
@@ -23,8 +18,9 @@ public class DevCommands {
 			try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".json")) {
 				JSONObject data = (JSONObject) parser.parse(reader);
 				reader.close();
-				return (int) data.get("perms");
+				return (long) data.get("perms");
 			} catch(Exception exception) {
+				exception.printStackTrace();
 				return 0;
 			}
 		}
@@ -119,6 +115,13 @@ public class DevCommands {
 					e.getMessage().reply(":no_entry: **403 FORBIDDEN** :no_entry:\nYou do not nave permission to run this command.").mentionRepliedUser(false).queue();
 				}
 			}
+			case "!globalstats" -> {
+				if(CheckPermLevel(e) == 3) {
+					new GlobalStats(e);
+				} else {
+					e.getMessage().reply(":no_entry: **403 FORBIDDEN** :no_entry:\nYou do not nave permission to run this command.").mentionRepliedUser(false).queue();
+				}
+			}
 			case "!resetdaily" -> {
 				if(CheckPermLevel(e) == 3) {
 					new MoreDailyTime(e);
@@ -156,42 +159,28 @@ public class DevCommands {
 					e.getMessage().reply(":no_entry: **403 FORBIDDEN** :no_entry:\nYou do not have permission to run this command.").mentionRepliedUser(false).queue();
 				}
 			}
-			case "!custom" -> {
-				JSONParser parser = new JSONParser();
-				File[] directory = new File("Ling Ling Bot Data\\Economy Data").listFiles();
-				JSONObject data;
+			/*case "!custom" -> {
+				File[] directory = new File("C:\\Users\\ying\\Desktop\\,\\LingLingLeveling\\Leveling Data\\670725611207262219").listFiles();
 				assert directory != null;
 				for(File file : directory) {
+					JSONObject data = new JSONObject();
+					File file2 = new File("Ling Ling Bot Data\\Leveling\\" + file.getName().substring(0, file.getName().lastIndexOf('.')) + ".json");
 					try {
-						FileTime time = (FileTime) Files.getAttribute(Path.of(file.getAbsolutePath()), "creationTime");
-						if(time.toMillis() > 1640332800000L) {
-							try(FileReader reader = new FileReader(file.getAbsolutePath())) {
-								data = (JSONObject) parser.parse(reader);
-								reader.close();
-							} catch(Exception exception) {
-								System.out.println("Problem File is " + file.getName());
-								continue;
-							}
-							data.replace("rice", (long) data.get("rice") - 10);
-							data.replace("tea", (long) data.get("tea") - 10);
-							data.replace("blessings", (long) data.get("blessings") - 10);
-							data.replace("voteBox", (long) data.get("voteBox") - 10);
-							data.replace("giftBox", (long) data.get("giftBox") - 10);
-							data.replace("kits", (long) data.get("kits") - 10);
-							data.replace("linglingBox", (long) data.get("linglingBox") - 10);
-							data.replace("crazyBox", (long) data.get("crazyBox") - 10);
-							try(FileWriter writer = new FileWriter(file.getAbsolutePath())) {
-								writer.write(data.toJSONString());
-								writer.close();
-							} catch(Exception exception) {
-								//nothing here lol
-							}
-						}
+						file2.createNewFile();
+						BufferedReader reader = new BufferedReader(new FileReader(file));
+						String[] oldData = reader.readLine().split(" ");
+						reader.close();
+						data.put("level", Long.parseLong(oldData[0]));
+						data.put("xp", Long.parseLong(oldData[1]));
+						data.put("time", Long.parseLong(oldData[2]));
+						FileWriter writer = new FileWriter(file2);
+						writer.write(data.toJSONString());
+						writer.close();
 					} catch(Exception exception) {
 						exception.printStackTrace();
 					}
 				}
-			}
+			}*/
 		}
 	}
 }

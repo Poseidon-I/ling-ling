@@ -3,6 +3,7 @@ package economy;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.json.simple.JSONObject;
 import processes.Numbers;
+import processes.Prefix;
 
 public class Loan {
 	public Loan(MessageReceivedEvent e) {
@@ -14,7 +15,7 @@ public class Loan {
 		} else {
 			long loan;
 			try {
-				long maxLoan = 100 * (long) data.get("income");
+				long maxLoan = 200 * (long) data.get("income");
 				if (message[1].equals("max")) {
 					loan = maxLoan;
 				} else {
@@ -35,9 +36,8 @@ public class Loan {
 			}
 			data.replace("loan", loan);
 			data.replace("violins", (long) data.get("violins") + loan);
-			e.getMessage().reply("You have borrowed " + Numbers.FormatNumber(loan) + ":violin: from the bank.  Remember to pay back the violins otherwise penalties will bite your back!").mentionRepliedUser(false).queue();
+			e.getMessage().reply("You have borrowed " + Numbers.FormatNumber(loan) + ":violin: from the bank.  Most actions will result in a portion being used to pay back the loan.  You can also manually contribute by using `" + Prefix.GetPrefix(e) + "payloan`.").mentionRepliedUser(false).queue();
 			new SaveData(e, data);
 		}
-		
 	}
 }

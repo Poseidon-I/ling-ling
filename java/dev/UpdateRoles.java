@@ -28,17 +28,17 @@ public class UpdateRoles {
 					data.replace("isBooster", true);
 				}
 				if(list2.contains(e.getGuild().getRoleById("734697410273607751"))) {
-					data.replace("serverLevel", 1.25);
-				} else if(list2.contains(e.getGuild().getRoleById("845121274958184499"))) {
 					data.replace("serverLevel", 1.2);
+				} else if(list2.contains(e.getGuild().getRoleById("845121274958184499"))) {
+					data.replace("serverLevel", 1.16);
 				} else if(list2.contains(e.getGuild().getRoleById("845121187741958166"))) {
-					data.replace("serverLevel", 1.15);
+					data.replace("serverLevel", 1.125);
 				} else if(list2.contains(e.getGuild().getRoleById("734697411074719765"))) {
-					data.replace("serverLevel", 1.11);
+					data.replace("serverLevel", 1.09);
 				} else if(list2.contains(e.getGuild().getRoleById("734697411783688245"))) {
-					data.replace("serverLevel", 1.075);
+					data.replace("serverLevel", 1.06);
 				} else if(list2.contains(e.getGuild().getRoleById("734697412865818645"))) {
-					data.replace("serverLevel", 1.045);
+					data.replace("serverLevel", 1.04);
 				} else if(list2.contains(e.getGuild().getRoleById("734697413901680691"))) {
 					data.replace("serverLevel", 1.02);
 				} else {
