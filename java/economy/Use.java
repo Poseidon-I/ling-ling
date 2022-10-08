@@ -1,461 +1,309 @@
 package economy;
 
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import processes.Numbers;
 
-import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
 public class Use {
-    public Use(MessageReceivedEvent e) {
-        JSONObject data = LoadData.loadData(e);
-        String[] message = e.getMessage().getContentRaw().split(" ");
-        long income = (long) data.get("income");
-        long violins = (long) data.get("violins");
-        long violinsEarned = (long) data.get("earnings");
-        long useAmount;
-        try {
-            useAmount = Long.parseLong(message[2]);
-        } catch (Exception exception) {
-            useAmount = 1;
-        }
-        try {
-            switch (message[1]) {
-                case "rice" -> {
-                    if ((long) data.get("rice") <= 0) {
-                        e.getMessage().reply("You scourge your pantry but find no rice.  Then you remember you don't have any more.").mentionRepliedUser(false).queue();
-                    } else if (useAmount > (long) data.get("rice")) {
-                        e.getMessage().reply("You cannot consume more rice than you have.").mentionRepliedUser(false).queue();
-                    } else if (income == 0) {
-                        e.getMessage().reply("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").mentionRepliedUser(false).queue();
-                    } else {
-                        data.replace("rice", (long) data.get("rice") - useAmount);
-                        data.replace("violins", violins + income * 2 * useAmount);
-                        data.replace("earnings", violinsEarned + income * 2 * useAmount);
-                        new SaveData(e, data);
-                        e.getMessage().reply("You ate " + Numbers.FormatNumber(useAmount) + " Blessed Rice.  The God of Rice gave you " + Numbers.FormatNumber(income * 2 * useAmount) + ":violin:").mentionRepliedUser(false).queue();
-                    }
-                }
-                case "tea" -> {
-                    if ((long) data.get("tea") <= 0) {
-                        e.getMessage().reply("You scourge your fridge but find no more bubble tea.  Then you remember you don't have any more.").mentionRepliedUser(false).queue();
-                    } else if (useAmount > (long) data.get("tea")) {
-                        e.getMessage().reply("You cannot consume more bubble tea than you have.").mentionRepliedUser(false).queue();
-                    } else if (income == 0) {
-                        e.getMessage().reply("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").mentionRepliedUser(false).queue();
-                    } else {
-                        data.replace("tea", (long) data.get("tea") - useAmount);
-                        data.replace("violins", violins + income * 6 * useAmount);
-                        data.replace("earnings", violinsEarned + income * 6 * useAmount);
-                        new SaveData(e, data);
-                        e.getMessage().reply("You drank " + Numbers.FormatNumber(useAmount) + " Bubble Tea.  Brett and Eddy approved and gave you " + Numbers.FormatNumber(income * 6 * useAmount) + ":violin:").mentionRepliedUser(false).queue();
-                    }
-                }
-                case "blessing" -> {
-                    if ((long) data.get("blessings") <= 0) {
-                        e.getMessage().reply("You already used all your blessings, run more commands to get back into Ling Ling's good graces!").mentionRepliedUser(false).queue();
-                    } else if (income == 0) {
-                        e.getMessage().reply("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").mentionRepliedUser(false).queue();
-                    } else {
-                        Random random = new Random();
-                        double num = random.nextDouble();
-                        if (num > 0.5) {
-                            data.replace("medals", (long) data.get("medals") + 1);
-                            e.getMessage().reply("Ling Ling liked your performance.  You walked away with 1:military_medal: and " + Numbers.FormatNumber(income * 24 * useAmount) + ":violin:").mentionRepliedUser(false).queue();
-                        } else if (num > 0.2) {
-                            data.replace("medals", (long) data.get("medals") + 2);
-                            e.getMessage().reply("Ling Ling enjoyed your performance.  You walked away with 2:military_medal: and " + Numbers.FormatNumber(income * 24 * useAmount) + ":violin:").mentionRepliedUser(false).queue();
-                        } else {
-                            data.replace("medals", (long) data.get("medals") + 3);
-                            e.getMessage().reply("Ling Ling greatly enjoyed your performance.  You walked away with **3**:military_medal: and " + Numbers.FormatNumber(income * 24 * useAmount) + ":violin:").mentionRepliedUser(false).queue();
-                        }
-                        data.replace("blessings", (long) data.get("blessings") - 1);
-                        data.replace("violins", violins + income * 24 * useAmount);
-                        data.replace("earnings", violinsEarned + income * 24 * useAmount);
-                        new SaveData(e, data);
-                    }
-                }
-                case "vote" -> {
-                    if ((long) data.get("voteBox") <= 0) {
-                        e.getMessage().reply("You already used all your vote boxes, vote for the bot to get more!").mentionRepliedUser(false).queue();
-                    } else if (income == 0) {
-                        e.getMessage().reply("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").mentionRepliedUser(false).queue();
-                    } else {
-                        data.replace("voteBox", (long) data.get("voteBox") - 1);
-                        Random random = new Random();
-                        double rng = random.nextDouble();
-                        if (rng < 0.1) {
-                            data.replace("tea", (long) data.get("tea") + 1);
-                            e.getMessage().reply("You received 1:bubble_tea: from your Vote Box!").mentionRepliedUser(false).queue();
-                        } else if (rng < 0.4) {
-                            int received = random.nextInt(3) + 1;
-                            data.replace("rice", (long) data.get("rice") + received);
-                            e.getMessage().reply("You received " + received + ":rice: from your Vote Box!").mentionRepliedUser(false).queue();
-                        } else {
-                            long hourly = (long) data.get("income");
-                            long min = hourly * 4;
-                            long received = random.nextInt((int) min) + min;
-                            data.replace("violins", (long) data.get("violins") + received);
-                            e.getMessage().reply("You received " + Numbers.FormatNumber(received) + ":violin: from your Vote Box!").mentionRepliedUser(false).queue();
-                        }
-                        new SaveData(e, data);
-                    }
-                }
-                case "gift" -> {
-                    if ((long) data.get("giftBox") <= 0) {
-                        e.getMessage().reply("You already used all your gift boxes, wait for some generous people to get more!").mentionRepliedUser(false).queue();
-                    } else if (income == 0) {
-                        e.getMessage().reply("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").mentionRepliedUser(false).queue();
-                    } else {
-                        data.replace("giftBox", (long) data.get("giftBox") - 1);
-                        Random random = new Random();
-                        double rng = random.nextDouble();
-                        if ((boolean) data.get("medalToday")) {
-                            if (rng < 0.2) {
-                                int received = random.nextInt(3) + 1;
-                                data.replace("tea", (long) data.get("tea") + received);
-                                e.getMessage().reply("You received " + received + ":bubble_tea: from your Gift Box!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.5) {
-                                int received = random.nextInt(4) + 2;
-                                data.replace("rice", (long) data.get("rice") + received);
-                                e.getMessage().reply("You received " + received + ":rice: from your Gift Box!").mentionRepliedUser(false).queue();
-                            } else {
-                                long hourly = (long) data.get("income");
-                                long min = hourly * 6;
-                                long received = random.nextInt((int) min) + min;
-                                data.replace("violins", (long) data.get("violins") + received);
-                                e.getMessage().reply("You received " + Numbers.FormatNumber(received) + ":violin: from your Gift Box!").mentionRepliedUser(false).queue();
-                            }
-                        } else {
-                            if (rng < 0.05) {
-                                data.replace("medalToday", true);
-                                data.replace("medals", (long) data.get("medals") + 1);
-                                e.getMessage().reply("You received 1:military_medal: from your Gift Box!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.2) {
-                                int received = random.nextInt(3) + 1;
-                                data.replace("tea", (long) data.get("tea") + received);
-                                e.getMessage().reply("You received " + received + ":bubble_tea: from your Gift Box!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.5) {
-                                int received = random.nextInt(4) + 2;
-                                data.replace("rice", (long) data.get("rice") + received);
-                                e.getMessage().reply("You received " + received + ":rice: from your Gift Box!").mentionRepliedUser(false).queue();
-                            } else {
-                                long hourly = (long) data.get("income");
-                                long min = hourly * 6;
-                                long received = random.nextInt((int) min) + min;
-                                data.replace("violins", (long) data.get("violins") + received);
-                                e.getMessage().reply("You received " + Numbers.FormatNumber(received) + ":violin: from your Gift Box!").mentionRepliedUser(false).queue();
-                            }
-                        }
-                        new SaveData(e, data);
-                    }
-                }
-                case "kit" -> {
-                    if ((long) data.get("kits") <= 0) {
-                        e.getMessage().reply("You already used all your Musician Kits, play the bot to earn more!").mentionRepliedUser(false).queue();
-                    } else if (income == 0) {
-                        e.getMessage().reply("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").mentionRepliedUser(false).queue();
-                    } else {
-                        data.replace("kits", (long) data.get("kits") - 1);
-                        Random random = new Random();
-                        double rng = random.nextDouble();
-                        if ((boolean) data.get("medalToday")) {
-                            if (rng < 0.3) {
-                                int received = random.nextInt(5) + 8;
-                                data.replace("tea", (long) data.get("tea") + received);
-                                e.getMessage().reply("You received " + received + ":bubble_tea: from your Musician Kit!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.6) {
-                                int received = random.nextInt(6) + 10;
-                                data.replace("rice", (long) data.get("rice") + received);
-                                e.getMessage().reply("You received " + received + ":rice: from your Musician Kit!").mentionRepliedUser(false).queue();
-                            } else {
-                                long hourly = (long) data.get("income");
-                                long min = hourly * 8;
-                                long received = random.nextInt((int) min) + min;
-                                data.replace("violins", (long) data.get("violins") + received);
-                                e.getMessage().reply("You received " + Numbers.FormatNumber(received) + ":violin: from your Musician Kit!").mentionRepliedUser(false).queue();
-                            }
-                        } else {
-                            if (rng < 0.33) {
-                                data.replace("medalToday", true);
-                                int received = random.nextInt(1) + 1;
-                                data.replace("blessings", (long) data.get("blessings") + received);
-                                e.getMessage().reply("You received " + received + ":angel: from your Musician Kit!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.34) {
-                                data.replace("medalToday", true);
-                                long max = (long) data.get("income") / 30000;
-                                long min = (long) data.get("income") / 50000;
-                                long received = random.nextInt((int) (max - min + 1)) + min;
-                                if (received > 5) {
-                                    received = 5;
-                                }
-                                data.replace("medals", (long) data.get("medals") + received);
-                                e.getMessage().reply("You received " + received + ":military_medal: from your Musician Kit!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.67) {
-                                int received = random.nextInt(5) + 8;
-                                data.replace("tea", (long) data.get("tea") + received);
-                                e.getMessage().reply("You received " + received + ":bubble_tea: from your Musician Kit!").mentionRepliedUser(false).queue();
-                            } else {
-                                int received = random.nextInt(6) + 10;
-                                data.replace("rice", (long) data.get("rice") + received);
-                                e.getMessage().reply("You received " + received + ":rice: from your Musician Kit!").mentionRepliedUser(false).queue();
-                            }
-                        }
-                        new SaveData(e, data);
-                    }
-                }
-                case "llbox" -> {
-                    if ((long) data.get("linglingBox") <= 0) {
-                        e.getMessage().reply("You already used all your Ling Ling Boxes, play the bot to get more!").mentionRepliedUser(false).queue();
-                    } else if (income == 0) {
-                        e.getMessage().reply("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").mentionRepliedUser(false).queue();
-                    } else {
-                        data.replace("linglingBox", (long) data.get("linglingBox") - 1);
-                        Random random = new Random();
-                        double rng = random.nextDouble();
-                        if ((boolean) data.get("medalToday")) {
-                            if (rng < 0.39) {
-                                long hourly = (long) data.get("income");
-                                long min = hourly * 12;
-                                long received = random.nextInt((int) min) + min;
-                                data.replace("violins", (long) data.get("violins") + received);
-                                e.getMessage().reply("You received " + Numbers.FormatNumber(received) + ":violin: from your Ling Ling Box!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.69) {
-                                int received = random.nextInt(11) + 15;
-                                data.replace("rice", (long) data.get("rice") + received);
-                                e.getMessage().reply("You received " + received + ":rice: from your Ling Ling Box!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.99) {
-                                int received = random.nextInt(6) + 10;
-                                data.replace("tea", (long) data.get("tea") + received);
-                                e.getMessage().reply("You received " + received + ":bubble_tea: from your Ling Ling Box!").mentionRepliedUser(false).queue();
-                            } else {
-                                if((boolean) data.get("mfLLBox")) {
-                                    String link = e.getMessage().reply("You have received 1x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").mentionRepliedUser(true).complete().getJumpUrl();
-                                    EmbedBuilder builder = new EmbedBuilder()
-                                            .setColor(Color.BLUE)
-                                            .setFooter("Ling Ling\nReact when Claimed", e.getJDA().getSelfUser().getAvatarUrl())
-                                            .addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), "Message Link: " + link, false)
-                                            .setTitle("__**Luthier Pulled from Ling Ling Box**__");
-                                    Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
-                                } else {
-                                    data.replace("mfLLBox", true);
-                                    data.replace("magicFind", (long) data.get("magicFind") + 1);
-                                    e.getMessage().reply("You found +1 Magic Find!").mentionRepliedUser(false).queue();
-                                }
-                            }
-                        } else {
-                            if (rng < 0.09) {
-                                data.replace("medalToday", true);
-                                long max = (long) data.get("income") / 25000;
-                                long min = (long) data.get("income") / 40000;
-                                long received = random.nextInt((int) (max - min + 1)) + min;
-                                if (received > 10) {
-                                    received = 10;
-                                }
-                                data.replace("medals", (long) data.get("medals") + received);
-                                e.getMessage().reply("You received " + received + ":military_medal: from your Ling Ling Box!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.39) {
-                                int received = random.nextInt(11) + 15;
-                                data.replace("rice", (long) data.get("rice") + received);
-                                e.getMessage().reply("You received " + received + ":rice: from your Ling Ling Box!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.69) {
-                                int received = random.nextInt(6) + 10;
-                                data.replace("tea", (long) data.get("tea") + received);
-                                e.getMessage().reply("You received " + received + ":bubble_tea: from your Ling Ling Box!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.99) {
-                                int received = random.nextInt(3) + 2;
-                                data.replace("blessings", (long) data.get("blessings") + received);
-                                e.getMessage().reply("You received " + received + ":angel: from your Ling Ling Box!").mentionRepliedUser(false).queue();
-                            } else {
-                                if((boolean) data.get("mfLLBoox")) {
-                                    String link = e.getMessage().reply("You have received 1x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").mentionRepliedUser(true).complete().getJumpUrl();
-                                    EmbedBuilder builder = new EmbedBuilder()
-                                            .setColor(Color.BLUE)
-                                            .setFooter("Ling Ling\nReact when Claimed", e.getJDA().getSelfUser().getAvatarUrl())
-                                            .addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), "Message Link: " + link, false)
-                                            .setTitle("__**Luthier Pulled from Ling Ling Box**__");
-                                    Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
-                                } else {
-                                    data.replace("mfLLBox", true);
-                                    data.replace("magicFind", (long) data.get("magicFind") + 1);
-                                    e.getMessage().reply("You found +1 Magic Find!").mentionRepliedUser(false).queue();
-                                }
-                            }
-                        }
-                        new SaveData(e, data);
-                    }
-                }
-                case "crazybox" -> {
-                    if ((long) data.get("crazyBox") <= 0) {
-                        e.getMessage().reply("You already used all your Crazy Person Boxes, play the bot to get more!").mentionRepliedUser(false).queue();
-                    } else if (income == 0) {
-                        e.getMessage().reply("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").mentionRepliedUser(false).queue();
-                    } else {
-                        data.replace("crazyBox", (long) data.get("crazyBox") - 1);
-                        Random random = new Random();
-                        double rng = random.nextDouble();
-                        if ((boolean) data.get("medalToday")) {
-                            if (rng < 0.3) {
-                                long hourly = (long) data.get("income");
-                                long min = hourly * 18;
-                                long received = random.nextInt((int) min) + min;
-                                data.replace("violins", (long) data.get("violins") + received);
-                                e.getMessage().reply("You received " + Numbers.FormatNumber(received) + ":violin: from your Crazy Person Box!").mentionRepliedUser(false).queue();
-
-                            } else if (rng < 0.6) {
-                                int received = random.nextInt(11) + 20;
-                                data.replace("rice", (long) data.get("rice") + received);
-                                e.getMessage().reply("You received " + received + ":rice: from your Crazy Person Box!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.9) {
-                                int received = random.nextInt(9) + 12;
-                                data.replace("tea", (long) data.get("tea") + received);
-                                e.getMessage().reply("You received " + received + ":bubble_tea: from your Crazy Person Box!").mentionRepliedUser(false).queue();
-                            } else {
-                                if((boolean) data.get("mfCrazyBox")) {
-                                    String link = e.getMessage().reply("You have received 3x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").mentionRepliedUser(true).complete().getJumpUrl();
-                                    EmbedBuilder builder = new EmbedBuilder()
-                                            .setColor(Color.BLUE)
-                                            .setFooter("Ling Ling\nReact when Claimed", e.getJDA().getSelfUser().getAvatarUrl())
-                                            .addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), "Message Link: " + link, false)
-                                            .setTitle("__**Luthier Pulled from Crazy Person Box**__");
-                                    Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
-                                } else {
-                                    data.replace("mfCrazyBox", true);
-                                    data.replace("magicFind", (long) data.get("magicFind") + 1);
-                                    e.getMessage().reply("You found +1 Magic Find!").mentionRepliedUser(false).queue();
-                                }
-                            }
-                        } else {
-                            if (rng < 0.3) {
-                                data.replace("medalToday", true);
-                                long max = (long) data.get("income") / 20000;
-                                long min = (long) data.get("income") / 30000;
-                                long received = random.nextInt((int) (max - min + 1)) + min;
-                                if (received > 15) {
-                                    received = 15;
-                                }
-                                data.replace("medals", (long) data.get("medals") + received);
-                                e.getMessage().reply("You received " + received + ":military_medal: from your Crazy Person Box!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.5) {
-                                int received = random.nextInt(11) + 20;
-                                data.replace("rice", (long) data.get("rice") + received);
-                                e.getMessage().reply("You received " + received + ":rice: from your Crazy Person Box!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.7) {
-                                int received = random.nextInt(9) + 12;
-                                data.replace("tea", (long) data.get("tea") + received);
-                                e.getMessage().reply("You received " + received + ":bubble_tea: from your Crazy Person Box!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.9) {
-                                int received = random.nextInt(5) + 4;
-                                data.replace("blessings", (long) data.get("blessings") + received);
-                                e.getMessage().reply("You received " + received + ":angel: from your Crazy Person Box!").mentionRepliedUser(false).queue();
-                            } else {
-                                if((boolean) data.get("mfCrazyBox")) {
-                                    String link = e.getMessage().reply("You have received 3x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").mentionRepliedUser(true).complete().getJumpUrl();
-                                    EmbedBuilder builder = new EmbedBuilder()
-                                            .setColor(Color.BLUE)
-                                            .setFooter("Ling Ling\nReact when Claimed", e.getJDA().getSelfUser().getAvatarUrl())
-                                            .addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), "Message Link: " + link, false)
-                                            .setTitle("__**Luthier Pulled from Crazy Person Box**__");
-                                    Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
-                                } else {
-                                    data.replace("mfCrazyBox", true);
-                                    data.replace("magicFind", (long) data.get("magicFind") + 1);
-                                    e.getMessage().reply("You found +1 Magic Find!").mentionRepliedUser(false).queue();
-                                }
-                            }
-                        }
-                        new SaveData(e, data);
-                    }
-                }
-                case "rngesus" -> {
-                    if ((long) data.get("RNGesusBox") <= 0) {
-                        e.getMessage().reply("You already used all your RNGesus Boxes, pray to RNGesus to get more!").mentionRepliedUser(false).queue();
-                    } else if (income == 0) {
-                        e.getMessage().reply("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").mentionRepliedUser(false).queue();
-                    } else {
-                        data.replace("RNGesusBox", (long) data.get("RNGesusBox") - 1);
-                        Random random = new Random();
-                        double rng = random.nextDouble();
-                        if ((boolean) data.get("medalToday")) {
-                            if (rng < 0.3) {
-                                long hourly = (long) data.get("income");
-                                long min = hourly * 24;
-                                long received = random.nextInt((int) min) + min;
-                                data.replace("violins", (long) data.get("violins") + received);
-                                e.getMessage().reply("You received " + Numbers.FormatNumber(received) + ":violin: from your RNGesus Box!").mentionRepliedUser(false).queue();
-                    
-                            } else if (rng < 0.6) {
-                                int received = random.nextInt(16) + 30;
-                                data.replace("rice", (long) data.get("rice") + received);
-                                e.getMessage().reply("You received " + received + ":rice: from your RNGesus Box!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.9) {
-                                int received = random.nextInt(11) + 20;
-                                data.replace("tea", (long) data.get("tea") + received);
-                                e.getMessage().reply("You received " + received + ":bubble_tea: from your RNGesus Box!").mentionRepliedUser(false).queue();
-                            } else {
-                                if((boolean) data.get("mfRNGesusBox")) {
-                                    String link = e.getMessage().reply("You have received 5x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").mentionRepliedUser(true).complete().getJumpUrl();
-                                    EmbedBuilder builder = new EmbedBuilder()
-                                            .setColor(Color.BLUE)
-                                            .setFooter("Ling Ling\nReact when Claimed", e.getJDA().getSelfUser().getAvatarUrl())
-                                            .addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), "Message Link: " + link, false)
-                                            .setTitle("__**Luthier Pulled from RNGesus Box**__");
-                                    Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
-                                } else {
-                                    data.replace("mfRNGesusBox", true);
-                                    data.replace("magicFind", (long) data.get("magicFind") + 1);
-                                    e.getMessage().reply("You found +1 Magic Find!").mentionRepliedUser(false).queue();
-                                }
-                            }
-                        } else {
-                            if (rng < 0.3) {
-                                data.replace("medalToday", true);
-                                long max = (long) data.get("income") / 15000;
-                                long min = (long) data.get("income") / 20000;
-                                long received = random.nextInt((int) (max - min + 1)) + min;
-                                if (received > 25) {
-                                    received = 25;
-                                }
-                                data.replace("medals", (long) data.get("medals") + received);
-                                e.getMessage().reply("You received " + received + ":military_medal: from your RNGesus Box!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.5) {
-                                int received = random.nextInt(16) + 30;
-                                data.replace("rice", (long) data.get("rice") + received);
-                                e.getMessage().reply("You received " + received + ":rice: from your RNGesus Box!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.7) {
-                                int received = random.nextInt(11) + 20;
-                                data.replace("tea", (long) data.get("tea") + received);
-                                e.getMessage().reply("You received " + received + ":bubble_tea: from your RNGesus Box!").mentionRepliedUser(false).queue();
-                            } else if (rng < 0.9) {
-                                int received = random.nextInt(5) + 8;
-                                data.replace("blessings", (long) data.get("blessings") + received);
-                                e.getMessage().reply("You received " + received + ":angel: from your RNGesus Box!").mentionRepliedUser(false).queue();
-                            } else {
-                                if((boolean) data.get("mfRNGesusBox")) {
-                                    String link = e.getMessage().reply("You have received 5x Luthier!  Congratulations!  Please DM a Bot Admin or Stradivarius Violin#6156 to claim your prize.").mentionRepliedUser(true).complete().getJumpUrl();
-                                    EmbedBuilder builder = new EmbedBuilder()
-                                            .setColor(Color.BLUE)
-                                            .setFooter("Ling Ling\nReact when Claimed", e.getJDA().getSelfUser().getAvatarUrl())
-                                            .addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), "Message Link: " + link, false)
-                                            .setTitle("__**Luthier Pulled from RNGesus Box**__");
-                                    Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
-                                } else {
-                                    data.replace("mfRNGesusBox", true);
-                                    data.replace("magicFind", (long) data.get("magicFind") + 1);
-                                    e.getMessage().reply("You found +1 Magic Find!").mentionRepliedUser(false).queue();
-                                }
-                            }
-                        }
-                        new SaveData(e, data);
-                    }
-                }
-                default -> e.getMessage().reply("You can't use something that doesn't exist, that doesn't make sense.").mentionRepliedUser(false).queue();
-            }
-        } catch (Exception exception) {
-            e.getMessage().reply("You can't use nothing stupid.").mentionRepliedUser(false).queue();
-        }
-    }
+	public static void generateArray(Map<String, Long> addItems, long rolls, long range, long min) {
+		long[] temp = {0, 0, 0, 0, 0, 0, 0, 0}; //Grains, Plastic, Water, TeaBase, Wood, PineSap, Steel, HorseHair
+		Random random = new Random();
+		for(int i = 0; i < rolls; i++) {
+			temp[random.nextInt(8)] += random.nextLong(range) + min;
+		}
+		try {
+			addItems.replace("grains", addItems.get("grains") + temp[0]);
+			addItems.replace("plastic", addItems.get("plastic") + temp[1]);
+			addItems.replace("water", addItems.get("water") + temp[2]);
+			addItems.replace("teaBase", addItems.get("teaBase") + temp[3]);
+			addItems.replace("wood", addItems.get("wood") + temp[4]);
+			addItems.replace("pineSap", addItems.get("pineSap") + temp[5]);
+			addItems.replace("steel", addItems.get("steel") + temp[6]);
+			addItems.replace("horseHair", addItems.get("horseHair") + temp[7]);
+		} catch(Exception exception) {
+			addItems.put("grains", temp[0]);
+			addItems.put("plastic", temp[1]);
+			addItems.put("water", temp[2]);
+			addItems.put("teaBase", temp[3]);
+			addItems.put("wood", temp[4]);
+			addItems.put("pineSap", temp[5]);
+			addItems.put("steel", temp[6]);
+			addItems.put("horseHair", temp[7]);
+		}
+	}
+	
+	public static void addTime(JSONObject data, String item, long amount) {
+		long original = (long) data.get(item);
+		if(System.currentTimeMillis() < original) {
+			data.replace(item, (long) data.get(item) + amount);
+		} else {
+			data.replace(item, System.currentTimeMillis() + amount);
+		}
+	}
+	
+	public static void use(@NotNull SlashCommandInteractionEvent e) {
+		JSONObject data = LoadData.loadData(e);
+		Random random = new Random();
+		Map<String, Long> addItems = new HashMap<>(0);
+		long income = (long) data.get("income");
+		long useAmount;
+		long extraRolls = income / 50000;
+		try {
+			useAmount = Objects.requireNonNull(e.getOption("amount")).getAsLong();
+		} catch(Exception exception) {
+			try {
+				if(Objects.requireNonNull(e.getOption("amount")).getAsString().equals("max")) {
+					useAmount = 2147483647;
+				} else {
+					useAmount = 1;
+				}
+			} catch(Exception exception1) {
+				useAmount = 1;
+			}
+		}
+		if(useAmount < 1) {
+			e.reply("You can't use a negative amount of items.  Grow a brain.").setEphemeral(true).queue();
+			return;
+		}
+		try {
+			switch(Objects.requireNonNull(e.getOption("item")).getAsString()) {
+				case "rice" -> {
+					long rice = (long) data.get("rice");
+					if(rice <= 0) {
+						e.reply("You scourge your pantry but find no rice.  Then you remember you don't have any more.").setEphemeral(true).queue();
+						return;
+					} else if(income == 0) {
+						e.reply("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").setEphemeral(true).queue();
+						return;
+					} else {
+						if(useAmount > rice) {
+							useAmount = rice;
+						}
+						addItems.put("rice", -useAmount);
+						addItems.put("violins", income * 2 * useAmount);
+						e.reply("You ate " + Numbers.formatNumber(useAmount) + Emoji.RICE + "  The God of Rice gave you " + Numbers.formatNumber(income * 2 * useAmount) + Emoji.VIOLINS + "\nYou have " + (rice - useAmount) + Emoji.RICE + " left").queue();
+					}
+				}
+				case "tea" -> {
+					long tea = (long) data.get("tea");
+					if(tea <= 0) {
+						e.reply("You scourge your fridge but find no more bubble tea.  Then you remember you don't have any more.").setEphemeral(true).queue();
+						return;
+					} else if(income == 0) {
+						e.reply("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").setEphemeral(true).queue();
+						return;
+					} else {
+						if(useAmount > tea) {
+							useAmount = tea;
+						}
+						addItems.put("tea", -useAmount);
+						addItems.put("violins", income * 6 * useAmount);
+						e.reply("You drank " + Numbers.formatNumber(useAmount) + Emoji.TEA + "  Brett and Eddy approved and gave you " + Numbers.formatNumber(income * 6 * useAmount) + Emoji.VIOLINS + "\nYou have " + (tea - useAmount) + Emoji.TEA + " left").queue();
+					}
+				}
+				case "blessing" -> {
+					long blessings = (long) data.get("blessings");
+					if((long) data.get("blessings") <= 0) {
+						e.reply("You already used all your blessings, run more commands to get back into Ling Ling's good graces!").setEphemeral(true).queue();
+						return;
+					} else if(income == 0) {
+						e.reply("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.").setEphemeral(true).queue();
+						return;
+					} else {
+						if(useAmount > blessings) {
+							useAmount = blessings;
+						}
+						double num = random.nextDouble();
+						long[] medals = {0, 0, 0, 0}; // Medals, First, Second, Third
+						for(int i = 0; i < useAmount; i++) {
+							if(num > 0.5) {
+								medals[0]++;
+								medals[3]++;
+							} else if(num > 0.2) {
+								medals[0] += 2;
+								medals[2]++;
+							} else {
+								medals[0] += 3;
+								medals[1]++;
+							}
+						}
+						addItems.put("blessings", -useAmount);
+						addItems.put("violins", income * 24 * useAmount);
+						addItems.put("medals", medals[0]);
+						addItems.put("firstPlace", medals[1]);
+						addItems.put("secondPlace", medals[2]);
+						addItems.put("thirdPlace", medals[3]);
+						e.reply("You performed " + useAmount + " times in front of Ling Ling!  He (she?) gave you the following ratings...\n" + Emoji.THIRD_PLACE + " " + medals[3] + "\n" + Emoji.SECOND_PLACE + " " + medals[2] + "\n" + Emoji.FIRST_PLACE + " " + medals[1] + "\n\nYou walked away with...\n" + Emoji.VIOLINS + " " + income * 24 * useAmount + "\n" + Emoji.MEDALS + " " + medals[0]).queue();
+					}
+				}
+				case "free" -> {
+					long boxes = (long) data.get("voteBox");
+					if(boxes <= 0) {
+						e.reply("You already used all your Free Boxes!  Wait to get more!").setEphemeral(true).queue();
+						return;
+					} else {
+						if(useAmount > boxes) {
+							useAmount = boxes;
+						}
+						addItems.put("voteBox", -useAmount);
+						for(int i = 0; i < useAmount; i++) {
+							generateArray(addItems, 2 + extraRolls, 2, 2);
+						}
+						e.reply("You opened " + Numbers.formatNumber(useAmount) + Emoji.FREE_BOX + "  You received the following items...\n\n" + Numbers.formatNumber(addItems.get("grains")) + Emoji.GRAINS + " " + Numbers.formatNumber(addItems.get("plastic")) + Emoji.PLASTIC + " " + Numbers.formatNumber(addItems.get("water")) + Emoji.WATER + " " + Numbers.formatNumber(addItems.get("teaBase")) + Emoji.TEABAG + " " + Numbers.formatNumber(addItems.get("wood")) + Emoji.WOOD + " " + Numbers.formatNumber(addItems.get("pineSap")) + Emoji.SAP + " " + Numbers.formatNumber(addItems.get("steel")) + Emoji.STEEL + " " + Numbers.formatNumber(addItems.get("horseHair")) + Emoji.HORSE_HAIR).queue();
+					}
+				}
+				case "gift" -> {
+					long boxes = (long) data.get("giftBox");
+					if(boxes <= 0) {
+						e.reply("You already used all your Gift Boxes!  Convince your friends to gift you for more!").setEphemeral(true).queue();
+						return;
+					} else {
+						if(useAmount > boxes) {
+							useAmount = boxes;
+						}
+						addItems.put("giftBox", -useAmount);
+						for(int i = 0; i < useAmount; i++) {
+							generateArray(addItems, 3 + extraRolls, 3, 3);
+						}
+						e.reply("You opened " + Numbers.formatNumber(useAmount) + Emoji.GIFT_BOX + "  You received the following items...\n\n" + Numbers.formatNumber(addItems.get("grains")) + Emoji.GRAINS + " " + Numbers.formatNumber(addItems.get("plastic")) + Emoji.PLASTIC + " " + Numbers.formatNumber(addItems.get("water")) + Emoji.WATER + " " + Numbers.formatNumber(addItems.get("teaBase")) + Emoji.TEABAG + " " + Numbers.formatNumber(addItems.get("wood")) + Emoji.WOOD + " " + Numbers.formatNumber(addItems.get("pineSap")) + Emoji.SAP + " " + Numbers.formatNumber(addItems.get("steel")) + Emoji.STEEL + " " + Numbers.formatNumber(addItems.get("horseHair")) + Emoji.HORSE_HAIR).queue();
+					}
+				}
+				case "kit" -> {
+					long boxes = (long) data.get("kits");
+					if(boxes <= 0) {
+						e.reply("You already used all your Musician Kits!").setEphemeral(true).queue();
+						return;
+					} else {
+						if(useAmount > boxes) {
+							useAmount = boxes;
+						}
+						addItems.put("kits", -useAmount);
+						for(int i = 0; i < useAmount; i++) {
+							generateArray(addItems, 4 + extraRolls, 4, 5);
+						}
+						e.reply("You opened " + Numbers.formatNumber(useAmount) + Emoji.MUSICIAN_KIT + "  You received the following items...\n\n" + Numbers.formatNumber(addItems.get("grains")) + Emoji.GRAINS + " " + Numbers.formatNumber(addItems.get("plastic")) + Emoji.PLASTIC + " " + Numbers.formatNumber(addItems.get("water")) + Emoji.WATER + " " + Numbers.formatNumber(addItems.get("teaBase")) + Emoji.TEABAG + " " + Numbers.formatNumber(addItems.get("wood")) + Emoji.WOOD + " " + Numbers.formatNumber(addItems.get("pineSap")) + Emoji.SAP + " " + Numbers.formatNumber(addItems.get("steel")) + Emoji.STEEL + " " + Numbers.formatNumber(addItems.get("horseHair")) + Emoji.HORSE_HAIR).queue();
+					}
+				}
+				case "llbox" -> {
+					long boxes = (long) data.get("linglingBox");
+					if(boxes <= 0) {
+						e.reply("You already used all your Ling Ling Boxes!").setEphemeral(true).queue();
+						return;
+					} else {
+						if(useAmount > boxes) {
+							useAmount = boxes;
+						}
+						addItems.put("linglingBox", -useAmount);
+						for(int i = 0; i < useAmount; i++) {
+							generateArray(addItems, 5 + extraRolls, 4, 7);
+						}
+						e.reply("You opened " + Numbers.formatNumber(useAmount) + Emoji.LING_LING_BOX + "  You received the following items...\n\n" + Numbers.formatNumber(addItems.get("grains")) + Emoji.GRAINS + " " + Numbers.formatNumber(addItems.get("plastic")) + Emoji.PLASTIC + " " + Numbers.formatNumber(addItems.get("water")) + Emoji.WATER + " " + Numbers.formatNumber(addItems.get("teaBase")) + Emoji.TEABAG + " " + Numbers.formatNumber(addItems.get("wood")) + Emoji.WOOD + " " + Numbers.formatNumber(addItems.get("pineSap")) + Emoji.SAP + " " + Numbers.formatNumber(addItems.get("steel")) + Emoji.STEEL + " " + Numbers.formatNumber(addItems.get("horseHair")) + Emoji.HORSE_HAIR).queue();
+					}
+				}
+				case "crazybox" -> {
+					long boxes = (long) data.get("crazyBox");
+					if(boxes <= 0) {
+						e.reply("You already used all your Crazy Person Boxes!").setEphemeral(true).queue();
+						return;
+					} else {
+						if(useAmount > boxes) {
+							useAmount = boxes;
+						}
+						addItems.put("crazyBox", -useAmount);
+						for(int i = 0; i < useAmount; i++) {
+							generateArray(addItems, 6 + extraRolls, 5, 8);
+						}
+						e.reply("You opened " + Numbers.formatNumber(useAmount) + Emoji.CRAZY_BOX + "  You received the following items...\n\n" + Numbers.formatNumber(addItems.get("grains")) + Emoji.GRAINS + " " + Numbers.formatNumber(addItems.get("plastic")) + Emoji.PLASTIC + " " + Numbers.formatNumber(addItems.get("water")) + Emoji.WATER + " " + Numbers.formatNumber(addItems.get("teaBase")) + Emoji.TEABAG + " " + Numbers.formatNumber(addItems.get("wood")) + Emoji.WOOD + " " + Numbers.formatNumber(addItems.get("pineSap")) + Emoji.SAP + " " + Numbers.formatNumber(addItems.get("steel")) + Emoji.STEEL + " " + Numbers.formatNumber(addItems.get("horseHair")) + Emoji.HORSE_HAIR).queue();
+					}
+				}
+				case "rngesus" -> {
+					long boxes = (long) data.get("RNGesusBox");
+					if(boxes <= 0) {
+						e.reply("You already used all your RNGesus Boxes!").setEphemeral(true).queue();
+						return;
+					} else {
+						if(useAmount > boxes) {
+							useAmount = boxes;
+						}
+						addItems.put("RNGesusBox", -useAmount);
+						for(int i = 0; i < useAmount; i++) {
+							generateArray(addItems, 7 + extraRolls, 6, 10);
+						}
+						e.reply("You opened " + Numbers.formatNumber(useAmount) + Emoji.RNGESUS_BOX + "  You received the following items...\n\n" + Numbers.formatNumber(addItems.get("grains")) + Emoji.GRAINS + " " + Numbers.formatNumber(addItems.get("plastic")) + Emoji.PLASTIC + " " + Numbers.formatNumber(addItems.get("water")) + Emoji.WATER + " " + Numbers.formatNumber(addItems.get("teaBase")) + Emoji.TEABAG + " " + Numbers.formatNumber(addItems.get("wood")) + Emoji.WOOD + " " + Numbers.formatNumber(addItems.get("pineSap")) + Emoji.SAP + " " + Numbers.formatNumber(addItems.get("steel")) + Emoji.STEEL + " " + Numbers.formatNumber(addItems.get("horseHair")) + Emoji.HORSE_HAIR).queue();
+					}
+				}
+				case "rosin" -> {
+					long rosin = (long) data.get("rosin");
+					if(rosin <= 0) {
+						e.reply("You look in your violin case, but find no rosin left.  You are disappointed.").setEphemeral(true).queue();
+					} else {
+						if(useAmount > rosin) {
+							useAmount = rosin;
+						}
+						addItems.put("rosin", -useAmount);
+						addTime(data, "rosinExpire", useAmount * 90000000);
+						e.reply(Emoji.ROSIN + "  You apply rosin to your bow.  You are now entitled to " + Numbers.formatNumber(25 * useAmount) + " more hours of some of your income.").queue();
+					}
+				}
+				case "string" -> {
+					long strings = (long) data.get("string");
+					if(strings <= 0) {
+						e.reply("You scourge your stocks, but you can't find violin strings.  You then remember that you have to buy some, then promptly forget.").setEphemeral(true).queue();
+					} else {
+						if(useAmount > strings) {
+							useAmount = strings;
+						}
+						addItems.put("string", -useAmount);
+						addTime(data, "stringsExpire", useAmount * 198000000);
+						e.reply(Emoji.STRING + "  You change the strings on yoru violin.  You are now entitled to " + Numbers.formatNumber(55 * useAmount) + " more hours of some of your income.").queue();
+					}
+				}
+				case "bowhair" -> {
+					long hairs = (long) data.get("bowHair");
+					if(hairs <= 0) {
+						e.reply("You scourge your stocks, but you can't find extra bow hair.  You then remember that you have to buy some, then promptly forget.").setEphemeral(true).queue();
+					} else {
+						if(useAmount > hairs) {
+							useAmount = hairs;
+						}
+						addItems.put("bowHair", -useAmount);
+						addTime(data, "bowHairExpire", useAmount * 306000000);
+						e.reply(Emoji.BOW_HAIR + "  You asked Olaf to rehair your bow, to which he agreed.  You are now entitled to " + Numbers.formatNumber(85 * useAmount) + " more hours of some of your income.").queue();
+					}
+				}
+				case "service" -> {
+					long service = (long) data.get("violinService");
+					if(service <= 0) {
+						e.reply("You go to Olaf to get your violin repaired, but forget to bring materials.  He kicks you out of the store.").setEphemeral(true).queue();
+					} else {
+						if(useAmount > service) {
+							useAmount = service;
+						}
+						addItems.put("violinService", -useAmount);
+						addTime(data, "serviceExpire", useAmount * 612000000);
+						e.reply(Emoji.SERVICE + "  You asked Olaf to service your violin, to which he agreed.  You are now entitled to " + Numbers.formatNumber(170 * useAmount) + " more hours of some of your income.").queue();
+					}
+				}
+				default -> {
+					e.reply("You can't use something that doesn't exist, that doesn't make sense.").setEphemeral(true).queue();
+					return;
+				}
+			}
+			for(Map.Entry<String, Long> entry : addItems.entrySet()) {
+				data.replace(entry.getKey(), (long) data.get(entry.getKey()) + entry.getValue());
+				if(entry.getKey().equals("violins")) {
+					data.replace("earnings", (long) data.get("earnings") + entry.getValue());
+				}
+			}
+			SaveData.saveData(e, data);
+		} catch(Exception exception) {
+			e.reply("You can't use nothing.").setEphemeral(true).queue();
+		}
+	}
 }

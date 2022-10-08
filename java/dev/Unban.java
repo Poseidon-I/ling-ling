@@ -1,6 +1,7 @@
 package dev;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -10,22 +11,26 @@ import java.io.FileWriter;
 import java.util.Objects;
 
 public class Unban {
-	public Unban(MessageReceivedEvent e) {
-		String[] message = e.getMessage().getContentRaw().split(" ");
-		String id = message[1];
+	public static void unban(@NotNull SlashCommandInteractionEvent e) {
+		String id;
 		try {
+			id = Objects.requireNonNull(e.getOption("user")).getAsString();
 			Long.parseLong(id);
+		} catch(NullPointerException exception) {
+			e.reply("You didn't provide an ID!").setEphemeral(true).queue();
+			return;
 		} catch(Exception exception) {
-			e.getMessage().reply("You didn't provide a valid ID!").mentionRepliedUser(false).queue();
+			e.reply("You didn't provide a valid ID!").setEphemeral(true).queue();
 			return;
 		}
-		StringBuilder reason = new StringBuilder();
-		for(int i = 3; i < message.length; i++) {
-			reason.append(" ").append(message[i]);
+		
+		String reason;
+		try {
+			reason = Objects.requireNonNull(e.getOption("reason")).getAsString();
+		} catch(Exception exception) {
+			reason = "None";
 		}
-		if(reason.isEmpty()) {
-			reason.append("None");
-		}
+		
 		JSONParser parser = new JSONParser();
 		JSONObject data;
 		File file = new File("Ling Ling Bot Data\\Economy Data\\" + id + ".json");
@@ -33,15 +38,15 @@ public class Unban {
 			data = (JSONObject) parser.parse(reader);
 			reader.close();
 		} catch(Exception exception) {
-			e.getMessage().reply("File doesn't exist!  Looks like they never used the bot to begin with...").mentionRepliedUser(false).queue();
+			e.reply("File doesn't exist!  Looks like they never used the bot to begin with...").queue();
 			return;
 		}
 		if((Boolean) data.get("banned")) {
 			boolean resetSave;
 			try {
-				resetSave = Boolean.parseBoolean(message[2]);
+				resetSave = Boolean.parseBoolean(Objects.requireNonNull(e.getOption("resetsave")).getAsString());
 			} catch(Exception exception) {
-				e.getMessage().reply("You have to tell me whether you want to reset the save or not, dumb.").mentionRepliedUser(false).queue();
+				e.reply("You have to tell me whether you want to reset the save or not, dumb.").setEphemeral(true).queue();
 				return;
 			}
 			String user;
@@ -50,12 +55,10 @@ public class Unban {
 			} catch(Exception exception) {
 				user = "Someone";
 			}
-			new LogCase(e, "Unban", id, reason.toString());
-			e.getChannel().sendMessage(":white_check_mark: " + user + " was successfully unbanned!").queue();
+			e.reply(":white_check_mark: " + user + " was successfully unbanned!").queue();
 			if(resetSave) {
 				file.delete();
-				reason.append("\nSave Reset: Yes");
-				Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().queue((channel) -> channel.sendMessage("You have been unbanned :fireworks:\nYour save was reset.").queue());
+				reason += "\nSave Reset: Yes";
 			} else {
 				try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + id + ".json")) {
 					data = (JSONObject) parser.parse(reader);
@@ -68,12 +71,13 @@ public class Unban {
 				} catch(Exception exception) {
 					//nothing here lol
 				}
-				reason.append("\nSave Reset: No");
-				Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().queue((channel) -> channel.sendMessage("You have been unbanned :fireworks:\nYour save was not reset.").queue());
+				reason += "\nSave Reset: No";
 			}
-			e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
+			LogCase.logCase(e, "Unban", id, reason);
+			String finalReason = reason;
+			Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().queue((channel) -> channel.sendMessage("You have been unbanned.  Reason: " + finalReason).queue());
 		} else {
-			e.getMessage().reply("That user isn't even banned, stupid.").mentionRepliedUser(false).queue();
+			e.reply("That user isn't even banned, stupid.").queue();
 		}
 	}
 }

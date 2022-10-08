@@ -3,21 +3,21 @@ package processes;
 import org.json.simple.JSONObject;
 
 public class Numbers {
-	public static double LuthierChance(int members) {
-		if(members < 10) {
+	public static double luthierChance(int members) {
+		if(members < 20) {
 			return 0.1;
 		} else if(members < 100) {
-			return 0.1 - 0.001 * (members - 10);
+			return 0.1 - 0.001 * (members - 20);
 		} else if(members < 1000) {
-			return 0.01;
+			return 0.02;
 		} else if(members < 10000) {
-			return 0.01 - 0.000001 * (members - 1000);
+			return 0.02 - 0.000002 * (members - 1000);
 		} else {
-			return 0.001;
+			return 0.002;
 		}
 	}
 	
-	public static String FormatNumber(Object number) {
+	public static String formatNumber(Object number) {
 		long tempNum = (long) number;
 		String num = String.valueOf(tempNum);
 		StringBuilder result = new StringBuilder();
@@ -34,25 +34,26 @@ public class Numbers {
 		return result.toString();
 	}
 	
-	public static long CalculateAmount(JSONObject data, long base) {
+	public static long calculateAmount(JSONObject data, long base) {
 		long efficiency = (long) data.get("efficiency");
-		if(efficiency < 25) {
-			base *= Math.pow(1.08, efficiency);
-		} else if(efficiency < 150) {
-			base *= Math.pow(1.08, 25) * Math.pow(1.04, efficiency - 25);
+		if(efficiency < 10) {
+			base *= Math.pow(1.1, efficiency);
+		} else if(efficiency < 100) {
+			base *= Math.pow(1.1, 10) * Math.pow(1.05, efficiency - 10);
 		} else {
-			base *= Math.pow(1.08, 25) * Math.pow(1.04, 125) * Math.pow(1.02, efficiency - 150);
+			base *= Math.pow(1.1, 10) * Math.pow(1.05, 90) * Math.pow(1.02, efficiency - 100);
 		}
-		base *= Math.pow(1.1, (long) data.get("hall"));
-		base *= Math.pow(1.25, (long) data.get("moreIncome"));
+		double multiplier = 1.0;
+		multiplier += (double) data.get("hall") * 0.125;
+		multiplier += (double) data.get("moreIncome") * 0.3;
+		multiplier += (double) data.get("serverLevel") - 1;
 		if((boolean) data.get("isBooster")) {
-			base *= 1.25;
+			multiplier += 0.3;
 		}
-		double level = (double) data.get("serverLevel");
-		return (long) (base * level);
+		return (long) (base * multiplier);
 	}
 	
-	public static long ItemCost(long level, double power, long base) {
+	public static long itemCost(long level, double power, long base) {
 		long cost = (long) (base * Math.pow(power, level));
 		if(cost <= 100000000) {
 			return cost;
@@ -71,7 +72,7 @@ public class Numbers {
 		}
 	}
 	
-	public static void CalculateLoan(JSONObject data, long earned) {
+	public static void calculateLoan(JSONObject data, long earned) {
 		long loan = (long) data.get("loan");
 		long income = (long) data.get("income");
 		long violins = (long) data.get("violins");

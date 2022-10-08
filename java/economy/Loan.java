@@ -1,43 +1,45 @@
 package economy;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import processes.Numbers;
-import processes.Prefix;
+
+import java.util.Objects;
 
 public class Loan {
-	public Loan(MessageReceivedEvent e) {
+	public static void loan(@NotNull SlashCommandInteractionEvent e) {
 		JSONObject data = LoadData.loadData(e);
-		String[] message = e.getMessage().getContentRaw().split(" ");
 		long balance = (long) data.get("loan");
 		if(balance > 0) {
-			e.getMessage().reply("You still have an outstanding balance of " + Numbers.FormatNumber(balance) + ":violin:!").mentionRepliedUser(false).queue();
+			e.reply("You still have an outstanding balance of " + Numbers.formatNumber(balance) + Emoji.RNGESUS_BOX + "!").queue();
 		} else {
 			long loan;
+			String amount;
 			try {
-				long maxLoan = 200 * (long) data.get("income");
-				if (message[1].equals("max")) {
-					loan = maxLoan;
-				} else {
-					try {
-						loan = Long.parseLong(message[1]);
-					} catch (Exception exception) {
-						e.getMessage().reply("You have to either input `max` or an integer.").mentionRepliedUser(false).queue();
-						return;
-					}
-					if (loan > maxLoan) {
-						e.getMessage().reply("You can only borrow a maximum of " + Numbers.FormatNumber(maxLoan) + ":violin:.  Increase your hourly income to get a higher limit!").mentionRepliedUser(false).queue();
-						return;
-					}
-				}
+				amount = Objects.requireNonNull(e.getOption("amount")).getAsString();
 			} catch(Exception exception) {
-				e.getMessage().reply("You have to either input `max` or an integer.").mentionRepliedUser(false).queue();
+				e.reply("You have to either input `max` or an integer.").setEphemeral(true).queue();
 				return;
+			}
+			long maxLoan = 200 * (long) data.get("income");
+			if(amount.equals("max")) {
+				loan = maxLoan;
+			} else {
+				try {
+					loan = Long.parseLong(amount);
+				} catch(Exception exception) {
+					e.reply("You have to either input `max` or an integer.").setEphemeral(true).queue();
+					return;
+				}
+				if(loan > maxLoan) {
+					loan = maxLoan;
+				}
 			}
 			data.replace("loan", loan);
 			data.replace("violins", (long) data.get("violins") + loan);
-			e.getMessage().reply("You have borrowed " + Numbers.FormatNumber(loan) + ":violin: from the bank.  Most actions will result in a portion being used to pay back the loan.  You can also manually contribute by using `" + Prefix.GetPrefix(e) + "payloan`.").mentionRepliedUser(false).queue();
-			new SaveData(e, data);
+			e.reply("You have borrowed " + Numbers.formatNumber(loan) + Emoji.VIOLINS + " from the bank.  Most actions will result in a portion being used to pay back the loan.  You can also manually contribute by using `/payloan`.").queue();
+			SaveData.saveData(e, data);
 		}
 	}
 }

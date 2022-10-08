@@ -1,7 +1,8 @@
 package dev;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
@@ -10,7 +11,7 @@ import java.io.FileWriter;
 import java.util.Objects;
 
 public class LogCase {
-	public LogCase(MessageReceivedEvent e, String type, String id, String reason) {
+	public static void logCase(@NotNull SlashCommandInteractionEvent e, String type, String id, String reason) {
 		File file = new File("Ling Ling Bot Data\\Moderation\\" + id);
 		if(!file.exists()) {
 			file.mkdirs();
@@ -25,12 +26,12 @@ public class LogCase {
 		EmbedBuilder builder = new EmbedBuilder()
 				.setColor(Color.BLUE)
 				.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
-				.addField("Moderator: " + e.getAuthor().getName(), "User: " + user + "\nReason: " + reason, false)
+				.addField("Moderator: " + e.getUser().getName(), "User: " + user + "\nReason: " + reason, false)
 				.setTitle("__**Case " + caseNum + ": " + type + "**__");
 		Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
 		JSONObject data = new JSONObject();
 		data.put("user", id);
-		data.put("moderator", e.getAuthor().getName());
+		data.put("moderator", e.getUser().getName());
 		data.put("type", type);
 		data.put("reason", reason);
 		try(FileWriter writer = new FileWriter(file.getAbsolutePath() + "\\" + caseNum + ".json")) {

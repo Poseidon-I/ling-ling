@@ -6,7 +6,7 @@ import org.json.simple.parser.JSONParser;
 import java.io.*;
 
 public class HourlyIncome {
-	public HourlyIncome() {
+	public static void hourlyIncome() {
 		File directory = new File("Ling Ling Bot Data\\Economy Data");
 		File[] files = directory.listFiles();
 		JSONParser parser = new JSONParser();
@@ -23,8 +23,21 @@ public class HourlyIncome {
 				System.out.println("Problem File is " + file.getName());
 				continue;
 			}
-			long violins = (long) data.get("violins");
 			long income = (long) data.get("income");
+			long time = System.currentTimeMillis();
+			if(time > (long) data.get("rosinExpire")) {
+				income -= income * 0.25;
+			}
+			if(time > (long) data.get("stringsExpire")) {
+				income -= income * 0.25;
+			}
+			if(time > (long) data.get("bowHairExpire")) {
+				income -= income * 0.25;
+			}
+			if(time > (long) data.get("serviceExpire")) {
+				income -= income * 0.25;
+			}
+			long violins = (long) data.get("violins");
 			long loan = (long) data.get("loan");
 			if(loan > income * 400) {
 				violins -= income * 0.3;
@@ -50,7 +63,8 @@ public class HourlyIncome {
 				writer.write(data.toJSONString());
 				writer.close();
 			} catch(Exception exception) {
-				//nothing here lol
+				//n
+				// othing here lol
 			}
 		}
 	}

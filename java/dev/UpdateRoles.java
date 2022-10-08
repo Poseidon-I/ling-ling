@@ -2,17 +2,19 @@ package dev;
 
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.List;
+import java.util.Objects;
 
 public class UpdateRoles {
-	public UpdateRoles(MessageReceivedEvent e) {
-		if(e.getGuild().getId().equals("670725611207262219")) {
+	public static void updateRoles(@NotNull SlashCommandInteractionEvent e) {
+		if(Objects.requireNonNull(e.getGuild()).getId().equals("670725611207262219")) {
 			List<Member> list = e.getGuild().getMembers();
 			for(Member member : list) {
 				List<Role> list2 = member.getRoles();
@@ -28,17 +30,17 @@ public class UpdateRoles {
 					data.replace("isBooster", true);
 				}
 				if(list2.contains(e.getGuild().getRoleById("734697410273607751"))) {
-					data.replace("serverLevel", 1.2);
+					data.replace("serverLevel", 1.25);
 				} else if(list2.contains(e.getGuild().getRoleById("845121274958184499"))) {
-					data.replace("serverLevel", 1.16);
+					data.replace("serverLevel", 1.20);
 				} else if(list2.contains(e.getGuild().getRoleById("845121187741958166"))) {
-					data.replace("serverLevel", 1.125);
+					data.replace("serverLevel", 1.15);
 				} else if(list2.contains(e.getGuild().getRoleById("734697411074719765"))) {
-					data.replace("serverLevel", 1.09);
+					data.replace("serverLevel", 1.11);
 				} else if(list2.contains(e.getGuild().getRoleById("734697411783688245"))) {
-					data.replace("serverLevel", 1.06);
+					data.replace("serverLevel", 1.075);
 				} else if(list2.contains(e.getGuild().getRoleById("734697412865818645"))) {
-					data.replace("serverLevel", 1.04);
+					data.replace("serverLevel", 1.045);
 				} else if(list2.contains(e.getGuild().getRoleById("734697413901680691"))) {
 					data.replace("serverLevel", 1.02);
 				} else {
@@ -48,12 +50,12 @@ public class UpdateRoles {
 					writer.write(data.toJSONString());
 					writer.close();
 				} catch(Exception exception) {
-					e.getMessage().reply("bruh").mentionRepliedUser(false).queue();
+					e.reply("bruh").queue();
 				}
 			}
-			e.getMessage().reply("Successfully force-updated role multipliers!").mentionRepliedUser(false).queue();
+			e.reply("Successfully force-updated role multipliers!").queue();
 		} else {
-			e.getMessage().reply("You can't use this command here!  Go to the support server stupid.").mentionRepliedUser(false).queue();
+			e.reply("You can't use this command here!  Go to the support server stupid.").queue();
 		}
 	}
 }

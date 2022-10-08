@@ -6,7 +6,7 @@ import org.json.simple.parser.JSONParser;
 import java.io.*;
 
 public class InterestPenalty {
-	public InterestPenalty() {
+	public static void interestPenalty() {
 		File directory = new File("Ling Ling Bot Data\\Economy Data");
 		File[] files = directory.listFiles();
 		assert files != null;

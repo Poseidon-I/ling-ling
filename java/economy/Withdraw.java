@@ -1,35 +1,44 @@
 package economy;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import processes.Numbers;
 
+import java.util.Objects;
+
 public class Withdraw {
-	public Withdraw(MessageReceivedEvent e) {
+	public static void withdraw(@NotNull SlashCommandInteractionEvent e) {
 		JSONObject data = LoadData.loadData(e);
-		String[] message = e.getMessage().getContentRaw().split(" ");
 		long amount;
 		long balance = (long) data.get("bank");
-		if(message[1].equals("all")) {
+		String temp;
+		try {
+			temp = Objects.requireNonNull(e.getOption("amount")).getAsString();
+		} catch(Exception exception) {
+			e.reply("You have to withdraw something.").setEphemeral(true).queue();
+			return;
+		}
+		if(temp.equals("max")) {
 			amount = balance;
 		} else {
 			try {
-				amount = Long.parseLong(message[1]);
+				amount = Long.parseLong(temp);
 			} catch(Exception exception) {
-				e.getMessage().reply("You have to either input `all` or an integer.").mentionRepliedUser(false).queue();
+				e.reply("You have to either input `max` or an integer.").setEphemeral(true).queue();
 				return;
 			}
 		}
 		if(amount > balance) {
-			e.getMessage().reply("You can't withdraw more than you have in your bank account, you fool.").mentionRepliedUser(false).queue();
+			e.reply("You can't withdraw more than you have in your bank account, you fool.").setEphemeral(true).queue();
 		} else if(amount < 1) {
-			e.getMessage().reply("Stop wasting my time trying to withdraw a negative amount, shame on you").mentionRepliedUser(false).queue();
+			e.reply("Stop wasting my time trying to withdraw a negative amount, shame on you").setEphemeral(true).queue();
 		} else {
 			balance -= amount;
 			data.replace("violins", (long) data.get("violins") + amount);
 			data.replace("bank", balance);
-			e.getMessage().reply("You withdrew " + Numbers.FormatNumber(amount) + ":violin: from your bank.  You now have " + Numbers.FormatNumber(balance) + ":violin: in your bank.").mentionRepliedUser(false).queue();
-			new SaveData(e, data);
+			e.reply("You withdrew " + Numbers.formatNumber(amount) + Emoji.VIOLINS + " from your bank.  You now have " + Numbers.formatNumber(balance) + Emoji.VIOLINS + " in your bank.").queue();
+			SaveData.saveData(e, data);
 		}
 	}
 }

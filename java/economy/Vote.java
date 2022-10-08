@@ -1,54 +1,34 @@
 package economy;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 
+// CLAIM COMMAND - TOO LAZY TO RENAME
 public class Vote {
-	public static void GiveRewards(MessageReceivedEvent e, JSONObject data, int numBoxes) {
-		data.replace("voteBox", (long) data.get("voteBox") + numBoxes);
-		data.replace("votes", (long) data.get("votes") + 1);
-		data.replace("voteCD", System.currentTimeMillis() + 41400000);
-		e.getMessage().reply("top.gg bad, here's your reward anyway, now please go vote at <https://top.gg/bot/733409243222507670/vote> if you haven't already\nYou have received **" + numBoxes + "** Vote Boxes!").mentionRepliedUser(false).queue();
-		if((long) data.get("votes") % 40 == 0) {
-			data.replace("medals", (long) data.get("medals") + 1);
-			e.getMessage().reply("You have voted " + data.get("votes") + " times!  Enjoy your Ling Ling Medal!").mentionRepliedUser(false).queue();
-		}
-		RNGesus.Lootbox(e, data);
-		new SaveData(e, data);
-	}
-	
-	public Vote(MessageReceivedEvent e) {
+	public static void vote(@NotNull SlashCommandInteractionEvent e) {
 		JSONObject data = LoadData.loadData(e);
 		long time = System.currentTimeMillis();
 		if(time < (long) data.get("voteCD")) {
-			e.getMessage().reply("You claimed your reward too recently!  If you forgot to claim your reward after voting previously, this is a friendly reminder to claim your reward right after you vote.\n\n#dontbelikestrad").mentionRepliedUser(false).queue();
+			long milliseconds = (long) data.get("voteCD") - time;
+			long hours = milliseconds / 3600000;
+			milliseconds -= hours * 3600000;
+			long minutes = milliseconds / 60000;
+			milliseconds -= minutes * 60000;
+			long seconds = milliseconds / 1000;
+			milliseconds -= seconds * 1000;
+			e.reply("You claimed your Free Box too recently!  Wait " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
 		} else {
-			/*DiscordBotListAPI api = null;
-			try(BufferedReader rdr = new BufferedReader(new FileReader("Ling Ling Bot Data\\top.txt"))) {
-				api = new DiscordBotListAPI.Builder()
-						.token(rdr.readLine())
-						.botId("733409243222507670")
-						.build();
-			} catch(Exception exception) {
-				e.getMessage().reply("top.gg shit no look at me\nPing/DM a bot mod and they'll give you your reward").mentionRepliedUser(false).queue();
+			data.replace("voteBox", (long) data.get("voteBox") + 1);
+			data.replace("votes", (long) data.get("votes") + 1);
+			data.replace("voteCD", System.currentTimeMillis() + 86340000);
+			e.reply("You have received **1**" + Emoji.FREE_BOX).queue();
+			if((long) data.get("votes") % 40 == 0) {
+				data.replace("medals", (long) data.get("medals") + 1);
+				e.reply("You have claimed Free Boxes " + data.get("votes") + " times!  Enjoy your Ling Ling Medal!").queue();
 			}
-			String id = e.getAuthor().getId();
-			assert api != null;
-			DiscordBotListAPI finalApi = api;
-			api.hasVoted(id).whenComplete((hasVoted, f) -> {
-				if(hasVoted) {
-					finalApi.getVotingMultiplier().whenComplete((multiplier, g) -> {
-						if(multiplier.isWeekend()) {
-							GiveRewards(e, data, 2);
-						} else {
-							GiveRewards(e, data, 1);
-						}
-					});
-				} else {
-					e.getMessage().reply("You have not voted yet!  Vote here:\n<https://top.gg/bot/733409243222507670/vote>").mentionRepliedUser(false).queue();
-				}
-			});*/
-			GiveRewards(e, data, 1);
+			RNGesus.lootbox(e, data);
+			SaveData.saveData(e, data);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package dev;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -9,7 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 
 public class ResetIncomes {
-	public ResetIncomes(MessageReceivedEvent e) {
+	public static void resetIncomes(@NotNull SlashCommandInteractionEvent e) {
 		File directory = new File("Ling Ling Bot Data\\Economy Data");
 		File[] files = directory.listFiles();
 		if(files != null) {
@@ -108,7 +109,7 @@ public class ResetIncomes {
 					//nothing here lol
 				}
 			}
-			e.getMessage().reply("Incomes successfully reset!").mentionRepliedUser(false).queue();
+			e.reply("Incomes successfully reset!").queue();
 		}
 	}
 }

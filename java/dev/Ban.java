@@ -1,7 +1,8 @@
 package dev;
 
 import economy.Start;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -10,26 +11,30 @@ import java.io.FileWriter;
 import java.util.Objects;
 
 public class Ban {
-	public Ban(MessageReceivedEvent e) {
-		String[] message = e.getMessage().getContentRaw().split(" ");
-		StringBuilder reason = new StringBuilder();
-		for(int i = 2; i < message.length; i++) {
-			reason.append(" ").append(message[i]);
-		}
-		if(reason.isEmpty()) {
-			reason.append("None");
-		}
-		String id = message[1];
+	public static void ban(@NotNull SlashCommandInteractionEvent e) {
+		String id;
 		try {
+			id = Objects.requireNonNull(e.getOption("user")).getAsString();
 			Long.parseLong(id);
+		} catch(NullPointerException exception) {
+			e.reply("You didn't provide an ID!").setEphemeral(true).queue();
+			return;
 		} catch(Exception exception) {
-			e.getMessage().reply("You didn't provide a valid ID!").mentionRepliedUser(false).queue();
+			e.reply("You didn't provide a valid ID!").setEphemeral(true).queue();
 			return;
 		}
-		if(id.equals(e.getAuthor().getId())) {
-			e.getMessage().reply("Imagine trying to ban yourself, how dumb are you???").mentionRepliedUser(false).queue();
+		
+		String reason;
+		try {
+			reason = Objects.requireNonNull(e.getOption("reason")).getAsString();
+		} catch(Exception exception) {
+			reason = "None";
+		}
+		
+		if(id.equals(e.getUser().getId())) {
+			e.reply("Imagine trying to ban yourself, how dumb are you???").queue();
 		} else if(id.equals("619989388109152256") || id.equals("488487157372157962")) {
-			e.getMessage().reply("Imagine trying to ban a developer smh").mentionRepliedUser(false).queue();
+			e.reply("Imagine trying to ban a developer smh").queue();
 		} else {
 			JSONParser parser = new JSONParser();
 			JSONObject data;
@@ -41,7 +46,7 @@ public class Ban {
 				writer.write(data.toJSONString());
 				writer.close();
 			} catch(Exception exception) {
-				new Start(e, id, true);
+				Start.start(e, id, true);
 			}
 			String user;
 			try {
@@ -54,10 +59,10 @@ public class Ban {
 					            Someone has been banned.
 					
 					https://i.imgur.com/KTyk7EC.mp4""").queue();
-			new LogCase(e, "BAN", id, reason.toString());
-			e.getChannel().sendMessage(":hammer: " + user + " was successfully banned!").queue();
-			Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().queue((channel) -> channel.sendMessage("You were banned.  Reason: " + reason).queue());
-			e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
+			LogCase.logCase(e, "BAN", id, reason);
+			e.reply(":hammer: " + user + " was successfully banned!").queue();
+			String finalReason = reason;
+			Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().queue((channel) -> channel.sendMessage("You were banned.  Reason: " + finalReason).queue());
 		}
 	}
 }

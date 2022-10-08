@@ -1,73 +1,84 @@
 package dev;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import processes.Numbers;
 
 import java.awt.*;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class Give {
-	public Give(MessageReceivedEvent e) {
-		String[] message = e.getMessage().getContentRaw().split(" ");
+	public static void give(@NotNull SlashCommandInteractionEvent e) {
 		String id;
 		try {
-			id = message[1];
+			id = Objects.requireNonNull(e.getOption("user")).getAsString();
+		} catch(NullPointerException exception) {
+			e.reply("You didn't provide a valid user, dummy.").setEphemeral(true).queue();
+			return;
 		} catch(Exception exception) {
-			e.getMessage().reply("You didn't even provide a user, dummy.").mentionRepliedUser(false).queue();
+			e.reply("You didn't even provide a user, dummy.").setEphemeral(true).queue();
 			return;
 		}
+		
 		long add;
 		try {
-			add = Long.parseLong(message[3]);
+			add = Long.parseLong(Objects.requireNonNull(e.getOption("amount")).getAsString());
+		} catch(NullPointerException exception) {
+			e.reply("You have to give a number, I can't give an unknown amount of items.  Go study physics or something.").setEphemeral(true).queue();
+			return;
 		} catch(Exception exception) {
-			e.getMessage().reply("You can only give an integer amount of items, stupid.").mentionRepliedUser(false).queue();
+			e.reply("You can only give an integer amount of items, stupid.").setEphemeral(true).queue();
 			return;
 		}
+		
 		JSONParser parser = new JSONParser();
 		JSONObject data;
 		try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + id + ".json")) {
 			data = (JSONObject) parser.parse(reader);
 			reader.close();
 		} catch(Exception exception) {
-			e.getMessage().reply("This save file doesn't exist!").mentionRepliedUser(false).queue();
+			e.reply("This save file doesn't exist!").queue();
 			return;
 		}
-		String[] validElements = {"violins", "medals", "rice", "tea", "blessings", "voteBox", "giftBox", "kits", "linglingBox", "crazyBox", "RNGesusBox"};
+		String item;
 		try {
-			if(Arrays.asList(validElements).contains(message[2])) {
-				String user;
-				try {
-					user = Objects.requireNonNull(e.getJDA().getUserById(id)).getName();
-				} catch(Exception exception) {
-					user = "Someone";
-				}
-				long oldAmount = (long) data.get(message[2]);
-				data.replace(message[2], oldAmount + add);
-				e.getMessage().reply("Successfully gave `" + add + "` " + message[2] + " to " + user).mentionRepliedUser(false).queue();
-				EmbedBuilder builder = new EmbedBuilder()
-						.setColor(Color.BLUE)
-						.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
-						.addField("Moderator: " + e.getAuthor().getName(), "User: <@" + id + ">\nItem type: " + message[2] + "\nAmount given: " + message[3], false)
-						.setTitle("__**Currency Alteration Info**__");
-				Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).mentionRepliedUser(false).queue();
-			} else {
-				e.getMessage().reply("You provided an invalid item!  Valid items to give: `violins`, `medals`, `rice`, `tea`, `blessings`, `voteBox`, `giftBox`, `kits`, `linglingBox`, `crazyBox`, `RNGesusBox`.").mentionRepliedUser(false).queue();
-			}
+			item = Objects.requireNonNull(e.getOption("item")).getAsString();
 		} catch(Exception exception) {
-			e.getMessage().reply("You have to tell me what to give out, idiot, I can't give out nothing.").mentionRepliedUser(false).queue();
+			e.reply("You have to give out something, idiot, I can't give out nothing.").setEphemeral(true).queue();
 			return;
 		}
-		
+		long oldAmount;
+		try {
+			oldAmount = (long) data.get(item);
+		} catch(Exception exception) {
+			e.reply("You should know that " + item + " IS NOT AN INTEGER ITEM, GO GROW A BRAIN").setEphemeral(true).queue();
+			return;
+		}
+		String user;
+		try {
+			user = Objects.requireNonNull(e.getJDA().getUserById(id)).getName();
+		} catch(Exception exception) {
+			user = "Someone";
+		}
+		data.replace(item, oldAmount + add);
+		e.reply("Successfully gave `" + Numbers.formatNumber(add) + "` " + item + " to " + user).queue();
+		EmbedBuilder builder = new EmbedBuilder()
+				.setColor(Color.BLUE)
+				.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
+				.addField("Moderator: " + e.getUser().getName(), "User: <@" + id + ">\nItem type: " + item + "\nAmount given: " + add, false)
+				.setTitle("__**Currency Alteration Info**__");
+		Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
 		try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Economy Data\\" + id + ".json")) {
 			writer.write(data.toJSONString());
 			writer.close();
 		} catch(Exception exception) {
 			//nothing here lol
 		}
+		Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().queue((channel) -> channel.sendMessage("**SPAWNED BY AN ADMIN LOL**\nA Mod/Admin has given you `" + Numbers.formatNumber(add) + "` " + item).queue());
 	}
 }

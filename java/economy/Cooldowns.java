@@ -1,13 +1,14 @@
 package economy;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
 
 public class Cooldowns {
-	public static String Reformat(long string) {
+	public static String reformat(long string) {
 		String newString = string + "";
 		if(String.valueOf(string).length() == 1) {
 			newString = "0" + string;
@@ -15,7 +16,7 @@ public class Cooldowns {
 		return newString;
 	}
 	
-	public static String ReformatMilliseconds(long string) {
+	public static String reformatMilliseconds(long string) {
 		String newString = string + "";
 		if(String.valueOf(string).length() == 1) {
 			newString = "00" + string;
@@ -25,11 +26,14 @@ public class Cooldowns {
 		return newString;
 	}
 	
-	public Cooldowns(MessageReceivedEvent e) {
+	public static void cooldowns(@NotNull SlashCommandInteractionEvent e) {
 		try {
 			JSONObject data = LoadData.loadData(e);
 			long time = System.currentTimeMillis();
 			EmbedBuilder builder = new EmbedBuilder()
+					.setColor(Color.decode((String) data.get("color")))
+					.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl());
+			EmbedBuilder builder2 = new EmbedBuilder()
 					.setColor(Color.decode((String) data.get("color")))
 					.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl());
 			//rob
@@ -46,7 +50,7 @@ public class Cooldowns {
 				milliseconds -= minutes * 60000;
 				seconds = milliseconds / 1000;
 				milliseconds -= seconds * 1000;
-				builder.addField("**Rob**", "`" + Reformat(hours) + ":" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`", true);
+				builder.addField("**Rob**", "`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
 			}
 			
 			//scales
@@ -56,7 +60,7 @@ public class Cooldowns {
 			} else {
 				seconds = milliseconds / 1000;
 				milliseconds -= seconds * 1000;
-				builder.addField("**Scales**", "`" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`", true);
+				builder.addField("**Scales**", "`" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
 			}
 			
 			//practice
@@ -68,7 +72,7 @@ public class Cooldowns {
 				milliseconds -= minutes * 60000;
 				seconds = milliseconds / 1000;
 				milliseconds -= seconds * 1000;
-				builder.addField("**Practice**", "`" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`", true);
+				builder.addField("**Practice**", "`" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
 			}
 			
 			//teach
@@ -83,7 +87,7 @@ public class Cooldowns {
 					milliseconds -= minutes * 60000;
 					seconds = milliseconds / 1000;
 					milliseconds -= seconds * 1000;
-					builder.addField("**Teach**", "`" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`", true);
+					builder.addField("**Teach**", "`" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
 				}
 			}
 			
@@ -99,7 +103,7 @@ public class Cooldowns {
 					milliseconds -= minutes * 60000;
 					seconds = milliseconds / 1000;
 					milliseconds -= seconds * 1000;
-					builder.addField("**Rehearse**", "`" + Reformat(hours) + ":" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`", true);
+					builder.addField("**Rehearse**", "`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
 				}
 			}
 			
@@ -114,7 +118,7 @@ public class Cooldowns {
 				milliseconds -= minutes * 60000;
 				seconds = milliseconds / 1000;
 				milliseconds -= seconds * 1000;
-				builder.addField("**Perform**", "`" + Reformat(hours) + ":" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`", true);
+				builder.addField("**Perform**", "`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
 			}
 			
 			//daily
@@ -127,7 +131,7 @@ public class Cooldowns {
 				milliseconds -= minutes * 60000;
 				seconds = milliseconds / 1000;
 				milliseconds -= seconds * 1000;
-				builder.addField("**Daily**", "`" + Reformat(hours) + ":" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`", true);
+				builder.addField("**Daily**", "`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
 			} else {
 				builder.addField("**Daily**", ":white_check_mark:", true);
 			}
@@ -142,15 +146,15 @@ public class Cooldowns {
 				milliseconds -= minutes * 60000;
 				seconds = milliseconds / 1000;
 				milliseconds -= seconds * 1000;
-				builder.addField("**Gift**", "`" + Reformat(hours) + ":" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`", true);
+				builder.addField("**Gift**", "`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
 			} else {
 				builder.addField("**Gift**", ":white_check_mark:", true);
 			}
 			
-			//vote
-			milliseconds = (long) data.get("voteCD") - time + 3600000;
+			//claim
+			milliseconds = (long) data.get("voteCD") - time;
 			if(milliseconds < 0) {
-				builder.addField("**Vote**", ":white_check_mark:\n`WARNING: May be inaccurate`", true);
+				builder.addField("**Claim**", ":white_check_mark:", true);
 			} else {
 				hours = milliseconds / 3600000;
 				milliseconds -= hours * 3600000;
@@ -158,10 +162,70 @@ public class Cooldowns {
 				milliseconds -= minutes * 60000;
 				seconds = milliseconds / 1000;
 				milliseconds -= seconds * 1000;
-				builder.addField("**Vote**", "`" + Reformat(hours) + ":" + Reformat(minutes) + ":" + Reformat(seconds) + "." + ReformatMilliseconds(milliseconds) + "`\n`WARNING: May be inaccurate`", true);
+				builder.addField("**Claim**", "`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
 			}
-			builder.setTitle("__**Cooldowns**__");
-			e.getMessage().replyEmbeds(builder.build()).mentionRepliedUser(false).queue();
+			
+			//income - rosin
+			milliseconds = (long) data.get("rosinExpire") - time;
+			if(milliseconds < 0) {
+				builder.addField("**Rosin Income**", ":x:", true);
+			} else {
+				hours = milliseconds / 3600000;
+				milliseconds -= hours * 3600000;
+				minutes = milliseconds / 60000;
+				milliseconds -= minutes * 60000;
+				seconds = milliseconds / 1000;
+				milliseconds -= seconds * 1000;
+				builder2.addField("**Rosin Income**", ":white_check_mark:\n`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
+			}
+			builder2.addBlankField(true);
+			
+			//income - strings
+			milliseconds = (long) data.get("stringsExpire") - time;
+			if(milliseconds < 0) {
+				builder.addField("**Strings Income**", ":x:", true);
+			} else {
+				hours = milliseconds / 3600000;
+				milliseconds -= hours * 3600000;
+				minutes = milliseconds / 60000;
+				milliseconds -= minutes * 60000;
+				seconds = milliseconds / 1000;
+				milliseconds -= seconds * 1000;
+				builder2.addField("**Strings Income**", ":white_check_mark:\n`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
+			}
+			
+			//income - bow hairs
+			milliseconds = (long) data.get("bowHairExpire") - time;
+			if(milliseconds < 0) {
+				builder.addField("**Bow Hair Income**", ":x:", true);
+			} else {
+				hours = milliseconds / 3600000;
+				milliseconds -= hours * 3600000;
+				minutes = milliseconds / 60000;
+				milliseconds -= minutes * 60000;
+				seconds = milliseconds / 1000;
+				milliseconds -= seconds * 1000;
+				builder2.addField("**Bow Hair Income**", ":white_check_mark:\n`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
+			}
+			builder2.addBlankField(true);
+			
+			//income - service
+			milliseconds = (long) data.get("serviceExpire") - time;
+			if(milliseconds < 0) {
+				builder.addField("**Violin Service Income**", ":x:", true);
+			} else {
+				hours = milliseconds / 3600000;
+				milliseconds -= hours * 3600000;
+				minutes = milliseconds / 60000;
+				milliseconds -= minutes * 60000;
+				seconds = milliseconds / 1000;
+				milliseconds -= seconds * 1000;
+				builder2.addField("**Violin Service Income**", ":white_check_mark:\n`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
+			}
+			
+			builder.setTitle("__**Command Cooldowns**__");
+			builder2.setTitle("__**Time Before Hourly Income Penalty**__");
+			e.replyEmbeds(builder.build(), builder2.build()).queue();
 		} catch(Exception exception) {
 			exception.printStackTrace();
 		}

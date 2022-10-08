@@ -19,6 +19,6 @@ public class App {
 		} catch(Exception exception1) {
 			//nothing here lol
 		}
-		new StartBot();
+		StartBot.startBot();
 	}
 }

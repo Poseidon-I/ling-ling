@@ -1,57 +1,47 @@
 package regular;
 
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class Poll {
-	public Poll(MessageReceivedEvent e) {
-		String fullMessage = e.getMessage().getContentRaw();
-		int i = 7;
-		StringBuilder send = new StringBuilder("**POLL:  ");
+	public static void poll(@NotNull SlashCommandInteractionEvent e) {
+		String title;
 		try {
-			while(fullMessage.charAt(i) != '"' && fullMessage.charAt(i) != '“' && fullMessage.charAt(i) != '”') {
-				send.append(fullMessage.charAt(i));
-				i++;
-			}
+			title = Objects.requireNonNull(e.getOption("title")).getAsString();
 		} catch(Exception exception) {
-			e.getMessage().reply("You need to end your title with a `\"`, or you did not properly start your title with `\"`").mentionRepliedUser(false).queue();
-			return;
+			title = "No Title";
 		}
-		send.append("**\n`A:` ");
-		i += 3;
-		int options = 1;
-		char character = 'A';
+		StringBuilder send = new StringBuilder("**POLL: ").append(title).append("**\n");
+		
+		String choices;
 		try {
-			while(fullMessage.charAt(i) != '"' && fullMessage.charAt(i) != '“' && fullMessage.charAt(i) != '”') {
-				if(fullMessage.charAt(i) == ';') {
-					i++;
-					options++;
-					character++;
-					send.append("\n`").append(character).append(":` ");
-				} else {
-					send.append(fullMessage.charAt(i));
-					i++;
-				}
-			}
+			choices = Objects.requireNonNull(e.getOption("choices")).getAsString();
 		} catch(Exception exception) {
-			e.getMessage().reply("You need to end your options portion with a `\"`, or you did not properly start your options portion with `\"`").mentionRepliedUser(false).queue();
+			e.reply("You must provide choices.  Can't have people vote on nothing, you know.").queue();
 			return;
 		}
-		send.append("\nPoll created by ").append(e.getAuthor().getName()).append("#").append(e.getAuthor().getDiscriminator());
-		Message message = null;
-		if(options > 20) {
-			e.getMessage().reply("Please limit your polls to 20 options or less.").mentionRepliedUser(false).queue();
+		String[] splitChoices = choices.split(";");
+		if(splitChoices.length > 20) {
+			e.reply("Please limit your polls to 20 options or less.").queue();
 			return;
-		} else {
-			e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
-			message = e.getChannel().sendMessage(send.toString()).complete();
 		}
+		char currentChar = 'a';
+		for(String splitChoice : splitChoices) {
+			send.append(":regional_indicator_").append(currentChar).append(": ").append(splitChoice).append("\n");
+			currentChar ++;
+		}
+		send.append("\nPoll created by ").append(e.getUser().getName()).append("#").append(e.getUser().getDiscriminator());
+		Message message = e.getChannel().sendMessage(send.toString()).complete();
+		e.reply("Poll created!").setEphemeral(true).queue();
 		int hex = 127462;
-		for(int j = 0; j < options; j++) {
-			String unicode = "U+" + Integer.toHexString(hex);
-			message.addReaction(unicode).queue();
+		for(int j = 0; j < splitChoices.length; j++) {
+			Emoji emoji = Emoji.fromUnicode("U+" + Integer.toHexString(hex));
+			message.addReaction(emoji).queue();
 			hex++;
 		}
-		
 	}
 }
