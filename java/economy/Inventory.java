@@ -25,7 +25,8 @@ public class Inventory {
 		try {
 			page = Objects.requireNonNull(e.getOption("page")).getAsInt();
 		} catch(NullPointerException exception) {
-			page = 0;
+			e.reply("You have to provide a page number.").setEphemeral(true).queue();
+			return;
 		}
 		
 		JSONParser parser = new JSONParser();
@@ -42,14 +43,13 @@ public class Inventory {
 		} catch(Exception exception) {
 			user = "Someone";
 		}
+		if(user.equals("768056391814086676")) {
+			user = "**NARWHAL**";
+		}
 		EmbedBuilder builder = new EmbedBuilder()
 				.setColor(Color.decode((String) data.get("color")))
 				.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl());
 		switch(page) {
-			case 0 -> {
-				e.reply("You have to provide a page number.").setEphemeral(true).queue();
-				return;
-			}
 			case 1 -> builder.setTitle(user + "'s Inventory - Page 1\nRaw Materials")
 					.addField("Rice Grains " + Emoji.GRAINS, "Count: " + Numbers.formatNumber(data.get("grains")) + "\nCrafting Ingredient", true)
 					.addField("Plastic " + Emoji.PLASTIC, "Count: " + Numbers.formatNumber(data.get("plastic")) + "\nCrafting Ingredient", true)
@@ -77,11 +77,6 @@ public class Inventory {
 					.addField("Ling Ling Box " + Emoji.LING_LING_BOX, "Count: " + Numbers.formatNumber(data.get("linglingBox")) + "\nUsage: Gives you valuable random items, as decided by RNGesus", true)
 					.addField("Crazy Person Box " + Emoji.CRAZY_BOX, "Count: " + Numbers.formatNumber(data.get("crazyBox")) + "\nUsage: Gives you very valuable random items, as decided by RNGesus", true)
 					.addField("RNGesus Box " + Emoji.RNGESUS_BOX, "Count: " + Numbers.formatNumber(data.get("RNGesusBox")) + "\nUsage: Gives you EXTREMELY valuable random items, as decided by RNGesus", true);
-			
-			default -> {
-				e.reply("You did not provide a valid page number!  Current Pages...\n`1` for Raw Materials\n`2` for Consumables\n`3` for Lootboxes").queue();
-				return;
-			}
 		}
 		e.replyEmbeds(builder.build()).queue();
 	}

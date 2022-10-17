@@ -12,16 +12,17 @@ public class Daily {
 			e.reply("I can't give out violins that fast, wait until 00:00 UTC!").queue();
 		} else {
 			long streak = (long) data.get("streak") + 1;
+			long income = (long) data.get("income");
 			if(!(boolean) data.get("retainDaily") && streak != 0) {
-				e.reply("Oh no!  Your streak was reset!\nYou received a total of 100 000" + Emoji.VIOLINS + ", with 0" + Emoji.VIOLINS + " coming from your 0-day streak!").queue();
+				e.reply("Oh no!  Your streak was reset!\nYou received a total of " + Numbers.formatNumber(income) + Emoji.VIOLINS + ", with 0" + Emoji.VIOLINS + " coming from your 0-day streak!").queue();
 				streak = 0;
 			}
-			long base = 100000 + (streak * 1000);
+			long base = income + (streak * (income / 100));
 			Numbers.calculateLoan(data, base);
 			data.replace("earnings", (long) data.get("earnings") + base);
 			data.replace("hadDailyToday", true);
 			if(streak != 0) {
-				e.reply("You received a total of " + Numbers.formatNumber(base) + Emoji.VIOLINS + ", with " + Numbers.formatNumber(streak * 1000) + Emoji.VIOLINS + "< coming from your " + streak + "-day streak!").queue();
+				e.reply("You received a total of " + Numbers.formatNumber(base) + Emoji.VIOLINS + ", with " + Numbers.formatNumber(streak * (income / 100)) + Emoji.VIOLINS + " coming from your " + streak + "-day streak!").queue();
 			}
 			if(streak > (long) data.get("maxStreak")) {
 				data.replace("maxStreak", streak);

@@ -53,7 +53,7 @@ public class Help {
 				case "use" -> builder.addField("Use Command", "Syntax: `/use <id> [num]`\nUsage: Uses usable items like Rice.\nExample: `/use rice 5`", false);
 				case "market" -> builder.addField("Market Command", "Syntax: `/market <buy | sell | view | offers> <(buy/sell) item> [(buy/sell) amount] [(sell) price]`\nUsage: Interacts with the Publik Market.\nExamples: `/market view grains` `/market buy grains 15` `/market sell grains 100 10`", false);
 				case "craft" -> builder.addField("Craft Command", "Syntax: `/craft <item> [amount | max]`\nUsage: Crafts items using raw materials.\nExample: `/craft rice 5`", false);
-				case "claim" -> builder.addField("Claim Command", "Syntax: `/claim`\nUsage: Claims a Free Box.\nCooldown: 24h", false);
+				case "claim" -> builder.addField("Claim Command", "Syntax: `/claim`\nUsage: Claims a Free Box.\nCooldown: 12h", false);
 				case "gift" -> builder.addField("Gift Command", "Syntax: `/gift <user>`\nUsage: Gifts the user a Gift Box.\nCooldown: 0-24h\nExample: `/gift 488487157372157962`", false);
 				case "leaderboard" -> builder.addField("Leaderboard Command", "Syntax: `/lb <type>`\nUsage: Shows the leaderboard for a specific data point.\nExample: `/lb violins`", false);
 				case "deposit" -> builder.addField("Deposit Command", "Syntax: `/dep <amount | max>`\nUsage: Deposits violins into your bank account.  Use `max` to deposit the most possible.", false);

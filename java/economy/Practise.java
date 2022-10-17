@@ -22,11 +22,11 @@ public class Practise {
 			e.reply("Take a break, you already practised a lot!  Wait " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
 		} else {
 			boolean badEvent = false;
-			long base = Numbers.calculateAmount(data, random.nextInt(101) + 400);
+			long base = Numbers.calculateAmount(data, random.nextInt(101) + 350);
 			double num = random.nextDouble();
 			if(num > 0.5) {
 				e.reply("You practised for 45 minutes and earned " + Numbers.formatNumber(base) + Emoji.VIOLINS).queue();
-				data.replace("hoursPractised", (double) data.get("hoursPractised") + 0.75);
+				data.replace("hoursPractised", (double) data.get("hoursPractised") + 1.0);
 			} else if(num > 0.15) {
 				num = random.nextDouble();
 				if(num > 0.65) {
@@ -46,7 +46,7 @@ public class Practise {
 					e.reply("**Rare Drop!**\nLing Ling enjoyed your practise session but was displeased with some parts.  Nonetheless, he (she?) granted you with " + Numbers.formatNumber(base) + Emoji.VIOLINS).queue();
 					data.replace("RNGesusWeight", (long) data.get("RNGesusWeight") + 1);
 				}
-				data.replace("hoursPractised", (double) data.get("hoursPractised") + 0.75);
+				data.replace("hoursPractised", (double) data.get("hoursPractised") + 1.0);
 			} else {
 				num = random.nextDouble();
 				long income = (long) data.get("income");
@@ -56,21 +56,25 @@ public class Practise {
 					e.reply("Oh no!  Your E String snapped while you were practising!  You had to go to the store to get it replaced, and were not able to get any practising done.  You earned 0" + Emoji.VIOLINS + " and had to pay " + Numbers.formatNumber(income / 100) + "<:violin:1019787510295048272> for a new E String.").queue();
 				} else if(num > 0.55) {
 					base *= 0.9;
-					data.replace("hoursPractised", (double) data.get("hoursPractised") + 0.675);
-					e.reply("Your violin randomly went out of tune while you were practising.  You had to spend 4 minutes tuning it and were only able to earn " + Numbers.formatNumber(base) + Emoji.VIOLINS).queue();
+					data.replace("hoursPractised", (double) data.get("hoursPractised") + 0.9);
+					e.reply("Your violin randomly went out of tune while you were practising.  You had to spend 6 minutes tuning it and were only able to earn " + Numbers.formatNumber(base) + Emoji.VIOLINS).queue();
 				} else if(num > 0.4) {
 					base *= 0.95;
-					data.replace("hoursPractised", (double) data.get("hoursPractised") + 0.7);
+					data.replace("hoursPractised", (double) data.get("hoursPractised") + 0.75);
 					e.reply("You had problems with your music stand, and page turning wasn't the best this session.  You earned " + Numbers.formatNumber(base) + Emoji.VIOLINS).queue();
 				} else if(num > 0.25) {
 					base *= 0.5;
 					base -= income / 10;
-					data.replace("hoursPractised", (double) data.get("hoursPractised") + 0.375);
+					data.replace("hoursPractised", (double) data.get("hoursPractised") + 0.5);
 					e.reply("You hurt your wrist while practising and only got half of the effectiveness.  You earned " + Numbers.formatNumber(base) + Emoji.VIOLINS + " but ended up paying " + Numbers.formatNumber(income / 10) + Emoji.VIOLINS + " in hospital fees.").queue();
 				} else if(num > 0.15) {
 					base *= 0.2;
-					data.replace("hoursPractised", (double) data.get("hoursPractised") + 0.35);
-					e.reply("**OOF**\nYour bridge fell off 15 minutes into your session.  You spend the next half-hour trying to get it back on, and you only earned " + Numbers.formatNumber(base) + Emoji.VIOLINS).queue();
+					data.replace("hoursPractised", (double) data.get("hoursPractised") + 0.25);
+					if(random.nextDouble() < 0.01) {
+						e.reply("**OOF**\nYour bridge fell off 15 minutes longo your session.  You spend the next 45 minutes trying to get it back on, and you only earned " + Numbers.formatNumber(base) + Emoji.VIOLINS).queue();
+					} else {
+						e.reply("**OOF**\nYour bridge fell off 15 minutes into your session.  You spend the next 45 minutes trying to get it back on, and you only earned " + Numbers.formatNumber(base) + Emoji.VIOLINS).queue();
+					}
 				} else if(num > 0.05) {
 					base = -1 * income;
 					e.reply("**OOF**\nYou were caught playing Minecraft while practising.  Your tiger mom took all your earnings, in addition to another " + Numbers.formatNumber(income) + Emoji.VIOLINS + " for being distracted.").queue();
@@ -84,6 +88,7 @@ public class Practise {
 				} else if(num > 0.005) {
 					e.reply(":regional_indicator_l:\nYou decided to fake your practise session.  Ling Ling caught you in the act, and fined you " + Numbers.formatNumber((long) (violins * 0.8)) + Emoji.VIOLINS).mentionRepliedUser(true).queue();
 					data.replace("violins", (long) (violins * 0.2));
+					badEvent = true;
 					base = 0;
 				} else {
 					e.reply(":skull:\nYou dropped your violin.  How shameful.  All cooldowns except daily and gamble have had one day added to them, and you were fined " + Numbers.formatNumber((long) (violins * 0.9)) + Emoji.VIOLINS + " for being careless.").mentionRepliedUser(true).queue();
@@ -101,9 +106,9 @@ public class Practise {
 			data.replace("earnings", (long) data.get("earnings") + base);
 			if(!badEvent) {
 				if((boolean) data.get("timeCrunch")) {
-					data.replace("practiceCD", time + 1740000);
+					data.replace("practiceCD", time + 2340000);
 				} else {
-					data.replace("practiceCD", time + 2640000);
+					data.replace("practiceCD", time + 3540000);
 				}
 			}
 			RNGesus.lootbox(e, data);

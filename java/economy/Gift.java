@@ -46,17 +46,17 @@ public class Gift {
 				} catch(Exception exception) {
 					//nothing here lol
 				}
+				try {
+					e.reply("Successfully gifted 1" + Emoji.GIFT_BOX + " to " + Objects.requireNonNull(e.getJDA().getUserById(target)).getName()).queue();
+				} catch(Exception exception) {
+					e.reply("Successfully gifted 1" + Emoji.GIFT_BOX + " to Someone").queue();
+				}
 				if((boolean) targetdata.get("DMs")) {
 					try {
 						Objects.requireNonNull(e.getJDA().getUserById(target)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getUser().getId() + "> (" + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + ") just gifted you!").queue());
 					} catch(Exception exception) {
 						// nothing here lol
 					}
-				}
-				try {
-					e.reply("Successfully gifted 1" + Emoji.GIFT_BOX + " to " + Objects.requireNonNull(e.getJDA().getUserById(target)).getName()).queue();
-				} catch(Exception exception) {
-					e.reply("Successfully gifted 1" + Emoji.GIFT_BOX + " to Someone").queue();
 				}
 			}
 		}

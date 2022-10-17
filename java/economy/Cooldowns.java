@@ -169,6 +169,8 @@ public class Cooldowns {
 			milliseconds = (long) data.get("rosinExpire") - time;
 			if(milliseconds < 0) {
 				builder.addField("**Rosin Income**", ":x:", true);
+			} else if(milliseconds < 86400000) {
+				builder.addField("**Rosin Income**", ":warning:", true);
 			} else {
 				hours = milliseconds / 3600000;
 				milliseconds -= hours * 3600000;
@@ -184,6 +186,8 @@ public class Cooldowns {
 			milliseconds = (long) data.get("stringsExpire") - time;
 			if(milliseconds < 0) {
 				builder.addField("**Strings Income**", ":x:", true);
+			} else if(milliseconds < 86400000) {
+				builder.addField("**Strings Income**", ":warning:", true);
 			} else {
 				hours = milliseconds / 3600000;
 				milliseconds -= hours * 3600000;
@@ -198,6 +202,8 @@ public class Cooldowns {
 			milliseconds = (long) data.get("bowHairExpire") - time;
 			if(milliseconds < 0) {
 				builder.addField("**Bow Hair Income**", ":x:", true);
+			} else if(milliseconds < 86400000) {
+				builder.addField("**Bow Hair Income**", ":warning:", true);
 			} else {
 				hours = milliseconds / 3600000;
 				milliseconds -= hours * 3600000;
@@ -213,6 +219,8 @@ public class Cooldowns {
 			milliseconds = (long) data.get("serviceExpire") - time;
 			if(milliseconds < 0) {
 				builder.addField("**Violin Service Income**", ":x:", true);
+			} else if(milliseconds < 86400000) {
+				builder.addField("**Violin Service Income**", ":warning:", true);
 			} else {
 				hours = milliseconds / 3600000;
 				milliseconds -= hours * 3600000;

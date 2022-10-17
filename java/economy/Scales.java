@@ -18,10 +18,10 @@ public class Scales {
 			milliseconds -= seconds * 1000;
 			e.reply("Chill, you can't play two scales at once!  Wait " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
 		} else {
-			long base = Numbers.calculateAmount(data, random.nextInt(11) + 10);
+			long base = Numbers.calculateAmount(data, random.nextInt(11) + 15);
 			Numbers.calculateLoan(data, base);
 			if((boolean) data.get("timeCrunch")) {
-				data.replace("scaleCD", time + 64500);
+				data.replace("scaleCD", time + 59500);
 			} else {
 				data.replace("scaleCD", time + 89500);
 			}

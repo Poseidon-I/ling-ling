@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
@@ -36,8 +37,9 @@ public class StartBot {
 					.build();
 			jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
 			jda.getPresence().setActivity(Activity.playing("violin forty hours a day."));
-			/*OptionData data;
-			// ONE TIEM UPSERT OF SLASH COMMANDS
+			
+			OptionData data;
+			/*// ONE TIEM UPSERT OF SLASH COMMANDS
 			
 			// help page 1
 			jda.upsertCommand(
@@ -125,10 +127,10 @@ public class StartBot {
 					Commands.slash("stats", "View your stats.")
 							.addOption(OptionType.STRING, "otheruser", "Use this to view another user's stats.")
 			).queue();
-			data = new OptionData(OptionType.INTEGER, "page", "Select the page to view.")
-					.addChoice("1", 1)
-					.addChoice("2", 2)
-					.addChoice("3", 3);
+			data = new OptionData(OptionType.STRING, "page", "Select the page to view.")
+					.addChoice("Raw Materials", "1")
+					.addChoice("Consumables", "2")
+					.addChoice("Lootboxes", "3");
 			jda.upsertCommand(
 					Commands.slash("inv", "View your inventory.")
 							.addOptions(data)
@@ -138,7 +140,8 @@ public class StartBot {
 					.addChoice("Buy Items", "buy")
 					.addChoice("Sell Items", "sell")
 					.addChoice("View Item Prices", "view")
-					.addChoice("View Your Offers", "offers");
+					.addChoice("View Your Offers", "offers")
+					.addChoice("Cancel Your Offers", "cancel");
 			OptionData data2 = new OptionData(OptionType.STRING, "item", "Pick the item you want to Buy, Sell, or View.")
 					.addChoice("Grains", "grains")
 					.addChoice("Plastic", "plastic")
@@ -197,24 +200,24 @@ public class StartBot {
 			data = new OptionData(OptionType.STRING, "item", "Choose the item you want to craft.")
 					.addChoice("Rice", "rice")
 					.addChoice("Bubble Tea", "tea")
-					.addChoice("Blessing", "blessing")
+					.addChoice("Blessing", "blessings")
 					.addChoice("Rosin", "rosin")
 					.addChoice("New Strings", "string")
-					.addChoice("Bow Hair", "bowhair")
-					.addChoice("Violin Service", "service")
-					.addChoice("Free Box", "free")
-					.addChoice("Gift Box", "gift")
-					.addChoice("Musician Kit", "kit")
-					.addChoice("Ling Ling Box", "llbox")
-					.addChoice("Crazy Person Box", "crazybox")
-					.addChoice("RNGesus Box", "rngesus");
+					.addChoice("Bow Hair", "bowHair")
+					.addChoice("Violin Service", "violinService")
+					.addChoice("Free Box", "voteBox")
+					.addChoice("Gift Box", "giftBox")
+					.addChoice("Musician Kit", "kits")
+					.addChoice("Ling Ling Box", "linglingBox")
+					.addChoice("Crazy Person Box", "crazyBox")
+					.addChoice("RNGesus Box", "RNGesusBox");
 			jda.upsertCommand(
 					Commands.slash("use", "Use something.")
 							.addOptions(data)
 							.addOption(OptionType.STRING, "amount", "How much to use.")
 			).queue();
 			jda.upsertCommand(
-					Commands.slash("claim", "Claim a Free Box, every 24 hours!")
+					Commands.slash("claim", "Claim a Free Box, every 12 hours!")
 			).queue();
 			jda.upsertCommand(
 					Commands.slash("gift", "Gift a Friend!")
@@ -238,12 +241,14 @@ public class StartBot {
 					.addChoice("Most Gifts Given", "gift")
 					.addChoice("Most Free Boxes Claimed", "free")
 					.addChoice("Luckiest Users", "rng")
-					.addChoice("Most Magic Find", "magicfind");
+					.addChoice("Most Magic Find", "magicfind")
+					.addChoice("Most Money Earned from Market", "moneyearned")
+					.addChoice("Most Money Spent in Market", "moneyspent");
 			jda.upsertCommand(
 					Commands.slash("lb", "View a leaderboard!")
 							.addOptions(data)
 			).queue();
-			jda.upsertCommand(
+			/*jda.upsertCommand(
 					Commands.slash("dep", "Deposit Violins into your bank account.")
 							.addOption(OptionType.STRING, "amount", "How much you want to deposit.")
 			).queue();
@@ -351,10 +356,10 @@ public class StartBot {
 					Commands.slash("updateroles", "Forcibly updates all roles for users.")
 			).queue();
 			data = new OptionData(OptionType.INTEGER, "rank", "The new permission level")
-					.addChoice("0", 0)
-					.addChoice("1", 1)
-					.addChoice("2", 2)
-					.addChoice("3", 3);
+					.addChoice("Normie", 0)
+					.addChoice("Moderator", 1)
+					.addChoice("Admin", 2)
+					.addChoice("Developer Perms - DANGEROUS", 3);
 			jda.upsertCommand(
 					Commands.slash("setpermlevel", "Sets the permission level for a user.")
 							.addOption(OptionType.STRING, "user", "The user to change the Permissions for.")

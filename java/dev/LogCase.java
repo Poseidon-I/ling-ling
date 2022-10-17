@@ -24,11 +24,16 @@ public class LogCase {
 			user = "<@" + id + ">";
 		}
 		EmbedBuilder builder = new EmbedBuilder()
-				.setColor(Color.BLUE)
 				.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
 				.addField("Moderator: " + e.getUser().getName(), "User: " + user + "\nReason: " + reason, false)
 				.setTitle("__**Case " + caseNum + ": " + type + "**__");
-		Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
+		switch(type) {
+			case "Warn" -> builder.setColor(Color.YELLOW);
+			case "Save Reset" -> builder.setColor(Color.RED);
+			case "BAN" -> builder.setColor(Color.BLACK);
+			case "Unban" -> builder.setColor(Color.GREEN);
+		}
+		Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("1029498872441077860")).sendMessageEmbeds(builder.build()).queue();
 		JSONObject data = new JSONObject();
 		data.put("user", id);
 		data.put("moderator", e.getUser().getName());

@@ -54,7 +54,7 @@ public class Ban {
 			} catch(Exception exception) {
 				user = "Someone";
 			}
-			Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("734697505543159879")).sendMessage("""
+			Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("1029498872441077860")).sendMessage("""
 					:hammer: **THE BAN HAMMER HAS SPOKEN** :hammer:
 					            Someone has been banned.
 					

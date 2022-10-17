@@ -105,10 +105,11 @@ public class NewReceiver extends ListenerAdapter {
 				// NON-ECON COMMANDS
 				case "help" -> Help.help(e);
 				case "faq" -> FAQ.faq(e);
-				case "website" -> e.reply("Check out the website at <https://linglingdev.weebly.com/>").queue();
+				case "website" ->
+						e.reply("Weebly is hard to use, so there is currently no website.  Maybe in the future I'll get someone to make it, but for now, everything is on Google Sheets or Google Docs.").queue();
 				case "support" -> e.reply("Join the support server at discord.gg/gNfPwa8").queue();
 				case "guide" ->
-						e.reply("The Beginner Guide can be found at <https://linglingdev.weebly.com/beginners-guide.html>, written by `bubblepotatochips#0498`").queue();
+						e.reply("The Beginner Guide can be found at <https://docs.google.com/document/d/1Oo8m8XuGsIOyMzJhllUN9SpOJI8hSUeQt5RbyPY9qMI/edit?usp=sharing>, written by `bubblepotatochips#0498`").queue();
 				case "kill" -> Kill.kill(e);
 				case "joke" -> Joke.joke(e);
 				case "poll" -> Poll.poll(e);
@@ -232,6 +233,10 @@ public class NewReceiver extends ListenerAdapter {
 									Leaderboard.leaderboard(":slot_machine:", "Truly Luckiest Users", e, "RNGesusWeight", (long) data.get("RNGesusWeight"), (String) data.get("color"));
 							case "magicfind" ->
 									Leaderboard.leaderboard(":star:", "Statistically Luckiest Users", e, "magicFind", (long) data.get("magicFind"), (String) data.get("color"));
+							case "moneyearned" ->
+									Leaderboard.leaderboard(Emoji.VIOLINS, "Best Entrepreneurs", e, "moneyEarned", (long) data.get("moneyEarned"), (String) data.get("color"));
+							case "moneyspent" ->
+									Leaderboard.leaderboard(Emoji.VIOLINS, "Biggest Spenders", e, "moneySpent", (long) data.get("moneySpent"), (String) data.get("color"));
 							default ->
 									e.reply("You must provide a valid leaderboard type.  Valid types...\n\n`violins`: Richest Users\n`income`: Highest Hourly Incomes\n`streak`: Longest Daily Streaks\n`medals`: Users with Most Ling Ling Medals\n`winnings`: Users with Highest Net Gamble Winnings\n`million`: Users with Most Million Violin Tickets\n`rob`: Users with Highest Violins Robbed\n`scales`: Users with Most Scales Played\n`hours`: Users with Most Hours Practised\n`rehearsals`: Users with Most Rehearsals Attended\n`performances`: Users with Most Performances\n`teach`: Users with the Most Hours Taught\n`earnings`: Users who Earned the Most Violins\n`luthier`: Users with Most Luthier Unscrambles\n`gift`: Users that have given the most Gifts\n`free`: Users that have claimed the most Free Boxes\n`rng`: Users with highest RNGesus Weight\n`magicfind`: Users with the most Magic Find").queue();
 						}
@@ -342,8 +347,8 @@ public class NewReceiver extends ListenerAdapter {
 						e.reply(":no_entry: **403 FORBIDDEN** :no_entry:\nYou do not nave permission to run this command.").queue();
 					}
 				}
-				case "custom" -> {/*
-					File[] files = new File("Ling Ling Bot Data\\Economy Data").listFiles();
+				case "custom" -> {
+					/*File[] files = new File("Ling Ling Bot Data\\Economy Data").listFiles();
 					assert files != null;
 					for(File file : files) {
 						JSONObject data;
@@ -352,26 +357,11 @@ public class NewReceiver extends ListenerAdapter {
 						} catch(Exception exception) {
 							continue;
 						}
-						data.remove("mfLLBox");
-						data.remove("mfCrazyBox");
-						data.remove("mfRNGesusBox");
-						data.put("mcIGN", "");
-						data.put("rosinExpire", System.currentTimeMillis() + 612000000);
-						data.put("stringsExpire", System.currentTimeMillis() + 612000000);
-						data.put("bowHairExpire", System.currentTimeMillis() + 612000000);
-						data.put("serviceExpire", System.currentTimeMillis() + 612000000);
-						data.put("grains", 0L);
-						data.put("plastic", 0L);
-						data.put("water", 0L);
-						data.put("teaBase", 0L);
-						data.put("wood", 0L);
-						data.put("pineSap", 0L);
-						data.put("steel", 0L);
-						data.put("horseHair", 0L);
-						data.put("rosin", 0L);
-						data.put("string", 0L);
-						data.put("bowHair", 0L);
-						data.put("violinService", 0L);
+						data.put("itemsSold", 0L);
+						data.put("itemsBought", 0L);
+						data.put("moneySpent", 0L);
+						data.put("moneyEarned", 0L);
+						data.put("taxPaid", 0L);
 						try(FileWriter writer = new FileWriter(file)) {
 							writer.write(data.toJSONString());
 						} catch(Exception exception) {

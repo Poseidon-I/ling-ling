@@ -74,7 +74,7 @@ public class Luthier {
 							userData = (JSONObject) parser.parse(reader);
 							reader.close();
 						} catch(Exception exception) {
-							e.reply("You don't even have a profile, where would you store your violins???  Run `/start` **in a bot command channel** to get one!").mentionRepliedUser(false).queue();
+							e.reply("You don't even have a profile, where would you store your violins???  Run `/start` **in a bot command channel** to get one!").queue();
 							return;
 						}
 						String name = e.getUser().getName();
@@ -84,7 +84,7 @@ public class Luthier {
 						userData.replace("violins", (long) userData.get("violins") + gain);
 						userData.replace("earnings", (long) userData.get("earnings") + gain);
 						userData.replace("luthiers", (long) userData.get("luthiers") + 1);
-						e.reply("**" + name + "** unscrambled `" + target + "` and gained " + Numbers.formatNumber(gain) + Emoji.VIOLINS).mentionRepliedUser(false).queue();
+						e.reply("**" + name + "** unscrambled `" + target + "` and gained " + Numbers.formatNumber(gain) + Emoji.VIOLINS).queue();
 						RNGesus.lootbox(e, userData);
 						try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Economy Data\\" + e.getUser().getId() + ".json")) {
 							writer.write(userData.toJSONString());

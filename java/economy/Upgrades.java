@@ -33,13 +33,13 @@ public class Upgrades {
 		builder.setTitle("__**Miscellaneous Orchestra Items**__");
 		if(!(boolean) data.get("orchestra")) {
 			if((long) data.get("hall") == 3) {
-				builder.addField("Concert Hall Quality :white_check_mark:", "Effect: +300" + Emoji.VIOLINS + "/hour, +12.5% command income multiplier", true);
+				builder.addField("Concert Hall Quality :white_check_mark:", "Effect: +300" + Emoji.VIOLINS + "/hour, x1.125 command income", true);
 			} else {
-				builder.addField("Concert Hall Quality (" + Numbers.formatNumber(data.get("hall")) + "/3)", "Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("hall"), 4, 100000)) + "" + Emoji.VIOLINS + "\nEffect: +300" + Emoji.VIOLINS + "/hour, +12.5% command income multiplier\nID: `hall`", true);
+				builder.addField("Concert Hall Quality (" + Numbers.formatNumber(data.get("hall")) + "/3)", "Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("hall"), 4, 100000)) + "" + Emoji.VIOLINS + "\nEffect: +300" + Emoji.VIOLINS + "/hour, x1.125 command income\nID: `hall`", true);
 			}
 			builder.addField("Orchestra", "Price: 25 000 000" + Emoji.VIOLINS + "\nIncome Requirement: 7 500\nEffect: +3 100" + Emoji.VIOLINS + "/hour, access to `/rehearse` command\nID:`orchestra`", true);
 		} else {
-			builder.addField("Concert Hall Quality (" + Numbers.formatNumber(data.get("hall")) + ")", "Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("hall"), 4, 100000)) + "" + Emoji.VIOLINS + "\nEffect: +300" + Emoji.VIOLINS + "/hour, +12.5% command income multiplier\nID: `hall`", true)
+			builder.addField("Concert Hall Quality (" + Numbers.formatNumber(data.get("hall")) + ")", "Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("hall"), 4, 100000)) + "" + Emoji.VIOLINS + "\nEffect: +300" + Emoji.VIOLINS + "/hour, x1.125 command income\nID: `hall`", true)
 					.addBlankField(true)
 					.addField("Conductor Musicality (" + Numbers.formatNumber(data.get("conductor")) + ")", "Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("conductor"), 4, 100000)) + "" + Emoji.VIOLINS + "\nEffect: +200" + Emoji.VIOLINS + "/hour\nID: `conductor`", true)
 					.addField("Ticket Price (" + Numbers.formatNumber(data.get("tickets")) + ")", "Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("tickets"), 2, 1000000)) + "" + Emoji.VIOLINS + "\nEffect: +1000" + Emoji.VIOLINS + "/hour\nID: `tickets`", true)
@@ -63,7 +63,7 @@ public class Upgrades {
 		} else if((long) data.get("efficiency") < 100) {
 			builder.addField("Efficient Practising (" + Numbers.formatNumber(data.get("efficiency")) + ")", "Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("efficiency"), 1.1, 400)) + "" + Emoji.VIOLINS + "\nEffect: Multiplies your command income by x1.05\nID: `efficiency`", true);
 		} else {
-			builder.addField("Efficient Practising (" + Numbers.formatNumber(data.get("efficiency")) + ")", "Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("efficiency"), 1.1, 400)) + "" + Emoji.VIOLINS + "\nEffect: Multiplies your command income by x1.02\nID: `efficiency`", true);
+			builder.addField("Efficient Practising (" + Numbers.formatNumber(data.get("efficiency")) + ")", "Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("efficiency"), 1.1, 400)) + "" + Emoji.VIOLINS + "\nEffect: Multiplies your command income by x1.025\nID: `efficiency`", true);
 		}
 		if((long) data.get("luck") == 50) {
 			builder.addField("Lucky Musician :white_check_mark:", "Effect: Increases your gambling multiplier by 0.5%", true);
@@ -92,7 +92,7 @@ public class Upgrades {
 	public static void medalUpgrades() {
 		builder.setTitle("**__Medal Upgrades__**")
 				.addField("Extra Income (" + Numbers.formatNumber(data.get("moreIncome")) + ")", "Price: " + Numbers.formatNumber(((long) data.get("moreIncome") + 1)) + "" + Emoji.MEDALS + "\nEffect: +2 000" + Emoji.VIOLINS + "/hour\nID: `moreIncome`", true)
-				.addField("Extra Command Income (" + Numbers.formatNumber(data.get("moreCommandIncome")) + ")", "Price: " + Numbers.formatNumber((long) Math.pow(2, (long) data.get("moreCommandIncome"))) + "" + Emoji.MEDALS + "\nEffect: +30% command income multiplier\nID: `moreCommandIncome`", true)
+				.addField("Extra Command Income (" + Numbers.formatNumber(data.get("moreCommandIncome")) + ")", "Price: " + Numbers.formatNumber((long) Math.pow(2, (long) data.get("moreCommandIncome"))) + "" + Emoji.MEDALS + "\nEffect: x1.3 command income\nID: `moreCommandIncome`", true)
 				.addField("Higher Gamble Limit (" + Numbers.formatNumber(data.get("moreMulti")) + ")", "Price: " + Numbers.formatNumber(((long) data.get("moreMulti") + 1)) + "" + Emoji.MEDALS + "\nEffect: +1x Gamble Cap\nID: `moreMulti`", true)
 				.addField("Higher Rob Success Rate (" + Numbers.formatNumber(data.get("moreRob")) + ")", "Price: " + Numbers.formatNumber((long) Math.pow(2, (long) data.get("moreRob"))) + "" + Emoji.MEDALS + "\nEffect: Increases the chance of successfully robbing someone by 0.3%\nID: `moreRob`", true)
 				.addField("Magic Find (" + Numbers.formatNumber(data.get("magicFindMedals")) + ")", "Price: " + Numbers.formatNumber((long) Math.pow(2, (long) data.get("magicFindMedals"))) + "" + Emoji.MEDALS + "\nEffect: +1 Magic Find\nID: `magicFindMedals`", true);

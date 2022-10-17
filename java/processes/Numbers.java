@@ -22,13 +22,13 @@ public class Numbers {
 		String num = String.valueOf(tempNum);
 		StringBuilder result = new StringBuilder();
 		int temp = 0;
-		for(int i = num.length() - 1; i >= 0; i --) {
+		for(int i = num.length() - 1; i >= 0; i--) {
 			result.insert(0, num.charAt(i));
 			if(temp == 2 && i != 0) {
 				result.insert(0, " ");
 				temp = 0;
 			} else {
-				temp ++;
+				temp++;
 			}
 		}
 		return result.toString();
@@ -41,16 +41,16 @@ public class Numbers {
 		} else if(efficiency < 100) {
 			base *= Math.pow(1.1, 10) * Math.pow(1.05, efficiency - 10);
 		} else {
-			base *= Math.pow(1.1, 10) * Math.pow(1.05, 90) * Math.pow(1.02, efficiency - 100);
+			base *= Math.pow(1.1, 10) * Math.pow(1.05, 90) * Math.pow(1.025, efficiency - 100);
 		}
-		double multiplier = 1.0;
-		multiplier += (double) data.get("hall") * 0.125;
-		multiplier += (double) data.get("moreIncome") * 0.3;
-		multiplier += (double) data.get("serverLevel") - 1;
+		base *= Math.pow(1.125, (long) data.get("hall"));
+		base *= Math.pow(1.3, (long) data.get("moreCommandIncome"));
 		if((boolean) data.get("isBooster")) {
-			multiplier += 0.3;
+			base *= 0.3 + (double) data.get("serverLevel");
+		} else {
+			base *= (double) data.get("serverLevel");
 		}
-		return (long) (base * multiplier);
+		return base;
 	}
 	
 	public static long itemCost(long level, double power, long base) {

@@ -21,7 +21,7 @@ public class Vote {
 		} else {
 			data.replace("voteBox", (long) data.get("voteBox") + 1);
 			data.replace("votes", (long) data.get("votes") + 1);
-			data.replace("voteCD", System.currentTimeMillis() + 86340000);
+			data.replace("voteCD", System.currentTimeMillis() + 43140000);
 			e.reply("You have received **1**" + Emoji.FREE_BOX).queue();
 			if((long) data.get("votes") % 40 == 0) {
 				data.replace("medals", (long) data.get("medals") + 1);

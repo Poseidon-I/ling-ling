@@ -27,20 +27,20 @@ public class Start {
 			data.put("firstPlace", 0L);
 			
 			// Crafting Items
-			data.put("grains", 0L); //
-			data.put("plastic", 0L); //
-			data.put("water", 0L); //
-			data.put("teaBase", 0L); //
-			data.put("wood", 0L); //
-			data.put("pineSap", 0L); //
-			data.put("steel", 0L); //
-			data.put("horseHair", 0L); //
+			data.put("grains", 0L);
+			data.put("plastic", 0L);
+			data.put("water", 0L);
+			data.put("teaBase", 0L);
+			data.put("wood", 0L);
+			data.put("pineSap", 0L);
+			data.put("steel", 0L);
+			data.put("horseHair", 0L);
 			
 			// AFK Income Items
-			data.put("rosin", 0L); //
-			data.put("string", 0L); //
-			data.put("bowHair", 0L); //
-			data.put("violinService", 0L); //
+			data.put("rosin", 0L);
+			data.put("string", 0L);
+			data.put("bowHair", 0L);
+			data.put("violinService", 0L);
 			
 			// Consumable Items
 			data.put("rice", 0L);
@@ -50,16 +50,16 @@ public class Start {
 			// Lootboxes
 			data.put("voteBox", 0L);
 			data.put("giftBox", 0L);
-			data.put("kits", 0L);
+			data.put("kits", 1L);
 			data.put("linglingBox", 0L);
 			data.put("crazyBox", 0L);
 			data.put("RNGesusBox", 0L);
 			
 			// AFK Income Penalty
-			data.put("rosinExpire", System.currentTimeMillis() + 612000000); //
-			data.put("stringsExpire", System.currentTimeMillis() + 612000000); //
-			data.put("bowHairExpire", System.currentTimeMillis() + 612000000); //
-			data.put("serviceExpire", System.currentTimeMillis() + 612000000); //
+			data.put("rosinExpire", System.currentTimeMillis() + 1224000000);
+			data.put("stringsExpire", System.currentTimeMillis() + 1224000000);
+			data.put("bowHairExpire", System.currentTimeMillis() + 1224000000);
+			data.put("serviceExpire", System.currentTimeMillis() + 1224000000);
 			
 			// Statistics
 			data.put("income", 0L);
@@ -82,6 +82,11 @@ public class Start {
 			data.put("interestEarned", 0L);
 			data.put("penaltiesIncurred", 0L);
 			data.put("RNGesusWeight", 0L);
+			data.put("itemsSold", 0L);
+			data.put("itemsBought", 0L);
+			data.put("moneyEarned", 0L);
+			data.put("moneySpent", 0L);
+			data.put("taxPaid", 0L);
 			
 			// Cooldowns
 			data.put("betCD", 0L);
@@ -92,7 +97,7 @@ public class Start {
 			data.put("performCD", 0L);
 			data.put("robCD", 0L);
 			data.put("voteCD", 0L);
-			data.put("hadDailyToday", false);
+			data.put("hadDailyToday", true);
 			data.put("hadGiftToday", false);
 			
 			// Misc Upgrades
@@ -185,13 +190,13 @@ public class Start {
 			data.put("retainDaily", true);
 			data.put("isBooster", false);
 			data.put("serverLevel", 1.0);
-			data.put("mcIGN", ""); //
+			data.put("mcIGN", "");
 			
 			try(FileWriter writer = new FileWriter(file.getAbsolutePath())) {
 				writer.write(data.toJSONString());
 				writer.close();
 				if(!ban) {
-					e.reply("Your profile has been created!  Run `/help 3` for a list of economy commands!\nSupport server: https://discord.gg/gNfPwa8\nBeginner's Guide: <https://linglingdev.weebly.com/beginners-guide.html>").queue();
+					e.reply("Your profile has been created!  Run `/help 3` for a list of economy commands!\nSupport server: https://discord.gg/gNfPwa8\nBeginner's Guide: <https://docs.google.com/document/d/1Oo8m8XuGsIOyMzJhllUN9SpOJI8hSUeQt5RbyPY9qMI/edit?usp=sharing>").queue();
 				}
 			} catch(Exception exception) {
 				e.reply("Something went wrong creating the file.  Run `/support` for a link to the support server to get in contact with the developer.").queue();

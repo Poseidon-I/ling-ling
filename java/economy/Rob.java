@@ -101,7 +101,7 @@ public class Rob {
 							//nothing here lol
 						}
 						if(hasDuplicator) {
-							message += "\nYour violin duplicator doubled your earnings to " + baseRob * 0.5 + ".";
+							message += "\nYour violin duplicator doubled your earnings to " + Numbers.formatNumber((long) (baseRob * 0.5)) + Emoji.VIOLINS;
 							baseRob *= 0.5;
 						} else {
 							baseRob *= 0.25;
@@ -121,7 +121,7 @@ public class Rob {
 							//nothing here lol
 						}
 						if(hasDuplicator) {
-							message += "\nYour violin duplicator doubled your earnings to" + baseRob + ".";
+							message += "\nYour violin duplicator doubled your earnings to" + Numbers.formatNumber(baseRob) + Emoji.VIOLINS;
 						} else {
 							baseRob *= 0.5;
 						}
@@ -142,7 +142,7 @@ public class Rob {
 							//nothing here lol
 						}
 						if(hasDuplicator) {
-							message += "\nYour violin duplicator doubled your earnings to " + baseRob + ".";
+							message += "\nYour violin duplicator doubled your earnings to " + Numbers.formatNumber(baseRob) + Emoji.VIOLINS;
 						} else {
 							baseRob *= 0.5;
 						}
@@ -161,7 +161,7 @@ public class Rob {
 							//nothing here lol
 						}
 						if(hasDuplicator) {
-							message += "\nYour violin duplicator doubled your earnings to " + baseRob * 2 + ".";
+							message += "\nYour violin duplicator doubled your earnings to " + Numbers.formatNumber(baseRob * 2) + Emoji.VIOLINS;
 							baseRob *= 2;
 						}
 					}

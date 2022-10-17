@@ -26,7 +26,7 @@ public class Rehearse {
 				e.reply("You don't have the time to go to rehearsal that often, wait " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
 			} else {
 				boolean badEvent = false;
-				long base = Numbers.calculateAmount(data, random.nextInt(501) + 1750);
+				long base = Numbers.calculateAmount(data, random.nextInt(401) + 1300);
 				double num = random.nextDouble();
 				if(num > 0.5) {
 					e.reply("You rehearsed with your orchestra and earned " + Numbers.formatNumber(base) + Emoji.VIOLINS).queue();
@@ -82,10 +82,10 @@ public class Rehearse {
 					} else if(num > 0.005) {
 						e.reply(":regional_indicator_l:\nYou decided to fake your solo.  Of course it didn't work and Ling Ling fined you " + Numbers.formatNumber((long) (violins * 0.9)) + Emoji.VIOLINS).mentionRepliedUser(true).queue();
 						data.replace("violins", (long) (violins * 0.1));
+						badEvent = true;
 						base = 0;
 					} else {
 						e.reply(":skull:\nYou dropped your violin.  How shameful.  All cooldowns except daily and gamble have had one day added to them, and you were fined " + Numbers.formatNumber((long) (violins * 0.95)) + Emoji.VIOLINS + " for being careless in public.").mentionRepliedUser(true).queue();
-						base = 0;
 						time += 86400000;
 						data.replace("violins", (long) (violins * 0.05));
 						data.replace("scaleCD", time);
@@ -93,6 +93,7 @@ public class Rehearse {
 						data.replace("rehearseCD", time);
 						data.replace("performCD", time);
 						badEvent = true;
+						base = 0;
 					}
 					violinsEarned += base;
 				}
@@ -100,9 +101,9 @@ public class Rehearse {
 				data.replace("earnings", violinsEarned + base);
 				if(!badEvent) {
 					if((boolean) data.get("timeCrunch")) {
-						data.replace("rehearseCD", time + 57600000);
+						data.replace("rehearseCD", time + 28740000);
 					} else {
-						data.replace("rehearseCD", time + 86340000);
+						data.replace("rehearseCD", time + 43140000);
 					}
 				}
 				data.replace("rehearsals", (long) data.get("rehearsals") + 1);

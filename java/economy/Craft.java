@@ -251,15 +251,15 @@ public class Craft {
 			SaveData.saveData(e, data);
 		} catch(Exception exception) {
 			builder.setTitle("**All Crafting Recipes**")
-					.addField("**Rice** " + Emoji.RICE, "25" + Emoji.GRAINS + " 10" + Emoji.WOOD + " 10" + Emoji.WATER, true)
-					.addField("**Bubble Tea** " + Emoji.TEA, "15" + Emoji.PLASTIC + " 10" + Emoji.TEABAG + " 25" + Emoji.WATER, true)
-					.addField("**Rosin** " + Emoji.ROSIN, "25" + Emoji.SAP, true)
-					.addField("**New Strings** " + Emoji.STRING, "50" + Emoji.STEEL, true)
+					.addField("**Rice** " + Emoji.RICE, "`" + data.get("grains") + "/25`" + Emoji.GRAINS + "\n`" + data.get("wood") + "/10`" + Emoji.WOOD + "\n`" + data.get("water") + "/10`" + Emoji.WATER, true)
+					.addField("**Bubble Tea** " + Emoji.TEA, "`" + data.get("plastic") + "/15`" + Emoji.PLASTIC + "\n`" + data.get("teaBase") + "/10`" + Emoji.TEABAG + "\n`" + data.get("water") + "/25`" + Emoji.WATER, true)
+					.addField("**Rosin** " + Emoji.ROSIN, "`" + data.get("pineSap") + "/25`" + Emoji.SAP, true)
+					.addField("**New Strings** " + Emoji.STRING, "`" + data.get("steel") + "/50`" + Emoji.STEEL, true)
 					.addBlankField(true)
-					.addField("**Bow Hair** " + Emoji.BOW_HAIR, "75" + Emoji.HORSE_HAIR, true)
-					.addField("**Violin Service** " + Emoji.SERVICE, "25" + Emoji.GRAINS + " 25" + Emoji.PLASTIC + " 25" + Emoji.WATER + " 25" + Emoji.TEABAG + "\n**100**" + Emoji.WOOD + " 25" + Emoji.SAP + " 25" + Emoji.STEEL + " 25" + Emoji.HORSE_HAIR, true)
+					.addField("**Bow Hair** " + Emoji.BOW_HAIR, "`" + data.get("horseHair") + "/75`" + Emoji.HORSE_HAIR, true)
+					.addField("**Violin Service** " + Emoji.SERVICE, "`" + data.get("grains") + "/25`" + Emoji.GRAINS + "\n`" + data.get("plastic") + "/25`" + Emoji.PLASTIC + "\n`" + data.get("water") + "/25`" + Emoji.WATER + "\n`" + data.get("teaBase") + "/25`" + Emoji.TEABAG + "\n`" + data.get("wood") + "/100`" + Emoji.WOOD + "\n`" + data.get("pineSap") + "/25`" + Emoji.SAP + "\n`" + data.get("steel") + "/25`" + Emoji.STEEL + "\n`" + data.get("horseHair") + "/25`" + Emoji.HORSE_HAIR, true)
 					.addBlankField(true)
-					.addField("**1x Luthier** " + Emoji.SERVICE, "250" + Emoji.GRAINS + " 250" + Emoji.PLASTIC + " 250" + Emoji.WATER + " 250" + Emoji.TEABAG + "\n250" + Emoji.WOOD + " 250" + Emoji.SAP + " 250" + Emoji.STEEL + " 250" + Emoji.HORSE_HAIR, true);
+					.addField("**1x Luthier** " + Emoji.SERVICE, "`" + data.get("grains") + "/250`" + Emoji.GRAINS + "\n`" + data.get("plastic") + "/250`" + Emoji.PLASTIC + "\n`" + data.get("water") + "/250`" + Emoji.WATER + "\n`" + data.get("teaBase") + "/250`" + Emoji.TEABAG + "\n`" + data.get("wood") + "/250`" + Emoji.WOOD + "\n`" + data.get("pineSap") + "/250`" + Emoji.SAP + "\n`" + data.get("steel") + "/250`" + Emoji.STEEL + "\n`" + data.get("horseHair") + "/250`" + Emoji.HORSE_HAIR, true);
 			e.replyEmbeds(builder.build()).queue();
 		}
 	}
