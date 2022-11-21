@@ -62,10 +62,10 @@ public class Help {
 				case "payloan" -> builder.addField("PayLoan Command", "Syntax: `/payloan <amount | max>`\nUsage: Pays back a specified amount, or everything in your wallet.", false);
 				
 				// PAGE 4
-				case "scales" -> builder.addField("Scales Command", "Syntax: `/s`\nUsage: Practise scales earn some violins!\nCooldown: 90s/65s", false);
-				case "practice" -> builder.addField("Practice Command", "Syntax: `/p`\nUsage: Practise to earn some violins!\nCooldown: 45m/30m", false);
-				case "rehearse" -> builder.addField("Rehearse Command", "Syntax: `/r`\nUsage: Rehearse with an orchestra to earn loads of violins!\nRestrictions: Usable only by people with an Orchestra.\nCooldown: 1d/16h", false);
-				case "perform" -> builder.addField("Perform Command", "Syntax: `/pf`\nUsage: Perform your solo to earn an INSANE amount of violins!  Gain even more by hiring an orchestra and upgrading your Concert Hall!\nCooldown: 84h/56h", false);
+				case "scales" -> builder.addField("Scales Command", "Syntax: `/s`\nUsage: Practise scales earn some violins!\nCooldown: 90s/60s", false);
+				case "practice" -> builder.addField("Practice Command", "Syntax: `/p`\nUsage: Practise to earn some violins!\nCooldown: 60m/40m", false);
+				case "rehearse" -> builder.addField("Rehearse Command", "Syntax: `/r`\nUsage: Rehearse with an orchestra to earn loads of violins!\nRestrictions: Usable only by people with an Orchestra.\nCooldown: 12h/8h", false);
+				case "perform" -> builder.addField("Perform Command", "Syntax: `/pf`\nUsage: Perform your solo to earn an INSANE amount of violins!  Gain even more by hiring an orchestra and upgrading your Concert Hall!\nCooldown: 60h/40h", false);
 				case "teach" -> builder.addField("Teach Command", "Syntax: `/t`\nUsage: Teach a student to earn more violins!  Not affected by Efficient Practising, instead it has its own upgrades to improve the payout.\nRestrictions: Usable only by people with a Teaching Certificate.\nCooldown: 1h", false);
 				case "daily" -> builder.addField("Daily Command", "Syntax: `/d`\nUsage: Get a daily dose of violins!  Run the command many days in a row to start gaining a streak and get even more violins!\nCooldown: 0-24h", false);
 				case "gamble" -> builder.addField("Gamble Command", "Syntax: `/bet <type> <amount | max>`\nUsage: Bets the amount using the gamemode specified.  You can only bet up to 10x your hourly income.  Writing `max` in place of the amount will bet the maximum allowed.\nGambling Options: `rng` `slots` `scratch`\nCooldown: 10s\nExample: `/gamble slots 4000`", false);

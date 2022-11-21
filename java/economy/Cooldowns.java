@@ -168,9 +168,7 @@ public class Cooldowns {
 			//income - rosin
 			milliseconds = (long) data.get("rosinExpire") - time;
 			if(milliseconds < 0) {
-				builder.addField("**Rosin Income**", ":x:", true);
-			} else if(milliseconds < 86400000) {
-				builder.addField("**Rosin Income**", ":warning:", true);
+				builder2.addField("**Rosin Income**", ":x:", true);
 			} else {
 				hours = milliseconds / 3600000;
 				milliseconds -= hours * 3600000;
@@ -178,16 +176,18 @@ public class Cooldowns {
 				milliseconds -= minutes * 60000;
 				seconds = milliseconds / 1000;
 				milliseconds -= seconds * 1000;
-				builder2.addField("**Rosin Income**", ":white_check_mark:\n`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
+				if(hours < 24) {
+					builder2.addField("**Rosin Income**", ":warning:\n`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
+				} else {
+					builder2.addField("**Rosin Income**", ":white_check_mark:\n`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
+				}
 			}
 			builder2.addBlankField(true);
 			
 			//income - strings
 			milliseconds = (long) data.get("stringsExpire") - time;
 			if(milliseconds < 0) {
-				builder.addField("**Strings Income**", ":x:", true);
-			} else if(milliseconds < 86400000) {
-				builder.addField("**Strings Income**", ":warning:", true);
+				builder2.addField("**Strings Income**", ":x:", true);
 			} else {
 				hours = milliseconds / 3600000;
 				milliseconds -= hours * 3600000;
@@ -195,15 +195,17 @@ public class Cooldowns {
 				milliseconds -= minutes * 60000;
 				seconds = milliseconds / 1000;
 				milliseconds -= seconds * 1000;
-				builder2.addField("**Strings Income**", ":white_check_mark:\n`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
+				if(hours < 24) {
+					builder2.addField("**Strings Income**", ":warning:\n`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
+				} else {
+					builder2.addField("**Strings Income**", ":white_check_mark:\n`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
+				}
 			}
 			
 			//income - bow hairs
 			milliseconds = (long) data.get("bowHairExpire") - time;
 			if(milliseconds < 0) {
-				builder.addField("**Bow Hair Income**", ":x:", true);
-			} else if(milliseconds < 86400000) {
-				builder.addField("**Bow Hair Income**", ":warning:", true);
+				builder2.addField("**Bow Hair Income**", ":x:", true);
 			} else {
 				hours = milliseconds / 3600000;
 				milliseconds -= hours * 3600000;
@@ -211,16 +213,18 @@ public class Cooldowns {
 				milliseconds -= minutes * 60000;
 				seconds = milliseconds / 1000;
 				milliseconds -= seconds * 1000;
-				builder2.addField("**Bow Hair Income**", ":white_check_mark:\n`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
+				if(hours < 24) {
+					builder2.addField("**Bow Hair Income**", ":warning:\n`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
+				} else {
+					builder2.addField("**Bow Hair Income**", ":white_check_mark:\n`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
+				}
 			}
 			builder2.addBlankField(true);
 			
 			//income - service
 			milliseconds = (long) data.get("serviceExpire") - time;
 			if(milliseconds < 0) {
-				builder.addField("**Violin Service Income**", ":x:", true);
-			} else if(milliseconds < 86400000) {
-				builder.addField("**Violin Service Income**", ":warning:", true);
+				builder2.addField("**Violin Service Income**", ":x:", true);
 			} else {
 				hours = milliseconds / 3600000;
 				milliseconds -= hours * 3600000;
@@ -228,7 +232,11 @@ public class Cooldowns {
 				milliseconds -= minutes * 60000;
 				seconds = milliseconds / 1000;
 				milliseconds -= seconds * 1000;
-				builder2.addField("**Violin Service Income**", ":white_check_mark:\n`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
+				if(hours < 24) {
+					builder2.addField("**Violin Service Income**", ":warning:\n`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
+				} else {
+					builder2.addField("**Violin Service Income**", ":white_check_mark:\n`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
+				}
 			}
 			
 			builder.setTitle("__**Command Cooldowns**__");

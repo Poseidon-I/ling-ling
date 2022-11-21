@@ -60,8 +60,9 @@ public class Use {
 		Random random = new Random();
 		Map<String, Long> addItems = new HashMap<>(0);
 		long income = (long) data.get("income");
+		long itemAmount = (long) data.get(item);
 		long useAmount;
-		long extraRolls = income / 50000;
+		long extraRolls = income / 100000;
 		long extraItems = income / 25000;
 		try {
 			useAmount = Objects.requireNonNull(e.getOption("amount")).getAsLong();
@@ -80,6 +81,9 @@ public class Use {
 			e.reply("You can't use a negative amount of items.  Grow a brain.").setEphemeral(true).queue();
 			return;
 		}
+		if(useAmount > itemAmount) {
+			useAmount = itemAmount;
+		}
 		switch(item) {
 			case "rice" -> {
 				if((long) data.get(item) <= 0) {
@@ -90,7 +94,7 @@ public class Use {
 					return;
 				} else {
 					addItems.put("violins", income * 2 * useAmount);
-					e.reply("You ate " + Numbers.formatNumber(useAmount) + Emoji.RICE + "  The God of Rice gave you " + Numbers.formatNumber(income * 2 * useAmount) + Emoji.VIOLINS).queue();
+					e.reply("You ate `" + Numbers.formatNumber(useAmount) + "`" + Emoji.RICE + "  The God of Rice gave you `" + Numbers.formatNumber(income * 2 * useAmount) + "`" + Emoji.VIOLINS).queue();
 				}
 			}
 			case "tea" -> {
@@ -102,7 +106,7 @@ public class Use {
 					return;
 				} else {
 					addItems.put("violins", income * 6 * useAmount);
-					e.reply("You drank " + Numbers.formatNumber(useAmount) + Emoji.TEA + "  Brett and Eddy approved and gave you " + Numbers.formatNumber(income * 6 * useAmount) + Emoji.VIOLINS).queue();
+					e.reply("You drank `" + Numbers.formatNumber(useAmount) + "`" + Emoji.TEA + "  Brett and Eddy approved and gave you `" + Numbers.formatNumber(income * 6 * useAmount) + "`" + Emoji.VIOLINS).queue();
 				}
 			}
 			case "blessings" -> {
@@ -125,7 +129,7 @@ public class Use {
 						}
 					}
 					addItems.put("medals", add);
-					e.reply("Ling Ling blessed you thanks to your " + useAmount + " performances!  You received " + add + Emoji.MEDALS).queue();
+					e.reply("Ling Ling blessed you thanks to your " + useAmount + " performances!  You received " + add + "`" + Emoji.MEDALS).queue();
 				}
 			}
 			case "voteBox" -> {
@@ -135,9 +139,9 @@ public class Use {
 				} else {
 					addItems.put("voteBox", -useAmount);
 					for(int i = 0; i < useAmount; i++) {
-						generateArray(addItems, 3 + extraRolls, 2, 3 + extraItems); // initial: 2-3 --> 3-4
+						generateArray(addItems, 5 + extraRolls, 2, 3 + extraItems); // initial: 2-3 --> 3-4
 					}
-					e.reply("You opened " + Numbers.formatNumber(useAmount) + Emoji.FREE_BOX + "  You received the following items...\n\n" + Numbers.formatNumber(addItems.get("grains")) + Emoji.GRAINS + " " + Numbers.formatNumber(addItems.get("plastic")) + Emoji.PLASTIC + " " + Numbers.formatNumber(addItems.get("water")) + Emoji.WATER + " " + Numbers.formatNumber(addItems.get("teaBase")) + Emoji.TEABAG + " " + Numbers.formatNumber(addItems.get("wood")) + Emoji.WOOD + " " + Numbers.formatNumber(addItems.get("pineSap")) + Emoji.SAP + " " + Numbers.formatNumber(addItems.get("steel")) + Emoji.STEEL + " " + Numbers.formatNumber(addItems.get("horseHair")) + Emoji.HORSE_HAIR).queue();
+					e.reply("You opened `" + Numbers.formatNumber(useAmount) + "`" + Emoji.FREE_BOX + "  You received the following items...\n\n`" + Numbers.formatNumber(addItems.get("grains")) + "`" + Emoji.GRAINS + " `" + Numbers.formatNumber(addItems.get("plastic")) + "`" + Emoji.PLASTIC + " `" + Numbers.formatNumber(addItems.get("water")) + "`" + Emoji.WATER + " `" + Numbers.formatNumber(addItems.get("teaBase")) + "`" + Emoji.TEABAG + " `" + Numbers.formatNumber(addItems.get("wood")) + "`" + Emoji.WOOD + " `" + Numbers.formatNumber(addItems.get("pineSap")) + "`" + Emoji.SAP + " `" + Numbers.formatNumber(addItems.get("steel")) + "`" + Emoji.STEEL + " `" + Numbers.formatNumber(addItems.get("horseHair")) + "`" + Emoji.HORSE_HAIR).queue();
 				}
 			}
 			case "giftBox" -> {
@@ -147,9 +151,9 @@ public class Use {
 				} else {
 					addItems.put("giftBox", -useAmount);
 					for(int i = 0; i < useAmount; i++) {
-						generateArray(addItems, 4 + extraRolls, 3, 4 + extraItems); // initial: 3-5 --> 4-6
+						generateArray(addItems, 6 + extraRolls, 3, 4 + extraItems); // initial: 3-5 --> 4-6
 					}
-					e.reply("You opened " + Numbers.formatNumber(useAmount) + Emoji.GIFT_BOX + "  You received the following items...\n\n" + Numbers.formatNumber(addItems.get("grains")) + Emoji.GRAINS + " " + Numbers.formatNumber(addItems.get("plastic")) + Emoji.PLASTIC + " " + Numbers.formatNumber(addItems.get("water")) + Emoji.WATER + " " + Numbers.formatNumber(addItems.get("teaBase")) + Emoji.TEABAG + " " + Numbers.formatNumber(addItems.get("wood")) + Emoji.WOOD + " " + Numbers.formatNumber(addItems.get("pineSap")) + Emoji.SAP + " " + Numbers.formatNumber(addItems.get("steel")) + Emoji.STEEL + " " + Numbers.formatNumber(addItems.get("horseHair")) + Emoji.HORSE_HAIR).queue();
+					e.reply("You opened `" + Numbers.formatNumber(useAmount) + "`" + Emoji.GIFT_BOX + "  You received the following items...\n\n`" + Numbers.formatNumber(addItems.get("grains")) + "`" + Emoji.GRAINS + " `" + Numbers.formatNumber(addItems.get("plastic")) + "`" + Emoji.PLASTIC + " `" + Numbers.formatNumber(addItems.get("water")) + "`" + Emoji.WATER + " `" + Numbers.formatNumber(addItems.get("teaBase")) + "`" + Emoji.TEABAG + " `" + Numbers.formatNumber(addItems.get("wood")) + "`" + Emoji.WOOD + " `" + Numbers.formatNumber(addItems.get("pineSap")) + "`" + Emoji.SAP + " `" + Numbers.formatNumber(addItems.get("steel")) + "`" + Emoji.STEEL + " `" + Numbers.formatNumber(addItems.get("horseHair")) + "`" + Emoji.HORSE_HAIR).queue();
 				}
 			}
 			case "kits" -> {
@@ -159,9 +163,9 @@ public class Use {
 				} else {
 					addItems.put("kits", -useAmount);
 					for(int i = 0; i < useAmount; i++) {
-						generateArray(addItems, 5 + extraRolls, 5, 6 + extraItems); // initial: 5-8 --> 6-10
+						generateArray(addItems, 7 + extraRolls, 5, 6 + extraItems); // initial: 5-8 --> 6-10
 					}
-					e.reply("You opened " + Numbers.formatNumber(useAmount) + Emoji.MUSICIAN_KIT + "  You received the following items...\n\n" + Numbers.formatNumber(addItems.get("grains")) + Emoji.GRAINS + " " + Numbers.formatNumber(addItems.get("plastic")) + Emoji.PLASTIC + " " + Numbers.formatNumber(addItems.get("water")) + Emoji.WATER + " " + Numbers.formatNumber(addItems.get("teaBase")) + Emoji.TEABAG + " " + Numbers.formatNumber(addItems.get("wood")) + Emoji.WOOD + " " + Numbers.formatNumber(addItems.get("pineSap")) + Emoji.SAP + " " + Numbers.formatNumber(addItems.get("steel")) + Emoji.STEEL + " " + Numbers.formatNumber(addItems.get("horseHair")) + Emoji.HORSE_HAIR).queue();
+					e.reply("You opened `" + Numbers.formatNumber(useAmount) + "`" + Emoji.MUSICIAN_KIT + "  You received the following items...\n\n`" + Numbers.formatNumber(addItems.get("grains")) + "`" + Emoji.GRAINS + " `" + Numbers.formatNumber(addItems.get("plastic")) + "`" + Emoji.PLASTIC + " `" + Numbers.formatNumber(addItems.get("water")) + "`" + Emoji.WATER + " `" + Numbers.formatNumber(addItems.get("teaBase")) + "`" + Emoji.TEABAG + " `" + Numbers.formatNumber(addItems.get("wood")) + "`" + Emoji.WOOD + " `" + Numbers.formatNumber(addItems.get("pineSap")) + "`" + Emoji.SAP + " `" + Numbers.formatNumber(addItems.get("steel")) + "`" + Emoji.STEEL + " `" + Numbers.formatNumber(addItems.get("horseHair")) + "`" + Emoji.HORSE_HAIR).queue();
 				}
 			}
 			case "linglingBox" -> {
@@ -171,9 +175,9 @@ public class Use {
 				} else {
 					addItems.put("linglingBox", -useAmount);
 					for(int i = 0; i < useAmount; i++) {
-						generateArray(addItems, 6 + extraRolls, 5, 8 + extraItems); // initial: 7-10 --> 8-12
+						generateArray(addItems, 8 + extraRolls, 5, 8 + extraItems); // initial: 7-10 --> 8-12
 					}
-					e.reply("You opened " + Numbers.formatNumber(useAmount) + Emoji.LING_LING_BOX + "  You received the following items...\n\n" + Numbers.formatNumber(addItems.get("grains")) + Emoji.GRAINS + " " + Numbers.formatNumber(addItems.get("plastic")) + Emoji.PLASTIC + " " + Numbers.formatNumber(addItems.get("water")) + Emoji.WATER + " " + Numbers.formatNumber(addItems.get("teaBase")) + Emoji.TEABAG + " " + Numbers.formatNumber(addItems.get("wood")) + Emoji.WOOD + " " + Numbers.formatNumber(addItems.get("pineSap")) + Emoji.SAP + " " + Numbers.formatNumber(addItems.get("steel")) + Emoji.STEEL + " " + Numbers.formatNumber(addItems.get("horseHair")) + Emoji.HORSE_HAIR).queue();
+					e.reply("You opened `" + Numbers.formatNumber(useAmount) + "`" + Emoji.LING_LING_BOX + "  You received the following items...\n\n`" + Numbers.formatNumber(addItems.get("grains")) + "`" + Emoji.GRAINS + " `" + Numbers.formatNumber(addItems.get("plastic")) + "`" + Emoji.PLASTIC + " `" + Numbers.formatNumber(addItems.get("water")) + "`" + Emoji.WATER + " `" + Numbers.formatNumber(addItems.get("teaBase")) + "`" + Emoji.TEABAG + " `" + Numbers.formatNumber(addItems.get("wood")) + "`" + Emoji.WOOD + " `" + Numbers.formatNumber(addItems.get("pineSap")) + "`" + Emoji.SAP + " `" + Numbers.formatNumber(addItems.get("steel")) + "`" + Emoji.STEEL + " `" + Numbers.formatNumber(addItems.get("horseHair")) + "`" + Emoji.HORSE_HAIR).queue();
 				}
 			}
 			case "crazyBox" -> {
@@ -183,9 +187,9 @@ public class Use {
 				} else {
 					addItems.put("crazyBox", -useAmount);
 					for(int i = 0; i < useAmount; i++) {
-						generateArray(addItems, 7 + extraRolls, 6, 10 + extraItems); // initial: 8-12 --> 10-15
+						generateArray(addItems, 9 + extraRolls, 6, 10 + extraItems); // initial: 8-12 --> 10-15
 					}
-					e.reply("You opened " + Numbers.formatNumber(useAmount) + Emoji.CRAZY_BOX + "  You received the following items...\n\n" + Numbers.formatNumber(addItems.get("grains")) + Emoji.GRAINS + " " + Numbers.formatNumber(addItems.get("plastic")) + Emoji.PLASTIC + " " + Numbers.formatNumber(addItems.get("water")) + Emoji.WATER + " " + Numbers.formatNumber(addItems.get("teaBase")) + Emoji.TEABAG + " " + Numbers.formatNumber(addItems.get("wood")) + Emoji.WOOD + " " + Numbers.formatNumber(addItems.get("pineSap")) + Emoji.SAP + " " + Numbers.formatNumber(addItems.get("steel")) + Emoji.STEEL + " " + Numbers.formatNumber(addItems.get("horseHair")) + Emoji.HORSE_HAIR).queue();
+					e.reply("You opened `" + Numbers.formatNumber(useAmount) + "`" + Emoji.CRAZY_BOX + "  You received the following items...\n\n`" + Numbers.formatNumber(addItems.get("grains")) + "`" + Emoji.GRAINS + " `" + Numbers.formatNumber(addItems.get("plastic")) + "`" + Emoji.PLASTIC + " `" + Numbers.formatNumber(addItems.get("water")) + "`" + Emoji.WATER + " `" + Numbers.formatNumber(addItems.get("teaBase")) + "`" + Emoji.TEABAG + " `" + Numbers.formatNumber(addItems.get("wood")) + "`" + Emoji.WOOD + " `" + Numbers.formatNumber(addItems.get("pineSap")) + "`" + Emoji.SAP + " `" + Numbers.formatNumber(addItems.get("steel")) + "`" + Emoji.STEEL + " `" + Numbers.formatNumber(addItems.get("horseHair")) + "`" + Emoji.HORSE_HAIR).queue();
 				}
 			}
 			case "RNGesusBox" -> {
@@ -195,45 +199,49 @@ public class Use {
 				} else {
 					addItems.put("RNGesusBox", -useAmount);
 					for(int i = 0; i < useAmount; i++) {
-						generateArray(addItems, 8 + extraRolls, 7, 12 + extraItems); // initial: 10-15 --> 12-18
+						generateArray(addItems, 10 + extraRolls, 7, 12 + extraItems); // initial: 10-15 --> 12-18
 					}
-					e.reply("You opened " + Numbers.formatNumber(useAmount) + Emoji.RNGESUS_BOX + "  You received the following items...\n\n" + Numbers.formatNumber(addItems.get("grains")) + Emoji.GRAINS + " " + Numbers.formatNumber(addItems.get("plastic")) + Emoji.PLASTIC + " " + Numbers.formatNumber(addItems.get("water")) + Emoji.WATER + " " + Numbers.formatNumber(addItems.get("teaBase")) + Emoji.TEABAG + " " + Numbers.formatNumber(addItems.get("wood")) + Emoji.WOOD + " " + Numbers.formatNumber(addItems.get("pineSap")) + Emoji.SAP + " " + Numbers.formatNumber(addItems.get("steel")) + Emoji.STEEL + " " + Numbers.formatNumber(addItems.get("horseHair")) + Emoji.HORSE_HAIR).queue();
+					e.reply("You opened `" + Numbers.formatNumber(useAmount) + "`" + Emoji.RNGESUS_BOX + "  You received the following items...\n\n`" + Numbers.formatNumber(addItems.get("grains")) + "`" + Emoji.GRAINS + " `" + Numbers.formatNumber(addItems.get("plastic")) + "`" + Emoji.PLASTIC + " `" + Numbers.formatNumber(addItems.get("water")) + "`" + Emoji.WATER + " `" + Numbers.formatNumber(addItems.get("teaBase")) + "`" + Emoji.TEABAG + " `" + Numbers.formatNumber(addItems.get("wood")) + "`" + Emoji.WOOD + " `" + Numbers.formatNumber(addItems.get("pineSap")) + "`" + Emoji.SAP + " `" + Numbers.formatNumber(addItems.get("steel")) + "`" + Emoji.STEEL + " `" + Numbers.formatNumber(addItems.get("horseHair")) + "`" + Emoji.HORSE_HAIR).queue();
 				}
 			}
 			case "rosin" -> {
 				if((long) data.get("rosin") <= 0) {
 					e.reply("You look in your violin case, but find no rosin left.  You are disappointed.").setEphemeral(true).queue();
+					return;
 				} else {
 					addItems.put("rosin", -useAmount);
-					addTime(data, "rosinExpire", useAmount * 90000000);
-					e.reply(Emoji.ROSIN + "  You apply rosin to your bow.  You are now entitled to " + Numbers.formatNumber(25 * useAmount) + " more hours of some of your income.").queue();
+					addTime(data, "rosinExpire", useAmount * 180000000);
+					e.reply(Emoji.ROSIN + "  You apply rosin to your bow.  You are now entitled to `" + Numbers.formatNumber(50 * useAmount) + "` more hours of income.").queue();
 				}
 			}
 			case "string" -> {
 				if((long) data.get("string") <= 0) {
 					e.reply("You scourge your stocks, but you can't find violin strings.  You then remember that you have to buy some, then promptly forget.").setEphemeral(true).queue();
+					return;
 				} else {
 					addItems.put("string", -useAmount);
-					addTime(data, "stringsExpire", useAmount * 198000000);
-					e.reply(Emoji.STRING + "  You change the strings on your violin.  You are now entitled to " + Numbers.formatNumber(55 * useAmount) + " more hours of some of your income.").queue();
+					addTime(data, "stringsExpire", useAmount * 360000000);
+					e.reply(Emoji.STRING + "  You change the strings on your violin.  You are now entitled to `" + Numbers.formatNumber(100 * useAmount) + "` more hours of income.").queue();
 				}
 			}
 			case "bowHair" -> {
 				if((long) data.get("bowHair") <= 0) {
 					e.reply("You scourge your stocks, but you can't find extra bow hair.  You then remember that you have to buy some, then promptly forget.").setEphemeral(true).queue();
+					return;
 				} else {
 					addItems.put("bowHair", -useAmount);
-					addTime(data, "bowHairExpire", useAmount * 306000000);
-					e.reply(Emoji.BOW_HAIR + "  You asked Olaf to rehair your bow, to which he agreed.  You are now entitled to " + Numbers.formatNumber(85 * useAmount) + " more hours of some of your income.").queue();
+					addTime(data, "bowHairExpire", useAmount * 540000000);
+					e.reply(Emoji.BOW_HAIR + "  You asked Olaf to rehair your bow, to which he agreed.  You are now entitled to `" + Numbers.formatNumber(150 * useAmount) + "` more hours of income.").queue();
 				}
 			}
 			case "violinService" -> {
 				if((long) data.get("violinService") <= 0) {
 					e.reply("You go to Olaf to get your violin repaired, but forget to bring materials.  He kicks you out of the store.").setEphemeral(true).queue();
+					return;
 				} else {
 					addItems.put("violinService", -useAmount);
-					addTime(data, "serviceExpire", useAmount * 612000000);
-					e.reply(Emoji.SERVICE + "  You asked Olaf to service your violin, to which he agreed.  You are now entitled to " + Numbers.formatNumber(170 * useAmount) + " more hours of some of your income.").queue();
+					addTime(data, "serviceExpire", useAmount * 900000000);
+					e.reply(Emoji.SERVICE + "  You asked Olaf to service your violin, to which he agreed.  You are now entitled to `" + Numbers.formatNumber(250 * useAmount) + "` more hours of income.").queue();
 				}
 			}
 			default -> {

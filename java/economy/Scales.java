@@ -25,7 +25,7 @@ public class Scales {
 			} else {
 				data.replace("scaleCD", time + 89500);
 			}
-			e.reply("You played your scales and earned " + Numbers.formatNumber(base) + Emoji.VIOLINS).queue();
+			e.reply("You played your scales and earned `" + Numbers.formatNumber(base) + "`" + Emoji.VIOLINS).queue();
 			data.replace("scalesPlayed", (long) data.get("scalesPlayed") + 1);
 			data.replace("earnings", (long) data.get("earnings") + base);
 			RNGesus.lootbox(e, data);

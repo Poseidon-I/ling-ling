@@ -29,6 +29,8 @@ public class GlobalStats {
 		long earnings = 0;
 		long interest = 0;
 		long penalties = 0;
+		long purchases = 0;
+		long marketEarnings = 0;
 		File directory = new File("Ling Ling Bot Data\\Economy Data");
 		File[] files = directory.listFiles();
 		assert files != null;
@@ -56,15 +58,19 @@ public class GlobalStats {
 			earnings += (long) data.get("earnings");
 			interest += (long) data.get("interestEarned");
 			penalties += (long) data.get("penaltiesIncurred");
+			purchases += (long) data.get("itemsBought");
+			marketEarnings += (long) data.get("moneyEarned");
 		}
 		EmbedBuilder builder = new EmbedBuilder()
 				.setColor(Color.BLUE)
 				.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
 				.setTitle("Stats of the World");
-		builder.addField("**__Gambling__**", "**Net Winnings**: " + Numbers.formatNumber(winnings) + "\n**Million-Dollar Tickets Drawn**: " + Numbers.formatNumber(millions) + "\n**Amount Earned from Robbing**: " + Numbers.formatNumber(robEarned) + "\n**Total RNGesus Weight**: " + Numbers.formatNumber(weight), false);
-		builder.addField("**__Commands__**", "**Hours Practised**: " + Numbers.formatNumber((long) hours) + "\n**Scales Played**: " + Numbers.formatNumber(scales) + "\n**Rehearsals Attended**: " + Numbers.formatNumber(rehearsals) + "\n**Performances Given**: " + Numbers.formatNumber(performances) + "\n**Hours Taught: **" + Numbers.formatNumber((long) taught), false);
-		builder.addField("**__Lootboxes__**", "**Gifts Given**: " + Numbers.formatNumber(giftsGiven) + "\n**Number of Votes**: " + Numbers.formatNumber(votes), false);
-		builder.addField("**__Miscellaneous__**", "**Highest Daily Streak**: " + Numbers.formatNumber(maxStreak) + "\n**Luthiers Unscrambled**: " + Numbers.formatNumber(luthiers) + "\n**Violins Earned**: " + Numbers.formatNumber(earnings) + "\n**Interest Earned**: " + Numbers.formatNumber(interest) + "\n**Penalties Paid**: " + Numbers.formatNumber(penalties), false);
+		builder.addField("**__Gambling & Robbing__**", "**Net Winnings**: `" + Numbers.formatNumber(winnings) + "`\n**Million-Dollar Tickets Drawn**: `" + Numbers.formatNumber(millions) + "`\n**Amount Earned from Robbing**: `" + Numbers.formatNumber(robEarned) + "`\n**Total RNGesus Weight**: `" + Numbers.formatNumber(weight) + "`", true);
+		builder.addBlankField(true);
+		builder.addField("**__Commands__**", "**Hours Practised**: `" + Numbers.formatNumber((long) hours) + "`\n**Scales Played**: `" + Numbers.formatNumber(scales) + "`\n**Rehearsals Attended**: `" + Numbers.formatNumber(rehearsals) + "`\n**Performances Given**: `" + Numbers.formatNumber(performances) + "`\n**Hours Taught: **`" + Numbers.formatNumber((long) taught) + "`", true);
+		builder.addField("**__Lootboxes & Market__**", "**Gifts Given**: `" + Numbers.formatNumber(giftsGiven) + "`\n**Number of Votes**: `" + Numbers.formatNumber(votes) + "`\n**Items Purchased on Market**: `" + Numbers.formatNumber(purchases) + "`\n**Money Earned from Market**: `" + Numbers.formatNumber(marketEarnings) + "`", true);
+		builder.addBlankField(true);
+		builder.addField("**__Miscellaneous__**", "**Highest Daily Streak**: `" + Numbers.formatNumber(maxStreak) + "`\n**Luthiers Unscrambled**: `" + Numbers.formatNumber(luthiers) + "`\n**Violins Earned**: `" + Numbers.formatNumber(earnings) + "`\n**Interest Earned**: `" + Numbers.formatNumber(interest) + "`\n**Penalties Paid**: `" + Numbers.formatNumber(penalties) + "`", true);
 		e.replyEmbeds(builder.build()).queue();
 	}
 }

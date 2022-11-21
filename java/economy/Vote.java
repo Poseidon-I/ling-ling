@@ -21,11 +21,11 @@ public class Vote {
 		} else {
 			data.replace("voteBox", (long) data.get("voteBox") + 1);
 			data.replace("votes", (long) data.get("votes") + 1);
-			data.replace("voteCD", System.currentTimeMillis() + 43140000);
-			e.reply("You have received **1**" + Emoji.FREE_BOX).queue();
+			data.replace("voteCD", System.currentTimeMillis() + 21540000);
+			e.reply("You have received `1`" + Emoji.FREE_BOX).queue();
 			if((long) data.get("votes") % 40 == 0) {
 				data.replace("medals", (long) data.get("medals") + 1);
-				e.reply("You have claimed Free Boxes " + data.get("votes") + " times!  Enjoy your Ling Ling Medal!").queue();
+				e.reply("You have claimed Free Boxes `" + data.get("votes") + "` times!  Enjoy your Ling Ling Medal!").queue();
 			}
 			RNGesus.lootbox(e, data);
 			SaveData.saveData(e, data);

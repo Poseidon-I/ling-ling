@@ -70,7 +70,7 @@ public class Give {
 		EmbedBuilder builder = new EmbedBuilder()
 				.setColor(Color.BLUE)
 				.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
-				.addField("Moderator: " + e.getUser().getName(), "User: <@" + id + ">\nItem type: " + item + "\nAmount given: " + add, false)
+				.addField("Moderator: " + e.getUser().getName(), "User: <@" + id + ">\nItem type: " + item + "\nAmount given: `" + Numbers.formatNumber(add) + "`", false)
 				.setTitle("__**Currency Alteration Info**__");
 		Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessageEmbeds(builder.build()).queue();
 		try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Economy Data\\" + id + ".json")) {

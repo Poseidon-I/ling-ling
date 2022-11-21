@@ -64,14 +64,14 @@ public class Leaderboard {
                 String id = entry[i].split(" ")[0];
                 User user = e.getJDA().getUserById(id.substring(2, id.length() - 2));
                 assert user != null;
-                board.append("**").append(i + 1).append(". ").append(user.getName()).append("**#").append(user.getDiscriminator()).append(" `").append(user.getId()).append("`: ").append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[1]))).append(emoji).append("\n");
+                board.append("**").append(i + 1).append(". ").append(user.getName()).append("**#").append(user.getDiscriminator()).append(" `").append(user.getId()).append("`: `").append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[1]))).append("`").append(emoji).append("\n");
             } catch (Exception exception) {
                 String[] temp = entry[i].split(" ");
-                board.append("**").append(temp[0]).append(" ").append(Numbers.formatNumber(Long.parseLong(temp[1]))).append(temp[2]);
+                board.append("**").append(temp[0]).append(" `").append(Numbers.formatNumber(Long.parseLong(temp[1]))).append("`").append(temp[2]);
             }
         }
         if (place >= 11) {
-            board.append("\n**").append(place).append(". You**: ").append(Numbers.formatNumber(userNum)).append(" ").append(emoji);
+            board.append("\n**").append(place).append(". You**: `").append(Numbers.formatNumber(userNum)).append("`").append(emoji);
         }
         EmbedBuilder builder = new EmbedBuilder()
                 .setColor(Color.decode(color))

@@ -37,6 +37,12 @@ public class Rob {
 				e.reply("Why would you rob yourself, are you actually that dumb?").setEphemeral(true).queue();
 				return;
 			}
+			if(e.getUser().getId().equals("733409243222507670")) {
+				e.reply("How DARE you attempt to rob me.  I'm fining you 1% of your balance.").queue();
+				data.replace("violins", (long) data.get("violins") * 0.99);
+				SaveData.saveData(e, data);
+				return;
+			}
 			JSONParser parser = new JSONParser();
 			JSONObject targetdata;
 			try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + user + ".json")) {
@@ -67,14 +73,14 @@ public class Rob {
 			if(num < failChance) {
 				baseRob = (long) (violins * 0.2);
 				if(extraInfo) {
-					message += "Brett and Eddy caught you trying to rob " + name + "!  You paid " + name + " " + Numbers.formatNumber(baseRob) + Emoji.VIOLINS + " for attempting to rob them.\n*The generator rolled " + num + ", you need at least " + failChance + " to succeed.*";
+					message += "Brett and Eddy caught you trying to rob " + name + "!  You paid " + name + " `" + Numbers.formatNumber(baseRob) + "`" + Emoji.VIOLINS + " for attempting to rob them.\n*The generator rolled " + num + ", you need at least " + failChance + " to succeed.*";
 				} else {
-					message += "Brett and Eddy caught you trying to rob " + name + "!  You paid " + name + " " + Numbers.formatNumber(baseRob) + Emoji.VIOLINS + " for attempting to rob them.";
+					message += "Brett and Eddy caught you trying to rob " + name + "!  You paid " + name + " `" + Numbers.formatNumber(baseRob) + "`" + Emoji.VIOLINS + " for attempting to rob them.";
 				}
 				try {
 					if(DM) {
 						long finalBaseRob = baseRob;
-						Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getUser().getId() + "> (" + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + ") tried to rob you but failed!  They paid you " + Numbers.formatNumber(finalBaseRob) + Emoji.VIOLINS + " in fines.").queue());
+						Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getUser().getId() + "> (" + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + ") tried to rob you but failed!  They paid you `" + Numbers.formatNumber(finalBaseRob) + "`" + Emoji.VIOLINS + " in fines.").queue());
 					}
 				} catch(Exception exception) {
 					//nothing here lol
@@ -88,40 +94,40 @@ public class Rob {
 				if(insurance) {
 					if(opponentShield) {
 						if(extraInfo) {
-							message += "You successfully robbed " + name + " but ran into a Steal Shield.  You only managed to get away with " + Numbers.formatNumber((long) (baseRob * 0.25)) + Emoji.VIOLINS + " before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*";
+							message += "You successfully robbed " + name + " but ran into a Steal Shield.  You only managed to get away with `" + Numbers.formatNumber((long) (baseRob * 0.25)) + "`" + Emoji.VIOLINS + " before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*";
 						} else {
-							message += "You successfully robbed " + name + " but ran into a Steal Shield.  You only managed to get away with " + Numbers.formatNumber((long) (baseRob * 0.25)) + Emoji.VIOLINS + " before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.";
+							message += "You successfully robbed " + name + " but ran into a Steal Shield.  You only managed to get away with `" + Numbers.formatNumber((long) (baseRob * 0.25)) + "`" + Emoji.VIOLINS + " before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.";
 						}
 						try {
 							if(DM) {
 								long finalBaseRob1 = baseRob;
-								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getUser().getId() + "> (" + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + ") just robbed " + Numbers.formatNumber((long) (finalBaseRob1 * 0.25)) + Emoji.VIOLINS + " from you!  Your Ling Ling insurance protected " + Numbers.formatNumber((long) (finalBaseRob1 * 0.5)) + Emoji.VIOLINS + " and your Steal Shield protected " + Numbers.formatNumber((long) (finalBaseRob1 * 0.25)) + Emoji.VIOLINS).queue());
+								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getUser().getId() + "> (" + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + ") just robbed `" + Numbers.formatNumber((long) (finalBaseRob1 * 0.25)) + "`" + Emoji.VIOLINS + " from you!  Your Ling Ling insurance protected `" + Numbers.formatNumber((long) (finalBaseRob1 * 0.5)) + "`" + Emoji.VIOLINS + " and your Steal Shield protected `" + Numbers.formatNumber((long) (finalBaseRob1 * 0.25)) + "`" + Emoji.VIOLINS).queue());
 							}
 						} catch(Exception exception) {
 							//nothing here lol
 						}
 						if(hasDuplicator) {
-							message += "\nYour violin duplicator doubled your earnings to " + Numbers.formatNumber((long) (baseRob * 0.5)) + Emoji.VIOLINS;
+							message += "\nYour violin duplicator doubled your earnings to `" + Numbers.formatNumber((long) (baseRob * 0.5)) + "`" + Emoji.VIOLINS;
 							baseRob *= 0.5;
 						} else {
 							baseRob *= 0.25;
 						}
 					} else {
 						if(extraInfo) {
-							message += "You successfully robbed " + name + " but only managed to get away with " + Numbers.formatNumber((long) (baseRob * 0.5)) + Emoji.VIOLINS + " before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*";
+							message += "You successfully robbed " + name + " but only managed to get away with `" + Numbers.formatNumber((long) (baseRob * 0.5)) + "`" + Emoji.VIOLINS + " before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*";
 						} else {
-							message += "You successfully robbed " + name + " but only managed to get away with " + Numbers.formatNumber((long) (baseRob * 0.5)) + Emoji.VIOLINS + " before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.";
+							message += "You successfully robbed " + name + " but only managed to get away with `" + Numbers.formatNumber((long) (baseRob * 0.5)) + "`" + Emoji.VIOLINS + " before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.";
 						}
 						try {
 							if(DM) {
 								long finalBaseRob2 = baseRob;
-								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getUser().getId() + "> (" + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + ") just robbed " + Numbers.formatNumber((long) (finalBaseRob2 * 0.5)) + Emoji.VIOLINS + " from you!  Your Ling Ling insurance protected " + Numbers.formatNumber((long) (finalBaseRob2 * 0.5)) + Emoji.VIOLINS).queue());
+								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getUser().getId() + "> (" + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + ") just robbed `" + Numbers.formatNumber((long) (finalBaseRob2 * 0.5)) + "`" + Emoji.VIOLINS + " from you!  Your Ling Ling insurance protected `" + Numbers.formatNumber((long) (finalBaseRob2 * 0.5)) + "`" + Emoji.VIOLINS).queue());
 							}
 						} catch(Exception exception) {
 							//nothing here lol
 						}
 						if(hasDuplicator) {
-							message += "\nYour violin duplicator doubled your earnings to" + Numbers.formatNumber(baseRob) + Emoji.VIOLINS;
+							message += "\nYour violin duplicator doubled your earnings to`" + Numbers.formatNumber(baseRob) + "`" + Emoji.VIOLINS;
 						} else {
 							baseRob *= 0.5;
 						}
@@ -129,39 +135,39 @@ public class Rob {
 				} else {
 					if(opponentShield) {
 						if(extraInfo) {
-							message += "You successfully robbed " + name + " but a Steal Shield stopped your looting halfway through.  Your payout was " + Numbers.formatNumber((long) (baseRob * 0.5)) + Emoji.VIOLINS + "\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*";
+							message += "You successfully robbed " + name + " but a Steal Shield stopped your looting halfway through.  Your payout was `" + Numbers.formatNumber((long) (baseRob * 0.5)) + "`" + Emoji.VIOLINS + "\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*";
 						} else {
-							message += "You successfully robbed " + name + " but a Steal Shield stopped your looting halfway through.  Your payout was " + Numbers.formatNumber((long) (baseRob * 0.5)) + Emoji.VIOLINS;
+							message += "You successfully robbed " + name + " but a Steal Shield stopped your looting halfway through.  Your payout was `" + Numbers.formatNumber((long) (baseRob * 0.5)) + "`" + Emoji.VIOLINS;
 						}
 						try {
 							if(DM) {
 								long finalBaseRob3 = baseRob;
-								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getUser().getId() + "> (" + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + ") just robbed " + Numbers.formatNumber((long) (finalBaseRob3 * 0.5)) + Emoji.VIOLINS + " from you!  Your Steal Shield protected " + Numbers.formatNumber((long) (finalBaseRob3 * 0.5)) + Emoji.VIOLINS).queue());
+								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getUser().getId() + "> (" + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + ") just robbed `" + Numbers.formatNumber((long) (finalBaseRob3 * 0.5)) + "`" + Emoji.VIOLINS + " from you!  Your Steal Shield protected `" + Numbers.formatNumber((long) (finalBaseRob3 * 0.5)) + "`" + Emoji.VIOLINS).queue());
 							}
 						} catch(Exception exception) {
 							//nothing here lol
 						}
 						if(hasDuplicator) {
-							message += "\nYour violin duplicator doubled your earnings to " + Numbers.formatNumber(baseRob) + Emoji.VIOLINS;
+							message += "\nYour violin duplicator doubled your earnings to `" + Numbers.formatNumber(baseRob) + "`" + Emoji.VIOLINS;
 						} else {
 							baseRob *= 0.5;
 						}
 					} else {
 						if(extraInfo) {
-							message += "You successfully robbed " + name + "!  Your payout was " + Numbers.formatNumber(baseRob) + Emoji.VIOLINS + "\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*";
+							message += "You successfully robbed " + name + "!  Your payout was `" + Numbers.formatNumber(baseRob) + "`" + Emoji.VIOLINS + "\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*";
 						} else {
-							message += "You successfully robbed " + name + "!  Your payout was " + Numbers.formatNumber(baseRob) + Emoji.VIOLINS;
+							message += "You successfully robbed " + name + "!  Your payout was `" + Numbers.formatNumber(baseRob) + "`" + Emoji.VIOLINS;
 						}
 						try {
 							if(DM) {
 								long finalBaseRob4 = baseRob;
-								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getUser().getId() + "> (" + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + ") just robbed " + Numbers.formatNumber(finalBaseRob4) + Emoji.VIOLINS + " from you!").queue());
+								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getUser().getId() + "> (" + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + ") just robbed `" + Numbers.formatNumber(finalBaseRob4) + "`" + Emoji.VIOLINS + " from you!").queue());
 							}
 						} catch(Exception exception) {
 							//nothing here lol
 						}
 						if(hasDuplicator) {
-							message += "\nYour violin duplicator doubled your earnings to " + Numbers.formatNumber(baseRob * 2) + Emoji.VIOLINS;
+							message += "\nYour violin duplicator doubled your earnings to `" + Numbers.formatNumber(baseRob * 2) + "`" + Emoji.VIOLINS;
 							baseRob *= 2;
 						}
 					}
@@ -173,10 +179,10 @@ public class Rob {
 					targetViolins -= baseRob;
 					targetLostToRob += baseRob;
 				}
+				Numbers.calculateLoan(data, baseRob);
 			}
 			targetdata.replace("violins", targetViolins);
 			targetdata.replace("lostToRob", targetLostToRob);
-			data.replace("robCD", time + 57540000);
 			try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Economy Data\\" + user + ".json")) {
 				writer.write(targetdata.toJSONString());
 				writer.close();
@@ -184,7 +190,7 @@ public class Rob {
 				//nothing here lol
 			}
 			RNGesus.lootbox(e, data);
-			Numbers.calculateLoan(data, baseRob);
+			data.replace("robCD", time + 57540000);
 			data.replace("robbed", (long) data.get("robbed") + baseRob);
 			SaveData.saveData(e, data);
 			e.reply(message).queue();

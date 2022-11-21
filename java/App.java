@@ -1,9 +1,6 @@
 import processes.StartBot;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.*;
 
 public class App {
 	public static void main(String[] args) {
@@ -20,5 +17,14 @@ public class App {
 			//nothing here lol
 		}
 		StartBot.startBot();
+		
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			try {
+				Runtime.getRuntime().exec("cmd /c start \"\" lingling.bat");
+				Runtime.getRuntime().halt(0);
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+		}));
 	}
 }

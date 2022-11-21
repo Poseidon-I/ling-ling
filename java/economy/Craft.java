@@ -43,14 +43,14 @@ public class Craft {
 					long rice = (long) data.get("rice");
 					long i = 0;
 					for(; i < craftAmount; i++) {
-						if(grains < 25 || water < 10 || wood < 10) {
+						if(grains < 20 || water < 10 || wood < 10) {
 							if(i == 0) {
-								e.reply("You were unable to craft any Rice!  Check that you have enough Raw Materials:\n" + Numbers.formatNumber(grains) + "/25" + Emoji.GRAINS + "\n" + Numbers.formatNumber(wood) + "/10" + Emoji.WOOD + "\n" + Numbers.formatNumber(water) + "/10" + Emoji.WATER).setEphemeral(true).queue();
+								e.reply("You were unable to craft any Rice!  Check that you have enough Raw Materials:\n" + Numbers.formatNumber(grains) + "/25`" + Emoji.GRAINS + "\n`" + Numbers.formatNumber(wood) + "/10`" + Emoji.WOOD + "\n`" + Numbers.formatNumber(water) + "/10`" + Emoji.WATER).setEphemeral(true).queue();
 								return;
 							}
 							break;
 						}
-						grains -= 25;
+						grains -= 20;
 						water -= 10;
 						wood -= 10;
 						rice++;
@@ -59,7 +59,7 @@ public class Craft {
 					data.replace("wood", wood);
 					data.replace("water", water);
 					data.replace("rice", rice);
-					e.reply("You crafted " + Numbers.formatNumber(i) + Emoji.RICE + " for " + Numbers.formatNumber(25 * i) + Emoji.GRAINS + ", " + Numbers.formatNumber(10 * i) + Emoji.WOOD + ", " + Numbers.formatNumber(10 * i) + Emoji.WATER).queue();
+					e.reply("You crafted `" + Numbers.formatNumber(i) + "`" + Emoji.RICE + " for `" + Numbers.formatNumber(20 * i) + "`" + Emoji.GRAINS + ", `" + Numbers.formatNumber(10 * i) + "`" + Emoji.WOOD + ", `" + Numbers.formatNumber(10 * i) + "`" + Emoji.WATER).queue();
 				}
 				case "tea" -> {
 					long plastic = (long) data.get("plastic");
@@ -68,80 +68,80 @@ public class Craft {
 					long tea = (long) data.get("tea");
 					long i = 0;
 					for(; i < craftAmount; i++) {
-						if(plastic < 15 || water < 25 || teaBase < 10) {
+						if(plastic < 10 || water < 20 || teaBase < 10) {
 							if(i == 0) {
-								e.reply("You were unable to craft any Tea!  Check that you have enough Raw Materials:\n" + Numbers.formatNumber(water) + "/25" + Emoji.WATER + "\n" + Numbers.formatNumber(plastic) + "/15" + Emoji.PLASTIC + "\n" + Numbers.formatNumber(teaBase) + "/10" + Emoji.TEABAG).setEphemeral(true).queue();
+								e.reply("You were unable to craft any Tea!  Check that you have enough Raw Materials:\n" + Numbers.formatNumber(water) + "/20`" + Emoji.WATER + "\n`" + Numbers.formatNumber(plastic) + "/10`" + Emoji.PLASTIC + "\n`" + Numbers.formatNumber(teaBase) + "/10`" + Emoji.TEABAG).setEphemeral(true).queue();
 								return;
 							}
 							break;
 						}
-						water -= 25;
+						water -= 20;
 						teaBase -= 10;
-						plastic -= 15;
+						plastic -= 10;
 						tea++;
 					}
 					data.replace("plastic", plastic);
 					data.replace("teaBase", teaBase);
 					data.replace("water", water);
 					data.replace("tea", tea);
-					e.reply("You crafted " + Numbers.formatNumber(i) + Emoji.TEA + " for " + Numbers.formatNumber(10 * i) + Emoji.TEABAG + ", " + Numbers.formatNumber(15 * i) + Emoji.PLASTIC + ", " + Numbers.formatNumber(25 * i) + Emoji.WATER).queue();
+					e.reply("You crafted `" + Numbers.formatNumber(i) + "`" + Emoji.TEA + " for `" + Numbers.formatNumber(10 * i) + "`" + Emoji.TEABAG + ", `" + Numbers.formatNumber(10 * i) + "`" + Emoji.PLASTIC + ", `" + Numbers.formatNumber(20 * i) + "`" + Emoji.WATER).queue();
 				}
 				case "rosin" -> {
 					long pineSap = (long) data.get("pineSap");
 					long rosin = (long) data.get("rosin");
 					long i = 0;
 					for(; i < craftAmount; i++) {
-						if(pineSap < 25) {
+						if(pineSap < 20) {
 							if(i == 0) {
-								e.reply("You were unable to craft any Rosin!  Check that you have enough Raw Materials:\n" + Numbers.formatNumber(pineSap) + "/25" + Emoji.SAP).setEphemeral(true).queue();
+								e.reply("You were unable to craft any Rosin!  Check that you have enough Raw Materials:\n" + Numbers.formatNumber(pineSap) + "/20`" + Emoji.SAP).setEphemeral(true).queue();
 								return;
 							}
 							break;
 						}
-						pineSap -= 25;
+						pineSap -= 20;
 						rosin++;
 					}
 					data.replace("pineSap", pineSap);
 					data.replace("rosin", rosin);
-					e.reply("You crafted " + Numbers.formatNumber(i) + Emoji.ROSIN + " for " + Numbers.formatNumber(25 * i) + Emoji.SAP).queue();
+					e.reply("You crafted `" + Numbers.formatNumber(i) + "`" + Emoji.ROSIN + " for `" + Numbers.formatNumber(20 * i) + "`" + Emoji.SAP).queue();
 				}
 				case "strings" -> {
 					long steel = (long) data.get("steel");
 					long strings = (long) data.get("string");
 					long i = 0;
 					for(; i < craftAmount; i++) {
-						if(steel < 50) {
+						if(steel < 40) {
 							if(i == 0) {
-								e.reply("You were unable to craft any Strings!  Check that you have enough Raw Materials:\n" + Numbers.formatNumber(steel) + "/50" + Emoji.STEEL).setEphemeral(true).queue();
+								e.reply("You were unable to craft any Strings!  Check that you have enough Raw Materials:\n" + Numbers.formatNumber(steel) + "/40`" + Emoji.STEEL).setEphemeral(true).queue();
 								return;
 							}
 							break;
 						}
-						steel -= 50;
+						steel -= 40;
 						strings++;
 					}
 					data.replace("steel", steel);
 					data.replace("string", strings);
-					e.reply("You crafted " + Numbers.formatNumber(i) + Emoji.STRING + " for " + Numbers.formatNumber(50 * i) + Emoji.STEEL).queue();
+					e.reply("You crafted `" + Numbers.formatNumber(i) + "`" + Emoji.STRING + " for `" + Numbers.formatNumber(40 * i) + "`" + Emoji.STEEL).queue();
 				}
 				case "bowHair" -> {
 					long horseHairs = (long) data.get("horseHair");
 					long hairs = (long) data.get("bowHair");
 					long i = 0;
 					for(; i < craftAmount; i++) {
-						if(horseHairs < 75) {
+						if(horseHairs < 60) {
 							if(i == 0) {
-								e.reply("You were unable to craft any Bow Hair!  Check that you have enough Raw Materials:\n" + Numbers.formatNumber(horseHairs) + "/75" + Emoji.HORSE_HAIR).setEphemeral(true).queue();
+								e.reply("You were unable to craft any Bow Hair!  Check that you have enough Raw Materials:\n" + Numbers.formatNumber(horseHairs) + "/60`" + Emoji.HORSE_HAIR).setEphemeral(true).queue();
 								return;
 							}
 							break;
 						}
-						horseHairs -= 75;
+						horseHairs -= 60;
 						hairs++;
 					}
 					data.replace("horseHair", horseHairs);
 					data.replace("bowHair", hairs);
-					e.reply("You crafted " + Numbers.formatNumber(i) + Emoji.BOW_HAIR + " for " + Numbers.formatNumber(75 * i) + Emoji.HORSE_HAIR).queue();
+					e.reply("You crafted `" + Numbers.formatNumber(i) + "`" + Emoji.BOW_HAIR + " for `" + Numbers.formatNumber(60 * i) + "`" + Emoji.HORSE_HAIR).queue();
 				}
 				case "service" -> {
 					long grains = (long) data.get("grains");
@@ -155,21 +155,21 @@ public class Craft {
 					long services = (long) data.get("violinService");
 					long i = 0;
 					for(; i < craftAmount; i++) {
-						if(grains < 25 || plastic < 25 || water < 25 || teaBase < 25 || wood < 100 || pineSap < 25 || steel < 25 || horseHairs < 25) {
+						if(grains < 20 || plastic < 20 || water < 20 || teaBase < 20 || wood < 80 || pineSap < 20 || steel < 20 || horseHairs < 20) {
 							if(i == 0) {
-								e.reply("You were unable to craft any Violin Service!  Check that you have enough Raw Materials:\n" + Numbers.formatNumber(wood) + "/100" + Emoji.WOOD + "\n" + Numbers.formatNumber(grains) + "/25" + Emoji.GRAINS + "\n" + Numbers.formatNumber(plastic) + "/25" + Emoji.PLASTIC + "\n" + Numbers.formatNumber(water) + "/25" + Emoji.WATER + "\n" + Numbers.formatNumber(teaBase) + "/25" + Emoji.TEABAG + "\n" + Numbers.formatNumber(pineSap) + "/25" + Emoji.SAP + "\n" + Numbers.formatNumber(steel) + "/25" + Emoji.STEEL + "\n" + Numbers.formatNumber(horseHairs) + "/25" + Emoji.HORSE_HAIR).setEphemeral(true).queue();
+								e.reply("You were unable to craft any Violin Service!  Check that you have enough Raw Materials:\n" + Numbers.formatNumber(wood) + "/80`" + Emoji.WOOD + "\n`" + Numbers.formatNumber(grains) + "/20`" + Emoji.GRAINS + "\n`" + Numbers.formatNumber(plastic) + "/20`" + Emoji.PLASTIC + "\n`" + Numbers.formatNumber(water) + "/20`" + Emoji.WATER + "\n`" + Numbers.formatNumber(teaBase) + "/20`" + Emoji.TEABAG + "\n`" + Numbers.formatNumber(pineSap) + "/20`" + Emoji.SAP + "\n`" + Numbers.formatNumber(steel) + "/20`" + Emoji.STEEL + "\n`" + Numbers.formatNumber(horseHairs) + "/20`" + Emoji.HORSE_HAIR).setEphemeral(true).queue();
 								return;
 							}
 							break;
 						}
-						grains -= 25;
-						plastic -= 25;
-						water -= 25;
-						teaBase -= 25;
-						wood -= 100;
-						pineSap -= 25;
-						steel -= 25;
-						horseHairs -= 25;
+						grains -= 20;
+						plastic -= 20;
+						water -= 20;
+						teaBase -= 20;
+						wood -= 80;
+						pineSap -= 20;
+						steel -= 20;
+						horseHairs -= 20;
 						services++;
 					}
 					data.replace("grains", grains);
@@ -181,11 +181,11 @@ public class Craft {
 					data.replace("steel", steel);
 					data.replace("horseHair", horseHairs);
 					data.replace("violinService", services);
-					e.reply("You crafted " + Numbers.formatNumber(i) + Emoji.SERVICE + " for " + Numbers.formatNumber(i * 25) + Emoji.GRAINS + ", " + Numbers.formatNumber(i * 25) + Emoji.PLASTIC + ", " + Numbers.formatNumber(i * 25) + Emoji.WATER + ", " + Numbers.formatNumber(i * 25) + Emoji.TEABAG + ", " + Numbers.formatNumber(i * 100) + Emoji.WOOD + ", " + Numbers.formatNumber(i * 25) + Emoji.SAP + ", " + Numbers.formatNumber(i * 25) + Emoji.STEEL + ", " + Numbers.formatNumber(i * 25) + Emoji.HORSE_HAIR).queue();
+					e.reply("You crafted `" + Numbers.formatNumber(i) + "`" + Emoji.SERVICE + " for `" + Numbers.formatNumber(i * 20) + "`" + Emoji.GRAINS + ", `" + Numbers.formatNumber(i * 20) + "`" + Emoji.PLASTIC + ", `" + Numbers.formatNumber(i * 20) + "`" + Emoji.WATER + ", `" + Numbers.formatNumber(i * 20) + "`" + Emoji.TEABAG + ", `" + Numbers.formatNumber(i * 80) + "`" + Emoji.WOOD + ", `" + Numbers.formatNumber(i * 20) + "`" + Emoji.SAP + ", `" + Numbers.formatNumber(i * 20) + "`" + Emoji.STEEL + ", `" + Numbers.formatNumber(i * 20) + "`" + Emoji.HORSE_HAIR).queue();
 				}
 				case "luthier" -> {
 					if(Objects.requireNonNull(e.getGuild()).getId().equals("670725611207262219")) {
-						e.reply("Strad find you trying to sneakily mess with the only buffed Luthier around.  He kicks you out, and slaps you with a fine equal to 24x your hourly income.\nDon't try to increase the Luthier of the support server.  It won't work or end well.").setEphemeral(true).queue();
+						e.reply("Strad find you trying to sneakily mess with the only buffed Luthier around.  He kicks you out, and slaps you with a fine equal to 24x your hourly income.\nDon't try to increase the Luthier of the support server.  It won't work or end well.").queue();
 						data.replace("violins", (long) data.get("violins") - (long) data.get("income") * 24);
 						SaveData.saveData(e, data);
 						return;
@@ -212,7 +212,7 @@ public class Craft {
 					for(; i < craftAmount; i++) {
 						if(grains < 250 || plastic < 250 || water < 250 || teaBase < 250 || wood < 250 || pineSap < 250 || steel < 250 || horseHairs < 250) {
 							if(i == 0) {
-								e.reply("You were unable to craft any Luthiers!  Check that you have enough Raw Materials:\n" + Numbers.formatNumber(grains) + "/250" + Emoji.GRAINS + "\n" + Numbers.formatNumber(plastic) + "/250" + Emoji.PLASTIC + "\n" + Numbers.formatNumber(water) + "/250" + Emoji.WATER + "\n" + Numbers.formatNumber(teaBase) + "/250" + Emoji.TEABAG + "\n" + Numbers.formatNumber(pineSap) + "/250" + Emoji.SAP + "\n" + Numbers.formatNumber(wood) + "/250" + Emoji.WOOD + "\n" + Numbers.formatNumber(steel) + "/250" + Emoji.STEEL + "\n" + Numbers.formatNumber(horseHairs) + "/250" + Emoji.HORSE_HAIR).setEphemeral(true).queue();
+								e.reply("You were unable to craft any Luthiers!  Check that you have enough Raw Materials:\n`" + Numbers.formatNumber(grains) + "/250`" + Emoji.GRAINS + "\n`" + Numbers.formatNumber(plastic) + "/250`" + Emoji.PLASTIC + "\n`" + Numbers.formatNumber(water) + "/250`" + Emoji.WATER + "\n`" + Numbers.formatNumber(teaBase) + "/250`" + Emoji.TEABAG + "\n`" + Numbers.formatNumber(pineSap) + "/250`" + Emoji.SAP + "\n`" + Numbers.formatNumber(wood) + "/250`" + Emoji.WOOD + "\n`" + Numbers.formatNumber(steel) + "/250`" + Emoji.STEEL + "\n`" + Numbers.formatNumber(horseHairs) + "/250`" + Emoji.HORSE_HAIR).setEphemeral(true).queue();
 								return;
 							}
 							break;
@@ -236,7 +236,7 @@ public class Craft {
 					data.replace("steel", steel);
 					data.replace("horseHair", horseHairs);
 					luthierData.replace("multiplier", multiplier);
-					e.reply("You crafted and used " + Numbers.formatNumber(i) + "x Luthier for " + Numbers.formatNumber(i * 250) + Emoji.GRAINS + ", " + Numbers.formatNumber(i * 250) + Emoji.PLASTIC + ", " + Numbers.formatNumber(i * 250) + Emoji.WATER + ", " + Numbers.formatNumber(i * 250) + Emoji.TEABAG + ", " + Numbers.formatNumber(i * 250) + Emoji.WOOD + ", " + Numbers.formatNumber(i * 250) + Emoji.SAP + ", " + Numbers.formatNumber(i * 250) + Emoji.STEEL + ", " + Numbers.formatNumber(i * 250) + Emoji.HORSE_HAIR).queue();
+					e.reply("You crafted and used `" + Numbers.formatNumber(i) + "`x Luthier for `" + Numbers.formatNumber(i * 250) + "`" + Emoji.GRAINS + ", `" + Numbers.formatNumber(i * 250) + "`" + Emoji.PLASTIC + ", `" + Numbers.formatNumber(i * 250) + "`" + Emoji.WATER + ", `" + Numbers.formatNumber(i * 250) + "`" + Emoji.TEABAG + ", `" + Numbers.formatNumber(i * 250) + "`" + Emoji.WOOD + ", `" + Numbers.formatNumber(i * 250) + "`" + Emoji.SAP + ", `" + Numbers.formatNumber(i * 250) + "`" + Emoji.STEEL + ", `" + Numbers.formatNumber(i * 250) + "`" + Emoji.HORSE_HAIR).queue();
 					Objects.requireNonNull(e.getGuild().getTextChannelById((String) luthierData.get("channel"))).sendMessage("**:tada: <@" + e.getUser().getId() + "> just buffed this server's luthier by `" + i + "`x!  New Multiplier: `" + multiplier + "x`** :tada:").queue();
 					try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".json")) {
 						writer.write(luthierData.toJSONString());
@@ -251,13 +251,13 @@ public class Craft {
 			SaveData.saveData(e, data);
 		} catch(Exception exception) {
 			builder.setTitle("**All Crafting Recipes**")
-					.addField("**Rice** " + Emoji.RICE, "`" + data.get("grains") + "/25`" + Emoji.GRAINS + "\n`" + data.get("wood") + "/10`" + Emoji.WOOD + "\n`" + data.get("water") + "/10`" + Emoji.WATER, true)
-					.addField("**Bubble Tea** " + Emoji.TEA, "`" + data.get("plastic") + "/15`" + Emoji.PLASTIC + "\n`" + data.get("teaBase") + "/10`" + Emoji.TEABAG + "\n`" + data.get("water") + "/25`" + Emoji.WATER, true)
-					.addField("**Rosin** " + Emoji.ROSIN, "`" + data.get("pineSap") + "/25`" + Emoji.SAP, true)
-					.addField("**New Strings** " + Emoji.STRING, "`" + data.get("steel") + "/50`" + Emoji.STEEL, true)
+					.addField("**Rice** " + Emoji.RICE, "`" + data.get("grains") + "/20`" + Emoji.GRAINS + "\n`" + data.get("wood") + "/10`" + Emoji.WOOD + "\n`" + data.get("water") + "/10`" + Emoji.WATER, true)
+					.addField("**Bubble Tea** " + Emoji.TEA, "`" + data.get("plastic") + "/10`" + Emoji.PLASTIC + "\n`" + data.get("teaBase") + "/10`" + Emoji.TEABAG + "\n`" + data.get("water") + "/20`" + Emoji.WATER, true)
+					.addField("**Rosin** " + Emoji.ROSIN, "`" + data.get("pineSap") + "/20`" + Emoji.SAP, true)
+					.addField("**New Strings** " + Emoji.STRING, "`" + data.get("steel") + "/40`" + Emoji.STEEL, true)
 					.addBlankField(true)
-					.addField("**Bow Hair** " + Emoji.BOW_HAIR, "`" + data.get("horseHair") + "/75`" + Emoji.HORSE_HAIR, true)
-					.addField("**Violin Service** " + Emoji.SERVICE, "`" + data.get("grains") + "/25`" + Emoji.GRAINS + "\n`" + data.get("plastic") + "/25`" + Emoji.PLASTIC + "\n`" + data.get("water") + "/25`" + Emoji.WATER + "\n`" + data.get("teaBase") + "/25`" + Emoji.TEABAG + "\n`" + data.get("wood") + "/100`" + Emoji.WOOD + "\n`" + data.get("pineSap") + "/25`" + Emoji.SAP + "\n`" + data.get("steel") + "/25`" + Emoji.STEEL + "\n`" + data.get("horseHair") + "/25`" + Emoji.HORSE_HAIR, true)
+					.addField("**Bow Hair** " + Emoji.BOW_HAIR, "`" + data.get("horseHair") + "/60`" + Emoji.HORSE_HAIR, true)
+					.addField("**Violin Service** " + Emoji.SERVICE, "`" + data.get("grains") + "/20`" + Emoji.GRAINS + "\n`" + data.get("plastic") + "/20`" + Emoji.PLASTIC + "\n`" + data.get("water") + "/20`" + Emoji.WATER + "\n`" + data.get("teaBase") + "/20`" + Emoji.TEABAG + "\n`" + data.get("wood") + "/80`" + Emoji.WOOD + "\n`" + data.get("pineSap") + "/20`" + Emoji.SAP + "\n`" + data.get("steel") + "/20`" + Emoji.STEEL + "\n`" + data.get("horseHair") + "/20`" + Emoji.HORSE_HAIR, true)
 					.addBlankField(true)
 					.addField("**1x Luthier** " + Emoji.SERVICE, "`" + data.get("grains") + "/250`" + Emoji.GRAINS + "\n`" + data.get("plastic") + "/250`" + Emoji.PLASTIC + "\n`" + data.get("water") + "/250`" + Emoji.WATER + "\n`" + data.get("teaBase") + "/250`" + Emoji.TEABAG + "\n`" + data.get("wood") + "/250`" + Emoji.WOOD + "\n`" + data.get("pineSap") + "/250`" + Emoji.SAP + "\n`" + data.get("steel") + "/250`" + Emoji.STEEL + "\n`" + data.get("horseHair") + "/250`" + Emoji.HORSE_HAIR, true);
 			e.replyEmbeds(builder.build()).queue();

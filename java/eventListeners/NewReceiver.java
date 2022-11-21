@@ -172,7 +172,6 @@ public class NewReceiver extends ListenerAdapter {
 				case "daily", "d" -> Daily.daily(e);
 				case "teach", "t" -> Teach.teach(e);
 				case "rob" -> Rob.rob(e);
-				case "gamble", "bet" -> Gamble.gamble(e);
 				case "inventory", "inv" -> Inventory.inventory(e);
 				case "profile", "balance", "bal", "b" -> Balance.balance(e);
 				case "stats" -> Stats.stats(e);
