@@ -28,6 +28,8 @@ public class Kill {
 			e.reply("Do not harm yourself.  I will not allow it.").queue();
 		} else if(check.contains("ludwig") || check.contains("beethoven")) {
 			e.reply("killing the best composer ever is ILLEGAL.  i am banning you.").queue();
+		} else if(check.contains("nigg") || check.contains("nibba") || check.contains("cunt") || check.contains("chink")) {
+			e.reply("NICE TRY").queue();
 		} else {
 			Random random = new Random();
 			int i = random.nextInt(71);

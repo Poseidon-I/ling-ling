@@ -34,7 +34,11 @@ public class Poll {
 			send.append(":regional_indicator_").append(currentChar).append(": ").append(splitChoice).append("\n");
 			currentChar ++;
 		}
-		send.append("\nPoll created by ").append(e.getUser().getName()).append("#").append(e.getUser().getDiscriminator());
+		String name = e.getUser().getName();
+		if(name.contains("@everyone") || name.contains("@here") || name.contains("<@&") || name.contains("nigg") || name.contains("nibba") || name.contains("cunt") || name.contains("chink")) {
+			name = "NICE TRY";
+		}
+		send.append("\nPoll created by ").append(name).append("#").append(e.getUser().getDiscriminator());
 		Message message = e.getChannel().sendMessage(send.toString()).complete();
 		e.reply("Poll created!").setEphemeral(true).queue();
 		int hex = 127462;

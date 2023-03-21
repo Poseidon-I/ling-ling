@@ -73,7 +73,7 @@ public class Rob {
 			if(num < failChance) {
 				baseRob = (long) (violins * 0.2);
 				if(extraInfo) {
-					message += "Brett and Eddy caught you trying to rob " + name + "!  You paid " + name + " `" + Numbers.formatNumber(baseRob) + "`" + Emoji.VIOLINS + " for attempting to rob them.\n*The generator rolled " + num + ", you need at least " + failChance + " to succeed.*";
+					message += "Brett and Eddy caught you trying to rob " + name + "!  You paid " + name + " `" + Numbers.formatNumber(baseRob) + "`" + Emoji.VIOLINS + " for attempting to rob them.\n*The generator rolled `" + num + "` you needed at least `" + failChance + "` to succeed.*";
 				} else {
 					message += "Brett and Eddy caught you trying to rob " + name + "!  You paid " + name + " `" + Numbers.formatNumber(baseRob) + "`" + Emoji.VIOLINS + " for attempting to rob them.";
 				}
@@ -94,7 +94,7 @@ public class Rob {
 				if(insurance) {
 					if(opponentShield) {
 						if(extraInfo) {
-							message += "You successfully robbed " + name + " but ran into a Steal Shield.  You only managed to get away with `" + Numbers.formatNumber((long) (baseRob * 0.25)) + "`" + Emoji.VIOLINS + " before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*";
+							message += "You successfully robbed " + name + " but ran into a Steal Shield.  You only managed to get away with `" + Numbers.formatNumber((long) (baseRob * 0.25)) + "`" + Emoji.VIOLINS + " before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.\n*The generator rolled `" + num + "` you needed at least `" + failChance + "` to succeed.*";
 						} else {
 							message += "You successfully robbed " + name + " but ran into a Steal Shield.  You only managed to get away with `" + Numbers.formatNumber((long) (baseRob * 0.25)) + "`" + Emoji.VIOLINS + " before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.";
 						}
@@ -114,7 +114,7 @@ public class Rob {
 						}
 					} else {
 						if(extraInfo) {
-							message += "You successfully robbed " + name + " but only managed to get away with `" + Numbers.formatNumber((long) (baseRob * 0.5)) + "`" + Emoji.VIOLINS + " before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*";
+							message += "You successfully robbed " + name + " but only managed to get away with `" + Numbers.formatNumber((long) (baseRob * 0.5)) + "`" + Emoji.VIOLINS + " before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.\n*The generator rolled `" + num + "` you needed at least `" + failChance + "` to succeed.*";
 						} else {
 							message += "You successfully robbed " + name + " but only managed to get away with `" + Numbers.formatNumber((long) (baseRob * 0.5)) + "`" + Emoji.VIOLINS + " before Ling Ling Security was called.  You evade capture by being like Ben Lee and faking.";
 						}
@@ -135,7 +135,7 @@ public class Rob {
 				} else {
 					if(opponentShield) {
 						if(extraInfo) {
-							message += "You successfully robbed " + name + " but a Steal Shield stopped your looting halfway through.  Your payout was `" + Numbers.formatNumber((long) (baseRob * 0.5)) + "`" + Emoji.VIOLINS + "\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*";
+							message += "You successfully robbed " + name + " but a Steal Shield stopped your looting halfway through.  Your payout was `" + Numbers.formatNumber((long) (baseRob * 0.5)) + "`" + Emoji.VIOLINS + "\n*The generator rolled `" + num + "` you needed at least `" + failChance + "` to succeed.*";
 						} else {
 							message += "You successfully robbed " + name + " but a Steal Shield stopped your looting halfway through.  Your payout was `" + Numbers.formatNumber((long) (baseRob * 0.5)) + "`" + Emoji.VIOLINS;
 						}
@@ -154,7 +154,7 @@ public class Rob {
 						}
 					} else {
 						if(extraInfo) {
-							message += "You successfully robbed " + name + "!  Your payout was `" + Numbers.formatNumber(baseRob) + "`" + Emoji.VIOLINS + "\n*The generator rolled " + num + " you needed at least " + failChance + " to succeed.*";
+							message += "You successfully robbed " + name + "!  Your payout was `" + Numbers.formatNumber(baseRob) + "`" + Emoji.VIOLINS + "\n*The generator rolled `" + num + "` you needed at least `" + failChance + "` to succeed.*";
 						} else {
 							message += "You successfully robbed " + name + "!  Your payout was `" + Numbers.formatNumber(baseRob) + "`" + Emoji.VIOLINS;
 						}

@@ -2,7 +2,7 @@ package processes;
 
 import economy.Emoji;
 import economy.RNGesus;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;

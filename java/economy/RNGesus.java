@@ -78,7 +78,7 @@ public class RNGesus {
 		} else { // 0.00025 (1 in 4000)
 			data.replace("RNGesusBox", (long) data.get("RNGesusBox") + 1);
 			data.replace("RNGesusWeight", (long) data.get("RNGesusWeight") + 10);
-			message.append("**__INSANE DROP!__** " + Emoji.RNGESUS_BOX + " <@").append(e.getUser().getId()).append(">\nYou see an **__RNGESUS BOX__** appear in front of you! GG!");
+			message.append("https://imgur.com/a/SSjcgz3 " + Emoji.RNGESUS_BOX + " <@").append(e.getUser().getId()).append(">\nYou see an **__RNGESUS BOX__** appear in front of you! GG!");
 			sendLog(e, "RNGesus Box");
 			Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("734697505543159879")).sendMessage("WOW!  `" + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + "` found an **__RNGESUS BOX__**!!!").queue();
 		}

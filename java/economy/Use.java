@@ -129,7 +129,7 @@ public class Use {
 						}
 					}
 					addItems.put("medals", add);
-					e.reply("Ling Ling blessed you thanks to your " + useAmount + " performances!  You received " + add + "`" + Emoji.MEDALS).queue();
+					e.reply("Ling Ling blessed you thanks to your `" + useAmount + "` performances!  You received `" + add + "`" + Emoji.MEDALS).queue();
 				}
 			}
 			case "voteBox" -> {

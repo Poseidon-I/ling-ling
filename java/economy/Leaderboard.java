@@ -33,9 +33,7 @@ public class Leaderboard {
             }
             String user = file.getName().substring(0, file.getName().lastIndexOf("."));
             long num;
-            if (index.equals("medals")) {
-                num = (long) data.get("thirdPlace") + 2 * (long) data.get("secondPlace") + 3 * (long) data.get("firstPlace");
-            } else if (index.equals("hoursPractised") || index.equals("hoursTaught")) {
+            if (index.equals("hoursPractised") || index.equals("hoursTaught")) {
                 double temp = (double) data.get(index);
                 num = (long) temp;
             } else {
