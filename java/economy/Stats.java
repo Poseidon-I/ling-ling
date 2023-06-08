@@ -1,8 +1,7 @@
 package economy;
 
+import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import processes.Numbers;
@@ -12,24 +11,16 @@ import java.io.FileReader;
 import java.util.Objects;
 
 public class Stats {
-	public static void stats(@NotNull SlashCommandInteractionEvent e) {
+	public static void stats(GenericDiscordEvent e, String user) {
 		JSONObject data;
-		String user;
-		try {
-			user = Objects.requireNonNull(e.getOption("otheruser")).getAsString();
-		} catch(NullPointerException exception) {
-			user = e.getUser().getId();
-		}
-		
 		JSONParser parser = new JSONParser();
 		try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + user + ".json")) {
 			data = (JSONObject) parser.parse(reader);
 			reader.close();
 		} catch(Exception exception) {
-			e.reply("This save file does not exist!").queue();
+			e.reply("This save file does not exist!");
 			return;
 		}
-		
 		if(user.equals("768056391814086676")) {
 			user = "**NARWHAL**";
 		} else {
@@ -52,6 +43,6 @@ public class Stats {
 				.addField("**__Market__**", "**Items Purchased**: `" + Numbers.formatNumber(data.get("itemsBought")) + "`\n**Items Sold**: `" + Numbers.formatNumber(data.get("itemsSold")) + "`\n**Money Earned**: `" + Numbers.formatNumber(data.get("moneyEarned")) + "`\n**Money Spent**: `" + Numbers.formatNumber(data.get("moneySpent")) + "`\n**Taxes Paid**: `" + Numbers.formatNumber(data.get("taxPaid")) + "`", true)
 				.addBlankField(true)
 				.addField("**__Miscellaneous__**", "**Highest Daily Streak**: `" + Numbers.formatNumber(data.get("maxStreak")) + "`\n**Luthiers Unscrambled**: `" + Numbers.formatNumber(data.get("luthiers")) + "`\n**Violins Earned**: `" + Numbers.formatNumber(data.get("earnings")) + "`\n**Interest Earned**: `" + Numbers.formatNumber(data.get("interestEarned")) + "`\n**Penalties Paid**: `" + Numbers.formatNumber(data.get("penaltiesIncurred")) + "`", true);
-		e.replyEmbeds(builder.build()).queue();
+		e.replyEmbeds(builder.build());
 	}
 }

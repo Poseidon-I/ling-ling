@@ -63,8 +63,7 @@ public class HourlyIncome {
 				writer.write(data.toJSONString());
 				writer.close();
 			} catch(Exception exception) {
-				//n
-				// othing here lol
+				//nothing here lol
 			}
 		}
 	}

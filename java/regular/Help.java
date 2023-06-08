@@ -1,17 +1,25 @@
 package regular;
 
+import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.Objects;
 
 public class Help {
-	public static void help(@NotNull SlashCommandInteractionEvent e) {
+	public static void help(GenericDiscordEvent e, String page) {
 		EmbedBuilder builder = new EmbedBuilder().setColor(Color.BLUE).setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl()).setTitle("__**Ling Ling Bot Help**__");
-		try {
-			switch(Objects.requireNonNull(e.getOption("page")).getAsString()) {
+		if(page.equals("")) {
+			builder.addField("Help List", """
+					Use `/help [page]` to view further commands!
+					
+					`1` - Fun Commands
+					`2` - Utility Commands
+					`3` - Economy Commands
+					`4` - Income Commands
+					`5` - Bot Moderation Commands
+					`6` - Dev-Only Commands""", false);
+		} else {
+			switch(page) {
 				case "1" -> builder.addField("Help List Page 1 - Fun\nRun `/help <commandName>` to view a command in depth", "`joke`\n`kill`\n`emojify`", false);
 				case "2" -> builder.addField("Help List Page 2 - Utility\nRun `/help <commandName>` to view a command in depth",
 						"**`rules`**\n`staff`\n`poll`\n`guide`\n`invite`\n`faq`\n`support`\n`website`\n`botstats`\n`settings`\n`link`", false);
@@ -91,17 +99,7 @@ public class Help {
 				case "forcestop" -> builder.addField("ForceStop Command", "Syntax: `/forcestop`\nUsage: Forces the bot to stop.  **USE IN EMERGENCY CIRCUMSTANCES**\nRestrictions: Usable only by Developers.", false);
 				default -> builder.addField("Help List", "The page/command you are looking for doesn't exist!  Run `/help` to see a list of pages.", false);
 			}
-		} catch(Exception exception) {
-			builder.addField("Help List", """
-					Use `/help [page]` to view further commands!
-					
-					`1` - Fun Commands
-					`2` - Utility Commands
-					`3` - Economy Commands
-					`4` - Income Commands
-					`5` - Bot Moderation Commands
-					`6` - Dev-Only Commands""", false);
 		}
-		e.replyEmbeds(builder.build()).queue();
+		e.replyEmbeds(builder.build());
 	}
 }

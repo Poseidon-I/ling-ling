@@ -1,7 +1,7 @@
 package processes;
 
 import java.util.Comparator;
-
+// BEETHOVEN-ONLY CLASS
 // https://stackoverflow.com/questions/3066742/sort-files-by-name-in-java-differs-from-windows-explorer
 public class WindowsExplorerStringComparator implements Comparator<String> {
 	private String str1, str2;

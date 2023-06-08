@@ -1,7 +1,7 @@
 package economy;
 
+import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
@@ -14,10 +14,10 @@ public class RNGesus {
 	private static boolean extraInfo;
 	private static double increase;
 	
-	public static void sendLog(SlashCommandInteractionEvent e, String drop) {
+	public static void sendLog(GenericDiscordEvent e, String drop) {
 		EmbedBuilder builder = new EmbedBuilder()
 				.setTitle("RNGesus Drop!")
-				.addField("User: " + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + " `" + e.getUser().getId() + "`", "Drop: " + drop, false);
+				.addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + " `" + e.getAuthor().getId() + "`", "Drop: " + drop, false);
 		switch(drop) {
 			case "Musician Kit" -> {
 				builder.setColor(Color.BLUE);
@@ -52,7 +52,7 @@ public class RNGesus {
 		e.getChannel().sendMessage(message).queue();
 	}
 	
-	public static JSONObject lootbox(SlashCommandInteractionEvent e, JSONObject data) {
+	public static JSONObject lootbox(GenericDiscordEvent e, JSONObject data) {
 		message = new StringBuilder();
 		Random random = new Random();
 		chance = random.nextDouble();
@@ -63,24 +63,24 @@ public class RNGesus {
 		} else if(chance > 0.00375 * increase) { //0.01 (1 in 100)
 			data.replace("kits", (long) data.get("kits") + 1);
 			data.replace("RNGesusWeight", (long) data.get("RNGesusWeight") + 3);
-			message.append("**Very Rare Drop!** " + Emoji.MUSICIAN_KIT + " <@").append(e.getUser().getId()).append(">\nYou found a Musician Kit while you were out and about.");
+			message.append("**Very Rare Drop!** " + Emoji.MUSICIAN_KIT + " <@").append(e.getAuthor().getId()).append(">\nYou found a Musician Kit while you were out and about.");
 			sendLog(e, "Musician Kit");
 		} else if(chance > 0.00125 * increase) { //0.0025 (1 in 400)
 			data.replace("linglingBox", (long) data.get("linglingBox") + 1);
 			data.replace("RNGesusWeight", (long) data.get("RNGesusWeight") + 6);
-			message.append("**CRAZY RARE DROP!** " + Emoji.LING_LING_BOX + " <@").append(e.getUser().getId()).append(">\nYou found a Ling Ling Box sitting in your room!");
+			message.append("**CRAZY RARE DROP!** " + Emoji.LING_LING_BOX + " <@").append(e.getAuthor().getId()).append(">\nYou found a Ling Ling Box sitting in your room!");
 			sendLog(e, "Ling Ling Box");
 		} else if(chance > 0.00025 * increase) { // 0.001 (1 in 1000)
 			data.replace("crazyBox", (long) data.get("crazyBox") + 1);
 			data.replace("RNGesusWeight", (long) data.get("RNGesusWeight") + 6);
-			message.append("**CRAZY RARE DROP!** " + Emoji.CRAZY_BOX + " <@").append(e.getUser().getId()).append(">\nYou see a CRAZY PERSON BOX appear in front of you!");
+			message.append("**CRAZY RARE DROP!** " + Emoji.CRAZY_BOX + " <@").append(e.getAuthor().getId()).append(">\nYou see a CRAZY PERSON BOX appear in front of you!");
 			sendLog(e, "Crazy Person Box");
 		} else { // 0.00025 (1 in 4000)
 			data.replace("RNGesusBox", (long) data.get("RNGesusBox") + 1);
 			data.replace("RNGesusWeight", (long) data.get("RNGesusWeight") + 10);
-			message.append("https://imgur.com/a/SSjcgz3 " + Emoji.RNGESUS_BOX + " <@").append(e.getUser().getId()).append(">\nYou see an **__RNGESUS BOX__** appear in front of you! GG!");
+			message.append("https://imgur.com/a/SSjcgz3 " + Emoji.RNGESUS_BOX + " <@").append(e.getAuthor().getId()).append(">\nYou see an **__RNGESUS BOX__** appear in front of you! GG!");
 			sendLog(e, "RNGesus Box");
-			Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("734697505543159879")).sendMessage("WOW!  `" + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + "` found an **__RNGESUS BOX__**!!!").queue();
+			Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("734697505543159879")).sendMessage("WOW!  `" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + "` found an **__RNGESUS BOX__**!!!").queue();
 		}
 		return data;
 	}

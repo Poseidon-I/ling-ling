@@ -1,14 +1,13 @@
 package economy;
 
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
+import eventListeners.GenericDiscordEvent;
 import org.json.simple.JSONObject;
 import processes.Numbers;
 
 import java.util.Random;
 
 public class Perform {
-	public static void perform(@NotNull SlashCommandInteractionEvent e) {
+	public static void perform(GenericDiscordEvent e) {
 		JSONObject data = LoadData.loadData(e);
 		long time = System.currentTimeMillis();
 		Random random = new Random();
@@ -25,7 +24,7 @@ public class Perform {
 			milliseconds -= minutes * 60000;
 			long seconds = milliseconds / 1000;
 			milliseconds -= seconds * 1000;
-			e.reply("Don't tire yourself with two performances a week!  Wait " + days + " days " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
+			e.reply("Don't tire yourself with two performances a week!  Wait " + days + " days " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!");
 		} else {
 			boolean badEvent = false;
 			long base = Numbers.calculateAmount(data, random.nextInt(1001) + 3000);
@@ -135,7 +134,7 @@ public class Perform {
 					data.replace("performCD", time + 215940000);
 				}
 			}
-			e.reply(builder.toString()).queue();
+			e.reply(builder.toString());
 			Numbers.calculateLoan(data, base);
 			data.replace("earnings", violinsEarned + base);
 			data.replace("performances", (long) data.get("performances") + 1);

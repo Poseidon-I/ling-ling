@@ -1,7 +1,6 @@
 package dev;
 
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
+import eventListeners.GenericDiscordEvent;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import processes.Numbers;
@@ -12,7 +11,7 @@ import java.io.FileWriter;
 import java.util.Objects;
 
 public class UpdateLuthierChance {
-	public static void updateLuthierChance(@NotNull SlashCommandInteractionEvent e) {
+	public static void updateLuthierChance(GenericDiscordEvent e) {
 		File directory = new File("Ling Ling Bot Data\\Settings\\Luthier");
 		File[] files = directory.listFiles();
 		assert files != null;
@@ -33,7 +32,7 @@ public class UpdateLuthierChance {
 			} catch(Exception exception) {
 				continue;
 			}
-			
+
 			try(FileWriter writer = new FileWriter(file.getAbsolutePath())) {
 				writer.write(data.toJSONString());
 				writer.close();
@@ -41,8 +40,7 @@ public class UpdateLuthierChance {
 				//nothing here lol
 			}
 		}
-		if(e.getName().equals("updateluthierchance")) {
-			e.reply("Successfully updated Luthier chances for all servers").queue();
-		}
+		e.reply("Successfully updated Luthier chances for all servers");
+
 	}
 }

@@ -1,22 +1,16 @@
 package economy;
 
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
+import eventListeners.GenericDiscordEvent;
 import org.json.simple.JSONObject;
 import processes.Numbers;
 
-import java.util.Objects;
-
 public class Withdraw {
-	public static void withdraw(@NotNull SlashCommandInteractionEvent e) {
+	public static void withdraw(GenericDiscordEvent e, String temp) {
 		JSONObject data = LoadData.loadData(e);
 		long amount;
 		long balance = (long) data.get("bank");
-		String temp;
-		try {
-			temp = Objects.requireNonNull(e.getOption("amount")).getAsString();
-		} catch(Exception exception) {
-			e.reply("You have to withdraw something.").setEphemeral(true).queue();
+		if(temp.equals("")) {
+			e.reply("You have to withdraw something.");
 			return;
 		}
 		if(temp.equals("max")) {
@@ -25,19 +19,19 @@ public class Withdraw {
 			try {
 				amount = Long.parseLong(temp);
 			} catch(Exception exception) {
-				e.reply("You have to either input `max` or an integer.").setEphemeral(true).queue();
+				e.reply("You have to either input `max` or an integer.");
 				return;
 			}
 		}
 		if(amount > balance) {
-			e.reply("You can't withdraw more than you have in your bank account, you fool.").setEphemeral(true).queue();
+			e.reply("You can't withdraw more than you have in your bank account, you fool.");
 		} else if(amount < 1) {
-			e.reply("Stop wasting my time trying to withdraw a negative amount, shame on you").setEphemeral(true).queue();
+			e.reply("Stop wasting my time trying to withdraw a negative amount, shame on you");
 		} else {
 			balance -= amount;
 			data.replace("violins", (long) data.get("violins") + amount);
 			data.replace("bank", balance);
-			e.reply("You withdrew `" + Numbers.formatNumber(amount) + Emoji.VIOLINS + "`" + " from your bank.  You now have `" + Numbers.formatNumber(balance) + "`" + Emoji.VIOLINS + " in your bank.").queue();
+			e.reply("You withdrew `" + Numbers.formatNumber(amount) + "`" + Emoji.VIOLINS + " from your bank.  You now have `" + Numbers.formatNumber(balance) + "`" + Emoji.VIOLINS + " in your bank.");
 			SaveData.saveData(e, data);
 		}
 	}

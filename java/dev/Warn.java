@@ -1,53 +1,38 @@
 package dev;
 
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
+import eventListeners.GenericDiscordEvent;
 
 import java.util.Objects;
 
 public class Warn {
-	public static void warn(@NotNull SlashCommandInteractionEvent e) {
-		String id;
+	public static void warn(GenericDiscordEvent e, String idToModerate, String reason) {
 		try {
-			id = Objects.requireNonNull(e.getOption("user")).getAsString();
-			Long.parseLong(id);
-		} catch(NullPointerException exception) {
-			e.reply("You didn't provide an ID!").setEphemeral(true).queue();
-			return;
+			if(idToModerate.equals("")) {
+				throw new IllegalArgumentException();
+			}
+			Long.parseLong(idToModerate);
 		} catch(Exception exception) {
-			e.reply("You didn't provide a valid ID!").setEphemeral(true).queue();
-			return;
+			e.reply("You didn't provide an ID!");
 		}
-		
-		String reason;
-		try {
-			reason = Objects.requireNonNull(e.getOption("reason")).getAsString();
-		} catch(Exception exception) {
-			reason = "None";
-		}
-		
-		try {
-			Long.parseLong(id);
-		} catch(Exception exception) {
-			e.reply("You didn't provide a valid ID!").queue();
-			return;
-		}
-		if(id.equals(e.getUser().getId())) {
-			e.reply("Imagine trying to warn yourself, how dumb are you???").queue();
-		} else if(id.equals("619989388109152256") || id.equals("488487157372157962")) {
-			e.reply("Imagine trying to warn a developer smh").queue();
+
+		if(idToModerate.equals(e.getAuthor().getId())) {
+			e.reply("Imagine trying to warn yourself, how dumb are you???");
+		} else if(idToModerate.equals("619989388109152256") || idToModerate.equals("488487157372157962")) {
+			e.reply("Imagine trying to warn a developer smh");
 		} else {
 			String user;
 			try {
-				user = Objects.requireNonNull(e.getJDA().getUserById(id)).getName();
+				user = Objects.requireNonNull(e.getJDA().getUserById(idToModerate)).getName();
 			} catch(Exception exception) {
 				user = "Someone";
 			}
-			LogCase.logCase(e, "Warn", id, reason);
-			e.reply(":warning: " + user + " was successfully warned!").queue();
-			String finalReason = reason;
-			Objects.requireNonNull(e.getJDA().getUserById(id)).
-					openPrivateChannel().queue((channel) -> channel.sendMessage("You have received a warning.  Reason: " + finalReason + "\nContinuation of this action may result in a save file reset and/or a bot ban.").queue());
+			LogCase.logCase(e, "Warn", idToModerate, reason);
+			try {
+				Objects.requireNonNull(e.getJDA().getUserById(idToModerate)).openPrivateChannel().queue((channel) -> channel.sendMessage("You have received a warning.  Reason: " + reason + "\nContinuation of this action may result in a save file reset and/or a bot ban.").queue());
+			} catch(Exception exception) {
+				// nothing here lol
+			}
+			e.reply(":warning: " + user + " was successfully warned!");
 		}
 	}
 }

@@ -1,38 +1,25 @@
 package dev;
 
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
+import eventListeners.GenericDiscordEvent;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.Objects;
 
 public class UpdateUsers {
-	public static void updateUsers(@NotNull SlashCommandInteractionEvent e) {
-		String dataType;
-		try {
-			dataType = Objects.requireNonNull(e.getOption("datatype")).getAsString();
-		} catch(Exception exception) {
-			e.reply("You have to specify a data type, dumbass").queue();
+	public static void updateUsers(GenericDiscordEvent e, String dataType, String name, String value) {
+		if(dataType.equals("")) {
+			e.reply("You have to specify a data type, dumbass");
 			return;
 		}
-		
-		String name;
-		try {
-			name = Objects.requireNonNull(e.getOption("newkey")).getAsString();
-		} catch(Exception exception) {
-			e.reply("You have to give a name, can't just call it nothing, can you?").queue();
+		if(name.equals("")) {
+			e.reply("You have to give a name, can't just call it nothing, can you?");
 			return;
 		}
-		
-		String value;
-		try {
-			value = Objects.requireNonNull(e.getOption("setvalue")).getAsString();
-		} catch(Exception exception) {
-			e.reply("You have to give a default value, stupid.").queue();
+		if(value.equals("")) {
+			e.reply("You have to give a default value, stupid.");
 			return;
 		}
 		
@@ -55,12 +42,12 @@ public class UpdateUsers {
 					case "int" -> data.put(name, Long.parseLong(value));
 					case "string" -> data.put(name, value);
 					default -> {
-						e.reply("You didn't specify a valid type!  Valid types: `int` `double` `boolean` `string`").queue();
+						e.reply("You didn't specify a valid type!  Valid types: `int` `double` `boolean` `string`");
 						return;
 					}
 				}
 			} catch(Exception exception) {
-				e.reply("You didn't provide a valid value to put in the key.").queue();
+				e.reply("You didn't provide a valid value to put in the key.");
 				return;
 			}
 			try(FileWriter writer = new FileWriter(file.getAbsolutePath())) {
@@ -70,6 +57,6 @@ public class UpdateUsers {
 				// nothing here lol
 			}
 		}
-		e.reply("Successfully added data value `" + name + "` with type `" + dataType + "` to all users.").queue();
+		e.reply("Successfully added data value `" + name + "` with type `" + dataType + "` to all users.");
 	}
 }

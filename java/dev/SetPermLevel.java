@@ -1,7 +1,6 @@
 package dev;
 
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
+import eventListeners.GenericDiscordEvent;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -10,23 +9,15 @@ import java.io.FileWriter;
 import java.util.Objects;
 
 public class SetPermLevel {
-	public static void setPermLevel(@NotNull SlashCommandInteractionEvent e) {
-		String target;
-		try {
-			target = Objects.requireNonNull(e.getOption("user")).getAsString();
-		} catch(NullPointerException exception) {
-			e.reply("You have to provide a user to promote or demote, dumbass.").queue();
+	public static void setPermLevel(GenericDiscordEvent e, String target, int newRank) {
+		if(target.equals("")) {
+			e.reply("You have to provide a user to promote or demote, dumbass.");
 			return;
 		}
-		
-		int newRank;
-		try {
-			newRank = Integer.parseInt(Objects.requireNonNull(e.getOption("rank")).getAsString());
-		} catch(NullPointerException exception) {
-			e.reply("You have to provide a rank to move the user to, stupid.").setEphemeral(true).queue();
+		if(newRank == -1) {
+			e.reply("You have to provide a rank to move the user to, stupid.");
 			return;
 		}
-		
 		if(newRank >= 0 && newRank <= 2) {
 			JSONParser parser = new JSONParser();
 			JSONObject data;
@@ -34,7 +25,7 @@ public class SetPermLevel {
 				data = (JSONObject) parser.parse(reader);
 				reader.close();
 			} catch(Exception exception) {
-				e.reply("Invalid user provided!").setEphemeral(true).queue();
+				e.reply("Invalid user provided!");
 				return;
 			}
 			data.replace("perms", newRank);
@@ -42,7 +33,8 @@ public class SetPermLevel {
 				writer.write(data.toJSONString());
 				writer.close();
 			} catch(Exception exception) {
-				e.reply("How does an error appear here???").setEphemeral(true).queue();
+				e.reply("Something went horribly wrong!");
+				return;
 			}
 			String user;
 			try {
@@ -50,10 +42,10 @@ public class SetPermLevel {
 			} catch(Exception exception) {
 				user = "Someone";
 			}
-			e.reply("Set the permission level for " + user + " to `" + newRank + "`").queue();
+			e.reply("Set the permission level for " + user + " to `" + newRank + "`");
 			
 		} else {
-			e.reply("Invalid level provided!\n\nValid levels:\n`0`: No Permissions\n`1`: Mod Permissions\n`2`: Admin Permissions").setEphemeral(true).queue();
+			e.reply("Invalid level provided!\n\nValid levels:\n`0`: No Permissions\n`1`: Mod Permissions\n`2`: Admin Permissions");
 		}
 	}
 }

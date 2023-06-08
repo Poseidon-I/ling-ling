@@ -1,17 +1,14 @@
 package economy;
 
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
+import eventListeners.GenericDiscordEvent;
 import org.json.simple.JSONObject;
 import processes.Numbers;
 
-import java.util.Objects;
-
 public class Buy {
 	private static JSONObject data;
-	private static SlashCommandInteractionEvent e;
 	private static String currencyEmoji;
 	private static String item;
+	private static GenericDiscordEvent e;
 	
 	public static void setEmoji(String currency) {
 		switch(currency) {
@@ -19,22 +16,86 @@ public class Buy {
 			case "medals" -> currencyEmoji = Emoji.MEDALS;
 		}
 	}
+
+	public static void setItem(String original) {
+		switch(original) {
+			case "quality", "violinquality", "q" -> item = "violinQuality";
+			case "skills", "s" -> item = "skills";
+			case "lesson", "l", "lessonquality" -> item = "lessonQuality";
+			case "string", "str", "stringquality" -> item = "stringQuality";
+			case "bow", "b", "bowquality" -> item = "bowQuality";
+			case "math" -> item = "math";
+
+			case "piccolo" -> item = "piccolo";
+			case "flute" -> item = "flue";
+			case "oboe" -> item = "oboe";
+			case "clarinet" -> item = "clarinet";
+			case "bassoon" -> item = "bassoon";
+			case "contrabassoon", "cb" -> item = "contraBassoon";
+
+			case "horn" -> item = "horn";
+			case "trumpet" -> item = "trumpet";
+			case "trombone" -> item = "trombone";
+			case "tuba" -> item = "tuba";
+			case "timpani" -> item = "timpani";
+			case "percussion" -> item = "percussion";
+
+			case "first", "violin1" -> item = "violin1";
+			case "second", "violin2" -> item = "violin2";
+			case "cello" -> item = "cello";
+			case "doublebass", "db" -> item = "doubleBass";
+			case "piano" -> item = "pinao";
+			case "harp" -> item = "harp";
+
+			case "soprano" -> item = "soprano";
+			case "alto" -> item = "alto";
+			case "tenor" -> item = "tenor";
+			case "bass" -> item = "bass";
+			case "soloist" -> item = "soloist";
+
+			case "hall" -> item = "hall";
+			case "conductor" -> item = "conductor";
+			case "tickets" -> item = "tickets";
+			case "advertising" -> item = "advertising";
+
+			case "students" -> item = "students";
+			case "lessoncharge", "pricing" -> item = "lessonCharge";
+			case "training" -> item = "training";
+			case "studio" -> item = "studio";
+			case "longerlessons", "longer" -> item = "longerLessons";
+
+			case "efficiency", "ep" -> item = "efficiency";
+			case "luck", "lm" -> item = "luck";
+			case "sophistication", "rob", "sr" -> item = "sophistication";
+			case "magicfindviolins", "magicfindv", "mfv" -> item = "magicFindViolins";
+			case "insurance" -> item = "insurance";
+			case "timecrunch", "tc" -> item = "timeCrunch";
+
+			case "moreincome", "income" -> item = "moreIncome";
+			case "morecommandincome", "commandincome", "cmdincome" -> item = "moreCommandIncome";
+			case "moremulti", "multi" -> item = "moreMulti";
+			case "morerob", "robbing" -> item = "moreRob";
+			case "magicfindmedals", "magicfindm", "mfm" -> item = "magicFindMedals";
+			case "shield" -> item = "shield";
+			case "duplicator" -> item = "duplicator";
+		}
+	}
 	
 	public static void processBooleanUpgrade(long cost, int add, String currency) {
 		setEmoji(currency);
 		long amount = (long) data.get(currency);
 		if((boolean) data.get(item)) {
-			e.reply("You already purchased `" + item + "`!").queue();
+			e.reply("You already purchased `" + item + "`!");
 		} else if(amount < cost) {
-			e.reply("You do not have enough " + currency + " to purchase `" + item + "`!\nYou need `" + Numbers.formatNumber(cost - amount) + "` more " + currency + ".").queue();
+			e.reply("You do not have enough " + currency + " to purchase `" + item + "`!\nYou need `" + Numbers.formatNumber(cost - amount) + "` more " + currency + ".");
 		} else {
 			data.replace(currency, amount - cost);
 			data.replace("income", (long) data.get("income") + add);
 			data.replace(item, true);
-			e.reply("Successfully purchased `" + item + "` for `" + Numbers.formatNumber(cost) + "`" + currencyEmoji + "\nYou have `" + Numbers.formatNumber(amount - cost) + "`" + currencyEmoji + " left.").queue();
+			e.reply("Successfully purchased `" + item + "` for `" + Numbers.formatNumber(cost) + "`" + currencyEmoji + "\nYou have `" + Numbers.formatNumber(amount - cost) + "`" + currencyEmoji + " left.");
 			if(item.equals("orchestra")) {
 				data.replace("storage", 1);
-				e.reply("The Bank of TwoSet has noticed you, and has given you space to store violins!  You have 20 million storage for free; this can increased by buying more space using medals.").queue();
+				e.sendMessage("The Bank of TwoSet has noticed you, and has given you space to store violins!  You have 20 million storage for free; this can increased by buying more space using medals.");
 			}
 			RNGesus.lootbox(e, data);
 			SaveData.saveData(e, data);
@@ -45,42 +106,40 @@ public class Buy {
 		setEmoji(currency);
 		long amount = (long) data.get(currency);
 		if((long) data.get(item) == maxAmount) {
-			e.reply("You already purchased the maximum amount of `" + item + "`!").queue();
+			e.reply("You already purchased the maximum amount of `" + item + "`!");
 		} else if(amount < cost) {
-			e.reply("You do not have enough " + currency + " to purchase `" + item + "`!\nYou need `" + Numbers.formatNumber(cost - amount) + "` more " + currency + ".").queue();
+			e.reply("You do not have enough " + currency + " to purchase `" + item + "`!\nYou need `" + Numbers.formatNumber(cost - amount) + "` more " + currency + ".");
 		} else {
 			data.replace(currency, amount - cost);
 			data.replace("income", (long) data.get("income") + add);
 			long itemCount = (long) data.get(item) + 1;
 			data.replace(item, itemCount);
-			if(maxAmount == 2147483647) {
-				e.reply("Successfully purchased `" + item + " #" + itemCount + "` for `" + Numbers.formatNumber(cost) + "`" + currencyEmoji + "\nYou have `" + Numbers.formatNumber(amount - cost) + "`" + currencyEmoji + " left.").queue();
-			} else {
-				if(amount == maxAmount) {
-					e.reply("**MAX LEVEL**\nSuccessfully purchased `" + item + " #" + itemCount + "/" + maxAmount + "` for `" + cost + "`" + currencyEmoji + "\nYou have `" + Numbers.formatNumber(amount - cost) + "`" + currencyEmoji + " left.").queue();
-				} else {
-					e.reply("Successfully purchased `" + item + " #" + itemCount + "/" + maxAmount + "` for `" + Numbers.formatNumber(cost) + "`" + currencyEmoji + "\nYou have `" + Numbers.formatNumber(amount - cost) + "`" + currencyEmoji + " left.").queue();
-				}
-			}
 			if(item.contains("magicFind")) {
 				data.replace("magicFind", (long) data.get("magicFind") + 1);
 			}
 			RNGesus.lootbox(e, data);
 			SaveData.saveData(e, data);
+			if(maxAmount == 2147483647) {
+				e.reply("Successfully purchased `" + item + " #" + itemCount + "` for `" + Numbers.formatNumber(cost) + "`" + currencyEmoji + "\nYou have `" + Numbers.formatNumber(amount - cost) + "`" + currencyEmoji + " left.");
+			} else {
+				if(amount == maxAmount) {
+					e.reply("**MAX LEVEL**\nSuccessfully purchased `" + item + " #" + itemCount + "/" + maxAmount + "` for `" + cost + "`" + currencyEmoji + "\nYou have `" + Numbers.formatNumber(amount - cost) + "`" + currencyEmoji + " left.");
+				} else {
+					e.reply("Successfully purchased `" + item + " #" + itemCount + "/" + maxAmount + "` for `" + Numbers.formatNumber(cost) + "`" + currencyEmoji + "\nYou have `" + Numbers.formatNumber(amount - cost) + "`" + currencyEmoji + " left.");
+				}
+			}
 		}
 	}
 	
-	public static void buy(@NotNull SlashCommandInteractionEvent event) {
+	public static void buy(GenericDiscordEvent event, String item1) {
 		e = event;
+		setItem(item1);
 		data = LoadData.loadData(e);
 		boolean boughtItem = false;
 		boolean hasOrchestra = (boolean) data.get("orchestra");
 		boolean hasCertificate = (boolean) data.get("certificate");
-		try {
-			item = Objects.requireNonNull(e.getOption("item")).getAsString();
-		} catch(Exception exception) {
-			e.reply("You have to specify an upgrade to buy, can't give you nothing.").setEphemeral(true).queue();
-			return;
+		if(item.equals("")) {
+			e.reply("You have to specify an upgrade to buy, can't give you nothing.");
 		}
 		if(hasCertificate) {
 			boughtItem = true;
@@ -141,7 +200,7 @@ public class Buy {
 				case "storage" -> processUpgrade(3 * (long) data.get("storage"), 0, 2147483647, "medals");
 				case "certificate" -> {
 					if((long) data.get("income") < 40000) {
-						e.reply("You do not have neough hourly income to become a teacher!").queue();
+						e.reply("You do not have neough hourly income to become a teacher!");
 					} else {
 						processBooleanUpgrade(200000000, 5000, "violins");
 					}
@@ -186,7 +245,7 @@ public class Buy {
 						processUpgrade((long) Math.pow(2, (long) data.get("magicFindMedals")), 0, 2147483647, "medals");
 				case "orchestra" -> {
 					if((long) data.get("income") < 7500) {
-						e.reply("You do not have enough hourly income to hire an orchestra!").queue();
+						e.reply("You do not have enough hourly income to hire an orchestra!");
 					} else {
 						processBooleanUpgrade(25000000, 3100, "violins");
 					}
@@ -198,8 +257,7 @@ public class Buy {
 						processUpgrade(Numbers.itemCost((long) data.get("hall"), 4, 100000), 300, 2147483647, "violins");
 					}
 				}
-				default ->
-						e.reply("You can't buy something that's not for sale, that would be quite a waste of time and violins.").setEphemeral(true).queue();
+				default -> e.reply("You can't buy something that's not for sale, that would be quite a waste of time and violins.");
 			}
 		}
 	}

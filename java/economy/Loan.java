@@ -1,25 +1,19 @@
 package economy;
 
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
+import eventListeners.GenericDiscordEvent;
 import org.json.simple.JSONObject;
 import processes.Numbers;
 
-import java.util.Objects;
-
 public class Loan {
-	public static void loan(@NotNull SlashCommandInteractionEvent e) {
+	public static void loan(GenericDiscordEvent e, String amount) {
 		JSONObject data = LoadData.loadData(e);
 		long balance = (long) data.get("loan");
 		if(balance > 0) {
-			e.reply("You still have an outstanding balance of `" + Numbers.formatNumber(balance) + "`" + Emoji.VIOLINS + "!").queue();
+			e.reply("You still have an outstanding balance of `" + Numbers.formatNumber(balance) + "`" + Emoji.VIOLINS + "!");
 		} else {
 			long loan;
-			String amount;
-			try {
-				amount = Objects.requireNonNull(e.getOption("amount")).getAsString();
-			} catch(Exception exception) {
-				e.reply("You have to either input `max` or an integer.").setEphemeral(true).queue();
+			if(amount.equals("")) {
+				e.reply("You have to either input `max` or an integer.");
 				return;
 			}
 			long maxLoan = 200 * (long) data.get("income");
@@ -29,7 +23,7 @@ public class Loan {
 				try {
 					loan = Long.parseLong(amount);
 				} catch(Exception exception) {
-					e.reply("You have to either input `max` or an integer.").setEphemeral(true).queue();
+					e.reply("You have to either input `max` or an integer.");
 					return;
 				}
 				if(loan > maxLoan) {
@@ -38,7 +32,7 @@ public class Loan {
 			}
 			data.replace("loan", loan);
 			data.replace("violins", (long) data.get("violins") + loan);
-			e.reply("You have borrowed `" + Numbers.formatNumber(loan) + "`" + Emoji.VIOLINS + " from the bank.  Most actions will result in a portion being used to pay back the loan.  You can also manually contribute by using `/payloan`.").queue();
+			e.reply("You have borrowed `" + Numbers.formatNumber(loan) + "`" + Emoji.VIOLINS + " from the bank.  Most actions will result in a portion being used to pay back the loan.  You can also manually contribute by using `/payloan`.");
 			SaveData.saveData(e, data);
 		}
 	}

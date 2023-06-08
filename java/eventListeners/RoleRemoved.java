@@ -5,7 +5,9 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.*;
+import java.io.FileReader;
+import java.io.FileWriter;
+// BEETHOVEN-ONLY CLASS
 
 public class RoleRemoved extends ListenerAdapter {
 	public void onGuildMemberRoleRemove(GuildMemberRoleRemoveEvent e) {

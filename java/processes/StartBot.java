@@ -1,13 +1,11 @@
 package processes;
 
-import eventListeners.Buttons;
-import eventListeners.Disconnect;
-import eventListeners.NewReceiver;
+import eventListeners.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
@@ -25,21 +23,47 @@ public class StartBot {
 		} catch(Exception exception1) {
 			//nothing here lol
 		}
+		// Start BeethovenBot
 		JDA jda;
+		try (BufferedReader rdr = new BufferedReader(new FileReader("Ling Ling Bot Data\\beethoventoken.txt"))) {
+			jda = JDABuilder.create(rdr.readLine(), GatewayIntent.GUILD_INVITES, GatewayIntent.GUILD_EMOJIS_AND_STICKERS, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGE_REACTIONS)
+					.disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.CLIENT_STATUS, CacheFlag.SCHEDULED_EVENTS)
+					.setMemberCachePolicy(MemberCachePolicy.ALL)
+					.addEventListeners(new Autoroles())
+					.addEventListeners(new Autounrole())
+					.addEventListeners(new Disconnect())
+					.addEventListeners(new Join())
+					.addEventListeners(new Leave())
+					.addEventListeners(new Receiver())
+					.addEventListeners(new RoleAdded())
+					.addEventListeners(new RoleRemoved())
+					.addEventListeners(new ILoveJava())
+					.addEventListeners(new NoInviteLinks())
+					.build();
+			jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
+			jda.getPresence().setActivity(Activity.listening("music.  Or at least trying to."));
+		} catch(Exception exception) {
+			exception.printStackTrace();
+		}
+
+		// Start LingLing Bot
 		try(BufferedReader rdr = new BufferedReader(new FileReader("Ling Ling Bot Data\\token.txt"))) {
-			jda = JDABuilder.createDefault(rdr.readLine(), GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_EMOJIS_AND_STICKERS)
-					.disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOJI, CacheFlag.CLIENT_STATUS, CacheFlag.ONLINE_STATUS)
+			Message.suppressContentIntentWarning();
+			jda = JDABuilder.createDefault(rdr.readLine(), GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_EMOJIS_AND_STICKERS)
+					.disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOJI, CacheFlag.CLIENT_STATUS, CacheFlag.ONLINE_STATUS, CacheFlag.SCHEDULED_EVENTS)
 					.setMemberCachePolicy(MemberCachePolicy.ALL)
 					.addEventListeners(new Disconnect())
 					.addEventListeners(new NewReceiver())
-					.addEventListeners(new Buttons())
+					.addEventListeners(new OldReceiver())
 					.useSharding(0, 1)
 					.build();
 			jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
 			jda.getPresence().setActivity(Activity.playing("violin forty hours a day."));
+
+			/*
+			// ONE TIEM UPSERT OF SLASH COMMANDS
 			
 			OptionData data;
-			/*// ONE TIEM UPSERT OF SLASH COMMANDS
 			
 			// help page 1
 			jda.upsertCommand(
@@ -248,7 +272,7 @@ public class StartBot {
 					Commands.slash("lb", "View a leaderboard!")
 							.addOptions(data)
 			).queue();
-			/*jda.upsertCommand(
+			jda.upsertCommand(
 					Commands.slash("dep", "Deposit Violins into your bank account.")
 							.addOption(OptionType.STRING, "amount", "How much you want to deposit.")
 			).queue();

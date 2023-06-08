@@ -1,14 +1,13 @@
 package economy;
 
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
+import eventListeners.GenericDiscordEvent;
 import org.json.simple.JSONObject;
 import processes.Numbers;
 
 import java.util.Random;
 
 public class Teach {
-	public static void teach(@NotNull SlashCommandInteractionEvent e) {
+	public static void teach(GenericDiscordEvent e) {
 		JSONObject data = LoadData.loadData(e);
 		if((boolean) data.get("certificate")) {
 			long time = System.currentTimeMillis();
@@ -19,7 +18,7 @@ public class Teach {
 				milliseconds -= minutes * 60000;
 				long seconds = milliseconds / 1000;
 				milliseconds -= seconds * 1000;
-				e.reply("Chill, you can't teach two students at once!  Wait " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
+				e.reply("Chill, you can't teach two students at once!  Wait " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!");
 			} else {
 				long base = random.nextInt(10001) + 35000;
 				base *= Math.pow(1.15, (long) data.get("students"));
@@ -27,10 +26,10 @@ public class Teach {
 				base *= Math.pow(1.05, (long) data.get("training"));
 				if((boolean) data.get("longerLessons")) {
 					base *= 2;
-					e.reply("You taught a student for an hour and earned `" + Numbers.formatNumber(base) + "`" + Emoji.VIOLINS).queue();
+					e.reply("You taught a student for an hour and earned `" + Numbers.formatNumber(base) + "`" + Emoji.VIOLINS);
 					data.replace("hoursTaught", (double) data.get("hoursTaught") + 1);
 				} else {
-					e.reply("You taught a student for a half-hour and earned `" + Numbers.formatNumber(base) + "`" + Emoji.VIOLINS).queue();
+					e.reply("You taught a student for a half-hour and earned `" + Numbers.formatNumber(base) + "`" + Emoji.VIOLINS);
 					data.replace("hoursTaught", (double) data.get("hoursTaught") + 0.5);
 				}
 				data.replace("teachCD", time + 3540000);
@@ -40,7 +39,7 @@ public class Teach {
 				SaveData.saveData(e, data);
 			}
 		} else {
-			e.reply("You must be certified to teach before you can use this command!").queue();
+			e.reply("You must be certified to teach before you can use this command!");
 		}
 	}
 }

@@ -1,15 +1,14 @@
 package economy;
 
+import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
 
 public class Cooldowns {
 	public static String reformat(long string) {
-		String newString = string + "";
+		String newString = String.valueOf(string);
 		if(String.valueOf(string).length() == 1) {
 			newString = "0" + string;
 		}
@@ -17,7 +16,7 @@ public class Cooldowns {
 	}
 	
 	public static String reformatMilliseconds(long string) {
-		String newString = string + "";
+		String newString = String.valueOf(string);
 		if(String.valueOf(string).length() == 1) {
 			newString = "00" + string;
 		} else if(String.valueOf(string).length() == 2) {
@@ -26,7 +25,7 @@ public class Cooldowns {
 		return newString;
 	}
 	
-	public static void cooldowns(@NotNull SlashCommandInteractionEvent e) {
+	public static void cooldowns(GenericDiscordEvent e) {
 		try {
 			JSONObject data = LoadData.loadData(e);
 			long time = System.currentTimeMillis();
@@ -241,7 +240,8 @@ public class Cooldowns {
 			
 			builder.setTitle("__**Command Cooldowns**__");
 			builder2.setTitle("__**Time Before Hourly Income Penalty**__");
-			e.replyEmbeds(builder.build(), builder2.build()).queue();
+			e.replyEmbeds(builder.build());
+			e.sendMessageEmbeds(builder2.build());
 		} catch(Exception exception) {
 			exception.printStackTrace();
 		}

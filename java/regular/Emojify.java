@@ -1,19 +1,18 @@
 package regular;
 
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
+import eventListeners.GenericDiscordEvent;
+import processes.Numbers;
 
 public class Emojify {
-	public static void emojify(@NotNull SlashCommandInteractionEvent e) {
-		String message;
-		try {
-			message = Objects.requireNonNull(e.getOption("message")).getAsString();
-		} catch(Exception exception) {
-			e.reply("how are we going to emojify nothing").setEphemeral(true).queue();
+	public static void emojify(GenericDiscordEvent e, String message) {
+		if(message.equals("")) {
+			e.reply("how are we going to emojify nothing");
 			return;
 		}
+		if(Numbers.containsBadLanguage(message)) {
+			message = "NICE TRY";
+		}
+		message = message.toLowerCase();
 		StringBuilder send = new StringBuilder();
 		for(int i = 0; i < message.length(); i++) {
 			char current = message.charAt(i);
@@ -46,16 +45,16 @@ public class Emojify {
 			} else if(current >= 65 && current <= 90 || current >= 97 && current <= 122) {
 				send.append(":regional_indicator_").append(current).append(": ");
 			} else {
-				e.reply("You can only use spaces, numbers, letters, ?, and !").setEphemeral(true).queue();
+				e.reply("You can only use spaces, numbers, letters, ?, and !");
 				return;
 			}
 		}
-		send.append("\n`").append(e.getUser().getName()).append("#").append(e.getUser().getDiscriminator()).append("`");
+		send.append("\n`").append(e.getAuthor().getName()).append("#").append(e.getAuthor().getDiscriminator()).append("`");
 		try {
-			e.getChannel().deleteMessageById(e.getChannel().getLatestMessageId()).queue();
+			e.reply("Done!");
 			e.getChannel().sendMessage(send.toString()).queue();
 		} catch(Exception exception) {
-			e.reply("Your message ended up being too long, try shortening it.").setEphemeral(true).queue();
+			e.reply("Your message ended up being too long, try shortening it.");
 		}
 		
 	}

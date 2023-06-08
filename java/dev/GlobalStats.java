@@ -1,8 +1,7 @@
 package dev;
 
+import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import processes.Numbers;
@@ -12,7 +11,7 @@ import java.io.File;
 import java.io.FileReader;
 
 public class GlobalStats {
-	public static void gobalStats(@NotNull SlashCommandInteractionEvent e) {
+	public static void gobalStats(GenericDiscordEvent e) {
 		long winnings = 0;
 		long millions = 0;
 		long robEarned = 0;
@@ -71,6 +70,6 @@ public class GlobalStats {
 		builder.addField("**__Lootboxes & Market__**", "**Gifts Given**: `" + Numbers.formatNumber(giftsGiven) + "`\n**Number of Votes**: `" + Numbers.formatNumber(votes) + "`\n**Items Purchased on Market**: `" + Numbers.formatNumber(purchases) + "`\n**Money Earned from Market**: `" + Numbers.formatNumber(marketEarnings) + "`", true);
 		builder.addBlankField(true);
 		builder.addField("**__Miscellaneous__**", "**Highest Daily Streak**: `" + Numbers.formatNumber(maxStreak) + "`\n**Luthiers Unscrambled**: `" + Numbers.formatNumber(luthiers) + "`\n**Violins Earned**: `" + Numbers.formatNumber(earnings) + "`\n**Interest Earned**: `" + Numbers.formatNumber(interest) + "`\n**Penalties Paid**: `" + Numbers.formatNumber(penalties) + "`", true);
-		e.replyEmbeds(builder.build()).queue();
+		e.replyEmbeds(builder.build());
 	}
 }

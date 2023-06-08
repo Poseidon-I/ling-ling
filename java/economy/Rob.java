@@ -1,7 +1,6 @@
 package economy;
 
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
+import eventListeners.GenericDiscordEvent;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import processes.Numbers;
@@ -12,7 +11,7 @@ import java.util.Objects;
 import java.util.Random;
 
 public class Rob {
-	public static void rob(@NotNull SlashCommandInteractionEvent e) {
+	public static void rob(GenericDiscordEvent e, String user) {
 		JSONObject data = LoadData.loadData(e);
 		long time = System.currentTimeMillis();
 		Random random = new Random();
@@ -24,21 +23,18 @@ public class Rob {
 			milliseconds -= minutes * 60000;
 			long seconds = milliseconds / 1000;
 			milliseconds -= seconds * 1000;
-			e.reply("Hey, Brett and Eddy are still looking for you after your last hit!  Wait " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
+			e.reply("Hey, Brett and Eddy are still looking for you after your last hit!  Wait " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!");
 		} else {
-			String user;
-			try {
-				user = Objects.requireNonNull(e.getOption("target")).getAsString();
-			} catch(Exception exception) {
-				e.reply("You cannot rob nobody.  That doesn't make sense.").setEphemeral(true).queue();
+			if(user.equals("")) {
+				e.reply("You cannot rob nobody.  That doesn't make sense.");
 				return;
 			}
-			if(e.getUser().getId().equals(user)) {
-				e.reply("Why would you rob yourself, are you actually that dumb?").setEphemeral(true).queue();
+			if(e.getAuthor().getId().equals(user)) {
+				e.reply("Why would you rob yourself, are you actually that dumb?");
 				return;
 			}
-			if(e.getUser().getId().equals("733409243222507670")) {
-				e.reply("How DARE you attempt to rob me.  I'm fining you 1% of your balance.").queue();
+			if(e.getAuthor().getId().equals("733409243222507670")) {
+				e.reply("How DARE you attempt to rob me.  I'm fining you 1% of your balance.");
 				data.replace("violins", (long) data.get("violins") * 0.99);
 				SaveData.saveData(e, data);
 				return;
@@ -49,7 +45,7 @@ public class Rob {
 				targetdata = (JSONObject) parser.parse(reader);
 				reader.close();
 			} catch(Exception exception) {
-				e.reply("You did not provide a valid User ID.  Doesn't make sense to rob someone nonexistent, does it?").queue();
+				e.reply("You did not provide a valid User ID.  Doesn't make sense to rob someone nonexistent, does it?");
 				return;
 			}
 			long violins = (long) data.get("violins");
@@ -80,7 +76,7 @@ public class Rob {
 				try {
 					if(DM) {
 						long finalBaseRob = baseRob;
-						Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getUser().getId() + "> (" + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + ") tried to rob you but failed!  They paid you `" + Numbers.formatNumber(finalBaseRob) + "`" + Emoji.VIOLINS + " in fines.").queue());
+						Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") tried to rob you but failed!  They paid you `" + Numbers.formatNumber(finalBaseRob) + "`" + Emoji.VIOLINS + " in fines."));
 					}
 				} catch(Exception exception) {
 					//nothing here lol
@@ -101,7 +97,7 @@ public class Rob {
 						try {
 							if(DM) {
 								long finalBaseRob1 = baseRob;
-								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getUser().getId() + "> (" + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + ") just robbed `" + Numbers.formatNumber((long) (finalBaseRob1 * 0.25)) + "`" + Emoji.VIOLINS + " from you!  Your Ling Ling insurance protected `" + Numbers.formatNumber((long) (finalBaseRob1 * 0.5)) + "`" + Emoji.VIOLINS + " and your Steal Shield protected `" + Numbers.formatNumber((long) (finalBaseRob1 * 0.25)) + "`" + Emoji.VIOLINS).queue());
+								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") just robbed `" + Numbers.formatNumber((long) (finalBaseRob1 * 0.25)) + "`" + Emoji.VIOLINS + " from you!  Your Ling Ling insurance protected `" + Numbers.formatNumber((long) (finalBaseRob1 * 0.5)) + "`" + Emoji.VIOLINS + " and your Steal Shield protected `" + Numbers.formatNumber((long) (finalBaseRob1 * 0.25)) + "`" + Emoji.VIOLINS));
 							}
 						} catch(Exception exception) {
 							//nothing here lol
@@ -121,7 +117,7 @@ public class Rob {
 						try {
 							if(DM) {
 								long finalBaseRob2 = baseRob;
-								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getUser().getId() + "> (" + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + ") just robbed `" + Numbers.formatNumber((long) (finalBaseRob2 * 0.5)) + "`" + Emoji.VIOLINS + " from you!  Your Ling Ling insurance protected `" + Numbers.formatNumber((long) (finalBaseRob2 * 0.5)) + "`" + Emoji.VIOLINS).queue());
+								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") just robbed `" + Numbers.formatNumber((long) (finalBaseRob2 * 0.5)) + "`" + Emoji.VIOLINS + " from you!  Your Ling Ling insurance protected `" + Numbers.formatNumber((long) (finalBaseRob2 * 0.5)) + "`" + Emoji.VIOLINS));
 							}
 						} catch(Exception exception) {
 							//nothing here lol
@@ -142,7 +138,7 @@ public class Rob {
 						try {
 							if(DM) {
 								long finalBaseRob3 = baseRob;
-								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getUser().getId() + "> (" + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + ") just robbed `" + Numbers.formatNumber((long) (finalBaseRob3 * 0.5)) + "`" + Emoji.VIOLINS + " from you!  Your Steal Shield protected `" + Numbers.formatNumber((long) (finalBaseRob3 * 0.5)) + "`" + Emoji.VIOLINS).queue());
+								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") just robbed `" + Numbers.formatNumber((long) (finalBaseRob3 * 0.5)) + "`" + Emoji.VIOLINS + " from you!  Your Steal Shield protected `" + Numbers.formatNumber((long) (finalBaseRob3 * 0.5)) + "`" + Emoji.VIOLINS));
 							}
 						} catch(Exception exception) {
 							//nothing here lol
@@ -161,7 +157,7 @@ public class Rob {
 						try {
 							if(DM) {
 								long finalBaseRob4 = baseRob;
-								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getUser().getId() + "> (" + e.getUser().getName() + "#" + e.getUser().getDiscriminator() + ") just robbed `" + Numbers.formatNumber(finalBaseRob4) + "`" + Emoji.VIOLINS + " from you!").queue());
+								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") just robbed `" + Numbers.formatNumber(finalBaseRob4) + "`" + Emoji.VIOLINS + " from you!"));
 							}
 						} catch(Exception exception) {
 							//nothing here lol
@@ -193,7 +189,7 @@ public class Rob {
 			data.replace("robCD", time + 57540000);
 			data.replace("robbed", (long) data.get("robbed") + baseRob);
 			SaveData.saveData(e, data);
-			e.reply(message).queue();
+			e.reply(message);
 		}
 	}
 }

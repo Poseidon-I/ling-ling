@@ -2,9 +2,8 @@ package processes;
 
 import economy.Emoji;
 import economy.RNGesus;
+import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -14,7 +13,7 @@ import java.util.Objects;
 import java.util.Random;
 
 public class Luthier {
-	public static void luthier(@NotNull SlashCommandInteractionEvent e, JSONObject data) {
+	public static void luthier(GenericDiscordEvent e, JSONObject data, String answer) {
 		try {
 			Random random = new Random();
 			if(!(boolean) data.get("hasWord")) {
@@ -63,50 +62,54 @@ public class Luthier {
 						//nothing here lol
 					}
 				}
-			} else if((boolean) data.get("hasWord") && !e.getUser().isBot() && e.getChannel().getId().equals(data.get("channel").toString()) && e.getName().equals("answer")) {
+			} else if((boolean) data.get("hasWord") && !e.getAuthor().isBot() && e.getChannel().getId().equals(data.get("channel").toString()) && !answer.equals("")) {
+				if(answer.equals("none")) {
+					e.reply("You have to give an answer, stupid.");
+					return;
+				}
 				String target = data.get("word").toString();
 				long gain = (long) data.get("amount");
 				JSONObject userData;
-				try {
-					if(Objects.requireNonNull(e.getOption("guess")).getAsString().equalsIgnoreCase(target)) {
-						JSONParser parser = new JSONParser();
-						try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + e.getUser().getId() + ".json")) {
-							userData = (JSONObject) parser.parse(reader);
-							reader.close();
-						} catch(Exception exception) {
-							e.reply("You don't even have a profile, where would you store your violins???  Run `/start` **in a bot command channel** to get one!").queue();
-							return;
-						}
-						String name = e.getUser().getName();
-						if(name.contains("@everyone") || name.contains("@here") || name.contains("<@&") || name.contains("nigg")) {
-							name = "A user who thought they were trying to be funny";
-						}
-						userData.replace("violins", (long) userData.get("violins") + gain);
-						userData.replace("earnings", (long) userData.get("earnings") + gain);
-						userData.replace("luthiers", (long) userData.get("luthiers") + 1);
-						e.reply("**" + name + "** unscrambled `" + target + "` and gained " + Numbers.formatNumber(gain) + Emoji.VIOLINS).queue();
-						RNGesus.lootbox(e, userData);
-						try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Economy Data\\" + e.getUser().getId() + ".json")) {
-							writer.write(userData.toJSONString());
-							writer.close();
-						} catch(Exception exception) {
-							exception.printStackTrace();
-							//nothing here lol
-						}
-						data.replace("hasWord", false);
-						data.replace("word", "blank");
-						try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Settings\\Luthier\\" + Objects.requireNonNull(e.getGuild()).getId() + ".json")) {
-							writer.write(data.toJSONString());
-							writer.close();
-						} catch(Exception exception) {
-							exception.printStackTrace();
-							//nothing here lol
-						}
-					} else {
-						e.reply("Wrong answer!").setEphemeral(true).queue();
+				if(answer.equalsIgnoreCase(target)) {
+					JSONParser parser = new JSONParser();
+					try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".json")) {
+						userData = (JSONObject) parser.parse(reader);
+						reader.close();
+					} catch(Exception exception) {
+						e.reply("You don't even have a profile, where would you store your violins???  Run `/start` **in a bot command channel** to get one!");
+						return;
 					}
-				} catch(Exception exception) {
-					e.reply("You didn't even give an answer!").setEphemeral(true).queue();
+					String name = e.getAuthor().getName();
+					if(name.contains("@everyone") || name.contains("@here") || name.contains("<@&") || name.contains("nigg")) {
+						name = "A user who thought they were trying to be funny";
+					}
+					userData.replace("violins", (long) userData.get("violins") + gain);
+					userData.replace("earnings", (long) userData.get("earnings") + gain);
+					userData.replace("luthiers", (long) userData.get("luthiers") + 1);
+					e.reply("**" + name + "** unscrambled `" + target + "` and gained " + Numbers.formatNumber(gain) + Emoji.VIOLINS);
+					RNGesus.lootbox(e, userData);
+					try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".json")) {
+						writer.write(userData.toJSONString());
+						writer.close();
+					} catch(Exception exception) {
+						exception.printStackTrace();
+						//nothing here lol
+					}
+					data.replace("hasWord", false);
+					data.replace("word", "blank");
+					try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Settings\\Luthier\\" + Objects.requireNonNull(e.getGuild()).getId() + ".json")) {
+						writer.write(data.toJSONString());
+						writer.close();
+					} catch(Exception exception) {
+						exception.printStackTrace();
+						//nothing here lol
+					}
+				} else {
+					try {
+						e.getMessage().addReaction(net.dv8tion.jda.api.entities.emoji.Emoji.fromUnicode("U+274C")).queue();
+					} catch(Exception exception) {
+						e.reply("Wrong answer!");
+					}
 				}
 			}
 		} catch(Exception exception) {

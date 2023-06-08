@@ -1,9 +1,8 @@
 package economy;
 
+import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import processes.Numbers;
@@ -13,11 +12,11 @@ import java.io.File;
 import java.io.FileReader;
 
 public class Leaderboard {
-    public static void leaderboard(String emoji, String what, @NotNull SlashCommandInteractionEvent e, String index, long userNum, String color) {
+    public static void leaderboard(GenericDiscordEvent e, String emoji, String what, String index, long userNum, String color) {
         File directory = new File("Ling Ling Bot Data\\Economy Data");
         File[] files = directory.listFiles();
         long place = 1;
-        String[] entry = {e.getUser().getAsMention() + ": " + userNum + " " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n"};
+        String[] entry = {e.getAuthor().getAsMention() + ": " + userNum + " " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n", "<@0>: 0 " + emoji + "\n"};
         assert files != null;
         for (File file : files) {
             JSONParser parser = new JSONParser();
@@ -43,7 +42,7 @@ public class Leaderboard {
                 continue;
             }
             for (int i = 0; i < 10; i++) {
-                if (num > Long.parseLong(entry[i].split(" ")[1]) && !user.equals(e.getUser().getId())) {
+                if (num > Long.parseLong(entry[i].split(" ")[1]) && !user.equals(e.getAuthor().getId())) {
                     System.arraycopy(entry, i, entry, i + 1, 9 - i);
                     entry[i] = "<@" + user + ">: " + num + " " + emoji + "\n";
                     if (num > userNum) {
@@ -62,20 +61,20 @@ public class Leaderboard {
                 String id = entry[i].split(" ")[0];
                 User user = e.getJDA().getUserById(id.substring(2, id.length() - 2));
                 assert user != null;
-                board.append("**").append(i + 1).append(". ").append(user.getName()).append("**#").append(user.getDiscriminator()).append(" `").append(user.getId()).append("`: `").append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[1]))).append("`").append(emoji).append("\n");
+                board.append("**").append(i + 1).append("\\. ").append(user.getName()).append("**#").append(user.getDiscriminator()).append(" `").append(user.getId()).append("`: `").append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[1]))).append("`").append(emoji).append("\n");
             } catch (Exception exception) {
                 String[] temp = entry[i].split(" ");
                 board.append("**").append(temp[0]).append(" `").append(Numbers.formatNumber(Long.parseLong(temp[1]))).append("`").append(temp[2]);
             }
         }
         if (place >= 11) {
-            board.append("\n**").append(place).append(". You**: `").append(Numbers.formatNumber(userNum)).append("`").append(emoji);
+            board.append("\n**").append(place).append("\\. You**: `").append(Numbers.formatNumber(userNum)).append("`").append(emoji);
         }
         EmbedBuilder builder = new EmbedBuilder()
                 .setColor(Color.decode(color))
                 .setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
                 .setTitle("__**Global Leaderboard**__")
                 .addField("**" + what + " in the World**", board.toString(), false);
-        e.replyEmbeds(builder.build()).queue();
+        e.replyEmbeds(builder.build());
     }
 }

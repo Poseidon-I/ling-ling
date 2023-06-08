@@ -1,7 +1,6 @@
 package dev;
 
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
+import eventListeners.GenericDiscordEvent;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -10,7 +9,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 
 public class MoreDailyTime {
-	public static void moreDailyTime(@NotNull SlashCommandInteractionEvent e) {
+	public static void moreDailyTime(GenericDiscordEvent e) {
 		File directory = new File("Ling Ling Bot Data\\Economy Data");
 		File[] files = directory.listFiles();
 		assert files != null;
@@ -29,6 +28,6 @@ public class MoreDailyTime {
 				//nothing here lol
 			}
 		}
-		e.reply("Gave everyone +1 Day to run `!daily`").queue();
+		e.reply("Gave everyone +1 Day to run `!daily`");
 	}
 }

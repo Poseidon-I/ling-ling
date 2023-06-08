@@ -1,18 +1,17 @@
 package economy;
 
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
+import eventListeners.GenericDiscordEvent;
 import org.json.simple.JSONObject;
 
 import java.io.File;
 import java.io.FileWriter;
 
 public class Start {
-	public static void start(@NotNull SlashCommandInteractionEvent e, String id, boolean ban) {
+	public static void start(GenericDiscordEvent e, String id, boolean ban) {
 		try {
 			File file = new File("Ling Ling Bot Data\\Economy Data\\" + id + ".json");
 			if(file.exists()) {
-				e.reply("You already have a save, don't try to outsmart me").queue();
+				e.reply("You already have a save, don't try to outsmart me");
 				return;
 			}
 			JSONObject data = new JSONObject();
@@ -196,10 +195,10 @@ public class Start {
 				writer.write(data.toJSONString());
 				writer.close();
 				if(!ban) {
-					e.reply("Your profile has been created!  Run `/help 3` for a list of economy commands!\nSupport server: https://discord.gg/gNfPwa8\nBeginner's Guide: <https://docs.google.com/document/d/1Oo8m8XuGsIOyMzJhllUN9SpOJI8hSUeQt5RbyPY9qMI/edit?usp=sharing>").queue();
+					e.reply("Your profile has been created!  Run `/help 3` for a list of economy commands!\nSupport server: https://discord.gg/gNfPwa8\nBeginner's Guide: <https://docs.google.com/document/d/1Oo8m8XuGsIOyMzJhllUN9SpOJI8hSUeQt5RbyPY9qMI/edit?usp=sharing>");
 				}
 			} catch(Exception exception) {
-				e.reply("Something went wrong creating the file.  Run `/support` for a link to the support server to get in contact with the developer.").queue();
+				e.reply("Something went wrong creating the file.  Run `/support` for a link to the support server to get in contact with the developer.");
 			}
 		} catch(Exception exception) {
 			exception.printStackTrace();

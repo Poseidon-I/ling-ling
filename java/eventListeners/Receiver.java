@@ -1,5 +1,7 @@
 package eventListeners;
 
+import leveling.Leveling;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -7,117 +9,82 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import processes.*;
 
-import java.io.*;
-import java.util.Arrays;
-import java.util.List;
+import java.io.FileReader;
 import java.util.Objects;
+import java.util.Random;
 
+// BEETHOVEN-ONLY CLASS
 public class Receiver extends ListenerAdapter {
 	public void onMessageReceived(@NotNull MessageReceivedEvent e) {
-		String[] message = e.getMessage().getContentRaw().toLowerCase().split(" ");
-		boolean isDev = e.getAuthor().getId().equals("619989388109152256") || e.getAuthor().getId().equals("488487157372157962") || e.getAuthor().getId().equals("706933826193981612");
-		
-		//LOAD SERVER MEMBERS ONLY ONCE
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader("Ling Ling Bot Data\\loadedservers.txt"));
-			String line = reader.readLine();
-			reader.close();
-			try {
-				List<String> loaded = Arrays.asList(line.split(" "));
-				if(!loaded.contains(e.getGuild().getId()) || e.getJDA().getSelfUser().getId().equals("772582345944334356")) {
-					e.getGuild().loadMembers();
-					line += " " + e.getGuild().getId();
-				}
-			} catch(Exception exception) {
-				e.getGuild().loadMembers();
-				line = e.getGuild().getId();
-			}
-			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("Ling Ling Bot Data\\loadedservers.txt")));
-			writer.print(line);
-			writer.close();
-		} catch(Exception exception1) {
-			//nothing here lol
+		GenericDiscordEvent e1 = new GenericDiscordEvent(e);
+		e.getGuild().loadMembers();
+		if(e.getChannel().getId().equals("863135059712409632") || e.getChannel().getId().equals("734697496688853012")) {
+			CheckGiveaways.checkGiveaways(e1);
 		}
-		
-		//HOURLY
-		long time = 0;
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader("Ling Ling Bot Data\\hourly.txt"));
-			time = Long.parseLong(reader.readLine());
-			reader.close();
-		} catch(Exception exception) {
-			//nothing here lol
+		if(e.getChannel().getId().equals("734697521758339163")) {
+			CheckCounting.checkCounting(e1);
 		}
-		if(System.currentTimeMillis() > time) {
-			new HourlyIncome();
-			
-			//RESET COOLDOWNS BOUND TO 12AM UTC
-			if(time % 86400000 == 0) {
-				new ResetDaily(e);
-			}
-			
-			//BANK SHIT
-			if(time % 259200000 == 0) {
-				new InterestPenalty();
-				Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage("Loan penalties applied; Interest awarded!").queue();
-			}
-			
-			time += 3600000;
-			Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage("Hourly Incomes Sent!").queue();
-			try {
-				PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("Ling Ling Bot Data\\hourly.txt")));
-				writer.print(time);
-				writer.close();
-			} catch(Exception exception) {
-				//nothing here lol
-			}
+		if(e.getChannel().getId().equals("836710100127318057")) {
+			CheckReply.checkReply(e1);
 		}
-		//LUTHIER
+		if(e.getChannel().getId().equals("734697496688853012") && e.getAuthor().getId().equals("235148962103951360")) {
+			TimeOut.timeOut(e1);
+		}
+		if(e.getChannel().getId().equals("798751619344367626") && e.getAuthor().getId().equals("235148962103951360") && Objects.requireNonNull(e.getMessage().getEmbeds().get(0).getTitle()).contains("Suggestion")) {
+			e.getChannel().sendMessage("<@&930189721685094491>").queue();
+		}
+		if(e.getChannel().getId().equals("759092196976099348") && e.getAuthor().isBot() && e.getMessage().getContentRaw().contains("POLL:")) {
+			e.getChannel().sendMessage("<@&747954053660540928> <@&750876814842527754>").queue();
+		}
+
 		if(!e.getAuthor().isBot()) {
-			// DEV COMMANDS
-			new DevCommands(e);
-			
-			JSONParser parser = new JSONParser();
-			try(FileReader reader = new FileReader("Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".json")) {
-				new Luthier(e, (JSONObject) parser.parse(reader));
-				reader.close();
-			} catch(Exception exception) {
-				//nothing here lol
+			// Beethoven Commands
+			Autoresponse.autoresponse(e1);
+				if(!Objects.requireNonNull(e.getMember()).getRoles().contains(e.getGuild().getRoleById("736287976224587838"))) {
+				WordAutomod.wordAutomod(e1);
 			}
-			
-			//AUTORESPONDER
-			if(isDev) {
-				String string = e.getMessage().getContentRaw();
-				if(string.equalsIgnoreCase("bad bot")) {
-					e.getChannel().sendMessage("sowwy strad").queue();
-				} else if(string.equalsIgnoreCase("good bot")) {
-					e.getChannel().sendMessage("senkyoo strad").queue();
-				} else if(string.equalsIgnoreCase("right bot?")) {
-					e.getChannel().sendMessage("yes strad").queue();
+			if(e.getMessage().getContentRaw().toLowerCase().split(" ")[0].equals("beethoven")) {
+				Commands.commands(e1);
+			}
+			double multipler = 0.0;
+			switch(e.getChannel().getId()) {
+				case "734697505543159879", "845122401352417350", "845397074156847124", "1086924606352404550", "1101190200438300756" ->
+						multipler = 1.0;
+				case "834897888340869151", "748059191440179204", "734697521758339163", "836710100127318057" ->
+						multipler = 0.5;
+			}
+			if(multipler != 0.0) {
+				Leveling.leveling(e1, multipler);
+			}
+
+			if(e1.getChannel().getId().equals("763099851550097408")) {
+				JSONParser parser = new JSONParser();
+				try(FileReader reader = new FileReader("Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".json")) {
+					Luthier.luthier(e1, (JSONObject) parser.parse(reader), e1.getMessage().getContentRaw());
+					reader.close();
+				} catch(Exception exception) {
+					exception.printStackTrace();
 				}
 			}
-			
-			//ALL COMMANDS
-			char prefix = Prefix.GetPrefix(e);
-			if(isDev) {
-				prefix = '!';
+
+			// Ling Ling Commands
+			String[] message = e.getMessage().getContentRaw().toLowerCase().split(" ");
+			if(message[0].charAt(0) == '!') {
+				message[0] = message[0].substring(1);
+				String[] realMessage = new String[message.length + 1];
+				realMessage[0] = "<@733409243222507670>";
+				System.arraycopy(message, 0, realMessage, 1, message.length);
+				OldReceiver.runLingLingCommand(e1, realMessage);
 			}
-			if(e.getMessage().getContentRaw().equals("!prefix") || e.getMessage().getContentRaw().equals("<@733409243222507670>")) {
-				e.getMessage().reply("Hello!  My prefix in this server is `" + prefix + "`\nIf you have other issues, run `" + prefix + "support` to get an invite to the support server!").mentionRepliedUser(false).queue();
-			}
-			try {
-				if(message[0].charAt(0) == prefix) {
-					if(e.getMessage().getContentRaw().contains("@everyone") || e.getMessage().getContentRaw().contains("@here") || e.getMessage().getContentRaw().contains("<@&")) {
-						e.getMessage().reply("why the hell did you ping here, everyone, or a role").mentionRepliedUser(false).queue();
-					} else if(e.getAuthor().getName().contains("@everyone") || e.getAuthor().getName().contains("@here") || e.getAuthor().getName().contains("<@&") || e.getAuthor().getName().contains("nigg")) {
-						e.getMessage().reply("no using the bot unless you have a good name :)").mentionRepliedUser(false).queue();
-					} else {
-						message[0] = message[0].substring(1);
-						new RegularCommands(e, message, isDev);
-					}
-				}
-			} catch(Exception exception) {
-				//nothing here lol
+		}
+		Random random = new Random();
+		if(e.getChannel().getName().contains("announcement") || random.nextDouble() <= 0.025) {
+			if(!e.getAuthor().getId().equals("733409243222507670") || e.getAuthor().getId().equals("733409243222507670") && !e.getMessage().getContentRaw().toLowerCase().contains("poll")) {
+				e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), Emoji.fromUnicode("U+1F1FB")).queue();
+				e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), Emoji.fromUnicode("U+1F1EE")).queue();
+				e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), Emoji.fromUnicode("U+1F1F4")).queue();
+				e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), Emoji.fromUnicode("U+1F1F1")).queue();
+				e.getChannel().addReactionById(e.getChannel().getLatestMessageId(), Emoji.fromUnicode("U+1F1E6")).queue();
 			}
 		}
 	}

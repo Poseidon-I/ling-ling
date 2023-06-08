@@ -1,17 +1,15 @@
 package economy;
 
+import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import processes.Numbers;
 
 import java.awt.*;
-import java.util.Objects;
 
 public class Upgrades {
 	private static JSONObject data;
-	private static SlashCommandInteractionEvent e;
+	private static GenericDiscordEvent e;
 	private static EmbedBuilder builder;
 	
 	public static void incomeUpgrades() {
@@ -26,7 +24,7 @@ public class Upgrades {
 		} else {
 			builder.addField("Math Tutoring :x:", "Price: `10 000 000`" + Emoji.VIOLINS + "\nEffect: `+6500`" + Emoji.VIOLINS + "/hour\nID: `math`", true);
 		}
-		e.replyEmbeds(builder.build()).queue();
+		e.replyEmbeds(builder.build());
 	}
 	
 	public static void orchMiscUpgrades() {
@@ -53,7 +51,7 @@ public class Upgrades {
 				builder.addField("Teaching Certificate", "Price: `200 000 000`" + Emoji.VIOLINS + "\nIncome Requirement: 40 000`" + Emoji.VIOLINS + "/hr\nEffect: `+5 000`" + Emoji.VIOLINS + "/hr, access to `/teach` command\nID: `certificate`", true);
 			}
 		}
-		e.replyEmbeds(builder.build()).queue();
+		e.replyEmbeds(builder.build());
 	}
 	
 	public static void otherMiscUpgrades() {
@@ -75,7 +73,7 @@ public class Upgrades {
 		} else {
 			builder.addField("Sophisticated Robbing `" + Numbers.formatNumber(data.get("sophistication")) + "/30`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("sophistication"), 1.4, 5000)) + "`" + Emoji.VIOLINS + "\nEffect: Increases your chance of a successful `/rob` by 0.25%\nID: `sophistication`", true);
 		}
-		builder.addField("Magic Find `" + Numbers.formatNumber(data.get("magicFindViolins")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("magicFindViolins"), 4, 1000000)) + "`" + Emoji.VIOLINS + "\nEffect: `+1 Magic Find\nID: `magicFindViolins`", true);
+		builder.addField("Magic Find `" + Numbers.formatNumber(data.get("magicFindViolins")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("magicFindViolins"), 4, 1000000)) + "`" + Emoji.VIOLINS + "\nEffect: `+1` Magic Find\nID: `magicFindViolins`", true);
 		if((boolean) data.get("insurance")) {
 			builder.addField("Ling Ling Insurance :white_check_mark:", "Effect: When robbed, this will protect 50% of violins from being stolen", true);
 		} else {
@@ -86,7 +84,7 @@ public class Upgrades {
 		} else {
 			builder.addField("Time Crunch :x:", "Price: `120 000 000`" + Emoji.VIOLINS + "\nEffect: Decreases cooldowns of income commands by 33%\nID: `timeCrunch`", true);
 		}
-		e.replyEmbeds(builder.build()).queue();
+		e.replyEmbeds(builder.build());
 	}
 	
 	public static void medalUpgrades() {
@@ -99,19 +97,19 @@ public class Upgrades {
 		if((boolean) data.get("shield")) {
 			builder.addField("Steal Shield :white_check_mark:", "Effect: Advanced technology takes back 50% of violins when you get robbed", true);
 		} else {
-			builder.addField("Steal Shield :x:", "Price: `10" + Emoji.MEDALS + "\nEffect: Advanced technology takes back 50% of violins when you get robbed\nID: `shield`", true);
+			builder.addField("Steal Shield :x:", "Price: `10`" + Emoji.MEDALS + "\nEffect: Advanced technology takes back 50% of violins when you get robbed\nID: `shield`", true);
 		}
 		if((boolean) data.get("duplicator")) {
 			builder.addField("Violin Duplicator :white_check_mark:", "Effect: The Vengeful God of Ben Lee duplicates all violins you steal", true);
 		} else {
-			builder.addField("Violin Duplicator :x:", "Price: `15" + Emoji.MEDALS + "\nEffect: The Vengeful God of Ben Lee duplicates all violins you steal\nID: `duplicator`", true);
+			builder.addField("Violin Duplicator :x:", "Price: `15`" + Emoji.MEDALS + "\nEffect: The Vengeful God of Ben Lee duplicates all violins you steal\nID: `duplicator`", true);
 		}
-		e.replyEmbeds(builder.build()).queue();
+		e.replyEmbeds(builder.build());
 	}
 	
 	public static void woodwinds() {
 		if(!(boolean) data.get("orchestra")) {
-			e.reply("You have not unlocked this page yet!").setEphemeral(true).queue();
+			e.reply("You have not unlocked this page yet!");
 			return;
 		}
 		builder.setTitle("__**Woodwinds**__");
@@ -145,12 +143,12 @@ public class Upgrades {
 		} else {
 			builder.addField("Contrabassoon :x:", "Price: `250 000`" + Emoji.VIOLINS + "\nEffect: `+30`" + Emoji.VIOLINS + "/hour\nID: `contraBassoon`", true);
 		}
-		e.replyEmbeds(builder.build()).queue();
+		e.replyEmbeds(builder.build());
 	}
 	
 	public static void brass() {
 		if(!(boolean) data.get("orchestra")) {
-			e.reply("You have not unlocked this page yet!").setEphemeral(true).queue();
+			e.reply("You have not unlocked this page yet!");
 			return;
 		}
 		builder.setTitle("__**Brass and Percussion**__");
@@ -184,12 +182,12 @@ public class Upgrades {
 		} else {
 			builder.addField("Percussionists `" + Numbers.formatNumber(data.get("percussion")) + "/2`", "Price: `" + Numbers.formatNumber(100000 * ((long) data.get("percussion") + 1)) + "`" + Emoji.VIOLINS + "\nEffect: `+10`" + Emoji.VIOLINS + "/hour\nID: `percussion`", true);
 		}
-		e.replyEmbeds(builder.build()).queue();
+		e.replyEmbeds(builder.build());
 	}
 	
 	public static void strings() {
 		if(!(boolean) data.get("orchestra")) {
-			e.reply("You have not unlocked this page yet!").setEphemeral(true).queue();
+			e.reply("You have not unlocked this page yet!");
 			return;
 		}
 		builder.setTitle("__**Strings**__");
@@ -223,12 +221,12 @@ public class Upgrades {
 		} else {
 			builder.addField("Harp :x:", "Price: `350 000`" + Emoji.VIOLINS + "\nEffect: `+80`" + Emoji.VIOLINS + "/hour\nID: `harp`", true);
 		}
-		e.replyEmbeds(builder.build()).queue();
+		e.replyEmbeds(builder.build());
 	}
 	
 	public static void choir() {
 		if(!(boolean) data.get("orchestra")) {
-			e.reply("You have not unlocked this page yet!").setEphemeral(true).queue();
+			e.reply("You have not unlocked this page yet!");
 			return;
 		}
 		builder.setTitle("__**Choir**__");
@@ -257,12 +255,12 @@ public class Upgrades {
 		} else {
 			builder.addField("Vocal Soloists `" + Numbers.formatNumber(data.get("soloist")) + "/4`", "Price: `" + Numbers.formatNumber(250000 * ((long) data.get("soloist") + 1)) + "`" + Emoji.VIOLINS + "\nEffect: `+60`" + Emoji.VIOLINS + "/hour\nID: `soloist`", true);
 		}
-		e.replyEmbeds(builder.build()).queue();
+		e.replyEmbeds(builder.build());
 	}
 	
 	public static void teacherUpgrades() {
 		if(!(boolean) data.get("certificate")) {
-			e.reply("You have not unlocked this page yet!").setEphemeral(true).queue();
+			e.reply("You have not unlocked this page yet!");
 			return;
 		}
 		builder.setTitle("__**Teacher Upgrades**__")
@@ -287,12 +285,12 @@ public class Upgrades {
 		} else {
 			builder.addField("Longer Lessons :x:", "Price: `30 000 000`" + Emoji.VIOLINS + "\nEffect: x2 violins from `/teach`\nID: `longerLessons`", true);
 		}
-		e.replyEmbeds(builder.build()).queue();
+		e.replyEmbeds(builder.build());
 	}
 	
 	public static void bankUpgrades() {
 		if(!(boolean) data.get("orchestra")) {
-			e.reply("You have not unlocked this page yet!").setEphemeral(true).queue();
+			e.reply("You have not unlocked this page yet!");
 			return;
 		}
 		builder.setTitle("__**Bank Upgrades**__")
@@ -307,22 +305,15 @@ public class Upgrades {
 		} else {
 			builder.addField("Lower Loan Interest :x:", "Price: `15" + Emoji.MEDALS + "\nEffect: Decrease loan interest rate to 9%\nID: `lessPenalty`", true);
 		}
-		e.replyEmbeds(builder.build()).queue();
+		e.replyEmbeds(builder.build());
 	}
 	
-	public static void upgrades(@NotNull SlashCommandInteractionEvent event) {
+	public static void upgrades(GenericDiscordEvent event, int page) {
 		e = event;
 		data = LoadData.loadData(event);
 		builder = new EmbedBuilder()
 				.setColor(Color.decode((String) data.get("color")))
 				.setFooter("Violins: " + Numbers.formatNumber(data.get("violins")) + "\nMedals: " + Numbers.formatNumber(data.get("medals")) + "\nUse `/buy [ID]` to buy an upgrade! CASE-SENSITIVE", event.getJDA().getSelfUser().getAvatarUrl());
-		int page;
-		try {
-			page = Objects.requireNonNull(event.getOption("page")).getAsInt();
-		} catch(Exception exception) {
-			event.reply("You have to provide a page number.").setEphemeral(true).queue();
-			return;
-		}
 		switch(page) {
 			case 1 -> incomeUpgrades();
 			case 2 -> woodwinds();
@@ -334,6 +325,7 @@ public class Upgrades {
 			case 8 -> otherMiscUpgrades();
 			case 9 -> medalUpgrades();
 			case 10 -> bankUpgrades();
+			default -> e.reply("You did not provide a valid page number!  Current Pages\n`1` for Income Upgrades\n`2` for Woodwinds\n`3` for Brass and Percussion\n`4` for Strings\n`5` for Choir\n`6` for Miscellaneous Orchestra Items\n`7` for Teacher Upgrades\n`8` for Other Miscellaneous Upgrades\n`9` for Medal Upgrades\n`10` for Bank Upgrades");
 		}
 	}
 }

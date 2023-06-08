@@ -1,14 +1,13 @@
 package economy;
 
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
+import eventListeners.GenericDiscordEvent;
 import org.json.simple.JSONObject;
 import processes.Numbers;
 
 import java.util.Random;
 
 public class Scales {
-	public static void scales(@NotNull SlashCommandInteractionEvent e) {
+	public static void scales(GenericDiscordEvent e) {
 		JSONObject data = LoadData.loadData(e);
 		long time = System.currentTimeMillis();
 		Random random = new Random();
@@ -16,7 +15,7 @@ public class Scales {
 			long milliseconds = (long) data.get("scaleCD") - time;
 			long seconds = milliseconds / 1000;
 			milliseconds -= seconds * 1000;
-			e.reply("Chill, you can't play two scales at once!  Wait " + seconds + " seconds " + milliseconds + " milliseconds!").queue();
+			e.reply("Chill, you can't play two scales at once!  Wait " + seconds + " seconds " + milliseconds + " milliseconds!");
 		} else {
 			long base = Numbers.calculateAmount(data, random.nextInt(11) + 15);
 			Numbers.calculateLoan(data, base);
@@ -25,7 +24,7 @@ public class Scales {
 			} else {
 				data.replace("scaleCD", time + 89500);
 			}
-			e.reply("You played your scales and earned `" + Numbers.formatNumber(base) + "`" + Emoji.VIOLINS).queue();
+			e.reply("You played your scales and earned `" + Numbers.formatNumber(base) + "`" + Emoji.VIOLINS);
 			data.replace("scalesPlayed", (long) data.get("scalesPlayed") + 1);
 			data.replace("earnings", (long) data.get("earnings") + base);
 			RNGesus.lootbox(e, data);

@@ -1,7 +1,7 @@
 package dev;
 
+import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -11,7 +11,7 @@ import java.io.FileWriter;
 import java.util.Objects;
 
 public class ResetDaily {
-	public static void resetDaily(SlashCommandInteractionEvent e) {
+	public static void resetDaily(GenericDiscordEvent e) {
 		File directory = new File("Ling Ling Bot Data\\Economy Data");
 		File[] files = directory.listFiles();
 		assert files != null;

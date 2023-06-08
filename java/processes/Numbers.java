@@ -4,16 +4,16 @@ import org.json.simple.JSONObject;
 
 public class Numbers {
 	public static double luthierChance(int members) {
-		if(members < 20) {
+		if(members < 10) {
 			return 0.1;
 		} else if(members < 100) {
-			return 0.1 - 0.001 * (members - 20);
+			return 0.1 - 0.001 * (members - 10);
 		} else if(members < 1000) {
-			return 0.02;
+			return 0.01;
 		} else if(members < 10000) {
-			return 0.02 - 0.000002 * (members - 1000);
+			return 0.01 - 0.000001 * (members - 1000);
 		} else {
-			return 0.002;
+			return 0.001;
 		}
 	}
 	
@@ -97,5 +97,9 @@ public class Numbers {
 		}
 		data.replace("violins", violins);
 		data.replace("loan", loan);
+	}
+	
+	public static boolean containsBadLanguage(String input) {
+		return input.contains("@everyone") || input.contains("@here") || input.contains("<@&") || input.contains("nigg") || input.contains("nibba") || input.contains("cunt") || input.contains("chink");
 	}
 }

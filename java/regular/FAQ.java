@@ -1,17 +1,15 @@
 package regular;
 
+import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.Objects;
 
 public class FAQ {
-	public static void faq(@NotNull SlashCommandInteractionEvent e) {
+	public static void faq(GenericDiscordEvent e, String page) {
 		EmbedBuilder builder = new EmbedBuilder().setColor(Color.BLUE).setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl()).setTitle("__**Ling Ling Bot FAQ**__");
 		try {
-			switch(Objects.requireNonNull(e.getOption("page")).getAsString()) {
+			switch(page) {
 				case "rob" -> builder.addField(":cop: Why is there no way to disable robbing?", "Robbing, or the ability to hamper other users, is an integral part of the bot.  While there are ways to lower the effect of robbers, robbing **will never have an option to be disabled**.  User feedback is always accepted, and balancing happens regularly.", false);
 				case "give" -> builder.addField(":money_with_wings: Why can't you give money to other users?", "Since robbing is dynamic, one can easily abuse an alt to rob a person and transfer those funds to the main account, or run commands on mutiple accounts and channel it into the main account.  Giving users money **will never be implemented**, however, user-sponsored giveaways are a thing, and you can always sell items on the Market.", false);
 				case "luthier" -> builder.addField(":violin: How do I get Luthier in my server?", "Luthiers can be crafted.  See `/craft` for more information.", false);
@@ -31,6 +29,6 @@ public class FAQ {
 		} catch(Exception exception) {
 			builder.addField("FAQ Entries", "Use `/faq [item]` to view a page in depth.\n\n`rob` `give` `luthier` `hourly` `orchestra` `delete` `robchance` `leveling` `ping` `rngesus` `luthierchance` `magicfind` `commandmulti` `market`", false);
 		}
-		e.replyEmbeds(builder.build()).queue();
+		e.replyEmbeds(builder.build());
 	}
 }
