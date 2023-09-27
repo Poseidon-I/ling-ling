@@ -9,56 +9,54 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import org.json.simple.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 
 public class StartBot {
+
 	public static void startBot() {
-		File file = new File("Ling Ling Bot Data\\loadedservers.txt");
+		/* File file = new File("Ling Ling Bot Data\\loadedservers.txt");
 		try {
 			file.delete();
 			file.createNewFile();
 		} catch(Exception exception1) {
 			//nothing here lol
-		}
+		} */
+
+		DatabaseManager.connectToDatabase();
+		JSONObject data = DatabaseManager.getMiscData();
+
 		// Start BeethovenBot
 		JDA jda;
-		try (BufferedReader rdr = new BufferedReader(new FileReader("Ling Ling Bot Data\\beethoventoken.txt"))) {
-			jda = JDABuilder.create(rdr.readLine(), GatewayIntent.GUILD_INVITES, GatewayIntent.GUILD_EMOJIS_AND_STICKERS, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGE_REACTIONS)
-					.disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.CLIENT_STATUS, CacheFlag.SCHEDULED_EVENTS)
-					.setMemberCachePolicy(MemberCachePolicy.ALL)
-					.addEventListeners(new Autoroles())
-					.addEventListeners(new Autounrole())
-					.addEventListeners(new Disconnect())
-					.addEventListeners(new Join())
-					.addEventListeners(new Leave())
-					.addEventListeners(new Receiver())
-					.addEventListeners(new RoleAdded())
-					.addEventListeners(new RoleRemoved())
-					.addEventListeners(new ILoveJava())
-					.addEventListeners(new NoInviteLinks())
-					.build();
-			jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
-			jda.getPresence().setActivity(Activity.listening("music.  Or at least trying to."));
-		} catch(Exception exception) {
-			exception.printStackTrace();
-		}
+		assert data != null;
+		jda = JDABuilder.create(data.get("beethoventoken").toString(), GatewayIntent.GUILD_INVITES, GatewayIntent.GUILD_EMOJIS_AND_STICKERS, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGE_REACTIONS)
+				.disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.CLIENT_STATUS, CacheFlag.SCHEDULED_EVENTS)
+				.addEventListeners(new Autoroles())
+				.addEventListeners(new Autounrole())
+				.addEventListeners(new Disconnect())
+				.addEventListeners(new Join())
+				.addEventListeners(new Leave())
+				.addEventListeners(new Receiver())
+				.addEventListeners(new RoleAdded())
+				.addEventListeners(new RoleRemoved())
+				// .addEventListeners(new ILoveJava())
+				.addEventListeners(new NoInviteLinks())
+				.build();
+		jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
+		jda.getPresence().setActivity(Activity.listening("music.  Or at least trying to."));
 
 		// Start LingLing Bot
-		try(BufferedReader rdr = new BufferedReader(new FileReader("Ling Ling Bot Data\\token.txt"))) {
-			Message.suppressContentIntentWarning();
-			jda = JDABuilder.createDefault(rdr.readLine(), GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_EMOJIS_AND_STICKERS)
-					.disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOJI, CacheFlag.CLIENT_STATUS, CacheFlag.ONLINE_STATUS, CacheFlag.SCHEDULED_EVENTS)
-					.setMemberCachePolicy(MemberCachePolicy.ALL)
-					.addEventListeners(new Disconnect())
-					.addEventListeners(new NewReceiver())
-					.addEventListeners(new OldReceiver())
-					.useSharding(0, 1)
-					.build();
-			jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
-			jda.getPresence().setActivity(Activity.playing("violin forty hours a day."));
+		Message.suppressContentIntentWarning();
+		jda = JDABuilder.createDefault(data.get("token").toString(), GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_EMOJIS_AND_STICKERS)
+				.disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOJI, CacheFlag.CLIENT_STATUS, CacheFlag.ONLINE_STATUS, CacheFlag.SCHEDULED_EVENTS)
+				.addEventListeners(new Disconnect())
+				.addEventListeners(new NewReceiver())
+				.addEventListeners(new OldReceiver())
+				.useSharding(0, 1)
+				.build();
+		jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
+		jda.getPresence().setActivity(Activity.playing("violin forty hours a day."));
 
 			/*
 			// ONE TIEM UPSERT OF SLASH COMMANDS
@@ -408,9 +406,6 @@ public class StartBot {
 					Commands.slash("answer", "Answers a Luthier unscramble.")
 							.addOption(OptionType.STRING, "guess", "See name")
 			).queue();
-			System.out.println("All commands upserted!");*/
-		} catch(Exception exception) {
-			exception.printStackTrace();
-		}
+			System.out.println("All commands upserted!"); */
 	}
 }

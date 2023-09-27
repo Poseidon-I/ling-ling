@@ -1,14 +1,20 @@
 package dev;
 
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
+import org.bson.Document;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import processes.DatabaseManager;
 import processes.Numbers;
 
 import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 
 public class GlobalStats {
 	public static void gobalStats(GenericDiscordEvent e) {
@@ -30,14 +36,12 @@ public class GlobalStats {
 		long penalties = 0;
 		long purchases = 0;
 		long marketEarnings = 0;
-		File directory = new File("Ling Ling Bot Data\\Economy Data");
-		File[] files = directory.listFiles();
-		assert files != null;
-		for(File file : files) {
+		ArrayList<Document> documents = DatabaseManager.getAllEconomyData();
+		for(Document document : documents) {
 			JSONParser parser = new JSONParser();
 			JSONObject data;
-			try(FileReader reader = new FileReader(file)) {
-				data = (JSONObject) parser.parse(reader);
+			try {
+				data = (JSONObject) parser.parse(document.toJson());
 			} catch(Exception exception) {
 				continue;
 			}

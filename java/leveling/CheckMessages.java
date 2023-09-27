@@ -1,6 +1,7 @@
 package leveling;
 
 import eventListeners.GenericDiscordEvent;
+import leveling.Leveling;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import processes.DatabaseManager;
@@ -8,9 +9,8 @@ import processes.DatabaseManager;
 import java.io.FileReader;
 import java.util.Objects;
 // BEETHOVEN-ONLY CLASS
-
-public class Rank {
-	public static void rank(GenericDiscordEvent e) {
+public class CheckMessages {
+	public static void checkMessages(GenericDiscordEvent e) {
 		JSONObject data;
 		String[] message = e.getMessage().getContentRaw().split(" ");
 		String user;
@@ -19,17 +19,13 @@ public class Rank {
 			data = Leveling.loadData(e);
 		} else {
 			user = message[2];
-			data = DatabaseManager.getDataForUser(e, "Leveling Data", user);
+			JSONParser parser = new JSONParser();
+				data = DatabaseManager.getDataForUser(e, "Leveling Data", user);
 			if(data == null) {
 				e.reply("This save file does not exist!");
 				return;
 			}
 		}
-		try {
-			user = Objects.requireNonNull(e.getGuild().getMemberById(user)).getNickname();
-		} catch(Exception exception) {
-			e.reply("The user you wanted to look up does not exist!");
-		}
-		e.reply("**__" + user + "'s Stats__**\nLevel `" + data.get("level") + "`\n`" + data.get("xp") + "/" + ((long) data.get("level") + 1) * 100 + "` XP");
+		e.reply("Messages this month for `" + Objects.requireNonNull(e.getGuild().getMemberById(user)).getNickname() + "`: `" + data.get("messages") + "` messages");
 	}
 }

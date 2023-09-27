@@ -6,17 +6,20 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import processes.DatabaseManager;
 
 import java.awt.*;
 import java.io.FileReader;
 import java.util.List;
+import java.util.Objects;
+
 // BEETHOVEN-ONLY CLASS
 public class MessageLeaderboard {
 	public static void messageLeaderboard(GenericDiscordEvent e) {
 		e.getGuild().loadMembers();
 		JSONObject data = Leveling.loadData(e);
 		long userMessages = (long) data.get("messages");
-		String[] entry = new String[]{e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + " `" + e.getAuthor().getId() + "`: " + data.get("messages") + " messages\n", "null#0000 `0`: 0 messages\n", "null#0000 `0`: 0 messages\n", "null#0000 `0`: 0 messages\n", "null#0000 `0`: 0 messages\n", "null#0000 `0`: 0 messages\n", "null#0000 `0`: 0 messages\n", "null#0000 `0`: 0 messages\n", "null#0000 `0`: 0 messages\n", "null#0000 `0`: 0 messages\n"};
+		String[] entry = new String[]{e.getAuthor().getGlobalName()  + " `" + e.getAuthor().getId() + "`: " + data.get("messages") + " messages\n", "<@0> `0`: 0 messages\n", "<@0> `0`: 0 messages\n", "<@0> `0`: 0 messages\n", "<@0> `0`: 0 messages\n", "<@0> `0`: 0 messages\n", "<@0> `0`: 0 messages\n", "<@0> `0`: 0 messages\n", "<@0> `0`: 0 messages\n", "<@0> `0`: 0 messages\n"};
 		List<Member> list = e.getGuild().getMembers();
 		long place = 1;
 		JSONParser parser = new JSONParser();
@@ -24,11 +27,8 @@ public class MessageLeaderboard {
 			if(user.getUser().isBot()) {
 				continue;
 			}
-			JSONObject currentData;
-			try(FileReader reader = new FileReader("Ling Ling Bot Data\\Leveling\\" + user.getId() + ".json")) {
-				currentData = (JSONObject) parser.parse(reader);
-				reader.close();
-			} catch(Exception exception) {
+			JSONObject currentData = DatabaseManager.getDataForUser(e, "Leveling Data", user.getId());
+			if(currentData == null) {
 				continue;
 			}
 			long messages;
@@ -46,7 +46,7 @@ public class MessageLeaderboard {
 					if(user.getId().equals("768056391814086676")) {
 						entry[i] = "**NARWHAL** `768056391814086676`: " + messages + " messages\n";
 					} else {
-						entry[i] = user.getUser().getName() + "#" + user.getUser().getDiscriminator() + " `" + user.getId() + "`: " + messages + " messages\n";
+						entry[i] = user.getUser().getGlobalName() + "** `" + user.getId() + "`: " + messages + " messages\n";
 					}
 					if(messages > userMessages) {
 						place++;
@@ -60,10 +60,10 @@ public class MessageLeaderboard {
 			if(entry[i].contains("#0000")) {
 				break;
 			}
-			board.append("**").append(i + 1).append(".** ").append(entry[i]);
+			board.append("**").append(i + 1).append("\\. ").append(entry[i]);
 		}
 		if(place >= 11) {
-			board.append("\n**").append(place).append(". You**: ").append(userMessages).append(" messages");
+			board.append("\n**").append(place).append("\\. You**: ").append(userMessages).append(" messages");
 		}
 		EmbedBuilder builder = new EmbedBuilder()
 				.setColor(Color.BLUE)

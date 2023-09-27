@@ -27,7 +27,7 @@ public class Buy {
 			case "math" -> item = "math";
 
 			case "piccolo" -> item = "piccolo";
-			case "flute" -> item = "flue";
+			case "flute" -> item = "flute";
 			case "oboe" -> item = "oboe";
 			case "clarinet" -> item = "clarinet";
 			case "bassoon" -> item = "bassoon";
@@ -44,7 +44,7 @@ public class Buy {
 			case "second", "violin2" -> item = "violin2";
 			case "cello" -> item = "cello";
 			case "doublebass", "db" -> item = "doubleBass";
-			case "piano" -> item = "pinao";
+			case "piano" -> item = "piamo";
 			case "harp" -> item = "harp";
 
 			case "soprano" -> item = "soprano";
@@ -78,6 +78,15 @@ public class Buy {
 			case "magicfindmedals", "magicfindm", "mfm" -> item = "magicFindMedals";
 			case "shield" -> item = "shield";
 			case "duplicator" -> item = "duplicator";
+
+			case "storage" -> item = "storage";
+			case "moreinterest" -> item = "moreInterest";
+			case "lesspenalty" -> item = "lessPenalty";
+
+			case "orchestra" -> item = "orchestra";
+			case "certificate" -> item = "certificate";
+
+			default -> item = original;
 		}
 	}
 	
@@ -138,8 +147,9 @@ public class Buy {
 		boolean boughtItem = false;
 		boolean hasOrchestra = (boolean) data.get("orchestra");
 		boolean hasCertificate = (boolean) data.get("certificate");
-		if(item.equals("")) {
+		if(item.isEmpty()) {
 			e.reply("You have to specify an upgrade to buy, can't give you nothing.");
+			return;
 		}
 		if(hasCertificate) {
 			boughtItem = true;

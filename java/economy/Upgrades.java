@@ -14,11 +14,11 @@ public class Upgrades {
 	
 	public static void incomeUpgrades() {
 		builder.setTitle("__**Income Upgrades**__")
-				.addField("Violin Quality `" + Numbers.formatNumber(data.get("violinQuality")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("violinQuality"), 3, 1000)) + "`" + Emoji.VIOLINS + "\nEffect: `+600`" + Emoji.VIOLINS + "/hour\nID: `violinQuality`", true)
-				.addField("Skill Level `" + Numbers.formatNumber(data.get("skills")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("skills"), 2, 500)) + "`" + Emoji.VIOLINS + "\nEffect: `+250`" + Emoji.VIOLINS + "/hour\nID: `skills`", true)
-				.addField("Lesson Quality `" + Numbers.formatNumber(data.get("lessonQuality")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("lessonQuality"), 2, 400)) + "`" + Emoji.VIOLINS + "\nEffect: `+200`" + Emoji.VIOLINS + "/hour\nID: `lessonQuality`", true)
-				.addField("String Quality `" + Numbers.formatNumber(data.get("stringQuality")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("stringQuality"), 1.5, 300)) + "`" + Emoji.VIOLINS + "\nEffect: `+150`" + Emoji.VIOLINS + "/hour\nID: `stringQuality`", true)
-				.addField("Bow Quality `" + Numbers.formatNumber(data.get("bowQuality")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("bowQuality"), 2.5, 600)) + "`" + Emoji.VIOLINS + "\nEffect: `+250`" + Emoji.VIOLINS + "/hour\nID: `bowQuality`", true);
+				.addField("Violin Quality `" + Numbers.formatNumber(data.get("violinQuality")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("violinQuality"), 3, 1000)) + "`" + Emoji.VIOLINS + "\nEffect: `+600`" + Emoji.VIOLINS + "/hour\nID: `quality` `violinquality` `q`", true)
+				.addField("Skill Level `" + Numbers.formatNumber(data.get("skills")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("skills"), 2, 500)) + "`" + Emoji.VIOLINS + "\nEffect: `+250`" + Emoji.VIOLINS + "/hour\nID: `skills` `s`", true)
+				.addField("Lesson Quality `" + Numbers.formatNumber(data.get("lessonQuality")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("lessonQuality"), 2, 400)) + "`" + Emoji.VIOLINS + "\nEffect: `+200`" + Emoji.VIOLINS + "/hour\nID: `lesson` `l` `lessonquality`", true)
+				.addField("String Quality `" + Numbers.formatNumber(data.get("stringQuality")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("stringQuality"), 1.5, 300)) + "`" + Emoji.VIOLINS + "\nEffect: `+150`" + Emoji.VIOLINS + "/hour\nID: `string` `str` `stringquality`", true)
+				.addField("Bow Quality `" + Numbers.formatNumber(data.get("bowQuality")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("bowQuality"), 2.5, 600)) + "`" + Emoji.VIOLINS + "\nEffect: `+250`" + Emoji.VIOLINS + "/hour\nID: `bow` `b` `bowquality`", true);
 		if((boolean) data.get("math")) {
 			builder.addField("Math Tutoring :white_check_mark:", "Effect: `+6500`" + Emoji.VIOLINS + "/hour", true);
 		} else {
@@ -31,9 +31,9 @@ public class Upgrades {
 		builder.setTitle("__**Miscellaneous Orchestra Items**__");
 		if(!(boolean) data.get("orchestra")) {
 			if((long) data.get("hall") == 3) {
-				builder.addField("Concert Hall Quality :white_check_mark:", "Effect: `+300`" + Emoji.VIOLINS + "/hour, x1.125 command income", true);
+				builder.addField("Concert Hall Quality :white_check_mark:", "Effect: `+300`" + Emoji.VIOLINS + "/hour, `x1.125` command income", true);
 			} else {
-				builder.addField("Concert Hall Quality `" + Numbers.formatNumber(data.get("hall")) + "/3`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("hall"), 4, 100000)) + "`" + Emoji.VIOLINS + "\nEffect: `+300`" + Emoji.VIOLINS + "/hour, x1.125 command income\nID: `hall`", true);
+				builder.addField("Concert Hall Quality `" + Numbers.formatNumber(data.get("hall")) + "/3`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("hall"), 4, 100000)) + "`" + Emoji.VIOLINS + "\nEffect: `+300`" + Emoji.VIOLINS + "/hour, `x1.125` command income\nID: `hall`", true);
 			}
 			builder.addField("Orchestra", "Price: `25 000 000`" + Emoji.VIOLINS + "\nIncome Requirement: 7 500\nEffect: `+3 100`" + Emoji.VIOLINS + "/hour, access to `/rehearse` command\nID:`orchestra`", true);
 		} else {
@@ -48,7 +48,7 @@ public class Upgrades {
 				builder.addField("Advertising `" + Numbers.formatNumber(data.get("advertising")) + "/20`", "Price: `" + Numbers.formatNumber(100000 * ((long) data.get("advertising") + 1)) + "`" + Emoji.VIOLINS + "\nEffect: `+100`" + Emoji.VIOLINS + "/hour\nID: `advertising`", true);
 			}
 			if(!(boolean) data.get("certificate")) {
-				builder.addField("Teaching Certificate", "Price: `200 000 000`" + Emoji.VIOLINS + "\nIncome Requirement: 40 000`" + Emoji.VIOLINS + "/hr\nEffect: `+5 000`" + Emoji.VIOLINS + "/hr, access to `/teach` command\nID: `certificate`", true);
+				builder.addField("Teaching Certificate", "Price: `200 000 000`" + Emoji.VIOLINS + "\nIncome Requirement: `40 000`" + Emoji.VIOLINS + "/hr\nEffect: `+5 000`" + Emoji.VIOLINS + "/hr, access to `/teach` command\nID: `certificate`", true);
 			}
 		}
 		e.replyEmbeds(builder.build());
@@ -57,43 +57,43 @@ public class Upgrades {
 	public static void otherMiscUpgrades() {
 		builder.setTitle("__**Other Miscellaneous Upgrades**__");
 		if((long) data.get("efficiency") < 10) {
-			builder.addField("Efficient Practising `" + Numbers.formatNumber(data.get("efficiency")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("efficiency"), 1.1, 400)) + "`" + Emoji.VIOLINS + "\nEffect: Multiplies your command income by x1.1\nID: `efficiency`", true);
+			builder.addField("Efficient Practising `" + Numbers.formatNumber(data.get("efficiency")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("efficiency"), 1.1, 400)) + "`" + Emoji.VIOLINS + "\nEffect: Multiplies your command income by `x1.1`\nID: `ep` `efficiency`", true);
 		} else if((long) data.get("efficiency") < 100) {
-			builder.addField("Efficient Practising `" + Numbers.formatNumber(data.get("efficiency")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("efficiency"), 1.1, 400)) + "`" + Emoji.VIOLINS + "\nEffect: Multiplies your command income by x1.05\nID: `efficiency`", true);
+			builder.addField("Efficient Practising `" + Numbers.formatNumber(data.get("efficiency")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("efficiency"), 1.1, 400)) + "`" + Emoji.VIOLINS + "\nEffect: Multiplies your command income by `x1.05`\nID: `ep` `efficiency`", true);
 		} else {
-			builder.addField("Efficient Practising `" + Numbers.formatNumber(data.get("efficiency")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("efficiency"), 1.1, 400)) + "`" + Emoji.VIOLINS + "\nEffect: Multiplies your command income by x1.025\nID: `efficiency`", true);
+			builder.addField("Efficient Practising `" + Numbers.formatNumber(data.get("efficiency")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("efficiency"), 1.1, 400)) + "`" + Emoji.VIOLINS + "\nEffect: Multiplies your command income by `x1.025`\nID: `ep` `efficiency`", true);
 		}
 		if((long) data.get("luck") == 50) {
 			builder.addField("Lucky Musician :white_check_mark:", "Effect: Increases your gambling multiplier by 0.5%", true);
 		} else {
-			builder.addField("Lucky Musician `" + Numbers.formatNumber(data.get("luck")) + "/50`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("luck"), 1.25, 1000)) + "`" + Emoji.VIOLINS + "\nEffect: Increases your gambling multiplier by 0.5%\nID: `luck`", true);
+			builder.addField("Lucky Musician `" + Numbers.formatNumber(data.get("luck")) + "/50`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("luck"), 1.25, 1000)) + "`" + Emoji.VIOLINS + "\nEffect: Increases your gambling multiplier by `0.5%`\nID: `lm` `luck`", true);
 		}
 		if((long) data.get("sophistication") == 30) {
-			builder.addField("Sophisticated Robbing :white_check_mark:", "Effect: Increases your chance of a successful `/rob` by 0.25%", true);
+			builder.addField("Sophisticated Robbing :white_check_mark:", "Effect: Increases your chance of a successful `/rob` by `0.25%`", true);
 		} else {
-			builder.addField("Sophisticated Robbing `" + Numbers.formatNumber(data.get("sophistication")) + "/30`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("sophistication"), 1.4, 5000)) + "`" + Emoji.VIOLINS + "\nEffect: Increases your chance of a successful `/rob` by 0.25%\nID: `sophistication`", true);
+			builder.addField("Sophisticated Robbing `" + Numbers.formatNumber(data.get("sophistication")) + "/30`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("sophistication"), 1.4, 5000)) + "`" + Emoji.VIOLINS + "\nEffect: Increases your chance of a successful `/rob` by 0.25%\nID: `rob` `sr` `sophistication`", true);
 		}
-		builder.addField("Magic Find `" + Numbers.formatNumber(data.get("magicFindViolins")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("magicFindViolins"), 4, 1000000)) + "`" + Emoji.VIOLINS + "\nEffect: `+1` Magic Find\nID: `magicFindViolins`", true);
+		builder.addField("Magic Find `" + Numbers.formatNumber(data.get("magicFindViolins")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("magicFindViolins"), 4, 1000000)) + "`" + Emoji.VIOLINS + "\nEffect: `+1` Magic Find\nID: `magicfindviolins` `magicfindv` `mfv`", true);
 		if((boolean) data.get("insurance")) {
-			builder.addField("Ling Ling Insurance :white_check_mark:", "Effect: When robbed, this will protect 50% of violins from being stolen", true);
+			builder.addField("Ling Ling Insurance :white_check_mark:", "Effect: When robbed, this will protect `50%` of violins from being stolen", true);
 		} else {
-			builder.addField("Ling Ling Insurance :x:", "Price: `2 500 000`" + Emoji.VIOLINS + "\nEffect: When robbed, this will protect 50% of violins from being stolen\nID: `insurance`", true);
+			builder.addField("Ling Ling Insurance :x:", "Price: `2 500 000`" + Emoji.VIOLINS + "\nEffect: When robbed, this will protect `50%` of violins from being stolen\nID: `insurance`", true);
 		}
 		if((boolean) data.get("timeCrunch")) {
-			builder.addField("Time Crunch :white_check_mark:", "Effect: Decreases cooldowns of income commands by 33%", true);
+			builder.addField("Time Crunch :white_check_mark:", "Effect: Decreases cooldowns of income commands by `33%`", true);
 		} else {
-			builder.addField("Time Crunch :x:", "Price: `120 000 000`" + Emoji.VIOLINS + "\nEffect: Decreases cooldowns of income commands by 33%\nID: `timeCrunch`", true);
+			builder.addField("Time Crunch :x:", "Price: `120 000 000`" + Emoji.VIOLINS + "\nEffect: Decreases cooldowns of income commands by `33%`\nID: `timecrunch` `tc`", true);
 		}
 		e.replyEmbeds(builder.build());
 	}
 	
 	public static void medalUpgrades() {
 		builder.setTitle("**__Medal Upgrades__**")
-				.addField("Extra Income `" + Numbers.formatNumber(data.get("moreIncome")) +  "`", "Price: `" + Numbers.formatNumber(((long) data.get("moreIncome") + 1)) + "`" + Emoji.MEDALS + "\nEffect: `+2 000`" + Emoji.VIOLINS + "/hour\nID: `moreIncome`", true)
-				.addField("Extra Command Income `" + Numbers.formatNumber(data.get("moreCommandIncome")) +  "`", "Price: `" + Numbers.formatNumber((long) Math.pow(2, (long) data.get("moreCommandIncome"))) + "`" + Emoji.MEDALS + "\nEffect: `x1.3` command income\nID: `moreCommandIncome`", true)
-				.addField("Higher Gamble Limit `" + Numbers.formatNumber(data.get("moreMulti")) +  "`", "Price: `" + Numbers.formatNumber(((long) data.get("moreMulti") + 1)) + "`" + Emoji.MEDALS + "\nEffect: `+1x` Gamble Cap\nID: `moreMulti`", true)
-				.addField("Higher Rob Success Rate `" + Numbers.formatNumber(data.get("moreRob")) +  "`", "Price: `" + Numbers.formatNumber((long) Math.pow(2, (long) data.get("moreRob"))) + "`" + Emoji.MEDALS + "\nEffect: Increases the chance of successfully robbing someone by `0.3%`\nID: `moreRob`", true)
-				.addField("Magic Find `" + Numbers.formatNumber(data.get("magicFindMedals")) +  "`", "Price: `" + Numbers.formatNumber((long) Math.pow(2, (long) data.get("magicFindMedals"))) + "`" + Emoji.MEDALS + "\nEffect: `+1` Magic Find\nID: `magicFindMedals`", true);
+				.addField("Extra Income `" + Numbers.formatNumber(data.get("moreIncome")) +  "`", "Price: `" + Numbers.formatNumber(((long) data.get("moreIncome") + 1)) + "`" + Emoji.MEDALS + "\nEffect: `+2 000`" + Emoji.VIOLINS + "/hour\nID: `moreincome` `income`", true)
+				.addField("Extra Command Income `" + Numbers.formatNumber(data.get("moreCommandIncome")) +  "`", "Price: `" + Numbers.formatNumber((long) Math.pow(2, (long) data.get("moreCommandIncome"))) + "`" + Emoji.MEDALS + "\nEffect: `x1.3` command income\nID: `morecommandincome` `commandincome` `cmdincome`", true)
+				.addField("Higher Gamble Limit `" + Numbers.formatNumber(data.get("moreMulti")) +  "`", "Price: `" + Numbers.formatNumber(((long) data.get("moreMulti") + 1)) + "`" + Emoji.MEDALS + "\nEffect: `+1x` Gamble Cap\nID: `moremulti` `multi`", true)
+				.addField("Higher Rob Success Rate `" + Numbers.formatNumber(data.get("moreRob")) +  "`", "Price: `" + Numbers.formatNumber((long) Math.pow(2, (long) data.get("moreRob"))) + "`" + Emoji.MEDALS + "\nEffect: Increases the chance of successfully robbing someone by `0.3%`\nID: `morerob` `robbing`", true)
+				.addField("Magic Find `" + Numbers.formatNumber(data.get("magicFindMedals")) +  "`", "Price: `" + Numbers.formatNumber((long) Math.pow(2, (long) data.get("magicFindMedals"))) + "`" + Emoji.MEDALS + "\nEffect: `+1` Magic Find\nID: `magicfindmedals` `magicfindm` `mfm`", true);
 		if((boolean) data.get("shield")) {
 			builder.addField("Steal Shield :white_check_mark:", "Effect: Advanced technology takes back 50% of violins when you get robbed", true);
 		} else {
@@ -109,7 +109,7 @@ public class Upgrades {
 	
 	public static void woodwinds() {
 		if(!(boolean) data.get("orchestra")) {
-			e.reply("You have not unlocked this page yet!");
+			e.reply("You need to have an orchestra to access these upgrades!  Check out Page 6 for more information.");
 			return;
 		}
 		builder.setTitle("__**Woodwinds**__");
@@ -141,14 +141,14 @@ public class Upgrades {
 		if((boolean) data.get("contraBassoon")) {
 			builder.addField("Contrabassoon :white_check_mark:", "Effect: `+30`" + Emoji.VIOLINS + "/hour", true);
 		} else {
-			builder.addField("Contrabassoon :x:", "Price: `250 000`" + Emoji.VIOLINS + "\nEffect: `+30`" + Emoji.VIOLINS + "/hour\nID: `contraBassoon`", true);
+			builder.addField("Contrabassoon :x:", "Price: `250 000`" + Emoji.VIOLINS + "\nEffect: `+30`" + Emoji.VIOLINS + "/hour\nID: `contrabassoon` `cb`", true);
 		}
 		e.replyEmbeds(builder.build());
 	}
 	
 	public static void brass() {
 		if(!(boolean) data.get("orchestra")) {
-			e.reply("You have not unlocked this page yet!");
+			e.reply("You need to have an orchestra to access these upgrades!  Check out Page 6 for more information.");
 			return;
 		}
 		builder.setTitle("__**Brass and Percussion**__");
@@ -187,19 +187,19 @@ public class Upgrades {
 	
 	public static void strings() {
 		if(!(boolean) data.get("orchestra")) {
-			e.reply("You have not unlocked this page yet!");
+			e.reply("You need to have an orchestra to access these upgrades!  Check out Page 6 for more information.");
 			return;
 		}
 		builder.setTitle("__**Strings**__");
 		if((long) data.get("violin1") == 20) {
 			builder.addField("Violin I :white_check_mark:", "Effect: `+70`" + Emoji.VIOLINS + "/hour", true);
 		} else {
-			builder.addField("Violin I `" + Numbers.formatNumber(data.get("violin1")) + "/20`", "Price: `" + Numbers.formatNumber(450000 * (long) data.get("violin1")) + "`" + Emoji.VIOLINS + "\nEffect: `+70`" + Emoji.VIOLINS + "/hour\nID: `violin1`", true);
+			builder.addField("Violin I `" + Numbers.formatNumber(data.get("violin1")) + "/20`", "Price: `" + Numbers.formatNumber(450000 * (long) data.get("violin1")) + "`" + Emoji.VIOLINS + "\nEffect: `+70`" + Emoji.VIOLINS + "/hour\nID: `first` `violin1`", true);
 		}
 		if((long) data.get("violin2") == 20) {
 			builder.addField("Violin II :white_check_mark:", "Effect: `+60`" + Emoji.VIOLINS + "/hour", true);
 		} else {
-			builder.addField("Violin II `" + Numbers.formatNumber(data.get("violin2")) + "/20`", "Price: `" + Numbers.formatNumber(350000 * (long) data.get("violin2")) + "`" + Emoji.VIOLINS + "\nEffect: `+60`" + Emoji.VIOLINS + "/hour\nID: `violin2`", true);
+			builder.addField("Violin II `" + Numbers.formatNumber(data.get("violin2")) + "/20`", "Price: `" + Numbers.formatNumber(350000 * (long) data.get("violin2")) + "`" + Emoji.VIOLINS + "\nEffect: `+60`" + Emoji.VIOLINS + "/hour\nID: `second` `violin2`", true);
 		}
 		if((long) data.get("cello") == 15) {
 			builder.addField("Cellos :white_check_mark:", "Effect: `+50`" + Emoji.VIOLINS + "/hour", true);
@@ -209,7 +209,7 @@ public class Upgrades {
 		if((long) data.get("doubleBass") == 5) {
 			builder.addField("Double Basses :white_check_mark:", "Effect: `+50`" + Emoji.VIOLINS + "/hour", true);
 		} else {
-			builder.addField("Double Basses `" + Numbers.formatNumber(data.get("doubleBass")) + "/5`", "Price: `" + Numbers.formatNumber(300000 * ((long) data.get("doubleBass") + 1)) + "`" + Emoji.VIOLINS + "\nEffect: `+50`" + Emoji.VIOLINS + "/hour\nID: `doubleBass`", true);
+			builder.addField("Double Basses `" + Numbers.formatNumber(data.get("doubleBass")) + "/5`", "Price: `" + Numbers.formatNumber(300000 * ((long) data.get("doubleBass") + 1)) + "`" + Emoji.VIOLINS + "\nEffect: `+50`" + Emoji.VIOLINS + "/hour\nID: `doublebass` `db`", true);
 		}
 		if((long) data.get("piano") == 2) {
 			builder.addField("Pianists :white_check_mark:", "Effect: `+110`" + Emoji.VIOLINS + "/hour", true);
@@ -226,7 +226,7 @@ public class Upgrades {
 	
 	public static void choir() {
 		if(!(boolean) data.get("orchestra")) {
-			e.reply("You have not unlocked this page yet!");
+			e.reply("You need to have an orchestra to access these upgrades!  Check out Page 6 for more information.");
 			return;
 		}
 		builder.setTitle("__**Choir**__");
@@ -260,20 +260,20 @@ public class Upgrades {
 	
 	public static void teacherUpgrades() {
 		if(!(boolean) data.get("certificate")) {
-			e.reply("You have not unlocked this page yet!");
+			e.reply("You need to have a teaching certificate to access these upgrades!  Check out Page 6 for more information.");
 			return;
 		}
 		builder.setTitle("__**Teacher Upgrades**__")
-				.addField("More Students `" + Numbers.formatNumber(data.get("students")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("students"), 2, 1000000)) + "`" + Emoji.VIOLINS + "\nEffect: `+2 000`" + Emoji.VIOLINS + "/hour, x1.15 violins from `/teach`\nID: `students`", true);
+				.addField("More Students `" + Numbers.formatNumber(data.get("students")) +  "`", "Price: `" + Numbers.formatNumber(Numbers.itemCost((long) data.get("students"), 2, 1000000)) + "`" + Emoji.VIOLINS + "\nEffect: `+2 000`" + Emoji.VIOLINS + "/hour, `x1.15` violins from `/teach`\nID: `students`", true);
 		if((long) data.get("lessonCharge") == 5) {
 			builder.addField("Higher Lesson Rates :white_check_mark:", "Effect: `+3 000`" + Emoji.VIOLINS + "/hour, x1.1 violins from `/teach`", true);
 		} else {
-			builder.addField("Higher Lesson Rates `" + Numbers.formatNumber(data.get("lessonCharge")) + "/5`", "Price: `" + Numbers.formatNumber(3000000 * ((long) data.get("lessonCharge") + 1)) + "`" + Emoji.VIOLINS + "\nEffect: `+3 000`" + Emoji.VIOLINS + "/hour, x1.1 violins from `/teach`\nID: `lessonCharge`", true);
+			builder.addField("Higher Lesson Rates `" + Numbers.formatNumber(data.get("lessonCharge")) + "/5`", "Price: `" + Numbers.formatNumber(3000000 * ((long) data.get("lessonCharge") + 1)) + "`" + Emoji.VIOLINS + "\nEffect: `+3 000`" + Emoji.VIOLINS + "/hour, x1.1 violins from `/teach`\nID: `lessoncharge` `pricing`", true);
 		}
 		if((long) data.get("training") == 10) {
-			builder.addField("Teacher Training :white_check_mark:", "Effect: `+1 000`" + Emoji.VIOLINS + "/hour, x1.05 violins from `/teach`", true);
+			builder.addField("Teacher Training :white_check_mark:", "Effect: `+1 000`" + Emoji.VIOLINS + "/hour, `x1.05` violins from `/teach`", true);
 		} else {
-			builder.addField("Teacher Training `" + Numbers.formatNumber(data.get("training")) + "/10`", "Price: `" + Numbers.formatNumber(2000000 * ((long) data.get("training") + 1)) + "`" + Emoji.VIOLINS + "\nEffect: `+1 000`" + Emoji.VIOLINS + "/hour, x1.05 violins from `/teach`\nID: `training`", true);
+			builder.addField("Teacher Training `" + Numbers.formatNumber(data.get("training")) + "/10`", "Price: `" + Numbers.formatNumber(2000000 * ((long) data.get("training") + 1)) + "`" + Emoji.VIOLINS + "\nEffect: `+1 000`" + Emoji.VIOLINS + "/hour, `x1.05` violins from `/teach`\nID: `training`", true);
 		}
 		if((boolean) data.get("studio")) {
 			builder.addField("Teaching Studio :white_check_mark:", "Effect: `+5 000`" + Emoji.VIOLINS + "/hour", true);
@@ -281,29 +281,29 @@ public class Upgrades {
 			builder.addField("Teaching Studio :x:", "Price: `20 000 000`" + Emoji.VIOLINS + "\nEffect: `+5 000`" + Emoji.VIOLINS + "/hour\nID: `studio`", true);
 		}
 		if((boolean) data.get("longerLessons")) {
-			builder.addField("Longer Lessons :white_check_mark:", "Effect: `+100%` violins from `/teach`", true);
+			builder.addField("Longer Lessons :white_check_mark:", "Effect: `x2` violins from `/teach`", true);
 		} else {
-			builder.addField("Longer Lessons :x:", "Price: `30 000 000`" + Emoji.VIOLINS + "\nEffect: x2 violins from `/teach`\nID: `longerLessons`", true);
+			builder.addField("Longer Lessons :x:", "Price: `30 000 000`" + Emoji.VIOLINS + "\nEffect: `x2` violins from `/teach`\nID: `longerlessons` `longer`", true);
 		}
 		e.replyEmbeds(builder.build());
 	}
 	
 	public static void bankUpgrades() {
 		if(!(boolean) data.get("orchestra")) {
-			e.reply("You have not unlocked this page yet!");
+			e.reply("You need to have an orchestra to access these upgrades!  Check out Page 6 for more information.");
 			return;
 		}
 		builder.setTitle("__**Bank Upgrades**__")
 				.addField("Storage Space `" + Numbers.formatNumber(data.get("storage")) +  "`", "Price: `" + Numbers.formatNumber(3 * (long) data.get("storage")) + "`" + Emoji.MEDALS + "\nEffect: `+20 000 000 bankspace\nID: `storage`", true);
 		if((boolean) data.get("moreInterest")) {
-			builder.addField("Higher Interest :white_check_mark:", "Effect: Gain 2% interest instead of 1%", true);
+			builder.addField("Higher Interest :white_check_mark:", "Effect: Gain `2%` interest instead of `1%`", true);
 		} else {
-			builder.addField("Higher Interest :x:", "Price: `15" + Emoji.MEDALS + "\nEffect: Gain 2% interest instead of 1%\nID: `moreInterest`", true);
+			builder.addField("Higher Interest :x:", "Price: `15`" + Emoji.MEDALS + "\nEffect: Gain `2%` interest instead of `1%`\nID: `moreinterest`", true);
 		}
 		if((boolean) data.get("lessPenalty")) {
-			builder.addField("Lower Loan Interest :white_check_mark:", "Effect: Decrease loan interest rate to 9%", true);
+			builder.addField("Lower Loan Interest :white_check_mark:", "Effect: Decrease loan penalty rate to `9%`", true);
 		} else {
-			builder.addField("Lower Loan Interest :x:", "Price: `15" + Emoji.MEDALS + "\nEffect: Decrease loan interest rate to 9%\nID: `lessPenalty`", true);
+			builder.addField("Lower Loan Interest :x:", "Price: `15`" + Emoji.MEDALS + "\nEffect: Decrease loan penalty rate to `9%`\nID: `lesspenalty`", true);
 		}
 		e.replyEmbeds(builder.build());
 	}
@@ -313,7 +313,7 @@ public class Upgrades {
 		data = LoadData.loadData(event);
 		builder = new EmbedBuilder()
 				.setColor(Color.decode((String) data.get("color")))
-				.setFooter("Violins: " + Numbers.formatNumber(data.get("violins")) + "\nMedals: " + Numbers.formatNumber(data.get("medals")) + "\nUse `/buy [ID]` to buy an upgrade! CASE-SENSITIVE", event.getJDA().getSelfUser().getAvatarUrl());
+				.setFooter("Violins: " + Numbers.formatNumber(data.get("violins")) + "\nMedals: " + Numbers.formatNumber(data.get("medals")) + "\nUse `/buy [ID]` to buy an upgrade!", event.getJDA().getSelfUser().getAvatarUrl());
 		switch(page) {
 			case 1 -> incomeUpgrades();
 			case 2 -> woodwinds();

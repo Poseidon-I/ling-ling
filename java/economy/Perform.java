@@ -35,12 +35,12 @@ public class Perform {
 				num = random.nextDouble();
 				if(num > 0.65) {
 					builder.append("Your teacher approved your performance.  Your tiger mom saw the comment, and gave you `").append(Numbers.formatNumber((long) (base * 0.05))).append("`").append(Emoji.VIOLINS).append(" in addition to the `").append(Numbers.formatNumber(base)).append("`").append(Emoji.VIOLINS).append(" that you earned.");
-					base *= 1.1;
+					base = (long) (base * 1.1);
 				} else if(num > 0.40) {
 					builder.append("Your tiger mom approved your performance.  She gave you `").append(Numbers.formatNumber((long) (base * 0.2))).append("`").append(Emoji.VIOLINS).append(" in addition to the `").append(Numbers.formatNumber(base)).append("`").append(Emoji.VIOLINS).append(" that you earned.");
-					base *= 1.25;
+					base = (long) (base * 1.25);
 				} else if(num > 0.2) {
-					base *= 1.5;
+					base = (long) (base * 1.5);
 					builder.append("Brett and Eddy approved of your performance and increased the amount of violins you earned by 1.5x.  You got `").append(Numbers.formatNumber(base)).append("`").append(Emoji.VIOLINS);
 				} else if(num > 0.05) {
 					base *= 2;
@@ -59,27 +59,27 @@ public class Perform {
 				num = random.nextDouble();
 				long income = (long) data.get("income");
 				if(num > 0.8) {
-					base *= 0.5;
+					base = (long) (base * 0.5);
 					base -= income / 100;
 					builder.append("Oh no!  Your E String snapped during the performance!  You couldn't go on, and only earned `").append(Numbers.formatNumber(base)).append("`").append(Emoji.VIOLINS).append("  You eventually had to pay `").append(Numbers.formatNumber(income / 100)).append("`").append(Emoji.VIOLINS).append(" for a new E String.");
 				} else if(num > 0.6) {
-					base *= 0.9;
+					base = (long) (base * 0.9);
 					builder.append("Your violin randomly went out of tune during the rehearsal.  You had to spend 4 minutes tuning it and were only able to earn `").append(Numbers.formatNumber(base)).append("`").append(Emoji.VIOLINS);
 				} else if(num > 0.45) {
-					base *= 0.9;
+					base = (long) (base * 0.9);
 					builder.append("You didn't memorize your piece and you had to use your music.  You only earned `").append(Numbers.formatNumber(base)).append("`").append(Emoji.VIOLINS);
 				} else if(num > 0.3) {
-					base *= 0.5;
+					base = (long) (base * 0.5);
 					base -= income / 10;
 					builder.append("You hurt your wrist during the performance and only got half of the effectiveness.  You earned `").append(Numbers.formatNumber(base)).append("`").append(Emoji.VIOLINS).append(" but ended up paying `").append(Numbers.formatNumber(income / 10)).append("`").append(Emoji.VIOLINS).append(" in hospital fees.");
 				} else if(num > 0.2) {
-					base *= 0.1;
+					base = (long) (base * 0.1);
 					builder.append("**OOF**\nYour bridge fell off during the performance.  You spend the next half-hour trying to get it back on, and you only earned `").append(Numbers.formatNumber(base)).append("`").append(Emoji.VIOLINS);
 				} else if(num > 0.1) {
 					base = -1 * income;
 					builder.append("**OOF**\nYou had a memory blank during the performance.  Your tiger mom took all your earnings, in addition to another `").append(Numbers.formatNumber(income)).append("`").append(Emoji.VIOLINS).append(" for shaming yourself.");
 				} else if(num > 0.05) {
-					base *= 0.5;
+					base = (long) (base * 0.5);
 					base -= income;
 					builder.append("**OOF**\nYour performance was for a competition, and you only won Honorable Mention.  Your tiger mom Kung-Paos your chicken and takes half your earnings, in addition to another `").append(Numbers.formatNumber(income)).append("`").append(Emoji.VIOLINS).append(" for being so mediocre.");
 				} else if(num > 0.015) {
@@ -90,14 +90,14 @@ public class Perform {
 					badEvent = true;
 					base = 0;
 				} else if(num > 0.005) {
-					builder.append(":regional_indicator_l:\nYou decided to fake your performance.  Of course it didn't work and Ling Ling fined you `").append(Numbers.formatNumber((long) (violins * 0.95))).append("`").append(Emoji.VIOLINS);
-					data.replace("violins", (long) (violins * 0.05));
+					builder.append(":regional_indicator_l:\nYou decided to fake your performance.  Of course it didn't work and Ling Ling fined you").append(Numbers.formatNumber((long) (violins * 0.95))).append("`").append(Emoji.VIOLINS).append(" but Strad was going to remove these types of fines so your violins are fine.");
+					// data.replace("violins", (long) (violins * 0.05));
 					badEvent = true;
 					base = 0;
 				} else {
-					builder.append("**wow RNGesus *__really__* hates you**\nYou dropped your violin.  How shameful.  All cooldowns except daily and gamble have had one day added to them, and you were fined pretty much your entire balance for being careless on stage.");
+					builder.append("**wow RNGesus *__really__* hates you**\nYou dropped your violin.  How shameful.  All cooldowns except daily and gamble have had one day added to them, and you were fined pretty much your entire balance for being careless on stage but Strad was going to remove these types of fines so your violins are fine.");
 					time += 86400000;
-					data.replace("violins", (long) (violins * 0.01));
+					// data.replace("violins", (long) (violins * 0.01));
 					data.replace("scaleCD", time);
 					data.replace("practiceCD", time);
 					data.replace("rehearseCD", time);
@@ -113,7 +113,7 @@ public class Perform {
 					data.replace("blessings", (long) data.get("blessings") + 1);
 					builder.append("\nYour performance didn't win anything in Ling Ling Competition this time.  You walked away with `").append(Numbers.formatNumber(base)).append("`").append(Emoji.VIOLINS).append(" and `1`").append(Emoji.BLESSING);
 				} else if(num > 0.20) {
-					base *= 1.5;
+					base = (long) (base * 1.5);
 					data.replace("blessings", (long) data.get("blessings") + 2);
 					data.replace("thirdPlace", (long) data.get("thirdPlace") + 1);
 					builder.append("\n:trophy: Your performance won third place in the Ling Ling Competition.  Your earnings were multiplied by 1.5 to `").append(Numbers.formatNumber(base)).append("`").append(Emoji.VIOLINS).append(" and you walked away with `2`").append(Emoji.BLESSING).append(" and a third place medal ").append(Emoji.THIRD_PLACE);

@@ -1,12 +1,16 @@
 package regular;
 
+import com.mongodb.client.MongoCollection;
 import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.entities.Member;
+import org.bson.Document;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import processes.DatabaseManager;
 
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.List;
 // BEETHOVEN-ONLY CLASS
 public class ResetMessages {
@@ -17,11 +21,8 @@ public class ResetMessages {
 			if(user.getUser().isBot()) {
 				continue;
 			}
-			JSONObject currentData;
-			try(FileReader reader = new FileReader("Ling Ling Bot Data\\Leveling\\" + user.getId() + ".json")) {
-				currentData = (JSONObject) parser.parse(reader);
-				reader.close();
-			} catch(Exception exception) {
+			JSONObject currentData = DatabaseManager.getDataForUser(e, "Leveling Data", user.getId());
+			if(currentData == null) {
 				continue;
 			}
 			try {
@@ -29,12 +30,7 @@ public class ResetMessages {
 			} catch(Exception exception) {
 				currentData.put("messages", 0L);
 			}
-			try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Leveling\\" + user.getId() + ".json")) {
-				writer.write(currentData.toJSONString());
-				writer.close();
-			} catch(Exception exception) {
-				//nothing here lol
-			}
+			DatabaseManager.saveDataForUser(e, "Leveling Data", user.getId(), currentData);
 		}
 		e.reply("Message counts successfully reset!");
 	}

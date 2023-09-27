@@ -5,10 +5,11 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import processes.DatabaseManager;
 
 import java.awt.*;
-import java.io.FileReader;
 import java.util.List;
+import java.util.Objects;
 // BEETHOVEN-ONLY CLASS
 
 public class Leaderboard {
@@ -17,7 +18,7 @@ public class Leaderboard {
 		JSONObject data = Leveling.loadData(e);
 		long userLevel = (long) data.get("level");
 		long userXP = (long) data.get("xp");
-		String[] entry = new String[]{e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + " `" + e.getAuthor().getId() + "`: Level " + data.get("level") + " - " + data.get("xp") + " XP \n", "null#0000 `0`: Level 0 - 0 XP \n", "null#0000 `0`: Level 0 - 0 XP \n", "null#0000 `0`: Level 0 - 0 XP \n", "null#0000 `0`: Level 0 - 0 XP \n", "null#0000 `0`: Level 0 - 0 XP \n", "null#0000 `0`: Level 0 - 0 XP \n", "null#0000 `0`: Level 0 - 0 XP \n", "null#0000 `0`: Level 0 - 0 XP \n", "null#0000 `0`: Level 0 - 0 XP \n"};
+		String[] entry = new String[]{e.getAuthor().getGlobalName() + "** `" + e.getAuthor().getId() + "`: Level " + data.get("level") + " - " + data.get("xp") + " XP \n", "<@0> `0`: Level 0 - 0 XP \n", "<@0> `0`: Level 0 - 0 XP \n", "<@0> `0`: Level 0 - 0 XP \n", "<@0> `0`: Level 0 - 0 XP \n", "<@0> `0`: Level 0 - 0 XP \n", "<@0> `0`: Level 0 - 0 XP \n", "<@0> `0`: Level 0 - 0 XP \n", "<@0> `0`: Level 0 - 0 XP \n", "<@0> `0`: Level 0 - 0 XP \n"};
 		List<Member> list = e.getGuild().getMembers();
 		long place = 1;
 		JSONParser parser = new JSONParser();
@@ -25,11 +26,8 @@ public class Leaderboard {
 			if(user.getUser().isBot()) {
 				continue;
 			}
-			JSONObject currentData;
-			try(FileReader reader = new FileReader("Ling Ling Bot Data\\Leveling\\" + user.getId() + ".json")) {
-				currentData = (JSONObject) parser.parse(reader);
-				reader.close();
-			} catch(Exception exception) {
+			JSONObject currentData = DatabaseManager.getDataForUser(e, "Leveling Data", user.getId());
+			if(currentData == null) {
 				continue;
 			}
 			long level = (long) currentData.get("level");
@@ -43,7 +41,7 @@ public class Leaderboard {
 					if(user.getId().equals("768056391814086676")) {
 						entry[i] = "**NARWHAL** `768056391814086676`: Level " + level + " - " + xp + " XP \n";
 					} else {
-						entry[i] = user.getUser().getName() + "#" + user.getUser().getDiscriminator() + " `" + user.getId() + "`: Level " + level + " - " + xp + " XP \n";
+						entry[i] = user.getUser().getGlobalName() + "** `" + user.getId() + "`: Level " + level + " - " + xp + " XP \n";
 					}
 					if(level > userLevel) {
 						place++;
@@ -54,7 +52,7 @@ public class Leaderboard {
 					if(user.getId().equals("768056391814086676")) {
 						entry[i] = "**NARWHAL** `768056391814086676`: Level " + level + " - " + xp + " XP \n";
 					} else {
-						entry[i] = user.getUser().getName() + "#" + user.getUser().getDiscriminator() + " `" + user.getId() + "`: Level " + level + " - " + xp + " XP \n";
+						entry[i] = user.getUser().getGlobalName() + "** `" + user.getId() + "`: Level " + level + " - " + xp + " XP \n";
 					}
 					if(xp > userXP) {
 						place++;
@@ -69,7 +67,7 @@ public class Leaderboard {
 			if(entry[i].contains("#0000")) {
 				break;
 			}
-			board.append("**").append(i + 1).append(".** ").append(entry[i]);
+			board.append("**").append(i + 1).append("\\. ").append(entry[i]);
 		}
 		if(place >= 11) {
 			board.append("\n**").append(place).append(". You**: Level ").append(userLevel).append(" - ").append(userXP).append(" XP");

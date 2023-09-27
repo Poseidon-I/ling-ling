@@ -13,7 +13,7 @@ public class PayLoan {
 			e.reply("You don't owe anything!");
 		} else {
 			long amount;
-			if(temp.equals("")) {
+			if(temp.isEmpty()) {
 				e.reply("You have to either input `max` or an integer.");
 				return;
 			}

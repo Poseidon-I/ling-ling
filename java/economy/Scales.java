@@ -2,13 +2,17 @@ package economy;
 
 import eventListeners.GenericDiscordEvent;
 import org.json.simple.JSONObject;
+import processes.DatabaseManager;
 import processes.Numbers;
 
 import java.util.Random;
 
 public class Scales {
 	public static void scales(GenericDiscordEvent e) {
-		JSONObject data = LoadData.loadData(e);
+		JSONObject data = DatabaseManager.getEconomyData(e);
+		if(data == null) {
+			return;
+		}
 		long time = System.currentTimeMillis();
 		Random random = new Random();
 		if(time < (long) data.get("scaleCD")) {
@@ -28,7 +32,7 @@ public class Scales {
 			data.replace("scalesPlayed", (long) data.get("scalesPlayed") + 1);
 			data.replace("earnings", (long) data.get("earnings") + base);
 			RNGesus.lootbox(e, data);
-			SaveData.saveData(e, data);
+			DatabaseManager.saveDataByUser(e, "Economy Data", data);
 		}
 	}
 }

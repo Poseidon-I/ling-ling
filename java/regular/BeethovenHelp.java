@@ -21,7 +21,7 @@ public class BeethovenHelp {
                 case "slowmode" -> builder.addField("**Slowmode Command**", "Syntax: `beethoven slowmode [time]`\nUsage: Set the slowmode of the current channel in seconds.\nRestrictions: Only usable by <@&735308459452661802>\nExample: `beethoven slowmode 1`", false)
                         .addField("**Command Parameters**", "`time` - Integer; number of seconds that the slowmode should be set for", false);
                 case "rank" -> builder.addField("Rank Command", "Syntax: `beethoven rank`\nUsage: Shows you your level and XP server.", false);
-                case "setlevel" -> builder.addField("SetLevel Command", "Syntax: `beethoven setlevel [user] [level]`\nUsage: Sets the level of a user.\nRestrictions: Usable only by members with the `ADMINISTRATOR` permission.\nExample: `beethoven setlevel 488487157372157962 10`", false);
+                case "setlevelingdata" -> builder.addField("SetLevelingData Command", "Syntax: `beethoven setleveling [user] [field] [newValue]`\nUsage: Sets the leveling info of a user.\nRestrictions: Usable only by members with the `ADMINISTRATOR` permission.\nExample: `beethoven setlevelingdata 488487157372157962 level 10` `beethoven setlevelingdata 488487157372157962 messages 999`", false);
                 case "leaderboard" -> builder.addField("Leaderboard Command", "Syntax: `beethoven leaderboard`\nUsage: Shows the 10 people w    ith the most levels and XP server.\nAliases: `lb` `levels`", false);
                 case "checkmessages" -> builder.addField("CheckMessages Command", "Syntax: `beethoven checkmessages [user]`\nUsage: Shows you the amount of messages someone has sent this month.\nAliases: `checkmsgs`\nExample: `beethoven checkmessages 488487157372157962`", false);
                 case "resetmessages" -> builder.addField("ResetMessages Command", "Syntax: `beethoven resetmesssages`\nUsage: Resets all messages.\nRestrictions: Usable only by Developers", false);
@@ -36,7 +36,7 @@ public class BeethovenHelp {
                 default -> builder.addField("Command Doesn't Exist!", "`beethoven " + message[2] + "` doesn't exist you idiot.", false);
             }
         } catch(Exception exception) {
-            builder.addField("**Commands**", "**Run `beethoven help [command]` for more info on a command!**\n\n**__Utility Commands__**\n`gstart` `forceupdategiveaways`\n`rerollgiveaway` `slowmode`\n`pingdeadchat` `checkdm`\n`annoy` `forcerestartlingling`\n`requestgiveaway`\n\n**__Leveling Commands__**\n`rank` `setlevel`\n`leaderboard` `checkmessages`\n`resetmessages` `messageleaderboard`\n`staffreport`", false);
+            builder.addField("**Commands**", "**Run `beethoven help [command]` for more info on a command!**\n\n**__Utility Commands__**\n`gstart` `forceupdategiveaways`\n`rerollgiveaway` `slowmode`\n`pingdeadchat` `checkdm`\n`annoy` `forcerestartlingling`\n`requestgiveaway`\n\n**__Leveling Commands__**\n`rank` `setlevelingdata`\n`leaderboard` `checkmessages`\n`resetmessages` `messageleaderboard`\n`staffreport`", false);
         }
         e.replyEmbeds(builder.build());
     }

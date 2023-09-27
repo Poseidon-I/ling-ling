@@ -12,7 +12,7 @@ public class Loan {
 			e.reply("You still have an outstanding balance of `" + Numbers.formatNumber(balance) + "`" + Emoji.VIOLINS + "!");
 		} else {
 			long loan;
-			if(amount.equals("")) {
+			if(amount.isEmpty()) {
 				e.reply("You have to either input `max` or an integer.");
 				return;
 			}

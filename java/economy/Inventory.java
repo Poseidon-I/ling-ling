@@ -4,6 +4,7 @@ import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import processes.DatabaseManager;
 import processes.Numbers;
 
 import java.awt.*;
@@ -12,20 +13,16 @@ import java.util.Objects;
 
 public class Inventory {
 	public static void inventory(GenericDiscordEvent e, String user, int page) {
-		JSONObject data;
-		if(user.equals("")) {
+		if(user.isEmpty()) {
 			user = e.getAuthor().getId();
 		}
 		if(page == -1) {
 			e.reply("You have to provide a page number.");
 			return;
 		}
-		
-		JSONParser parser = new JSONParser();
-		try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + user + ".json")) {
-			data = (JSONObject) parser.parse(reader);
-			reader.close();
-		} catch(Exception exception) {
+
+		JSONObject data = DatabaseManager.getDataForUser(e, "Economy Data", user);
+		if(data == null) {
 			e.reply("This save file does not exist!");
 			return;
 		}
@@ -34,7 +31,7 @@ public class Inventory {
 			user = "**NARWHAL**";
 		} else {
 			try {
-				user = Objects.requireNonNull(e.getJDA().getUserById(user)).getName();
+				user = data.get("discordName").toString();
 			} catch(Exception exception) {
 				user = "Someone";
 			}

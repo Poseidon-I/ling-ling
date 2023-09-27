@@ -9,7 +9,7 @@ public class Withdraw {
 		JSONObject data = LoadData.loadData(e);
 		long amount;
 		long balance = (long) data.get("bank");
-		if(temp.equals("")) {
+		if(temp.isEmpty()) {
 			e.reply("You have to withdraw something.");
 			return;
 		}
@@ -24,8 +24,9 @@ public class Withdraw {
 			}
 		}
 		if(amount > balance) {
-			e.reply("You can't withdraw more than you have in your bank account, you fool.");
-		} else if(amount < 1) {
+			amount = balance;
+		}
+		if(amount < 1) {
 			e.reply("Stop wasting my time trying to withdraw a negative amount, shame on you");
 		} else {
 			balance -= amount;

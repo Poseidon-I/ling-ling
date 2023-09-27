@@ -171,7 +171,7 @@ public class Market {
 				file.delete();
 				if((boolean) tempData.get("DMs")) {
 					long finalOfferAmount = offerAmount;
-					Objects.requireNonNull(e.getJDA().getUserById(offererID)).openPrivateChannel().queue((channel) -> channel.sendMessage("Someone just purchased `" + Numbers.formatNumber(finalOfferAmount) + "x` " + item + " at `" + Numbers.formatNumber(offerPrice) + "`" + Emoji.VIOLINS + " each.  You made `" + Numbers.formatNumber((long) (price * 0.99)) + "`" + Emoji.VIOLINS + "!\n*Ling Ling taxed you `" + Numbers.formatNumber((long) (price * 0.01)) + "`" + Emoji.VIOLINS + "*"));
+					Objects.requireNonNull(e.getJDA().getUserById(offererID)).openPrivateChannel().queue((channel) -> channel.sendMessage("Someone just purchased `" + Numbers.formatNumber(finalOfferAmount) + "x` " + item + " at `" + Numbers.formatNumber(offerPrice) + "`" + Emoji.VIOLINS + " each.  You made `" + Numbers.formatNumber((long) (price * 0.99)) + "`" + Emoji.VIOLINS + "!\n*Ling Ling taxed you `" + Numbers.formatNumber((long) (price * 0.01)) + "`" + Emoji.VIOLINS + "*").queue());
 				}
 				tempData.replace("violins", (long) tempData.get("violins") + (long) (price * 0.99));
 				tempData.replace("itemsSold", (long) tempData.get("itemsSold") + gained);
@@ -188,8 +188,8 @@ public class Market {
 					.setFooter("Ling Ling Bot", e.getJDA().getSelfUser().getAvatarUrl())
 					.setColor(Color.GREEN)
 					.setTitle("**__Sell Offer Filled__**")
-					.addField("Buyer: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + " `" + e.getAuthor().getId() + "`", "Seller: <@" + offererID + ">\nItem: " + item + "\n# Purchased: " + purchased + "\nPrice: " + price, false);
-			Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("1028934753270894592")).sendMessageEmbeds(builder.build());
+					.addField("Buyer: " + e.getAuthor().getGlobalName() + " `" + e.getAuthor().getId() + "`", "Seller: <@" + offererID + ">\nItem: " + item + "\n# Purchased: " + purchased + "\nPrice: " + price, false);
+			Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("1028934753270894592")).sendMessageEmbeds(builder.build()).queue();
 		}
 		data.replace("violins", (long) data.get("violins") - paid);
 		data.replace("itemsBought", (long) data.get("itemsBought") + gained);
@@ -244,8 +244,8 @@ public class Market {
 				.setFooter("Ling Ling Bot", e.getJDA().getSelfUser().getAvatarUrl())
 				.setColor(Color.BLUE)
 				.setTitle("**__Sell Offer Setup__**")
-				.addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + " `" + e.getAuthor().getId() + "`", "Item: " + item + "\nAmount: " + amount + "\nPrice: " + price, false);
-		Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("1028934753270894592")).sendMessageEmbeds(builder.build());
+				.addField("User: " + e.getAuthor().getGlobalName() + " `" + e.getAuthor().getId() + "`", "Item: " + item + "\nAmount: " + amount + "\nPrice: " + price, false);
+		Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("1028934753270894592")).sendMessageEmbeds(builder.build()).queue();
 	}
 
 	public static void viewOffers() {
@@ -301,12 +301,13 @@ public class Market {
 				.setFooter("Ling Ling Bot", e.getJDA().getSelfUser().getAvatarUrl())
 				.setColor(Color.RED)
 				.setTitle("**__Sell Offers Cancelled__**")
-				.addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + " `" + e.getAuthor().getId() + "`", stringBuilder.toString(), false);
-		Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("1028934753270894592")).sendMessageEmbeds(builder.build());
+				.addField("User: " + e.getAuthor().getGlobalName() + " `" + e.getAuthor().getId() + "`", stringBuilder.toString(), false);
+		Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("1028934753270894592")).sendMessageEmbeds(builder.build()).queue();
 	}
 
 	public static void market(GenericDiscordEvent event, String item1, String action, long amount1, long price1) {
-		e = event;
+		event.reply("This command is temporarily diabled while Strad wraps his head around how the hell to migrate this command.  Also not like it saw much use anyway...");
+		/*e = event;
 		data = LoadData.loadData(e);
 		amount = amount1;
 		price = price1;
@@ -348,6 +349,6 @@ public class Market {
 			case "offers" -> viewOffers();
 			case "cancel" -> cancelOffers();
 			default -> showAllInfo();
-		}
+		}*/
 	}
 }

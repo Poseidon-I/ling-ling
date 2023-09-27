@@ -19,11 +19,11 @@ public class WordAutomod {
 				.setColor(Color.RED);
 		if(delete) {
 			e.getChannel().deleteMessageById(e.getMessage().getId()).queue();
-			builder.addField("Offender: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), "Category: " + category + "\nRefer to Carl's message below for the full message.", false)
+			builder.addField("Offender: " + e.getAuthor().getName(), "Category: " + category + "\nRefer to Carl's message below for the full message.", false)
 					.setTitle("Message Deleted");
 			e.getAuthor().openPrivateChannel().complete().sendMessage("Your message was deleted for the following reason: " + category + "\nYou have lost 10 XP and 1 Message").queue();
 		} else {
-			builder.addField("Offender: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), "Category: " + category + "\n" + e.getMessage().getJumpUrl(), false)
+			builder.addField("Offender: " + e.getAuthor().getName(), "Category: " + category + "\n" + e.getMessage().getJumpUrl(), false)
 					.setTitle("Beethoven Warning");
 			e.getAuthor().openPrivateChannel().complete().sendMessage("You have been warned for the following reason: " + category + "\nYou have lost 10 XP and 1 Message\n**This is NOT a Carl-bot Warning**").queue();
 		}

@@ -1,55 +1,109 @@
 package processes;
 
+import com.mongodb.client.MongoCollection;
+import dev.ResetDaily;
+import eventListeners.GenericDiscordEvent;
+import org.bson.Document;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.*;
+import java.util.ArrayList;
+import java.util.Objects;
+
+import static com.mongodb.client.model.Filters.eq;
+
+class CreateThread implements Runnable {
+
+	private static GenericDiscordEvent e;
+	private static long time;
+	private static JSONObject data;
+
+	public static void setGenericDiscordEvent(GenericDiscordEvent e1, long time1, JSONObject data1) {
+		e = e1;
+		time = time1;
+		data = data1;
+	}
+
+	@Override
+	public void run() {
+		System.out.println("[DEBUG] New Thread: " + Thread.currentThread().getId() + "\n Hour: " + time);
+		while(System.currentTimeMillis() > time) {
+			time += 3600000;
+			data.replace("hourly", time + 3600000);
+			DatabaseManager.saveMiscData(data);
+			HourlyIncome.hourlyIncome();
+
+			//RESET COOLDOWNS BOUND TO 12AM UTC
+			if(time % 86400000 == 0) {
+				ResetDaily.resetDaily(e);
+			}
+
+			//BANK SHIT
+			if(time % 259200000 == 0) {
+				InterestPenalty.interestPenalty();
+				Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage("Loan penalties applied; Interest awarded!").queue();
+			}
+
+			Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage("Hourly Incomes Sent!").queue();
+		}
+		System.out.println("Thread " + Thread.currentThread().getId() + " Finished.");
+	}
+}
 
 public class HourlyIncome {
+	public static void checkHourly(GenericDiscordEvent e1) {
+		//HOURLY
+		JSONObject data = DatabaseManager.getMiscData();
+		assert data != null;
+		long time = (long) data.get("hourly");
+		if(System.currentTimeMillis() > time) {
+			CreateThread.setGenericDiscordEvent(e1, time, data);
+			Thread object = new Thread(new CreateThread());
+			object.start();
+		}
+	}
+
 	public static void hourlyIncome() {
-		File directory = new File("Ling Ling Bot Data\\Economy Data");
-		File[] files = directory.listFiles();
+		ArrayList<Document> documents = DatabaseManager.getAllEconomyData();
+		MongoCollection<Document> collection = DatabaseManager.prepareStoreAllEconomyData();
 		JSONParser parser = new JSONParser();
 		JSONObject data;
-		assert files != null;
-		for(File file : files) {
-			try(FileReader reader = new FileReader(file.getAbsolutePath())) {
-				data = (JSONObject) parser.parse(reader);
-				reader.close();
+		for(Document file : documents) {
+			try {
+				data = (JSONObject) parser.parse(file.toJson());
 				if((boolean) data.get("banned")) {
 					continue;
 				}
 			} catch(Exception exception) {
-				System.out.println("Problem File is " + file.getName());
 				continue;
 			}
 			long income = (long) data.get("income");
 			long time = System.currentTimeMillis();
 			if(time > (long) data.get("rosinExpire")) {
-				income -= income * 0.25;
+				income = (long) (income - (income * 0.25));
 			}
 			if(time > (long) data.get("stringsExpire")) {
-				income -= income * 0.25;
+				income = (long) (income - (income * 0.25));
 			}
 			if(time > (long) data.get("bowHairExpire")) {
-				income -= income * 0.25;
+				income = (long) (income - (income * 0.25));
 			}
 			if(time > (long) data.get("serviceExpire")) {
-				income -= income * 0.25;
+				income = (long) (income - (income * 0.25));
 			}
 			long violins = (long) data.get("violins");
 			long loan = (long) data.get("loan");
 			if(loan > income * 400) {
-				violins -= income * 0.3;
-				loan -= income * 1.3;
+				violins = (long) (violins - (income * 0.3));
+				loan = (long) (loan - (income * 1.3));
 			} else if(loan > income * 250) {
 				loan -= income;
 			} else if(loan > income * 100) {
-				violins += income * 0.3;
-				loan -= income * 0.7;
+				violins = (long) (violins + income * 0.3);
+				loan = (long) (loan - (income * 0.7));
 			} else if(loan > 0) {
-				violins += income * 0.6;
-				loan -= income * 0.4;
+				violins = (long) (violins + income * 0.6);
+				loan = (long) (loan - (income * 0.4));
 			} else {
 				violins += income;
 			}
@@ -59,12 +113,7 @@ public class HourlyIncome {
 			}
 			data.replace("violins", violins);
 			data.replace("loan", loan);
-			try(FileWriter writer = new FileWriter(file.getAbsolutePath())) {
-				writer.write(data.toJSONString());
-				writer.close();
-			} catch(Exception exception) {
-				//nothing here lol
-			}
+			collection.replaceOne(eq("discordID", data.get("discordID")), Document.parse(data.toJSONString()));
 		}
 	}
 }

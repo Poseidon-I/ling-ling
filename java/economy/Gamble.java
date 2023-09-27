@@ -67,8 +67,8 @@ public class Gamble {
 								e.reply("You lost `" + Numbers.formatNumber(bet) + "`" + Emoji.VIOLINS + "\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS);
 							}
 						} else {
-							violins += bet * (1 + multi);
-							winnings += bet * (1 + multi);
+							violins += (long) (bet * (1 + multi));
+							winnings += (long) (bet * (1 + multi));
 							if((boolean) data.get("extraInfo")) {
 								e.reply("You won `" + Numbers.formatNumber(bet) + "`" + Emoji.VIOLINS + "\nYour `" + multi * 100 + "%` multiplier earned you an extra `" + Numbers.formatNumber((long) (bet * multi)) + "`" + Emoji.VIOLINS + "\n*The generator rolled `" + chance + "`.*\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS);
 							} else {
@@ -95,7 +95,7 @@ public class Gamble {
 						}
 						if(slots[0] == slots[1] && slots[1] == slots[2]) {
 							switch(slots[0]) {
-								case 0 -> payout *= 2.5;
+								case 0 -> payout *= (long) 2.5;
 								case 1 -> payout *= 5;
 								case 2 -> payout *= 10;
 								case 3 -> payout *= 15;
@@ -108,11 +108,11 @@ public class Gamble {
 						EmbedBuilder builder = new EmbedBuilder()
 								.setColor(Color.decode((String) data.get("color")))
 								.setFooter("Ling Ling Bot", e.getJDA().getSelfUser().getAvatarUrl())
-								.setTitle("__**Slots for " + e.getAuthor().getName() + "**__");
+								.setTitle("__**Slots for " + data.get("discordName") + "**__");
 						String name = ":arrow_right: " + emojis[0] + " " + emojis[1] + " " + emojis[2] + " :arrow_left:\n_ _";
 						if(payout != -1) {
-							violins += payout * (1 + multi);
-							winnings += payout * (1 + multi);
+							violins += (long) (payout * (1 + multi));
+							winnings += (long) (payout * (1 + multi));
 							builder.addField(name, ":white_check_mark: You **win**!  Payout: `" + Numbers.formatNumber(payout) + "`" + Emoji.VIOLINS + "\nYour `" + multi * 100 + "%` multiplier earned you an extra `" + Numbers.formatNumber((long) (payout * multi)) + "`" + Emoji.VIOLINS + "\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS, false);
 
 						} else {
@@ -173,8 +173,8 @@ public class Gamble {
 						}
 						StringBuilder breakdown = new StringBuilder().append("\n\n**__Ticket Breakdown__**\nLose 5" + Emoji.VIOLINS + ": `").append(payouts[0]).append("`\nNo Prize: `").append(payouts[1]).append("`\nGain 2" + Emoji.VIOLINS + ": `").append(payouts[2]).append("`\nGain 5" + Emoji.VIOLINS + ": `").append(payouts[3]).append("`\nGain 10" + Emoji.VIOLINS + ": `").append(payouts[4]).append("`\nGain 25" + Emoji.VIOLINS + ": `").append(payouts[5]).append("`\nGain 50" + Emoji.VIOLINS + ": `").append(payouts[6]).append("`\nGain 100" + Emoji.VIOLINS + ": `").append(payouts[7]).append("`\nGain 200" + Emoji.VIOLINS + ": `").append(payouts[8]).append("`\nGain 500" + Emoji.VIOLINS + ": `").append(payouts[9]).append("`");
 						if(payout > 0) {
-							violins += payout * (1 + multi);
-							winnings += payout * (1 + multi);
+							violins += (long) (payout * (1 + multi));
+							winnings += (long) (payout * (1 + multi));
 							if((boolean) data.get("extraInfo")) {
 								e.reply("You scratched `" + Numbers.formatNumber(numTickets) + "` tickets and gained `" + Numbers.formatNumber(payout) + "`" + Emoji.VIOLINS + "\nYour `" + multi * 100 + "%` multiplier earned you an extra `" + Numbers.formatNumber((long) (payout * multi)) + "`" + Emoji.VIOLINS + "\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS + breakdown);
 							} else {

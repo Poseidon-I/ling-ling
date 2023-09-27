@@ -1,26 +1,27 @@
 package dev;
 
+import com.mongodb.client.MongoCollection;
 import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import org.bson.Document;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import processes.DatabaseManager;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Objects;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class ResetDaily {
 	public static void resetDaily(GenericDiscordEvent e) {
-		File directory = new File("Ling Ling Bot Data\\Economy Data");
-		File[] files = directory.listFiles();
-		assert files != null;
-		for(File file : files) {
+		ArrayList<Document> documents = DatabaseManager.getAllEconomyData();
+		MongoCollection<Document> collection = DatabaseManager.prepareStoreAllEconomyData();
+		for(Document file : documents) {
 			JSONParser parser = new JSONParser();
 			JSONObject data;
-			try(FileReader reader = new FileReader(file.getAbsolutePath())) {
-				data = (JSONObject) parser.parse(reader);
-				reader.close();
+			try {
+				data = (JSONObject) parser.parse(file.toJson());
 			} catch(Exception exception) {
 				continue;
 			}
@@ -32,18 +33,13 @@ public class ResetDaily {
 			data.replace("hadDailyToday", false);
 			data.replace("hadGiftToday", false);
 			data.replace("medalToday", false);
-			try(FileWriter writer = new FileWriter(file.getAbsolutePath())) {
-				writer.write(data.toJSONString());
-				writer.close();
-			} catch(Exception exception) {
-				//nothing here lol
-			}
+			collection.replaceOne(eq("discordID", data.get("discordID")), Document.parse(data.toJSONString()));
 		}
-		
-		UpdateLuthierChance.updateLuthierChance(e);
+
+		UpdateLuthierChance.updateLuthierChance(e, false);
 		
 		if(e.getJDA().getSelfUser().getId().equals("733409243222507670")) {
-			int users = files.length;
+			int users = documents.size();
 			VoiceChannel channel = Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getVoiceChannelById("839877827838476289");
 			assert channel != null;
 			channel.getManager().setName(users + " Ling Ling Wannabes").queue();

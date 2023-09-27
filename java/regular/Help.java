@@ -8,7 +8,7 @@ import java.awt.*;
 public class Help {
 	public static void help(GenericDiscordEvent e, String page) {
 		EmbedBuilder builder = new EmbedBuilder().setColor(Color.BLUE).setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl()).setTitle("__**Ling Ling Bot Help**__");
-		if(page.equals("")) {
+		if(page.isEmpty()) {
 			builder.addField("Help List", """
 					Use `/help [page]` to view further commands!
 					

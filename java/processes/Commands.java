@@ -2,6 +2,7 @@ package processes;
 
 import eventListeners.GenericDiscordEvent;
 import eventListeners.ILoveJava;
+import leveling.CheckMessages;
 import leveling.Leaderboard;
 import leveling.Rank;
 import leveling.SetLevel;
@@ -30,7 +31,7 @@ public class Commands {
 					e.getChannel().deleteMessageById(e.getMessage().getId()).queue();
 					long sinceLast = System.currentTimeMillis() - e.getChannel().getHistory().retrievePast(2).complete().get(1).getTimeCreated().toEpochSecond() * 1000;
 					if(sinceLast > 7200000) {
-						e.reply("<@&934618203152347187>\nRequested by " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator());
+						e.reply("<@&934618203152347187>\nRequested by " + Objects.requireNonNull(e.getGuild().getMember(e.getAuthor())).getNickname());
 					} else {
 						e.reply(":x: You cannot ping this until there has been at least **2 hours** since the previous message.");
 					}
@@ -48,7 +49,8 @@ public class Commands {
 				}
 				case "checkmessages", "checkmsgs" -> CheckMessages.checkMessages(e);
 				case "messageleaderboard", "messagelb", "messages", "msgs", "msglb", "msgleaderboard" ->
-						MessageLeaderboard.messageLeaderboard(e);
+						e.reply("This command is temporarily disabled.");
+						// MessageLeaderboard.messageLeaderboard(e);
 				case "resetmessages" -> {
 					if(e.getAuthor().getId().equals("619989388109152256")) {
 						ResetMessages.resetMessages(e);
@@ -57,8 +59,9 @@ public class Commands {
 					}
 				}
 				case "rank" -> Rank.rank(e);
-				case "leaderboard", "lb", "levels" -> Leaderboard.leaderboard(e);
-				case "setlevel" -> SetLevel.setLevel(e);
+				case "leaderboard", "lb", "levels" ->
+						e.reply("This command is temporarily disabled."); //Leaderboard.leaderboard(e);
+				case "setlevelingdata" -> SetLevel.setLevelingData(e);
 				case "forcerestartlingling" -> {
 					if(e.getAuthor().getId().equals("619989388109152256") || e.getAuthor().getId().equals("488487157372157962")) {
 						e.reply("Forcing Ling Ling to restart...");

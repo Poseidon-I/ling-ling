@@ -5,11 +5,8 @@ import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import processes.*;
 
-import java.io.FileReader;
 import java.util.Objects;
 import java.util.Random;
 
@@ -17,7 +14,7 @@ import java.util.Random;
 public class Receiver extends ListenerAdapter {
 	public void onMessageReceived(@NotNull MessageReceivedEvent e) {
 		GenericDiscordEvent e1 = new GenericDiscordEvent(e);
-		e.getGuild().loadMembers();
+
 		if(e.getChannel().getId().equals("863135059712409632") || e.getChannel().getId().equals("734697496688853012")) {
 			CheckGiveaways.checkGiveaways(e1);
 		}
@@ -58,23 +55,23 @@ public class Receiver extends ListenerAdapter {
 			}
 
 			if(e1.getChannel().getId().equals("763099851550097408")) {
-				JSONParser parser = new JSONParser();
-				try(FileReader reader = new FileReader("Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".json")) {
-					Luthier.luthier(e1, (JSONObject) parser.parse(reader), e1.getMessage().getContentRaw());
-					reader.close();
-				} catch(Exception exception) {
-					exception.printStackTrace();
-				}
+					Luthier.luthier(e1, DatabaseManager.getDataByGuild(e1, "Luthier Data"), e1.getMessage().getContentRaw());
 			}
 
 			// Ling Ling Commands
 			String[] message = e.getMessage().getContentRaw().toLowerCase().split(" ");
-			if(message[0].charAt(0) == '!') {
-				message[0] = message[0].substring(1);
-				String[] realMessage = new String[message.length + 1];
-				realMessage[0] = "<@733409243222507670>";
-				System.arraycopy(message, 0, realMessage, 1, message.length);
-				OldReceiver.runLingLingCommand(e1, realMessage);
+			try {
+				if(message[0].charAt(0) == '!') {
+					message[0] = message[0].substring(1);
+					String[] realMessage = new String[message.length + 1];
+					realMessage[0] = "<@733409243222507670>";
+					System.arraycopy(message, 0, realMessage, 1, message.length);
+					CreateThreadMessage.setGenericDiscordEvent(e1, realMessage);
+					Thread object = new Thread(new CreateThreadMessage());
+					object.start();
+				}
+			} catch(StringIndexOutOfBoundsException exception) {
+				// do nothing
 			}
 		}
 		Random random = new Random();

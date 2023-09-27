@@ -7,7 +7,7 @@ import java.util.Objects;
 public class Warn {
 	public static void warn(GenericDiscordEvent e, String idToModerate, String reason) {
 		try {
-			if(idToModerate.equals("")) {
+			if(idToModerate.isEmpty()) {
 				throw new IllegalArgumentException();
 			}
 			Long.parseLong(idToModerate);

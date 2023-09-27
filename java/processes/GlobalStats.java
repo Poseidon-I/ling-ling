@@ -2,12 +2,14 @@ package processes;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.bson.Document;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 
 public class GlobalStats {
 	public GlobalStats(MessageReceivedEvent e) {
@@ -27,14 +29,12 @@ public class GlobalStats {
 		long earnings = 0;
 		long interest = 0;
 		long penalties = 0;
-		File directory = new File("Ling Ling Bot Data\\Economy Data");
-		File[] files = directory.listFiles();
-		assert files != null;
-		for(File file : files) {
+		ArrayList<Document> documents = DatabaseManager.getAllEconomyData();
+		for(Document file : documents) {
 			JSONParser parser = new JSONParser();
 			JSONObject data;
-			try(FileReader reader = new FileReader(file)) {
-				data = (JSONObject) parser.parse(reader);
+			try {
+				data = (JSONObject) parser.parse(file.toJson());
 			} catch(Exception exception) {
 				continue;
 			}
@@ -59,10 +59,10 @@ public class GlobalStats {
 				.setColor(Color.BLUE)
 				.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
 				.setTitle("Stats of the World");
-		builder.addField("**__Gambling__**", "**Net Winnings**: " + Numbers.FormatNumber(winnings) + "\n**Million-Dollar Tickets Drawn**: " + Numbers.FormatNumber(millions) + "\n**Amount Earned from Robbing**: " + Numbers.FormatNumber(robEarned) + "\n**Total RNGesus Weight**: " + Numbers.FormatNumber(weight), false);
-		builder.addField("**__Commands__**", "**Hours Practised**: " + Numbers.FormatNumber((long) hours) + "\n**Scales Played**: " + Numbers.FormatNumber(scales) + "\n**Rehearsals Attended**: " + Numbers.FormatNumber(rehearsals) + "\n**Performances Given**: " + Numbers.FormatNumber(performances) + "\n**Hours Taught: **" + Numbers.FormatNumber((long) taught), false);
-		builder.addField("**__Lootboxes__**", "**Gifts Given**: " + Numbers.FormatNumber(giftsGiven) + "\n**Number of Votes**: " + Numbers.FormatNumber(votes), false);
-		builder.addField("**__Miscellaneous__**", "**Highest Daily Streak**: " + Numbers.FormatNumber(maxStreak) + "\n**Luthiers Unscrambled**: " + Numbers.FormatNumber(luthiers) + "\n**Violins Earned**: " + Numbers.FormatNumber(earnings) + "\n**Interest Earned**: " + Numbers.FormatNumber(interest) + "\n**Penalties Paid**: " + Numbers.FormatNumber(penalties), false);
+		builder.addField("**__Gambling__**", "**Net Winnings**: " + Numbers.formatNumber(winnings) + "\n**Million-Dollar Tickets Drawn**: " + Numbers.formatNumber(millions) + "\n**Amount Earned from Robbing**: " + Numbers.formatNumber(robEarned) + "\n**Total RNGesus Weight**: " + Numbers.formatNumber(weight), false);
+		builder.addField("**__Commands__**", "**Hours Practised**: " + Numbers.formatNumber((long) hours) + "\n**Scales Played**: " + Numbers.formatNumber(scales) + "\n**Rehearsals Attended**: " + Numbers.formatNumber(rehearsals) + "\n**Performances Given**: " + Numbers.formatNumber(performances) + "\n**Hours Taught: **" + Numbers.formatNumber((long) taught), false);
+		builder.addField("**__Lootboxes__**", "**Gifts Given**: " + Numbers.formatNumber(giftsGiven) + "\n**Number of Votes**: " + Numbers.formatNumber(votes), false);
+		builder.addField("**__Miscellaneous__**", "**Highest Daily Streak**: " + Numbers.formatNumber(maxStreak) + "\n**Luthiers Unscrambled**: " + Numbers.formatNumber(luthiers) + "\n**Violins Earned**: " + Numbers.formatNumber(earnings) + "\n**Interest Earned**: " + Numbers.formatNumber(interest) + "\n**Penalties Paid**: " + Numbers.formatNumber(penalties), false);
 		e.getMessage().replyEmbeds(builder.build()).mentionRepliedUser(false).queue();
 	}
 }

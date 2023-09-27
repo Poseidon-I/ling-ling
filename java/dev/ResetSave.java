@@ -1,14 +1,19 @@
 package dev;
 
+import com.mongodb.client.MongoCollection;
 import eventListeners.GenericDiscordEvent;
+import org.bson.Document;
+import org.json.simple.JSONObject;
+import processes.DatabaseManager;
 
-import java.io.File;
 import java.util.Objects;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class ResetSave {
 	public static void resetSave(GenericDiscordEvent e, String idToModerate, String reason) {
 		try {
-			if(idToModerate.equals("")) {
+			if(idToModerate.isEmpty()) {
 				throw new IllegalArgumentException();
 			}
 			Long.parseLong(idToModerate);
@@ -16,9 +21,9 @@ public class ResetSave {
 			e.reply("You didn't provide an ID!");
 			return;
 		}
-		
-		File file = new File("Ling Ling Bot Data\\Economy Data\\" + idToModerate + ".json");
-		if(file.exists()) {
+
+		JSONObject data = DatabaseManager.getDataForUser(e, "Economy Data", idToModerate);
+		if(data != null) {
 			if(idToModerate.equals(e.getAuthor().getId())) {
 				e.reply("Imagine trying to reset your own save, how dumb are you???");
 			} else if(idToModerate.equals("619989388109152256") || idToModerate.equals("488487157372157962")) {
@@ -30,7 +35,8 @@ public class ResetSave {
 				} catch(Exception exception) {
 					name = "Someone";
 				}
-				file.delete();
+				MongoCollection<Document> collection = DatabaseManager.prepareStoreAllEconomyData();
+				collection.deleteOne(eq("discordID", data.get("discordID")));
 				LogCase.logCase(e, "Save Reset", idToModerate, reason);
 				try {
 					Objects.requireNonNull(e.getJDA().getUserById(idToModerate)).openPrivateChannel().queue((channel) -> channel.sendMessage("Your save was reset.  Reason: " + reason + "\nContinuation of this action may result in a bot ban.").queue());

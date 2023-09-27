@@ -1,21 +1,24 @@
 package processes;
 
+import com.mongodb.client.MongoCollection;
+import org.bson.Document;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.*;
+import java.util.ArrayList;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class InterestPenalty {
 	public static void interestPenalty() {
-		File directory = new File("Ling Ling Bot Data\\Economy Data");
-		File[] files = directory.listFiles();
-		assert files != null;
-		for(File file : files) {
+		ArrayList<Document> documents = DatabaseManager.getAllEconomyData();
+		MongoCollection<Document> collection = DatabaseManager.prepareStoreAllEconomyData();
+		for(Document file : documents) {
 			JSONParser parser = new JSONParser();
 			JSONObject data;
-			try(FileReader reader = new FileReader(file.getAbsolutePath())) {
-				data = (JSONObject) parser.parse(reader);
-				reader.close();
+			try {
+				data = (JSONObject) parser.parse(file.toJson());
 			} catch(Exception exception) {
 				continue;
 			}
@@ -54,8 +57,8 @@ public class InterestPenalty {
 			} else if(loan > income * 100) {
 				loan -= earned;
 			} else if(loan > 0) {
-				balance += earned * 0.5;
-				loan -= earned * 0.5;
+				balance = (long) (balance + earned * 0.5);
+				loan = (long) (loan - (earned * 0.5));
 			} else {
 				balance += earned;
 			}
@@ -69,12 +72,7 @@ public class InterestPenalty {
 			data.replace("interestEarned", (long) data.get("interestEarned") + earned);
 			
 			//SAVE DATA
-			try (FileWriter writer = new FileWriter(file.getAbsolutePath())) {
-				writer.write(data.toJSONString());
-				writer.close();
-			} catch(Exception exception) {
-				//nothing here lol
-			}
+			collection.replaceOne(eq("discordID", data.get("discordID")), Document.parse(data.toJSONString()));
 		}
 	}
 }

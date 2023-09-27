@@ -4,6 +4,7 @@ import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import processes.DatabaseManager;
 import processes.Numbers;
 
 import java.awt.*;
@@ -12,12 +13,8 @@ import java.util.Objects;
 
 public class Stats {
 	public static void stats(GenericDiscordEvent e, String user) {
-		JSONObject data;
-		JSONParser parser = new JSONParser();
-		try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + user + ".json")) {
-			data = (JSONObject) parser.parse(reader);
-			reader.close();
-		} catch(Exception exception) {
+		JSONObject data = DatabaseManager.getDataForUser(e, "Economy Data", user);
+		if(data == null) {
 			e.reply("This save file does not exist!");
 			return;
 		}
@@ -25,7 +22,7 @@ public class Stats {
 			user = "**NARWHAL**";
 		} else {
 			try {
-				user = Objects.requireNonNull(e.getJDA().getUserById(user)).getName();
+				user = data.get("discordName").toString();
 			} catch(Exception exception) {
 				user = "Someone";
 			}

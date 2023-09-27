@@ -10,12 +10,14 @@ import net.hypixel.api.reply.PlayerReply;
 
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+
 // BEETHOVEN-ONLY CLASS
 public class Link {
-    @SuppressWarnings("deprecation")
-    public static void link(GenericDiscordEvent e, String playerName) {
+	public static void link(GenericDiscordEvent e, String playerName) {
+		e.reply("This command is disabled for 3-5 business days.");
+        /*
         try {
-            HypixelHttpClient client = new ApacheHttpClient(UUID.fromString("b8af1ffa-0892-419e-bdcf-2c0af9c276ba"));
+            HypixelHttpClient client = new ApacheHttpClient(UUID.fromString("4b3188d6-b711-4c9e-b5be-d709aa63a2ce"));
             HypixelAPI api = new HypixelAPI(client);
             PlayerReply reply = api.getPlayerByName(playerName).get();
             PlayerReply.Player player = reply.getPlayer();
@@ -25,7 +27,7 @@ public class Link {
             String discord = object.get("socialMedia").getAsJsonObject().get("links").getAsJsonObject().get("DISCORD").getAsString();
             String[] parts = discord.split("#");
             String uuid = player.getUuid().toString();
-            if (parts[0].equals(e.getAuthor().getName()) && parts[1].equals(e.getAuthor().getDiscriminator())) {
+            if (parts[0].equals(e.getAuthor().getName())) {
                 if (guild.getName().equals("2bil Midas")) {
                     e.getMessage().reply("`" + player.getName() + "` is in the guild!").queue();
                 } else {
@@ -40,6 +42,6 @@ public class Link {
             e.getMessage().reply("`" + e.getMessage().getContentRaw().split(" ")[2] + " has not linked a Discord account!").mentionRepliedUser(false).queue();
         } catch (Exception exception) {
             exception.printStackTrace();
-        }
-    }
+        }*/
+	}
 }

@@ -1,9 +1,11 @@
 package processes;
 
+import com.mongodb.client.MongoCollection;
 import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import org.bson.Document;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -12,6 +14,8 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static com.mongodb.client.model.Filters.eq;
 // BEETHOVEN-ONLY CLASS
 
 public class CheckGiveaways {
@@ -35,40 +39,36 @@ public class CheckGiveaways {
 		}
 		StringBuilder winnerList = new StringBuilder();
 		if(nobody) {
-			message.getChannel().editMessageById(message.getId(), ":tada: **Giveaway for " + thing + " has ENDED :tada:\n\nWinners - nobody :(").queue();
+			message.getChannel().editMessageById(message.getId(), ":tada: **Giveaway for " + thing + " has ENDED** :tada:\n\nWinners - nobody :(").queue();
 		} else {
 			for(int i = 0; i < numWinners; i++) {
 				String string = list.get(hasWon.get(i)).getAsMention();
 				winnerList.append(string).append(" ");
 			}
 			winnerList.deleteCharAt(winnerList.length() - 1);
-			message.getChannel().editMessageById(message.getId(), ":tada: **Giveaway for __" + thing + "__** has ENDED :tada:\n\nWinners - " + winnerList).queue();
+			message.getChannel().editMessageById(message.getId(), ":tada: **Giveaway for __" + thing + "__ has ENDED** :tada:\n\nWinners - " + winnerList).queue();
 			message.getChannel().sendMessage("**Congratulations " + winnerList + "!**  You have won **" + thing + "**!\n\n" + message.getJumpUrl()).queue();
 		}
-		File file = new File("Ling Ling Bot Data\\Giveaways\\" + message.getId() + ".json");
-		file.delete();
+		MongoCollection<Document> collection = DatabaseManager.prepareStoreAllData("Giveaways Data");
+		collection.deleteOne(eq("discordID", message.getId()));
 	}
 	
 	public static void checkGiveaways(GenericDiscordEvent e) {
 		TextChannel channel = e.getGuild().getTextChannelById("734697492490354768");
-		File[] files = new File("Ling Ling Bot Data\\Giveaways").listFiles();
-		assert files != null;
+		ArrayList<Document> documents = DatabaseManager.getAllData("Giveaways Data");
 		JSONParser parser = new JSONParser();
-		for(File file : files) {
+		for(Document file : documents) {
 			JSONObject data;
-			try(FileReader reader = new FileReader(file)) {
-				data = (JSONObject) parser.parse(reader);
-				reader.close();
+			try {
+				data = (JSONObject) parser.parse(file.toJson());
 			} catch(Exception exception) {
-				exception.printStackTrace();
 				continue;
 			}
 			assert channel != null;
 			Message message;
 			try {
-				message = channel.retrieveMessageById(file.getName().substring(0, file.getName().lastIndexOf('.'))).complete();
+				message = channel.retrieveMessageById(data.get("discordID").toString()).complete();
 			} catch(Exception exception) {
-				exception.printStackTrace();
 				continue;
 			}
 			assert message != null;

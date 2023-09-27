@@ -21,9 +21,9 @@ public class Teach {
 				e.reply("Chill, you can't teach two students at once!  Wait " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!");
 			} else {
 				long base = random.nextInt(10001) + 35000;
-				base *= Math.pow(1.15, (long) data.get("students"));
-				base *= Math.pow(1.1, (long) data.get("lessonCharge"));
-				base *= Math.pow(1.05, (long) data.get("training"));
+				base = (long) (base * Math.pow(1.15, (long) data.get("students")));
+				base = (long) (base * Math.pow(1.1, (long) data.get("lessonCharge")));
+				base = (long) (base * Math.pow(1.05, (long) data.get("training")));
 				if((boolean) data.get("longerLessons")) {
 					base *= 2;
 					e.reply("You taught a student for an hour and earned `" + Numbers.formatNumber(base) + "`" + Emoji.VIOLINS);

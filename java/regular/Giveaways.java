@@ -1,11 +1,16 @@
 package regular;
 
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.result.InsertOneResult;
 import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
+import org.bson.Document;
 import org.json.simple.JSONObject;
+import processes.DatabaseManager;
 
 import java.io.FileWriter;
+
 // BEETHOVEN-ONLY CLASS
 public class Giveaways {
 	public static void giveaways(GenericDiscordEvent e, String[] message) {
@@ -42,16 +47,12 @@ public class Giveaways {
 		Message hi = e.getChannel().sendMessage(send).complete();
 		hi.addReaction(Emoji.fromUnicode("U+1f389")).queue();
 		String id = hi.getId();
-		JSONObject data = new JSONObject();
-		data.put("end", System.currentTimeMillis() + (60000L * minutes));
-		data.put("winners", winners);
-		data.put("item", itemReal);
-		data.put("requirement", hasRequirement);
-		try(FileWriter writer = new FileWriter("Ling Ling Bot data\\Giveaways\\" + id + ".json")) {
-			writer.write(data.toJSONString());
-			writer.close();
-		} catch(Exception exception) {
-			//nothing here lol
-		}
+		MongoCollection<Document> collection = DatabaseManager.prepareStoreAllData("Giveaways Data");
+		InsertOneResult result = collection.insertOne(new Document()
+				.append("end", System.currentTimeMillis() + (60000L * minutes))
+				.append("winners", winners)
+				.append("item", itemReal)
+				.append("requirement", hasRequirement)
+				.append("discordID", id));
 	}
 }

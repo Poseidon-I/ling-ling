@@ -94,7 +94,7 @@ public class Use {
 	}
 
 	public static void use(GenericDiscordEvent e, String item1, String temp) {
-		if(item1.equals("")) {
+		if(item1.isEmpty()) {
 			e.reply("You can't use nothing.");
 			return;
 		}

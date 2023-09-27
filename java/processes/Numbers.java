@@ -37,18 +37,18 @@ public class Numbers {
 	public static long calculateAmount(JSONObject data, long base) {
 		long efficiency = (long) data.get("efficiency");
 		if(efficiency < 10) {
-			base *= Math.pow(1.1, efficiency);
+			base = (long) (base * Math.pow(1.1, efficiency));
 		} else if(efficiency < 100) {
-			base *= Math.pow(1.1, 10) * Math.pow(1.05, efficiency - 10);
+			base = (long) (base * (Math.pow(1.1, 10) * Math.pow(1.05, efficiency - 10)));
 		} else {
-			base *= Math.pow(1.1, 10) * Math.pow(1.05, 90) * Math.pow(1.025, efficiency - 100);
+			base = (long) (base * (Math.pow(1.1, 10) * Math.pow(1.05, 90) * Math.pow(1.025, efficiency - 100)));
 		}
-		base *= Math.pow(1.125, (long) data.get("hall"));
-		base *= Math.pow(1.3, (long) data.get("moreCommandIncome"));
+		base = (long) (base * Math.pow(1.125, (long) data.get("hall")));
+		base = (long) (base * Math.pow(1.3, (long) data.get("moreCommandIncome")));
 		if((boolean) data.get("isBooster")) {
-			base *= 0.3 + (double) data.get("serverLevel");
+			base = (long) (base * (0.3 + (double) data.get("serverLevel")));
 		} else {
-			base *= (double) data.get("serverLevel");
+			base = (long) (base * (double) data.get("serverLevel"));
 		}
 		return base;
 	}
@@ -77,17 +77,17 @@ public class Numbers {
 		long income = (long) data.get("income");
 		long violins = (long) data.get("violins");
 		if(loan > income * 400) {
-			violins -= earned * 0.1;
-			loan -= earned * 1.1;
+			violins = (long) (violins - (earned * 0.1));
+			loan = (long) (loan - (earned * 1.1));
 		} else if(loan > income * 250) {
-			violins += earned * 0.2;
-			loan -= earned * 0.8;
+			violins = (long) (violins + earned * 0.2);
+			loan = (long) (loan - (earned * 0.8));
 		} else if(loan > income * 100) {
-			violins += earned * 0.5;
-			loan -= earned * 0.5;
+			violins = (long) (violins + earned * 0.5);
+			loan = (long) (loan - (earned * 0.5));
 		} else if(loan > 0) {
-			violins += earned * 0.8;
-			loan -= earned * 0.2;
+			violins = (long) (violins + earned * 0.8);
+			loan = (long) (loan - (earned * 0.2));
 		} else {
 			violins += earned;
 		}

@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import processes.DatabaseManager;
 import processes.HourlyIncome;
 import processes.InterestPenalty;
 import processes.Luthier;
@@ -14,10 +15,18 @@ import regular.*;
 
 import java.io.*;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
-public class OldReceiver extends ListenerAdapter {
+class CreateThreadMessage implements Runnable {
+	private static GenericDiscordEvent e;
+
+	private static String[] message;
+
+	public static void setGenericDiscordEvent(GenericDiscordEvent e1, String[] message1) {
+		e = e1;
+		message = message1;
+	}
+
 	public static long CheckPermLevel(GenericDiscordEvent e) {
 		if(e.getAuthor().getId().equals("619989388109152256") || e.getAuthor().getId().equals("488487157372157962")) {
 			return 3;
@@ -34,53 +43,25 @@ public class OldReceiver extends ListenerAdapter {
 		}
 	}
 
-	public static void runLingLingCommand(GenericDiscordEvent e, String[] message) {
-		//LOAD SERVER MEMBERS ONLY ONCE
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader("Ling Ling Bot Data\\loadedservers.txt"));
-			String line = reader.readLine();
-			reader.close();
-			try {
-				List<String> loaded = Arrays.asList(line.split(" "));
-				if(!loaded.contains(Objects.requireNonNull(e.getGuild()).getId()) || e.getJDA().getSelfUser().getId().equals("772582345944334356")) {
-					e.getGuild().loadMembers();
-					line += " " + e.getGuild().getId();
-				}
-			} catch(Exception exception) {
-				Objects.requireNonNull(e.getGuild()).loadMembers();
-				line = e.getGuild().getId();
-			}
-			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("Ling Ling Bot Data\\loadedservers.txt")));
-			writer.print(line);
-			writer.close();
-		} catch(Exception exception1) {
-			//nothing here lol
-		}
+	public void run() {
+		System.out.println("[DEBUG] New Thread: " + Thread.currentThread().getId() + "\n Command: " + Arrays.toString(message));
+		HourlyIncome.checkHourly(e);
 
 		if(message[0].equals("<@733409243222507670>") || message[0].equals("<@772582345944334356>")) {
 			// Apply Vote Rewards
 			if(e.getChannel().getId().equals("863135059712409632")) {
 				String id = message[1];
-				JSONParser parser = new JSONParser();
-				JSONObject data;
-				try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + id + ".json")) {
-					data = (JSONObject) parser.parse(reader);
-					reader.close();
-				} catch(Exception exception) {
-					Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().complete().sendMessage("Thank you for voting for Ling Ling!  Unfortunately, I was unable to reward you because you did not have a save.  Run `/start` in any server to get one!").queue();
+				JSONObject data = DatabaseManager.getDataForUser(e, "Economy Data", id);
+				if(data == null) {
 					return;
-				}
-				if((boolean) data.get("banned")) {
-					Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().complete().sendMessage("Thank you for voting for Ling Ling!  Unfortunately, you are currently banned from using the economy, but I am nice and have rewarded you anyway in the unlikely case you do get unbanned.").queue();
 				}
 				data.replace("voteBox", (long) data.get("voteBox") + 1);
-				try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Economy Data\\" + id + ".json")) {
-					writer.write(data.toJSONString());
-					writer.close();
-				} catch(Exception exception) {
-					return;
+				DatabaseManager.saveDataForUser(e, "Economy Data", id, data);
+				if((boolean) data.get("banned")) {
+					Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().complete().sendMessage("Thank you for voting for Ling Ling!  Unfortunately, you are currently banned from using the economy, but I am nice and have rewarded you anyway in the unlikely case you do get unbanned.").queue();
+				} else {
+					Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().complete().sendMessage("Thank you for voting for Ling Ling!  You have received 1x Free Box!").queue();
 				}
-				Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().complete().sendMessage("Thank you for voting for Ling Ling!  You have received 1x Free Box!").queue();
 			}
 
 			// ALL COMMANDS
@@ -91,6 +72,11 @@ public class OldReceiver extends ListenerAdapter {
 				commandName = "";
 			}
 			switch(commandName) {
+				case "debug" -> {
+					Runtime runtime = Runtime.getRuntime();
+					runtime.gc();
+					e.reply("Open threads: " + Thread.activeCount() + "\n\nTotal RAM: " + runtime.totalMemory() + "\nMax RAM: " + runtime.maxMemory() + "\nRAM in Use: " + (runtime.totalMemory() - runtime.freeMemory()) + "\nFree RAM: " + runtime.freeMemory());
+				}
 				// NON-ECON COMMANDS
 				case "help" -> {
 					String page;
@@ -260,7 +246,7 @@ public class OldReceiver extends ListenerAdapter {
 					try {
 						craftAmount = Long.parseLong(message[3]);
 					} catch(Exception exception) {
-						craftAmount = -1;
+						craftAmount = 1;
 					}
 					Craft.craft(e, craftAmount, name);
 				}
@@ -411,19 +397,16 @@ public class OldReceiver extends ListenerAdapter {
 					PayLoan.payLoan(e, amount);
 				}
 				case "answer" -> {
-					String answer;
+					StringBuilder answer = new StringBuilder();
 					try {
-						answer = message[2];
+						for(int i = 2;  i < message.length; i ++) {
+							answer.append(message[i]).append(" ");
+						}
+						answer.deleteCharAt(answer.length() - 1);
 					} catch(Exception exception) {
-						answer = "none";
+						answer = new StringBuilder("none");
 					}
-					JSONParser parser = new JSONParser();
-					try(FileReader reader = new FileReader("Ling Ling Bot Data\\Settings\\Luthier\\" + Objects.requireNonNull(e.getGuild()).getId() + ".json")) {
-						Luthier.luthier(e, (JSONObject) parser.parse(reader), answer);
-						reader.close();
-					} catch(Exception exception) {
-						//nothing here lol
-					}
+					Luthier.luthier(e, DatabaseManager.getDataByGuild(e, "Luthier Data"), answer.toString());
 				}
 				case "leaderboard", "lb" -> {
 					JSONObject data = LoadData.loadData(e);
@@ -595,7 +578,7 @@ public class OldReceiver extends ListenerAdapter {
 					if(CheckPermLevel(e) >= 2) {
 						String actionType;
 						String editOption;
-						String newValue;
+						StringBuilder newValue = new StringBuilder();
 						try {
 							actionType = message[2];
 						} catch(Exception exception) {
@@ -607,11 +590,14 @@ public class OldReceiver extends ListenerAdapter {
 							editOption = "";
 						}
 						try {
-							newValue = message[4];
+							for(int i = 4;  i < message.length; i ++) {
+								newValue.append(message[i]).append(" ");
+							}
+							newValue.deleteCharAt(newValue.length() - 1);
 						} catch(Exception exception) {
-							newValue = "";
+							newValue = new StringBuilder();
 						}
-						AdminLuthier.adminLuthier(e, actionType, editOption, newValue);
+						AdminLuthier.adminLuthier(e, actionType, editOption, newValue.toString());
 					} else {
 						e.reply(":no_entry: **403 FORBIDDEN** :no_entry:\nYou do not have permission to run this command.");
 					}
@@ -625,7 +611,7 @@ public class OldReceiver extends ListenerAdapter {
 				}
 				case "updateluthierchance" -> {
 					if(CheckPermLevel(e) >= 2) {
-						UpdateLuthierChance.updateLuthierChance(e);
+						UpdateLuthierChance.updateLuthierChance(e, true);
 					} else {
 						e.reply(":no_entry: **403 FORBIDDEN** :no_entry:\nYou do not have permission to run this command.");
 					}
@@ -659,8 +645,6 @@ public class OldReceiver extends ListenerAdapter {
 					e.getChannel().deleteMessageById(e.getMessage().getId()).queue();
 					if(CheckPermLevel(e) == 3 && Objects.requireNonNull(message[2]).equals("@#$%FUCK")) {
 						e.reply("Forcing bot to stop...");
-						File file = new File("Ling Ling Bot Data\\pid.txt");
-						file.delete();
 						e.getJDA().shutdownNow();
 					} else {
 						e.reply(":no_entry: **403 FORBIDDEN** :no_entry:\nYou do not have permission to run this command, or you entered the wrong Password.");
@@ -761,66 +745,40 @@ public class OldReceiver extends ListenerAdapter {
 					e.reply("No Update Here!");
 				}
 			}
+		}
+		System.out.println("Thread " + Thread.currentThread().getId() + " Finished.");
+	}
+}
 
-			//HOURLY
-			long time = 0;
+public class OldReceiver extends ListenerAdapter {
+	@Override
+	public void onMessageReceived(@NotNull MessageReceivedEvent e) {
+		if(!e.getAuthor().isBot() && !e.getMessage().getContentRaw().isEmpty()) {
+			GenericDiscordEvent e1 = new GenericDiscordEvent(e);
+
+			if(e1.getMessage().getContentRaw().toLowerCase().contains("bad bot")) {
+				e1.reply("sowwy strad :(");
+			} else if(e1.getMessage().getContentRaw().toLowerCase().contains("good bot")) {
+				e1.reply("senkyoo strad :)");
+			} else if(e1.getMessage().getContentRaw().toLowerCase().contains("right bot?")) {
+				e1.reply("yes master");
+			}
+
+			//LUTHIER
 			try {
-				BufferedReader reader = new BufferedReader(new FileReader("Ling Ling Bot Data\\hourly.txt"));
-				time = Long.parseLong(reader.readLine());
-				reader.close();
+				Luthier.luthier(e1, DatabaseManager.getDataByGuild(e1, "Luthier Data"), "");
 			} catch(Exception exception) {
 				//nothing here lol
 			}
 
-			while(System.currentTimeMillis() > time) {
-				HourlyIncome.hourlyIncome();
-
-				//RESET COOLDOWNS BOUND TO 12AM UTC
-				if(time % 86400000 == 0) {
-					ResetDaily.resetDaily(e);
-				}
-
-				//BANK SHIT
-				if(time % 259200000 == 0) {
-					InterestPenalty.interestPenalty();
-					Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage("Loan penalties applied; Interest awarded!").queue();
-				}
-
-				time += 3600000;
-				Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage("Hourly Incomes Sent!").queue();
-				try {
-					PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("Ling Ling Bot Data\\hourly.txt")));
-					writer.print(time);
-					writer.close();
-				} catch(Exception exception) {
-					//nothing here lol
-				}
+			String[] message = e.getMessage().getContentRaw().toLowerCase().split(" ");
+			try {
+				CreateThreadMessage.setGenericDiscordEvent(e1, message);
+				Thread object = new Thread(new CreateThreadMessage());
+				object.start();
+			} catch(StringIndexOutOfBoundsException exception) {
+				// do nothing
 			}
 		}
-	}
-
-	@Override
-	public void onMessageReceived(@NotNull MessageReceivedEvent e) {
-		GenericDiscordEvent e1 = new GenericDiscordEvent(e);
-
-		if(e1.getMessage().getContentRaw().toLowerCase().contains("bad bot")) {
-			e1.reply("sowwy strad :(");
-		} else if(e1.getMessage().getContentRaw().toLowerCase().contains("good bot")) {
-			e1.reply("senkyoo strad :)");
-		} else if(e1.getMessage().getContentRaw().toLowerCase().contains("right bot?")) {
-			e1.reply("yes master");
-		}
-
-		//LUTHIER
-		JSONParser parser = new JSONParser();
-		try(FileReader reader = new FileReader("Ling Ling Bot Data\\Settings\\Luthier\\" + Objects.requireNonNull(e.getGuild()).getId() + ".json")) {
-			Luthier.luthier(e1, (JSONObject) parser.parse(reader), "");
-			reader.close();
-		} catch(Exception exception) {
-			//nothing here lol
-		}
-
-		String[] message = e.getMessage().getContentRaw().toLowerCase().split(" ");
-		runLingLingCommand(e1, message);
 	}
 }

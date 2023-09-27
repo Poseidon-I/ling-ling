@@ -1,50 +1,43 @@
 package leveling;
 
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.result.InsertOneResult;
 import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.entities.Message;
+import org.bson.Document;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import processes.DatabaseManager;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.*;
 // BEETHOVEN-ONLY CLASS
 
 public class Leveling {
 	public static JSONObject loadData(GenericDiscordEvent e) {
 		JSONParser parser = new JSONParser();
-		JSONObject data = null;
-		try(FileReader reader = new FileReader("Ling Ling Bot Data\\Leveling\\" + e.getAuthor().getId() + ".json")) {
-			data = (JSONObject) parser.parse(reader);
-			reader.close();
-			return data;
-		} catch(Exception exception) {
-			File file = new File("Ling Ling Bot Data\\Leveling\\" + e.getAuthor().getId() + ".json");
-			try {
-				file.createNewFile();
-				data = new JSONObject();
-				data.put("level", 0L);
-				data.put("xp", 0L);
-				data.put("time", 0L);
-				data.put("messages", 0L);
-				return data;
-			} catch(Exception exception1) {
-				e.getChannel().sendMessage("A terrible error has occured!").queue();
-			}
+		JSONObject data = DatabaseManager.getDataByUser(e, "Leveling Data");
+		if(data == null) {
+			MongoCollection<Document> collection = DatabaseManager.prepareStoreAllData("Leveling Data");
+			InsertOneResult result = collection.insertOne(new Document()
+					.append("level", 0L)
+					.append("xp", 0L)
+					.append("time", 0L)
+					.append("messages", 0L)
+					.append("discordID", e.getAuthor().getId())
+					.append("discordName", e.getAuthor().getGlobalName()));
+			return loadData(e);
+		}
+
+		if(data.get("discordName").toString().isEmpty()) {
+			data.replace("discordName", e.getAuthor().getGlobalName());
 		}
 		return data;
 	}
-	
+
 	public static void saveData(GenericDiscordEvent e, JSONObject data) {
-		try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Leveling\\" + e.getAuthor().getId() + ".json")) {
-			writer.write(data.toJSONString());
-			writer.close();
-		} catch(Exception exception) {
-			//nothing here lol
-		}
+		DatabaseManager.saveDataByUser(e, "Leveling Data", data);
 	}
-	
+
 	public static boolean doesMessageCount(GenericDiscordEvent e) {
 		String message = e.getMessage().getContentRaw();
 		List<Message> list = e.getChannel().getHistory().retrievePast(100).complete();
@@ -102,11 +95,11 @@ public class Leveling {
 			return true;
 		}
 	}
-	
+
 	public static String removePunctuation(String s) {
 		return s.replaceAll("\\p{Punct}", "");
 	}
-	
+
 	public static void leveling(GenericDiscordEvent e, double multiplier) {
 		JSONObject data = loadData(e);
 		long level = (long) data.get("level");
@@ -119,10 +112,15 @@ public class Leveling {
 				data.put("messages", 1L);
 			}
 		}
-		
+		JSONObject miscData = DatabaseManager.getMiscData();
+		assert miscData != null;
+		long minXp = (long) miscData.get("levelMin");
+		long maxXp = (long) miscData.get("levelMax");
+		long cooldown = (long) miscData.get("levelCooldown");
+
 		Random random = new Random();
 		if(System.currentTimeMillis() > time) {
-			xp += (random.nextInt(11) + 15) * multiplier;
+			xp = (long) (xp + (random.nextInt((int) (maxXp - minXp + 1)) + minXp) * multiplier);
 			data.replace("time", System.currentTimeMillis() + 30 * 1000L);
 			boolean levelUp = false;
 			while(xp > (level + 1) * 100 && level < 100) {

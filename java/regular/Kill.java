@@ -8,7 +8,10 @@ import java.util.Random;
 public class Kill {
 	public static void kill(GenericDiscordEvent e, String target) {
 		String check = target.toLowerCase();
-		String author = e.getAuthor().getName();
+		String author = e.getAuthor().getGlobalName();
+		if(author == null) {
+			author = e.getAuthor().getName();
+		}
 		for(int i = 0; i < check.length(); i ++) {
 			int character = check.charAt(i);
 			if(character < 32 || character > 32 && character <  97 || character > 122) {

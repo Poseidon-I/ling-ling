@@ -5,7 +5,7 @@ import processes.Numbers;
 
 public class Emojify {
 	public static void emojify(GenericDiscordEvent e, String message) {
-		if(message.equals("")) {
+		if(message.isEmpty()) {
 			e.reply("how are we going to emojify nothing");
 			return;
 		}
@@ -49,7 +49,7 @@ public class Emojify {
 				return;
 			}
 		}
-		send.append("\n`").append(e.getAuthor().getName()).append("#").append(e.getAuthor().getDiscriminator()).append("`");
+		send.append("\n`").append(e.getAuthor().getGlobalName()).append("`");
 		try {
 			e.reply("Done!");
 			e.getChannel().sendMessage(send.toString()).queue();

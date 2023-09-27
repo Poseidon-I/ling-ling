@@ -3,10 +3,9 @@ package economy;
 import eventListeners.GenericDiscordEvent;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import processes.DatabaseManager;
 import processes.Numbers;
 
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.Objects;
 import java.util.Random;
 
@@ -25,7 +24,7 @@ public class Rob {
 			milliseconds -= seconds * 1000;
 			e.reply("Hey, Brett and Eddy are still looking for you after your last hit!  Wait " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!");
 		} else {
-			if(user.equals("")) {
+			if(user.isEmpty()) {
 				e.reply("You cannot rob nobody.  That doesn't make sense.");
 				return;
 			}
@@ -40,11 +39,8 @@ public class Rob {
 				return;
 			}
 			JSONParser parser = new JSONParser();
-			JSONObject targetdata;
-			try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + user + ".json")) {
-				targetdata = (JSONObject) parser.parse(reader);
-				reader.close();
-			} catch(Exception exception) {
+			JSONObject targetdata = DatabaseManager.getDataForUser(e, "Economy Data", user);
+			if(targetdata == null) {
 				e.reply("You did not provide a valid User ID.  Doesn't make sense to rob someone nonexistent, does it?");
 				return;
 			}
@@ -59,7 +55,7 @@ public class Rob {
 			long baseRob = (long) (targetViolins * 0.2);
 			String name;
 			try {
-				name = Objects.requireNonNull(e.getJDA().getUserById(user)).getName();
+				name = targetdata.get("discordName").toString();
 			} catch(Exception exception) {
 				name = "your target";
 			}
@@ -76,13 +72,14 @@ public class Rob {
 				try {
 					if(DM) {
 						long finalBaseRob = baseRob;
-						Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") tried to rob you but failed!  They paid you `" + Numbers.formatNumber(finalBaseRob) + "`" + Emoji.VIOLINS + " in fines."));
+						Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getAuthor().getId() + "> (" + data.get("discordName") + ") tried to rob you but failed!  They paid you `" + Numbers.formatNumber(finalBaseRob) + "`" + Emoji.VIOLINS + " in fines."));
 					}
 				} catch(Exception exception) {
 					//nothing here lol
 				}
 				targetViolins += baseRob;
 				data.replace("violins", (long) data.get("violins") - baseRob);
+				baseRob *= -1;
 			} else {
 				if(baseRob > 5000000) {
 					baseRob = 5000000;
@@ -97,16 +94,16 @@ public class Rob {
 						try {
 							if(DM) {
 								long finalBaseRob1 = baseRob;
-								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") just robbed `" + Numbers.formatNumber((long) (finalBaseRob1 * 0.25)) + "`" + Emoji.VIOLINS + " from you!  Your Ling Ling insurance protected `" + Numbers.formatNumber((long) (finalBaseRob1 * 0.5)) + "`" + Emoji.VIOLINS + " and your Steal Shield protected `" + Numbers.formatNumber((long) (finalBaseRob1 * 0.25)) + "`" + Emoji.VIOLINS));
+								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getAuthor().getId() + "> (" + data.get("discordName") + ") just robbed `" + Numbers.formatNumber((long) (finalBaseRob1 * 0.25)) + "`" + Emoji.VIOLINS + " from you!  Your Ling Ling insurance protected `" + Numbers.formatNumber((long) (finalBaseRob1 * 0.5)) + "`" + Emoji.VIOLINS + " and your Steal Shield protected `" + Numbers.formatNumber((long) (finalBaseRob1 * 0.25)) + "`" + Emoji.VIOLINS));
 							}
 						} catch(Exception exception) {
 							//nothing here lol
 						}
 						if(hasDuplicator) {
 							message += "\nYour violin duplicator doubled your earnings to `" + Numbers.formatNumber((long) (baseRob * 0.5)) + "`" + Emoji.VIOLINS;
-							baseRob *= 0.5;
+							baseRob = (long) (baseRob * 0.5);
 						} else {
-							baseRob *= 0.25;
+							baseRob = (long) (baseRob * 0.25);
 						}
 					} else {
 						if(extraInfo) {
@@ -117,7 +114,7 @@ public class Rob {
 						try {
 							if(DM) {
 								long finalBaseRob2 = baseRob;
-								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") just robbed `" + Numbers.formatNumber((long) (finalBaseRob2 * 0.5)) + "`" + Emoji.VIOLINS + " from you!  Your Ling Ling insurance protected `" + Numbers.formatNumber((long) (finalBaseRob2 * 0.5)) + "`" + Emoji.VIOLINS));
+								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getAuthor().getId() + "> (" + data.get("discordName") + ") just robbed `" + Numbers.formatNumber((long) (finalBaseRob2 * 0.5)) + "`" + Emoji.VIOLINS + " from you!  Your Ling Ling insurance protected `" + Numbers.formatNumber((long) (finalBaseRob2 * 0.5)) + "`" + Emoji.VIOLINS));
 							}
 						} catch(Exception exception) {
 							//nothing here lol
@@ -125,7 +122,7 @@ public class Rob {
 						if(hasDuplicator) {
 							message += "\nYour violin duplicator doubled your earnings to`" + Numbers.formatNumber(baseRob) + "`" + Emoji.VIOLINS;
 						} else {
-							baseRob *= 0.5;
+							baseRob = (long) (baseRob * 0.5);
 						}
 					}
 				} else {
@@ -138,7 +135,7 @@ public class Rob {
 						try {
 							if(DM) {
 								long finalBaseRob3 = baseRob;
-								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") just robbed `" + Numbers.formatNumber((long) (finalBaseRob3 * 0.5)) + "`" + Emoji.VIOLINS + " from you!  Your Steal Shield protected `" + Numbers.formatNumber((long) (finalBaseRob3 * 0.5)) + "`" + Emoji.VIOLINS));
+								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getAuthor().getId() + "> (" + data.get("discordName") + ") just robbed `" + Numbers.formatNumber((long) (finalBaseRob3 * 0.5)) + "`" + Emoji.VIOLINS + " from you!  Your Steal Shield protected `" + Numbers.formatNumber((long) (finalBaseRob3 * 0.5)) + "`" + Emoji.VIOLINS));
 							}
 						} catch(Exception exception) {
 							//nothing here lol
@@ -146,7 +143,7 @@ public class Rob {
 						if(hasDuplicator) {
 							message += "\nYour violin duplicator doubled your earnings to `" + Numbers.formatNumber(baseRob) + "`" + Emoji.VIOLINS;
 						} else {
-							baseRob *= 0.5;
+							baseRob = (long) (baseRob * 0.5);
 						}
 					} else {
 						if(extraInfo) {
@@ -157,7 +154,7 @@ public class Rob {
 						try {
 							if(DM) {
 								long finalBaseRob4 = baseRob;
-								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") just robbed `" + Numbers.formatNumber(finalBaseRob4) + "`" + Emoji.VIOLINS + " from you!"));
+								Objects.requireNonNull(e.getJDA().getUserById(user)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getAuthor().getId() + "> (" + data.get("discordName") + ") just robbed `" + Numbers.formatNumber(finalBaseRob4) + "`" + Emoji.VIOLINS + " from you!"));
 							}
 						} catch(Exception exception) {
 							//nothing here lol
@@ -169,8 +166,8 @@ public class Rob {
 					}
 				}
 				if(hasDuplicator) {
-					targetViolins -= baseRob * 0.5;
-					targetLostToRob += baseRob * 0.5;
+					targetViolins = (long) (targetViolins - (baseRob * 0.5));
+					targetLostToRob = (long) (targetLostToRob + baseRob * 0.5);
 				} else {
 					targetViolins -= baseRob;
 					targetLostToRob += baseRob;
@@ -179,12 +176,7 @@ public class Rob {
 			}
 			targetdata.replace("violins", targetViolins);
 			targetdata.replace("lostToRob", targetLostToRob);
-			try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Economy Data\\" + user + ".json")) {
-				writer.write(targetdata.toJSONString());
-				writer.close();
-			} catch(Exception exception) {
-				//nothing here lol
-			}
+			DatabaseManager.saveDataForUser(e, "Economy Data", user, targetdata);
 			RNGesus.lootbox(e, data);
 			data.replace("robCD", time + 57540000);
 			data.replace("robbed", (long) data.get("robbed") + baseRob);

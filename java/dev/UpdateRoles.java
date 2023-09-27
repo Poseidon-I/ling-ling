@@ -4,11 +4,14 @@ import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
+import org.bson.Document;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import processes.DatabaseManager;
 
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UpdateRoles {
@@ -18,12 +21,8 @@ public class UpdateRoles {
 			List<Member> list = g.getMembers();
 			for(Member member : list) {
 				List<Role> list2 = member.getRoles();
-				JSONParser parser = new JSONParser();
-				JSONObject data;
-				try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + member.getId() + ".json")) {
-					data = (JSONObject) parser.parse(reader);
-					reader.close();
-				} catch(Exception exception) {
+				JSONObject data = DatabaseManager.getDataForUser(e, "Economy Data", member.getId());
+				if(data == null) {
 					continue;
 				}
 				if(list2.contains(g.getRoleById("852752096733429781"))) {
@@ -46,12 +45,7 @@ public class UpdateRoles {
 				} else {
 					data.replace("serverLevel", 1);
 				}
-				try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Economy Data\\" + member.getId() + ".json")) {
-					writer.write(data.toJSONString());
-					writer.close();
-				} catch(Exception exception) {
-					// nothing here lol
-				}
+				DatabaseManager.saveDataForUser(e, "Economy Data", member.getId(), data);
 			}
 			e.reply("Successfully force-updated role multipliers!");
 		} else {

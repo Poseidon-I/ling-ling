@@ -1,20 +1,19 @@
 package regular;
 
 import eventListeners.GenericDiscordEvent;
+import org.json.simple.JSONObject;
+import processes.DatabaseManager;
 
+import javax.xml.crypto.Data;
 import java.io.*;
 // BEETHOVEN-ONLY CLASS
 public class Annoy {
 	public static void annoy(GenericDiscordEvent e) {
 		if(e.getChannel().getId().equals("1044740962867478609")) {
-			long time;
-			try(BufferedReader reader = new BufferedReader(new FileReader("Ling Ling Bot Data\\annoy.txt"))) {
-				time = Long.parseLong(reader.readLine());
-				reader.close();
-			} catch(Exception exception) {
-				return;
-			}
-			if(System.currentTimeMillis() < time) {
+			JSONObject data = DatabaseManager.getMiscData();
+			assert data != null;
+			long time = (long) data.get("annoy");
+			if(System.currentTimeMillis() < time && !e.getAuthor().getId().equals("619989388109152256")) {
 				e.reply("The 5-minute global cooldown has not expired yet!  Wait before annoying a friend!");
 			} else {
 				String target = e.getMessage().getContentRaw().split(" ")[2];
@@ -26,15 +25,10 @@ public class Annoy {
 						e.reply("DO NOT ATTEMPT TO ANNOY ME OR LING LING.  YOU SHALT FACE PUNISHMENT.");
 						target = "<@" + e.getAuthor().getId() + ">";
 					}
-					for(int i = 0; i < 18; i++) {
+					for(int i = 0; i < 19; i++) {
 						e.sendMessage("annoy " + target);
 					}
-					try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("Ling Ling Bot Data\\annoy.txt")))) {
-						writer.print(System.currentTimeMillis() + 300000);
-						writer.close();
-					} catch(Exception exception) {
-						//nothing here lol
-					}
+					DatabaseManager.saveMiscData(data);
 				} else {
 					e.reply("You dumbass you have to PING someone to annoy them.  Now you've wasted your once-per-hour chance.");
 				}

@@ -17,7 +17,7 @@ public class RNGesus {
 	public static void sendLog(GenericDiscordEvent e, String drop) {
 		EmbedBuilder builder = new EmbedBuilder()
 				.setTitle("RNGesus Drop!")
-				.addField("User: " + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + " `" + e.getAuthor().getId() + "`", "Drop: " + drop, false);
+				.addField("User: **" + e.getAuthor().getName() + "** `" + e.getAuthor().getId() + "`", "Drop: " + drop, false);
 		switch(drop) {
 			case "Musician Kit" -> {
 				builder.setColor(Color.BLUE);

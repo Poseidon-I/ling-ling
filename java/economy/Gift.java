@@ -2,10 +2,8 @@ package economy;
 
 import eventListeners.GenericDiscordEvent;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import processes.DatabaseManager;
 
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.Objects;
 
 public class Gift {
@@ -14,7 +12,7 @@ public class Gift {
 		if((boolean) data.get("hadGiftToday")) {
 			e.reply("I appreciate your generosity, but I can't let you give away too much.  Wait until 00:00 UTC!");
 		} else {
-			if(target.equals("")) {
+			if(target.isEmpty()) {
 				e.reply("You have to gift someone for this to work.");
 				return;
 			}
@@ -26,12 +24,9 @@ public class Gift {
 				e.reply("Thanks for your generosity, but I can't use things.  Give this to someone else!");
 				return;
 			}
-			JSONParser parser = new JSONParser();
-			JSONObject targetdata;
-			try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + target + ".json")) {
-				targetdata = (JSONObject) parser.parse(reader);
-				reader.close();
-			} catch(Exception exception) {
+
+			JSONObject targetdata = DatabaseManager.getDataForUser(e, "Economy Data", target);
+			if(targetdata == null) {
 				e.reply("You did not provide a valid User ID.  Doesn't make sense to gift someone nonexistant, does it?");
 				return;
 			}
@@ -41,20 +36,15 @@ public class Gift {
 			targetdata.replace("giftBox", (long) targetdata.get("giftBox") + 1);
 			RNGesus.lootbox(e, data);
 			SaveData.saveData(e, data);
-			try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Economy Data\\" + target + ".json")) {
-				writer.write(targetdata.toJSONString());
-				writer.close();
-			} catch(Exception exception) {
-				//nothing here lol
-			}
+			DatabaseManager.saveDataForUser(e, "Economy Data", target, targetdata);
 			try {
-				e.reply("Successfully gifted `1`" + Emoji.GIFT_BOX + " to " + Objects.requireNonNull(e.getJDA().getUserById(target)).getName());
+				e.reply("Successfully gifted `1`" + Emoji.GIFT_BOX + " to " + targetdata.get("discordName"));
 			} catch(Exception exception) {
 				e.reply("Successfully gifted `1`" + Emoji.GIFT_BOX + " to Someone");
 			}
 			if((boolean) targetdata.get("DMs")) {
 				try {
-					Objects.requireNonNull(e.getJDA().getUserById(target)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getAuthor().getId() + "> (" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + ") just gifted you!"));
+					Objects.requireNonNull(e.getJDA().getUserById(target)).openPrivateChannel().queue((channel) -> channel.sendMessage("<@" + e.getAuthor().getId() + "> (" + data.get("discordName") + ") just gifted you!").queue());
 				} catch(Exception exception) {
 					// nothing here lol
 				}

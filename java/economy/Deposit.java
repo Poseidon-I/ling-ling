@@ -9,7 +9,7 @@ public class Deposit {
 		JSONObject data = LoadData.loadData(e);
 		long amount;
 		long wallet = (long) data.get("violins");
-		if(temp.equals("")) {
+		if(temp.isEmpty()) {
 			e.reply("You have to deposit something.");
 			return;
 		}
@@ -24,8 +24,9 @@ public class Deposit {
 			}
 		}
 		if(amount > wallet) {
-			e.reply("You can't deposit more than you have in your balance.");
-		} else if(amount < 1) {
+			amount = wallet;
+		}
+		if(amount < 1) {
 			e.reply("Stop wasting my time trying to deposit a negative amount.");
 		} else {
 			long max = 20000000 * (long) data.get("storage");

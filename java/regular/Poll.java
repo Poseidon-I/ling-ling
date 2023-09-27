@@ -13,7 +13,7 @@ public class Poll {
 		}
 		StringBuilder send = new StringBuilder("**POLL: ").append(title).append("**\n");
 		
-		if(choices.equals("")) {
+		if(choices.isEmpty()) {
 			e.reply("You must provide choices.  Can't have people vote on nothing, you know.");
 			return;
 		}
@@ -31,12 +31,8 @@ public class Poll {
 			send.append(":regional_indicator_").append(currentChar).append(": ").append(splitChoice).append("\n");
 			currentChar ++;
 		}
-		
-		String name = e.getAuthor().getName();
-		if(Numbers.containsBadLanguage(name)) {
-			name = "NICE TRY";
-		}
-		send.append("\nPoll created by ").append(name).append("#").append(e.getAuthor().getDiscriminator());
+
+		send.append("\nPoll created by ").append(e.getAuthor().getGlobalName());
 		Message message = e.getChannel().sendMessage(send.toString()).complete();
 		int hex = 127462;
 		for(int j = 0; j < splitChoices.length; j++) {

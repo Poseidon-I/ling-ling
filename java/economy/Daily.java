@@ -12,10 +12,10 @@ public class Daily {
 		} else {
 			long streak = (long) data.get("streak") + 1;
 			long income = (long) data.get("income");
-			if(!(boolean) data.get("retainDaily") && streak != 0) {
+			/* if(!(boolean) data.get("retainDaily") && streak != 0) {
 				e.reply("Oh no!  Your streak was reset!\nYou received a total of `" + Numbers.formatNumber(income) + "`" + Emoji.VIOLINS + ", with `0`" + Emoji.VIOLINS + " coming from your `0`-day streak!\n\nRemember to vote for Ling Ling at <https://top.gg/bot/733409243222507670/vote>!");
 				streak = 0;
-			}
+			} */
 			long base = income + (streak * (income / 100));
 			Numbers.calculateLoan(data, base);
 			data.replace("earnings", (long) data.get("earnings") + base);

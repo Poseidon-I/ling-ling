@@ -4,8 +4,8 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import processes.DatabaseManager;
 
-import java.io.FileReader;
 import java.io.FileWriter;
 // BEETHOVEN-ONLY CLASS
 
@@ -13,12 +13,9 @@ public class RoleAdded extends ListenerAdapter {
 	public void onGuildMemberRoleAdd(GuildMemberRoleAddEvent e) {
 		if(e.getGuild().getId().equals("670725611207262219") && !e.getMember().getUser().isBot()) {
 			JSONParser parser = new JSONParser();
-			JSONObject data;
-			try (FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + e.getMember().getId() + ".json")) {
-				data = (JSONObject) parser.parse(reader);
-				reader.close();
-			} catch(Exception exception) {
-				throw new IllegalArgumentException("FILE ERROR FOR " + e.getMember().getId());
+			JSONObject data = DatabaseManager.getDataForUser(e, "Economy Data", e.getMember().getId());
+			if(data == null) {
+				return;
 			}
 			if(e.getRoles().contains(e.getGuild().getRoleById("852752096733429781"))) {
 				data.replace("isBooster", true);

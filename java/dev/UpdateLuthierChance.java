@@ -1,46 +1,45 @@
 package dev;
 
+import com.mongodb.client.MongoCollection;
 import eventListeners.GenericDiscordEvent;
+import org.bson.Document;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import processes.DatabaseManager;
 import processes.Numbers;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Objects;
 
+import static com.mongodb.client.model.Filters.eq;
+
 public class UpdateLuthierChance {
-	public static void updateLuthierChance(GenericDiscordEvent e) {
-		File directory = new File("Ling Ling Bot Data\\Settings\\Luthier");
-		File[] files = directory.listFiles();
-		assert files != null;
-		for(File file : files) {
+	public static void updateLuthierChance(GenericDiscordEvent e, boolean isHuman) {
+		ArrayList<Document> documents = DatabaseManager.getAllData("Luthier Data");
+		MongoCollection<Document> collection = DatabaseManager.prepareStoreAllData("Luthier Data");
+		for(Document file : documents) {
 			JSONParser parser = new JSONParser();
 			JSONObject data;
-			if(file.getName().contains("670725611207262219")) {
+			try {
+				data = (JSONObject) parser.parse(file.toJson());
+			} catch(Exception exception) {
 				continue;
 			}
-			try(FileReader reader = new FileReader(file.getAbsolutePath())) {
-				data = (JSONObject) parser.parse(reader);
-				reader.close();
-			} catch(Exception exception) {
+			if(data.get("discordID").toString().contains("670725611207262219")) {
 				continue;
 			}
 			try {
-				data.replace("chance", Numbers.luthierChance(Objects.requireNonNull(e.getJDA().getGuildById(file.getName().substring(0, file.getName().lastIndexOf(".")))).getMemberCount()));
+				data.replace("chance", Numbers.luthierChance(Objects.requireNonNull(e.getJDA().getGuildById(data.get("discordID").toString())).getMemberCount()));
 			} catch(Exception exception) {
 				continue;
 			}
-
-			try(FileWriter writer = new FileWriter(file.getAbsolutePath())) {
-				writer.write(data.toJSONString());
-				writer.close();
-			} catch(Exception exception) {
-				//nothing here lol
-			}
+			collection.replaceOne(eq("discordID", data.get("discordID")), Document.parse(data.toJSONString()));
 		}
-		e.reply("Successfully updated Luthier chances for all servers");
-
+		if(isHuman) {
+			e.reply("Successfully updated Luthier chances for all servers");
+		}
 	}
 }

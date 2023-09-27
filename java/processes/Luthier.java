@@ -5,16 +5,13 @@ import economy.RNGesus;
 import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.Objects;
 import java.util.Random;
 
 public class Luthier {
 	public static void luthier(GenericDiscordEvent e, JSONObject data, String answer) {
-		try {
+		if(data != null) {
 			Random random = new Random();
 			if(!(boolean) data.get("hasWord")) {
 				double chance = (double) data.get("chance");
@@ -32,7 +29,7 @@ public class Luthier {
 					int i = 0;
 					StringBuilder send = new StringBuilder().append(original);
 					while(send.toString().equals(original)) {
-						while(word.length() > 0) {
+						while(!word.isEmpty()) {
 							int num = random.nextInt(word.length());
 							StringBuilder newWord = new StringBuilder();
 							char temp = word.charAt(num);
@@ -55,31 +52,23 @@ public class Luthier {
 					data.replace("hasWord", true);
 					data.replace("amount", money);
 					data.replace("word", original);
-					try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".json")) {
-						writer.write(data.toJSONString());
-						writer.close();
-					} catch(Exception exception) {
-						//nothing here lol
-					}
+					DatabaseManager.saveDataByGuild(e, "Luthier Data", data);
 				}
-			} else if((boolean) data.get("hasWord") && !e.getAuthor().isBot() && e.getChannel().getId().equals(data.get("channel").toString()) && !answer.equals("")) {
+			} else if((boolean) data.get("hasWord") && !e.getAuthor().isBot() && e.getChannel().getId().equals(data.get("channel").toString()) && !answer.isEmpty()) {
 				if(answer.equals("none")) {
 					e.reply("You have to give an answer, stupid.");
 					return;
 				}
 				String target = data.get("word").toString();
 				long gain = (long) data.get("amount");
-				JSONObject userData;
 				if(answer.equalsIgnoreCase(target)) {
-					JSONParser parser = new JSONParser();
-					try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".json")) {
-						userData = (JSONObject) parser.parse(reader);
-						reader.close();
-					} catch(Exception exception) {
+					JSONObject userData = DatabaseManager.getDataByUser(e, "Economy Data");
+					if(userData == null) {
 						e.reply("You don't even have a profile, where would you store your violins???  Run `/start` **in a bot command channel** to get one!");
 						return;
 					}
-					String name = e.getAuthor().getName();
+					String name = e.getAuthor().getGlobalName();
+					assert name != null;
 					if(name.contains("@everyone") || name.contains("@here") || name.contains("<@&") || name.contains("nigg")) {
 						name = "A user who thought they were trying to be funny";
 					}
@@ -88,22 +77,10 @@ public class Luthier {
 					userData.replace("luthiers", (long) userData.get("luthiers") + 1);
 					e.reply("**" + name + "** unscrambled `" + target + "` and gained " + Numbers.formatNumber(gain) + Emoji.VIOLINS);
 					RNGesus.lootbox(e, userData);
-					try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".json")) {
-						writer.write(userData.toJSONString());
-						writer.close();
-					} catch(Exception exception) {
-						exception.printStackTrace();
-						//nothing here lol
-					}
+					DatabaseManager.saveDataByUser(e, "Economy Data", userData);
 					data.replace("hasWord", false);
 					data.replace("word", "blank");
-					try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Settings\\Luthier\\" + Objects.requireNonNull(e.getGuild()).getId() + ".json")) {
-						writer.write(data.toJSONString());
-						writer.close();
-					} catch(Exception exception) {
-						exception.printStackTrace();
-						//nothing here lol
-					}
+					DatabaseManager.saveDataByGuild(e, "Luthier Data", data);
 				} else {
 					try {
 						e.getMessage().addReaction(net.dv8tion.jda.api.entities.emoji.Emoji.fromUnicode("U+274C")).queue();
@@ -112,8 +89,6 @@ public class Luthier {
 					}
 				}
 			}
-		} catch(Exception exception) {
-			exception.printStackTrace();
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package economy;
 
+import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.json.simple.JSONObject;
@@ -7,10 +8,12 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 public class Link {
-	public static void link(SlashCommandInteractionEvent e) {
+	public static void link(GenericDiscordEvent e) {
+		e.reply("This command is currently disabled and will be back in 3-5 business days.");
+	/*
 		JSONObject data = LoadData.loadData(e);
 		if(!data.get("mcIGN").equals("")) {
-			e.reply("You have already linked an account!  Account name: `" + data.get("mcIGN") + "`").queue();
+			e.reply("You have already linked an account!  Account name: `" + data.get("mcIGN") + "`");
 			return;
 		}
 		String name;
@@ -23,6 +26,6 @@ public class Link {
 		e.reply("Please click the button below to confirm that you want to link `" + name + "` to this Ling Ling profile.")
 				.addActionRow(Button.primary("mc", "Confirm " + name))
 				.setEphemeral(true)
-				.queue();
+				.queue();*/
 	}
 }
