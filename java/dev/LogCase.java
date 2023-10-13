@@ -2,11 +2,8 @@ package dev;
 
 import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
-import org.json.simple.JSONObject;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileWriter;
 import java.util.Objects;
 
 public class LogCase {

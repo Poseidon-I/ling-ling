@@ -2,10 +2,8 @@ package leveling;
 
 import eventListeners.GenericDiscordEvent;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import processes.DatabaseManager;
 
-import java.io.FileReader;
 import java.util.Objects;
 // BEETHOVEN-ONLY CLASS
 

@@ -4,6 +4,7 @@ import com.mongodb.*;
 import com.mongodb.client.*;
 import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent;
 import org.bson.Document;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -99,6 +100,22 @@ public class DatabaseManager {
 		}
 	}
 
+	public static JSONObject getDataForUser(GuildMemberRoleRemoveEvent e, String collection1, String target) {
+		MongoCollection<Document> collection = database.getCollection(collection1);
+		Document document = collection.find(eq("discordID", target)).first();
+		if(document == null) {
+			return null;
+		} else {
+			try {
+				JSONParser parser = new JSONParser();
+				return (JSONObject) parser.parse(document.toJson());
+			} catch(Exception exception) {
+				exception.printStackTrace();
+				return null;
+			}
+		}
+	}
+
 
 	public static JSONObject getDataForUser(GenericDiscordEvent e, String collection1, String target) {
 		MongoCollection<Document> collection = database.getCollection(collection1);
@@ -153,6 +170,16 @@ public class DatabaseManager {
 	public static void saveDataByUser(GenericDiscordEvent e, String collection1, JSONObject newData) {
 		MongoCollection<Document> collection = database.getCollection(collection1);
 		collection.replaceOne(eq("discordID", e.getAuthor().getId()), Document.parse(newData.toJSONString()));
+	}
+
+	public static void saveDataForUser(GuildMemberRoleAddEvent e, String collection1, String target, JSONObject newData) {
+		MongoCollection<Document> collection = database.getCollection(collection1);
+		collection.replaceOne(eq("discordID", target), Document.parse(newData.toJSONString()));
+	}
+
+	public static void saveDataForUser(GuildMemberRoleRemoveEvent e, String collection1, String target, JSONObject newData) {
+		MongoCollection<Document> collection = database.getCollection(collection1);
+		collection.replaceOne(eq("discordID", target), Document.parse(newData.toJSONString()));
 	}
 
 	public static void saveDataForUser(GenericDiscordEvent e, String collection1, String target, JSONObject newData) {

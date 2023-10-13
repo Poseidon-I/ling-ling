@@ -1,53 +1,50 @@
 package regular;
 
+import com.mongodb.client.MongoCollection;
 import eventListeners.GenericDiscordEvent;
 import leveling.Leveling;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
+import org.bson.Document;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import processes.DatabaseManager;
+import processes.Numbers;
 
 import java.awt.*;
-import java.io.FileReader;
 import java.util.List;
 import java.util.Objects;
+
+import static com.mongodb.client.model.Filters.eq;
 
 // BEETHOVEN-ONLY CLASS
 public class MessageLeaderboard {
 	public static void messageLeaderboard(GenericDiscordEvent e) {
-		e.getGuild().loadMembers();
+		MongoCollection<Document> documents = DatabaseManager.prepareStoreAllData("Leveling Data");
 		JSONObject data = Leveling.loadData(e);
 		long userMessages = (long) data.get("messages");
-		String[] entry = new String[]{e.getAuthor().getGlobalName()  + " `" + e.getAuthor().getId() + "`: " + data.get("messages") + " messages\n", "<@0> `0`: 0 messages\n", "<@0> `0`: 0 messages\n", "<@0> `0`: 0 messages\n", "<@0> `0`: 0 messages\n", "<@0> `0`: 0 messages\n", "<@0> `0`: 0 messages\n", "<@0> `0`: 0 messages\n", "<@0> `0`: 0 messages\n", "<@0> `0`: 0 messages\n"};
-		List<Member> list = e.getGuild().getMembers();
 		long place = 1;
-		JSONParser parser = new JSONParser();
-		for(Member user : list) {
-			if(user.getUser().isBot()) {
-				continue;
-			}
-			JSONObject currentData = DatabaseManager.getDataForUser(e, "Leveling Data", user.getId());
-			if(currentData == null) {
-				continue;
-			}
-			long messages;
+		String[] entry = new String[]{e.getAuthor().getId() + " " + userMessages, "0 0", "0 0", "0 0", "0 0", "0 0", "0 0", "0 0", "0 0", "0 0"};
+		List<Member> list = e.getGuild().getMembers();
+		for(Member member : list) {
+			JSONParser parser = new JSONParser();
 			try {
-				messages = (long) currentData.get("messages");
+				data = (JSONObject) parser.parse(Objects.requireNonNull(documents.find(eq("discordID", member.getId())).first()).toJson());
 			} catch(Exception exception) {
-				messages = 0;
+				continue;
 			}
+			if(data == null) {
+				continue;
+			}
+			String id = member.getId();
+			long messages = (long) data.get("messages");
 			if(messages == 0) {
 				continue;
 			}
 			for(int i = 0; i < 10; i++) {
-				if(messages > Long.parseLong(entry[i].split(" ")[entry[i].split(" ").length - 2]) && !user.getId().equals(e.getAuthor().getId())) {
+				if(messages > Long.parseLong(entry[i].split(" ")[1]) && !id.equals(e.getAuthor().getId())) {
 					System.arraycopy(entry, i, entry, i + 1, 9 - i);
-					if(user.getId().equals("768056391814086676")) {
-						entry[i] = "**NARWHAL** `768056391814086676`: " + messages + " messages\n";
-					} else {
-						entry[i] = user.getUser().getGlobalName() + "** `" + user.getId() + "`: " + messages + " messages\n";
-					}
+					entry[i] = id + " " + messages;
 					if(messages > userMessages) {
 						place++;
 					}
@@ -57,10 +54,10 @@ public class MessageLeaderboard {
 		}
 		StringBuilder board = new StringBuilder();
 		for(int i = 0; i < 10; i++) {
-			if(entry[i].contains("#0000")) {
-				break;
-			}
-			board.append("**").append(i + 1).append("\\. ").append(entry[i]);
+			String id = entry[i].split(" ")[0];
+			JSONObject temp = DatabaseManager.getDataForUser(e, "Leveling Data", id);
+			assert temp != null;
+			board.append("**").append(i + 1).append("\\. ").append(Objects.requireNonNull(e.getGuild().getMemberById(id)).getNickname()).append("** `").append(id).append("`: `").append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[1]))).append("` messages").append("\n");
 		}
 		if(place >= 11) {
 			board.append("\n**").append(place).append("\\. You**: ").append(userMessages).append(" messages");

@@ -1,16 +1,11 @@
 package regular;
 
-import com.mongodb.client.MongoCollection;
 import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.entities.Member;
-import org.bson.Document;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import processes.DatabaseManager;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.ArrayList;
 import java.util.List;
 // BEETHOVEN-ONLY CLASS
 public class ResetMessages {

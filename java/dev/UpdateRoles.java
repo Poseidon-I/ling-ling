@@ -4,14 +4,9 @@ import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import org.bson.Document;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import processes.DatabaseManager;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UpdateRoles {

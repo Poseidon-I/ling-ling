@@ -35,7 +35,7 @@ public class WordAutomod {
 	}
 
 	public static void wordAutomod(GenericDiscordEvent e) {
-		List<String> messageArray = Arrays.stream(e.getMessage().getContentRaw().split(" ")).toList();
+		List<String> messageArray = Arrays.stream(e.getMessage().getContentRaw().toLowerCase().split(" ")).toList();
 		String message = EmojiParser.parseToAliases(e.getMessage().getContentRaw()).toLowerCase();
 		if(messageArray.contains("bruce") && Objects.requireNonNull(e.getGuild().getMember(e.getAuthor())).getRoles().contains(e.getGuild().getRoleById("759521422015725568"))) {
 			moderate(e, "names", true);

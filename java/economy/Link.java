@@ -1,11 +1,6 @@
 package economy;
 
 import eventListeners.GenericDiscordEvent;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import org.json.simple.JSONObject;
-
-import java.util.Objects;
 
 public class Link {
 	public static void link(GenericDiscordEvent e) {

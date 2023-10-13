@@ -3,9 +3,6 @@ package regular;
 import eventListeners.GenericDiscordEvent;
 import org.json.simple.JSONObject;
 import processes.DatabaseManager;
-
-import javax.xml.crypto.Data;
-import java.io.*;
 // BEETHOVEN-ONLY CLASS
 public class Annoy {
 	public static void annoy(GenericDiscordEvent e) {

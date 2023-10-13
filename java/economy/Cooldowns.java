@@ -240,8 +240,7 @@ public class Cooldowns {
 			
 			builder.setTitle("__**Command Cooldowns**__");
 			builder2.setTitle("__**Time Before Hourly Income Penalty**__");
-			e.replyEmbeds(builder.build());
-			e.sendMessageEmbeds(builder2.build());
+			e.replyTwoEmbeds(builder.build(), builder2.build());
 		} catch(Exception exception) {
 			exception.printStackTrace();
 		}

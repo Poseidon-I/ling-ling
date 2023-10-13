@@ -12,10 +12,18 @@ import regular.*;
 import java.util.Objects;
 // BEETHOVEN-ONLY CLASS
 
-public class Commands {
-	public static void commands(GenericDiscordEvent e) {
+class CreateThreadBeethoven implements Runnable {
+	private static GenericDiscordEvent e;
+
+	public static void setGenericDiscordEvent(GenericDiscordEvent e1) {
+		e = e1;
+	}
+
+	@Override
+	public void run() {
 		String[] message = e.getMessage().getContentRaw().toLowerCase().split(" ");
 		if(message.length > 1) {
+			System.out.println("[DEBUG] New Thread: " + Thread.currentThread().getId() + "\n        Command: beethoven " + message[1]);
 			switch(message[1]) {
 				case "link" -> Link.link(e, "");
 				case "help" -> BeethovenHelp.help(e, message);
@@ -49,8 +57,7 @@ public class Commands {
 				}
 				case "checkmessages", "checkmsgs" -> CheckMessages.checkMessages(e);
 				case "messageleaderboard", "messagelb", "messages", "msgs", "msglb", "msgleaderboard" ->
-						e.reply("This command is temporarily disabled.");
-						// MessageLeaderboard.messageLeaderboard(e);
+						MessageLeaderboard.messageLeaderboard(e);
 				case "resetmessages" -> {
 					if(e.getAuthor().getId().equals("619989388109152256")) {
 						ResetMessages.resetMessages(e);
@@ -60,7 +67,7 @@ public class Commands {
 				}
 				case "rank" -> Rank.rank(e);
 				case "leaderboard", "lb", "levels" ->
-						e.reply("This command is temporarily disabled."); //Leaderboard.leaderboard(e);
+						Leaderboard.leaderboard(e);
 				case "setlevelingdata" -> SetLevel.setLevelingData(e);
 				case "forcerestartlingling" -> {
 					if(e.getAuthor().getId().equals("619989388109152256") || e.getAuthor().getId().equals("488487157372157962")) {
@@ -76,6 +83,17 @@ public class Commands {
 				default ->
 						e.reply("**__Don't interrupt my composing unless you actually need something__ :face_with_symbols_over_mouth:**");
 			}
+			System.out.println("        Thread " + Thread.currentThread().getId() + " Finished.");
+		} else {
+			e.reply("**__Don't interrupt my composing unless you actually need something__ :face_with_symbols_over_mouth:**");
 		}
+	}
+}
+
+public class Commands {
+	public static void commands(GenericDiscordEvent e) {
+		CreateThreadBeethoven.setGenericDiscordEvent(e);
+		Thread object = new Thread(new CreateThreadBeethoven());
+		object.start();
 	}
 }

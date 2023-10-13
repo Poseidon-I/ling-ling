@@ -1,5 +1,6 @@
 package eventListeners;
 
+import economy.SaveData;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.json.simple.JSONObject;
@@ -12,7 +13,6 @@ import java.io.FileWriter;
 public class RoleAdded extends ListenerAdapter {
 	public void onGuildMemberRoleAdd(GuildMemberRoleAddEvent e) {
 		if(e.getGuild().getId().equals("670725611207262219") && !e.getMember().getUser().isBot()) {
-			JSONParser parser = new JSONParser();
 			JSONObject data = DatabaseManager.getDataForUser(e, "Economy Data", e.getMember().getId());
 			if(data == null) {
 				return;
@@ -34,12 +34,7 @@ public class RoleAdded extends ListenerAdapter {
 			} else if(e.getRoles().contains(e.getGuild().getRoleById("734697410273607751"))) {
 				data.replace("serverLevel", 1.25);
 			}
-			try (FileWriter writer = new FileWriter("Ling Ling Bot Data\\Economy Data\\" + e.getMember().getId() + ".json")) {
-				writer.write(data.toJSONString());
-				writer.close();
-			} catch(Exception exception) {
-				//nothing here lol
-			}
+			DatabaseManager.saveDataForUser(e,"Economy Data", e.getMember().getId(), data);
 		}
 	}
 }

@@ -3,13 +3,10 @@ package economy;
 import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import processes.DatabaseManager;
 import processes.Numbers;
 
 import java.awt.*;
-import java.io.FileReader;
-import java.util.Objects;
 
 public class Stats {
 	public static void stats(GenericDiscordEvent e, String user) {

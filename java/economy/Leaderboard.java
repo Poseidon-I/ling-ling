@@ -2,7 +2,6 @@ package economy;
 
 import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.User;
 import org.bson.Document;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -54,7 +53,7 @@ public class Leaderboard {
 			}
 		}
 		StringBuilder board = new StringBuilder();
-		for(int i = 0; i < 10 && !entry[i].contains("<@0>"); ++i) {
+		for(int i = 0; i < 10; ++i) {
 			String id = entry[i].split(" ")[0];
 			JSONObject temp = DatabaseManager.getDataForUser(e, "Economy Data", id);
 			assert temp != null;

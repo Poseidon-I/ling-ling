@@ -7,11 +7,8 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.json.simple.JSONObject;
-
-import java.io.File;
 
 public class StartBot {
 
@@ -44,7 +41,7 @@ public class StartBot {
 				.addEventListeners(new NoInviteLinks())
 				.build();
 		jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
-		jda.getPresence().setActivity(Activity.listening("music.  Or at least trying to."));
+		jda.getPresence().setActivity(Activity.customStatus("Actively (de)composing."));
 
 		// Start LingLing Bot
 		Message.suppressContentIntentWarning();
@@ -56,7 +53,7 @@ public class StartBot {
 				.useSharding(0, 1)
 				.build();
 		jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
-		jda.getPresence().setActivity(Activity.playing("violin forty hours a day."));
+		jda.getPresence().setActivity(Activity.customStatus("Practising violin 40 hours a day.  Sometimes practises 72 hours a day!"));
 
 			/*
 			// ONE TIEM UPSERT OF SLASH COMMANDS

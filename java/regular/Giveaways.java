@@ -6,10 +6,7 @@ import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import org.bson.Document;
-import org.json.simple.JSONObject;
 import processes.DatabaseManager;
-
-import java.io.FileWriter;
 
 // BEETHOVEN-ONLY CLASS
 public class Giveaways {

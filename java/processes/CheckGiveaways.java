@@ -9,8 +9,6 @@ import org.bson.Document;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -23,17 +21,23 @@ public class CheckGiveaways {
 		List<User> list = message.getReactions().get(0).retrieveUsers().complete();
 		ArrayList<Integer> hasWon = new ArrayList<>();
 		boolean nobody = false;
-		for(int i = 0; i < numWinners; i++) {
-			Random random = new Random();
-			while(true) {
-				int index = random.nextInt(list.size());
-				if(!hasWon.contains(index) && !list.get(index).isBot()) {
-					hasWon.add(index);
-					break;
-				} else if(list.size() == 1) {
-					message.getChannel().sendMessage("Nobody entered!  How sad.\n\n" + message.getJumpUrl()).queue();
-					nobody = true;
-					break;
+		if(list.size() + 2 < numWinners) {
+			for(int i = 0; i < list.size(); i++) {
+				hasWon.add(i);
+			}
+		} else {
+			for(int i = 0; i < numWinners; i++) {
+				Random random = new Random();
+				while(true) {
+					int index = random.nextInt(list.size());
+					if(!hasWon.contains(index) && !list.get(index).isBot()) {
+						hasWon.add(index);
+						break;
+					} else if(list.size() == 1) {
+						message.getChannel().sendMessage("Nobody entered!  How sad.\n\n" + message.getJumpUrl()).queue();
+						nobody = true;
+						break;
+					}
 				}
 			}
 		}
@@ -41,9 +45,16 @@ public class CheckGiveaways {
 		if(nobody) {
 			message.getChannel().editMessageById(message.getId(), ":tada: **Giveaway for " + thing + " has ENDED** :tada:\n\nWinners - nobody :(").queue();
 		} else {
-			for(int i = 0; i < numWinners; i++) {
-				String string = list.get(hasWon.get(i)).getAsMention();
-				winnerList.append(string).append(" ");
+			if(list.size() + 2 < numWinners) {
+				for(int i = 0; i < list.size(); i++) {
+					String string = list.get(hasWon.get(i)).getAsMention();
+					winnerList.append(string).append(" ");
+				}
+			} else {
+				for(int i = 0; i < numWinners; i++) {
+					String string = list.get(hasWon.get(i)).getAsMention();
+					winnerList.append(string).append(" ");
+				}
 			}
 			winnerList.deleteCharAt(winnerList.length() - 1);
 			message.getChannel().editMessageById(message.getId(), ":tada: **Giveaway for __" + thing + "__ has ENDED** :tada:\n\nWinners - " + winnerList).queue();
@@ -52,7 +63,7 @@ public class CheckGiveaways {
 		MongoCollection<Document> collection = DatabaseManager.prepareStoreAllData("Giveaways Data");
 		collection.deleteOne(eq("discordID", message.getId()));
 	}
-	
+
 	public static void checkGiveaways(GenericDiscordEvent e) {
 		TextChannel channel = e.getGuild().getTextChannelById("734697492490354768");
 		ArrayList<Document> documents = DatabaseManager.getAllData("Giveaways Data");

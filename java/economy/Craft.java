@@ -3,16 +3,14 @@ package economy;
 import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import processes.DatabaseManager;
 import processes.Numbers;
 
 import java.awt.*;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.Objects;
 
 public class Craft {
-	public static void craft(GenericDiscordEvent e, long craftAmount, String item) {
+	public static void craft(GenericDiscordEvent e, String temp, String item) {
 		JSONObject data = LoadData.loadData(e);
 		if(item.isEmpty()) {
 			EmbedBuilder builder = new EmbedBuilder().setTitle("**All Crafting Recipes**")
@@ -27,6 +25,17 @@ public class Craft {
 					.addField("**1x Luthier** " + Emoji.SERVICE, "`" + data.get("grains") + "/250`" + Emoji.GRAINS + "\n`" + data.get("plastic") + "/250`" + Emoji.PLASTIC + "\n`" + data.get("water") + "/250`" + Emoji.WATER + "\n`" + data.get("teaBase") + "/250`" + Emoji.TEABAG + "\n`" + data.get("wood") + "/250`" + Emoji.WOOD + "\n`" + data.get("pineSap") + "/250`" + Emoji.SAP + "\n`" + data.get("steel") + "/250`" + Emoji.STEEL + "\n`" + data.get("horseHair") + "/250`" + Emoji.HORSE_HAIR, true);
 			e.replyEmbeds(builder.build());
 			return;
+		}
+		long craftAmount;
+		try {
+			craftAmount = Long.parseLong(temp);
+		} catch(Exception exception) {
+			if(temp.equals("max")) {
+				craftAmount = 2147483647;
+			} else {
+				e.reply("You have to either input `max` or an integer.");
+				return;
+			}
 		}
 		if(craftAmount < 1) {
 			e.reply("You can't craft a negative amount of items.  Grow a brain.");
@@ -189,12 +198,8 @@ public class Craft {
 					SaveData.saveData(e, data);
 					return;
 				}
-				JSONParser parser = new JSONParser();
-				JSONObject luthierData;
-				try(FileReader reader = new FileReader("Ling Ling Bot Data\\Settings\\Luthier\\" + Objects.requireNonNull(e.getGuild()).getId() + ".json")) {
-					luthierData = (JSONObject) parser.parse(reader);
-					reader.close();
-				} catch(Exception exception) {
+				JSONObject luthierData = DatabaseManager.getDataByGuild(e, "Luthier Data");
+				if(luthierData == null) {
 					e.reply("You look for a luthier shop to donate to, but cannot find any.  Try another server!\nAlternatively, ask a Bot Mod/Bot Admin to set up Luthier for you.");
 					return;
 				}
@@ -237,12 +242,7 @@ public class Craft {
 				luthierData.replace("multiplier", multiplier);
 				e.reply("You crafted and used `" + Numbers.formatNumber(i) + "`x Luthier for `" + Numbers.formatNumber(i * 250) + "`" + Emoji.GRAINS + ", `" + Numbers.formatNumber(i * 250) + "`" + Emoji.PLASTIC + ", `" + Numbers.formatNumber(i * 250) + "`" + Emoji.WATER + ", `" + Numbers.formatNumber(i * 250) + "`" + Emoji.TEABAG + ", `" + Numbers.formatNumber(i * 250) + "`" + Emoji.WOOD + ", `" + Numbers.formatNumber(i * 250) + "`" + Emoji.SAP + ", `" + Numbers.formatNumber(i * 250) + "`" + Emoji.STEEL + ", `" + Numbers.formatNumber(i * 250) + "`" + Emoji.HORSE_HAIR);
 				Objects.requireNonNull(e.getGuild().getTextChannelById((String) luthierData.get("channel"))).sendMessage("**:tada: <@" + e.getAuthor().getId() + "> just buffed this server's luthier by `" + i + "`x!  New Multiplier: `" + multiplier + "x`** :tada:");
-				try(FileWriter writer = new FileWriter("Ling Ling Bot Data\\Settings\\Luthier\\" + e.getGuild().getId() + ".json")) {
-					writer.write(luthierData.toJSONString());
-					writer.close();
-				} catch(Exception exception) {
-					//nothing here lol
-				}
+				DatabaseManager.saveDataByGuild(e, "Luthier Data", luthierData);
 			}
 			default ->
 					e.reply("This crafting recipe does not exist!  Run `/craft` with no arguments to see all recipes.");

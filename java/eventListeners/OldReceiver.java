@@ -4,16 +4,18 @@ import dev.*;
 import economy.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import processes.DatabaseManager;
 import processes.HourlyIncome;
-import processes.InterestPenalty;
 import processes.Luthier;
 import regular.*;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -31,39 +33,19 @@ class CreateThreadMessage implements Runnable {
 		if(e.getAuthor().getId().equals("619989388109152256") || e.getAuthor().getId().equals("488487157372157962")) {
 			return 3;
 		} else {
-			JSONParser parser = new JSONParser();
-			try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".json")) {
-				JSONObject data = (JSONObject) parser.parse(reader);
-				reader.close();
-				return (long) data.get("perms");
-			} catch(Exception exception) {
-				exception.printStackTrace();
+			JSONObject data = DatabaseManager.getDataForUser(e, "Economy Data", e.getAuthor().getId());
+			if(data == null) {
 				return 0;
+			} else {
+				return (long) data.get("perms");
 			}
 		}
 	}
 
 	public void run() {
-		System.out.println("[DEBUG] New Thread: " + Thread.currentThread().getId() + "\n Command: " + Arrays.toString(message));
+		System.out.println("[DEBUG] New Thread: " + Thread.currentThread().getId() + "\n        Command: " + Arrays.toString(message));
 		HourlyIncome.checkHourly(e);
-
 		if(message[0].equals("<@733409243222507670>") || message[0].equals("<@772582345944334356>")) {
-			// Apply Vote Rewards
-			if(e.getChannel().getId().equals("863135059712409632")) {
-				String id = message[1];
-				JSONObject data = DatabaseManager.getDataForUser(e, "Economy Data", id);
-				if(data == null) {
-					return;
-				}
-				data.replace("voteBox", (long) data.get("voteBox") + 1);
-				DatabaseManager.saveDataForUser(e, "Economy Data", id, data);
-				if((boolean) data.get("banned")) {
-					Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().complete().sendMessage("Thank you for voting for Ling Ling!  Unfortunately, you are currently banned from using the economy, but I am nice and have rewarded you anyway in the unlikely case you do get unbanned.").queue();
-				} else {
-					Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().complete().sendMessage("Thank you for voting for Ling Ling!  You have received 1x Free Box!").queue();
-				}
-			}
-
 			// ALL COMMANDS
 			String commandName;
 			try {
@@ -71,6 +53,7 @@ class CreateThreadMessage implements Runnable {
 			} catch(Exception exception) {
 				commandName = "";
 			}
+
 			switch(commandName) {
 				case "debug" -> {
 					Runtime runtime = Runtime.getRuntime();
@@ -105,8 +88,15 @@ class CreateThreadMessage implements Runnable {
 						e.reply("The Beginner Guide can be found at <https://docs.google.com/document/d/1Oo8m8XuGsIOyMzJhllUN9SpOJI8hSUeQt5RbyPY9qMI/edit?usp=sharing>, written by `bubblepotatochips#0498`");
 				case "kill" -> {
 					StringBuilder target = new StringBuilder();
+					String[] message = e.getMessage().getContentRaw().split(" ");
 					try {
-						for(int i = 2; i < message.length; i++) {
+						int i;
+						if(message[0].equals("!kill")) {
+							i = 1;
+						} else {
+							i = 2;
+						}
+						for(; i < message.length; i++) {
 							target.append(message[i]).append(" ");
 						}
 						target.deleteCharAt(target.length() - 1);
@@ -188,10 +178,17 @@ class CreateThreadMessage implements Runnable {
 						""");
 				case "botstats" -> {
 					int serverCount = e.getJDA().getGuilds().size();
-					File[] files = new File("Ling Ling Bot Data\\Economy Data").listFiles();
-					assert files != null;
-					e.reply("Servers: " + serverCount + "\nUsers: " + files.length);
+					ArrayList<Document> documents = DatabaseManager.getAllEconomyData();
+					e.reply("Servers: " + serverCount + "\nUsers: " + documents.size());
 				}
+			}
+
+			if(Boolean.parseBoolean(Objects.requireNonNull(DatabaseManager.getMiscData()).get("sendingHourly").toString())) {
+				e.reply("Hourly incomes are being sent right now - give us a minute!");
+				return;
+			}
+
+			switch(commandName) {
 				case "settings" -> {
 					String option;
 					String newValue;
@@ -236,7 +233,7 @@ class CreateThreadMessage implements Runnable {
 					Market.market(e, item, action, amount, price);
 				}
 				case "craft" -> {
-					long craftAmount;
+					String craftAmount;
 					String name;
 					try {
 						name = message[2];
@@ -244,9 +241,9 @@ class CreateThreadMessage implements Runnable {
 						name = "";
 					}
 					try {
-						craftAmount = Long.parseLong(message[3]);
+						craftAmount = message[3];
 					} catch(Exception exception) {
-						craftAmount = 1;
+						craftAmount = "";
 					}
 					Craft.craft(e, craftAmount, name);
 				}
@@ -399,7 +396,7 @@ class CreateThreadMessage implements Runnable {
 				case "answer" -> {
 					StringBuilder answer = new StringBuilder();
 					try {
-						for(int i = 2;  i < message.length; i ++) {
+						for(int i = 2; i < message.length; i++) {
 							answer.append(message[i]).append(" ");
 						}
 						answer.deleteCharAt(answer.length() - 1);
@@ -479,7 +476,11 @@ class CreateThreadMessage implements Runnable {
 							add = -2;
 						}
 						try {
-							item = message[4];
+							if(message[0].equals("!give")) {
+								item = e.getMessage().getContentRaw().split(" ")[3];
+							} else {
+								item = e.getMessage().getContentRaw().split(" ")[4];
+							}
 						} catch(Exception exception) {
 							item = "";
 						}
@@ -590,7 +591,7 @@ class CreateThreadMessage implements Runnable {
 							editOption = "";
 						}
 						try {
-							for(int i = 4;  i < message.length; i ++) {
+							for(int i = 4; i < message.length; i++) {
 								newValue.append(message[i]).append(" ");
 							}
 							newValue.deleteCharAt(newValue.length() - 1);
@@ -746,16 +747,33 @@ class CreateThreadMessage implements Runnable {
 				}
 			}
 		}
-		System.out.println("Thread " + Thread.currentThread().getId() + " Finished.");
+		System.out.println("        Thread " + Thread.currentThread().getId() + " Finished.");
 	}
 }
 
 public class OldReceiver extends ListenerAdapter {
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent e) {
-		if(!e.getAuthor().isBot() && !e.getMessage().getContentRaw().isEmpty()) {
-			GenericDiscordEvent e1 = new GenericDiscordEvent(e);
+		GenericDiscordEvent e1 = new GenericDiscordEvent(e);
+		// Apply Vote Rewards
+		if(e.getChannel().getId().equals("863135059712409632")) {
+			String[] message = e.getMessage().getContentRaw().toLowerCase().split(" ");
+			String id = message[1];
+			JSONObject data = DatabaseManager.getDataForUser(e1, "Economy Data", id);
+			if(data == null) {
+				return;
+			}
+			data.replace("voteBox", ((long) data.get("voteBox")) + 1);
+			DatabaseManager.saveDataForUser(e1, "Economy Data", id, data);
+			if((boolean) data.get("banned")) {
+				Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().complete().sendMessage("Thank you for voting for Ling Ling!  Unfortunately, you are currently banned from using the economy, but I am nice and have rewarded you anyway in the unlikely case you do get unbanned.").queue();
+			} else {
+				Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().complete().sendMessage("Thank you for voting for Ling Ling!  You have received 1x Free Box!").queue();
+			}
+			return;
+		}
 
+		if(!e.getAuthor().isBot() && !e.getMessage().getContentRaw().isEmpty()) {
 			if(e1.getMessage().getContentRaw().toLowerCase().contains("bad bot")) {
 				e1.reply("sowwy strad :(");
 			} else if(e1.getMessage().getContentRaw().toLowerCase().contains("good bot")) {
@@ -770,7 +788,6 @@ public class OldReceiver extends ListenerAdapter {
 			} catch(Exception exception) {
 				//nothing here lol
 			}
-
 			String[] message = e.getMessage().getContentRaw().toLowerCase().split(" ");
 			try {
 				CreateThreadMessage.setGenericDiscordEvent(e1, message);

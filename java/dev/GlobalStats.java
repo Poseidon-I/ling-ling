@@ -1,8 +1,5 @@
 package dev;
 
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.bson.Document;
@@ -12,8 +9,6 @@ import processes.DatabaseManager;
 import processes.Numbers;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 
 public class GlobalStats {

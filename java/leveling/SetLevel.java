@@ -5,8 +5,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import processes.DatabaseManager;
 
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.Objects;
 // BEETHOVEN-ONLY CLASS
 
@@ -22,10 +20,11 @@ public class SetLevel {
 				e.getMessage().reply("This save doesn't exist!").queue();
 				return;
 			}
-			try {
-				data.replace("level", Long.parseLong(message[4]));
-			} catch(Exception exception) {
+			if(message[3].equals("level") || message[3].equals("xp") || message[3].equals("messages")) {
+				data.replace(message[3], Long.parseLong(message[4]));
+			} else {
 				e.reply("You did not provide a valid field!  Valid fields: `level` `xp` `messages`");
+				return;
 			}
 			DatabaseManager.saveDataForUser(e, "Leveling Data", id, data);
 			e.getMessage().reply("Successfully set `" + Objects.requireNonNull(e.getGuild().getMemberById(id)).getNickname() + "`'s " + field + " to `" + message[4] + "`.").queue();

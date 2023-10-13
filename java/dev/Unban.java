@@ -4,12 +4,8 @@ import com.mongodb.client.MongoCollection;
 import eventListeners.GenericDiscordEvent;
 import org.bson.Document;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import processes.DatabaseManager;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.Objects;
 
 import static com.mongodb.client.model.Filters.eq;

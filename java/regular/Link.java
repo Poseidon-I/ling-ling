@@ -1,15 +1,6 @@
 package regular;
 
-import com.google.gson.JsonObject;
 import eventListeners.GenericDiscordEvent;
-import net.hypixel.api.HypixelAPI;
-import net.hypixel.api.apache.ApacheHttpClient;
-import net.hypixel.api.http.HypixelHttpClient;
-import net.hypixel.api.reply.GuildReply;
-import net.hypixel.api.reply.PlayerReply;
-
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 // BEETHOVEN-ONLY CLASS
 public class Link {

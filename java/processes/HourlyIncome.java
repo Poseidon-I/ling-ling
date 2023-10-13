@@ -7,6 +7,8 @@ import org.bson.Document;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -26,12 +28,14 @@ class CreateThread implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("[DEBUG] New Thread: " + Thread.currentThread().getId() + "\n Hour: " + time);
+		System.out.println("[DEBUG] New Thread: " + Thread.currentThread().getId() + "\n        Hourly Income Thread");
+		long howManyHours = 0;
 		while(System.currentTimeMillis() > time) {
+			System.out.println("        Sending Income for Time " + Instant.ofEpochMilli(time).atZone(ZoneId.of("UTC")).toLocalDateTime());
 			time += 3600000;
-			data.replace("hourly", time + 3600000);
+			howManyHours ++;
+			data.replace("hourly", time);
 			DatabaseManager.saveMiscData(data);
-			HourlyIncome.hourlyIncome();
 
 			//RESET COOLDOWNS BOUND TO 12AM UTC
 			if(time % 86400000 == 0) {
@@ -46,7 +50,10 @@ class CreateThread implements Runnable {
 
 			Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage("Hourly Incomes Sent!").queue();
 		}
-		System.out.println("Thread " + Thread.currentThread().getId() + " Finished.");
+		HourlyIncome.hourlyIncome(howManyHours);
+		data.replace("sendingHourly", false);
+		DatabaseManager.saveMiscData(data);
+		System.out.println("        Thread " + Thread.currentThread().getId() + " Finished.");
 	}
 }
 
@@ -56,14 +63,16 @@ public class HourlyIncome {
 		JSONObject data = DatabaseManager.getMiscData();
 		assert data != null;
 		long time = (long) data.get("hourly");
-		if(System.currentTimeMillis() > time) {
+		if(System.currentTimeMillis() > time && !Boolean.parseBoolean(data.get("sendingHourly").toString())) {
+			data.replace("sendingHourly", true);
+			DatabaseManager.saveMiscData(data);
 			CreateThread.setGenericDiscordEvent(e1, time, data);
 			Thread object = new Thread(new CreateThread());
 			object.start();
 		}
 	}
 
-	public static void hourlyIncome() {
+	public static void hourlyIncome(long howManyHours) {
 		ArrayList<Document> documents = DatabaseManager.getAllEconomyData();
 		MongoCollection<Document> collection = DatabaseManager.prepareStoreAllEconomyData();
 		JSONParser parser = new JSONParser();
@@ -77,7 +86,7 @@ public class HourlyIncome {
 			} catch(Exception exception) {
 				continue;
 			}
-			long income = (long) data.get("income");
+			long income = (long) data.get("income") * howManyHours;
 			long time = System.currentTimeMillis();
 			if(time > (long) data.get("rosinExpire")) {
 				income = (long) (income - (income * 0.25));

@@ -110,11 +110,12 @@ public class Use {
 		try {
 			useAmount = Long.parseLong(temp);
 		} catch(Exception exception) {
-			e.reply("You have to either input `max` or an integer.");
-			return;
-		}
-		if(temp.equals("max")) {
-			useAmount = 2147483647;
+			if(temp.equals("max")) {
+				useAmount = 2147483647;
+			} else {
+				e.reply("You have to either input `max` or an integer.");
+				return;
+			}
 		}
 		if(useAmount < 1) {
 			e.reply("You can't use a negative amount of items.  Grow a brain.");

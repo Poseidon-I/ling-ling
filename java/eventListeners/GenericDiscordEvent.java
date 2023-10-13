@@ -79,4 +79,12 @@ public class GenericDiscordEvent {
 	public void sendMessageEmbeds(MessageEmbed embed) {
 		channel.sendMessageEmbeds(embed).queue();
 	}
+
+	public void replyTwoEmbeds(MessageEmbed embed1, MessageEmbed embed2) {
+		if(isSlashCommand()) {
+			this.slashEvent.replyEmbeds(embed1, embed2).queue();
+		} else {
+			this.message.replyEmbeds(embed1, embed2).mentionRepliedUser(false).queue();
+		}
+	}
 }

@@ -4,6 +4,7 @@ import dev.*;
 import economy.*;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -14,6 +15,7 @@ import regular.*;
 
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Objects;
 
 class CreateThreadSlash implements Runnable {
@@ -27,34 +29,31 @@ class CreateThreadSlash implements Runnable {
 	public static void setSlashEvent(SlashCommandInteractionEvent e2) {
 		e1 = e2;
 	}
-	
+
 	public static long CheckPermLevel(@NotNull GenericDiscordEvent e) {
 		if(e.getAuthor().getId().equals("619989388109152256") || e.getAuthor().getId().equals("488487157372157962")) {
 			return 3;
 		} else {
-			JSONParser parser = new JSONParser();
-			try(FileReader reader = new FileReader("Ling Ling Bot Data\\Economy Data\\" + e.getAuthor().getId() + ".json")) {
-				JSONObject data = (JSONObject) parser.parse(reader);
-				reader.close();
-				return (long) data.get("perms");
-			} catch(Exception exception) {
-				exception.printStackTrace();
+			JSONObject data = DatabaseManager.getDataForUser(e, "Economy Data", e.getAuthor().getId());
+			if(data == null) {
 				return 0;
+			} else {
+				return (long) data.get("perms");
 			}
 		}
 	}
 
 	@Override
 	public void run() {
-		System.out.println("[DEBUG] New Thread: " + Thread.currentThread().getId() + "\n Command: " + e1.getName());
+		System.out.println("[DEBUG] New Thread: " + Thread.currentThread().getId() + "\n        Command: " + e1.getName());
 		HourlyIncome.checkHourly(e);
 
-		/* //LUTHIER
+		//LUTHIER
 		try {
 			Luthier.luthier(e, DatabaseManager.getDataByGuild(e, "Luthier Data"), "");
 		} catch(Exception exception) {
 			//nothing here lol
-		} */
+		}
 
 		// ALL COMMANDS
 		String commandName = e1.getName();
@@ -88,7 +87,7 @@ class CreateThreadSlash implements Runnable {
 			case "kill" -> {
 				String target;
 				try {
-					target = Objects.requireNonNull(e1.getOption("page")).getAsString();
+					target = Objects.requireNonNull(e1.getOption("target")).getAsString();
 				} catch(Exception exception) {
 					target = "Nobody";
 				}
@@ -155,10 +154,17 @@ class CreateThreadSlash implements Runnable {
 					""");
 			case "botstats" -> {
 				int serverCount = e.getJDA().getGuilds().size();
-				File[] files = new File("Ling Ling Bot Data\\Economy Data").listFiles();
-				assert files != null;
-				e.reply("Servers: " + serverCount + "\nUsers: " + files.length);
+				ArrayList<Document> documents = DatabaseManager.getAllEconomyData();
+				e.reply("Servers: " + serverCount + "\nUsers: " + documents.size());
 			}
+		}
+
+		if(Boolean.parseBoolean(Objects.requireNonNull(DatabaseManager.getMiscData()).get("sendingHourly").toString())) {
+			e.reply("Hourly incomes are being sent right now - give us a minute!");
+			return;
+		}
+
+		switch(commandName) {
 			case "settings" -> {
 				String option;
 				String newValue;
@@ -203,7 +209,7 @@ class CreateThreadSlash implements Runnable {
 				Market.market(e, item, action, amount, price);
 			}
 			case "craft" -> {
-				long craftAmount;
+				String craftAmount;
 				String name;
 				try {
 					name = Objects.requireNonNull(e1.getOption("item")).getAsString();
@@ -211,9 +217,9 @@ class CreateThreadSlash implements Runnable {
 					name = "";
 				}
 				try {
-					craftAmount = Objects.requireNonNull(e1.getOption("amount")).getAsLong();
+					craftAmount = Objects.requireNonNull(e1.getOption("amount")).getAsString();
 				} catch(Exception exception) {
-					craftAmount = 1;
+					craftAmount = "1";
 				}
 				Craft.craft(e, craftAmount, name);
 			}
@@ -686,12 +692,12 @@ class CreateThreadSlash implements Runnable {
 				e.reply("No Update Here!");
 			}
 		}
-		System.out.println("Thread " + Thread.currentThread().getId() + " Finished.");
+		System.out.println("        Thread " + Thread.currentThread().getId() + " Finished.");
 	}
 }
 
 public class NewReceiver extends ListenerAdapter {
-	public void onSlashCommandInteraction(SlashCommandInteractionEvent e3) {
+	public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent e3) {
 		CreateThreadSlash.setSlashEvent(e3);
 		CreateThreadSlash.setGenericDiscordEvent(new GenericDiscordEvent(e3));
 		Thread object = new Thread(new CreateThreadSlash());

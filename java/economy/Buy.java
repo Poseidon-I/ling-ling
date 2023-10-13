@@ -44,7 +44,7 @@ public class Buy {
 			case "second", "violin2" -> item = "violin2";
 			case "cello" -> item = "cello";
 			case "doublebass", "db" -> item = "doubleBass";
-			case "piano" -> item = "piamo";
+			case "piano" -> item = "piano";
 			case "harp" -> item = "harp";
 
 			case "soprano" -> item = "soprano";

@@ -1,16 +1,6 @@
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.result.InsertOneResult;
-import org.bson.Document;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import processes.DatabaseManager;
 import processes.StartBot;
 
-import java.io.*;
-import java.util.Objects;
-
-import static com.mongodb.client.model.Filters.eq;
+import java.util.Scanner;
 
 public class App {
 	public static void main(String[] args) {
@@ -28,6 +18,12 @@ public class App {
 		}*/
 		//DatabaseManager.connectToDatabase();
 		StartBot.startBot();
+		Scanner scanner = new Scanner(System.in);
+		String input = scanner.nextLine();
+		if(input.equals("stop")) {
+			System.out.println("Exiting...");
+			System.exit(0);
+		}
 
 		/* File[] directory = new File("C:\\Users\\bqian\\Desktop\\Ling Ling Bot Data\\Economy Data").listFiles();
 		MongoCollection<Document> collection = DatabaseManager.prepareStoreAllData("Economy Data");

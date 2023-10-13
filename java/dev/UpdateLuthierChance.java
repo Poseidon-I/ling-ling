@@ -8,9 +8,6 @@ import org.json.simple.parser.JSONParser;
 import processes.DatabaseManager;
 import processes.Numbers;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Objects;
 
