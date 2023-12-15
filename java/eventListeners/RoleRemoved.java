@@ -3,11 +3,7 @@ package eventListeners;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import processes.DatabaseManager;
-
-import java.io.FileReader;
-import java.io.FileWriter;
 // BEETHOVEN-ONLY CLASS
 
 public class RoleRemoved extends ListenerAdapter {

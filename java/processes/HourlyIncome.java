@@ -28,12 +28,13 @@ class CreateThread implements Runnable {
 
 	@Override
 	public void run() {
+		long begin = System.currentTimeMillis();
 		System.out.println("[DEBUG] New Thread: " + Thread.currentThread().getId() + "\n        Hourly Income Thread");
 		long howManyHours = 0;
 		while(System.currentTimeMillis() > time) {
 			System.out.println("        Sending Income for Time " + Instant.ofEpochMilli(time).atZone(ZoneId.of("UTC")).toLocalDateTime());
 			time += 3600000;
-			howManyHours ++;
+			howManyHours++;
 			data.replace("hourly", time);
 			DatabaseManager.saveMiscData(data);
 
@@ -48,12 +49,13 @@ class CreateThread implements Runnable {
 				Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage("Loan penalties applied; Interest awarded!").queue();
 			}
 
-			Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage("Hourly Incomes Sent!").queue();
 		}
 		HourlyIncome.hourlyIncome(howManyHours);
 		data.replace("sendingHourly", false);
 		DatabaseManager.saveMiscData(data);
-		System.out.println("        Thread " + Thread.currentThread().getId() + " Finished.");
+		long end = System.currentTimeMillis();
+		Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage("Hourly Incomes Sent!  Hours sent: " + howManyHours + "\nTotal Time: " + (end - begin)).queue();
+		System.out.println("        Thread " + Thread.currentThread().getId() + " Finished.   Time taken: " + (end - begin));
 	}
 }
 

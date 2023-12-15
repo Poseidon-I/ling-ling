@@ -1,13 +1,9 @@
 package eventListeners;
 
-import economy.SaveData;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import processes.DatabaseManager;
-
-import java.io.FileWriter;
 // BEETHOVEN-ONLY CLASS
 
 public class RoleAdded extends ListenerAdapter {

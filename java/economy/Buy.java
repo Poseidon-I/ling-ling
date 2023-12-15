@@ -206,7 +206,7 @@ public class Buy {
 						processUpgrade(100000 * ((long) data.get("advertising") + 1), 100, 20, "violins");
 				case "tickets" ->
 						processUpgrade(Numbers.itemCost((long) data.get("tickets"), 2, 1000000), 1000, 2147483647, "violins");
-				case "moreInterest" -> processBooleanUpgrade(15, 0, "medals");
+				case "moreInterest", "lessPenalty" -> processBooleanUpgrade(15, 0, "medals");
 				case "storage" -> processUpgrade(3 * (long) data.get("storage"), 0, 2147483647, "medals");
 				case "certificate" -> {
 					if((long) data.get("income") < 40000) {
