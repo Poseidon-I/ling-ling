@@ -57,10 +57,22 @@ public class GlobalStats {
 				.setColor(Color.BLUE)
 				.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
 				.setTitle("Stats of the World");
-		builder.addField("**__Gambling__**", "**Net Winnings**: " + Numbers.formatNumber(winnings) + "\n**Million-Dollar Tickets Drawn**: " + Numbers.formatNumber(millions) + "\n**Amount Earned from Robbing**: " + Numbers.formatNumber(robEarned) + "\n**Total RNGesus Weight**: " + Numbers.formatNumber(weight), false);
-		builder.addField("**__Commands__**", "**Hours Practised**: " + Numbers.formatNumber((long) hours) + "\n**Scales Played**: " + Numbers.formatNumber(scales) + "\n**Rehearsals Attended**: " + Numbers.formatNumber(rehearsals) + "\n**Performances Given**: " + Numbers.formatNumber(performances) + "\n**Hours Taught: **" + Numbers.formatNumber((long) taught), false);
-		builder.addField("**__Lootboxes__**", "**Gifts Given**: " + Numbers.formatNumber(giftsGiven) + "\n**Number of Votes**: " + Numbers.formatNumber(votes), false);
-		builder.addField("**__Miscellaneous__**", "**Highest Daily Streak**: " + Numbers.formatNumber(maxStreak) + "\n**Luthiers Unscrambled**: " + Numbers.formatNumber(luthiers) + "\n**Violins Earned**: " + Numbers.formatNumber(earnings) + "\n**Interest Earned**: " + Numbers.formatNumber(interest) + "\n**Penalties Paid**: " + Numbers.formatNumber(penalties), false);
+		builder.addField("**__Gambling__**", "**Net Winnings**: " + Numbers.formatNumber(winnings) +
+				"\n**Million-Dollar Tickets Drawn**: " + Numbers.formatNumber(millions) +
+				"\n**Amount Earned from Robbing**: " + Numbers.formatNumber(robEarned) +
+				"\n**Total RNGesus Weight**: " + Numbers.formatNumber(weight), false);
+		builder.addField("**__Commands__**", "**Hours Practised**: " + Numbers.formatNumber((long) hours) +
+				"\n**Scales Played**: " + Numbers.formatNumber(scales) +
+				"\n**Rehearsals Attended**: " + Numbers.formatNumber(rehearsals) +
+				"\n**Performances Given**: " + Numbers.formatNumber(performances) +
+				"\n**Hours Taught: **" + Numbers.formatNumber((long) taught), false);
+		builder.addField("**__Lootboxes__**", "**Gifts Given**: " + Numbers.formatNumber(giftsGiven) +
+				"\n**Number of Votes**: " + Numbers.formatNumber(votes), false);
+		builder.addField("**__Miscellaneous__**", "**Highest Daily Streak**: " + Numbers.formatNumber(maxStreak) +
+				"\n**Luthiers Unscrambled**: " + Numbers.formatNumber(luthiers) +
+				"\n**Violins Earned**: " + Numbers.formatNumber(earnings) +
+				"\n**Interest Earned**: " + Numbers.formatNumber(interest) +
+				"\n**Penalties Paid**: " + Numbers.formatNumber(penalties), false);
 		e.getMessage().replyEmbeds(builder.build()).mentionRepliedUser(false).queue();
 	}
 }

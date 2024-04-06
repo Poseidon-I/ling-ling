@@ -13,57 +13,90 @@ public class Inventory {
 		if(user.isEmpty()) {
 			user = e.getAuthor().getId();
 		}
-		if(page == -1) {
-			e.reply("You have to provide a page number.");
-			return;
-		}
 
 		JSONObject data = DatabaseManager.getDataForUser(e, "Economy Data", user);
 		if(data == null) {
 			e.reply("This save file does not exist!");
 			return;
 		}
-		
-		if(user.equals("768056391814086676")) {
-			user = "**NARWHAL**";
-		} else {
-			try {
-				user = data.get("discordName").toString();
-			} catch(Exception exception) {
-				user = "Someone";
-			}
+
+		try {
+			user = data.get("discordName").toString();
+		} catch(Exception exception) {
+			user = "Someone";
 		}
 		EmbedBuilder builder = new EmbedBuilder()
 				.setColor(Color.decode((String) data.get("color")))
 				.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl());
-		switch(page) {
-			case 1 -> builder.setTitle(user + "'s Inventory - Page 1\nRaw Materials")
-					.addField("Rice Grains " + Emoji.GRAINS, "Count: `" + Numbers.formatNumber(data.get("grains")) + "`\nCrafting Ingredient", true)
-					.addField("Plastic " + Emoji.PLASTIC, "Count: `" + Numbers.formatNumber(data.get("plastic")) + "`\nCrafting Ingredient", true)
-					.addField("Water " + Emoji.WATER, "Count: `" + Numbers.formatNumber(data.get("water")) + "`\nCrafting Ingredient", true)
-					.addField("Tea Base " + Emoji.TEABAG, "Count: `" + Numbers.formatNumber(data.get("teaBase")) + "`\nCrafting Ingredient", true)
-					.addBlankField(true)
-					.addField("Wood " + Emoji.WOOD, "Count: `" + Numbers.formatNumber(data.get("wood")) + "`\nCrafting Ingredient", true)
-					.addField("Pine Sap " + Emoji.SAP, "Count: `" + Numbers.formatNumber(data.get("pineSap")) + "`\nCrafting Ingredient", true)
-					.addField("Steel " + Emoji.STEEL, "Count: `" + Numbers.formatNumber(data.get("steel")) + "`\nCrafting Ingredient", true)
-					.addField("Horse Hair " + Emoji.HORSE_HAIR, "Count: `" + Numbers.formatNumber(data.get("horseHair")) + "`\nCrafting Ingredient", true);
-			case 2 -> builder.setTitle(user + "'s Inventory - Page 2\nConsumables")
-					.addField("Rice " + Emoji.RICE, "Count: `" + Numbers.formatNumber(data.get("rice")) + "`\nUsage: Gives you 2 hours of income\nID: `rice`", true)
-					.addField("Bubble Tea " + Emoji.TEA, "Count: `" + Numbers.formatNumber(data.get("tea")) + "`\nUsage: Gives you 6 hours of income\nID: `tea`", true)
-					.addField("Ling Ling Blessing " + Emoji.BLESSING, "Count: `" + Numbers.formatNumber(data.get("blessings")) + "`\nUsage: Gives you 24 hours of income and 1-3 Ling Ling Medals\n`blessings` `blessing`", true)
-					.addField("Rosin " + Emoji.ROSIN, "Count: `" + Numbers.formatNumber(data.get("rosin")) + "`\nUsage: Allows you to make 25% of your income for 50 hours.  Stackable\nID: `rosin`", true)
-					.addBlankField(true)
-					.addField("New Strings " + Emoji.STRING, "Count: `" + Numbers.formatNumber(data.get("string")) + "`\nUsage: Allows you to make 25% of your income for 100 hours.  Stackable\nID: `string`", true)
-					.addField("Bow Hair " + Emoji.BOW_HAIR, "Count: `" + Numbers.formatNumber(data.get("bowHair")) + "`\nUsage: Allows you to make 25% of your income for 150 hours.  Stackable\nID: `bowhair` `hair`", true)
-					.addBlankField(true)
-					.addField("Violin Service " + Emoji.SERVICE, "Count: `" + Numbers.formatNumber(data.get("violinService")) + "`\nUsage: Allows you to make 25% of your income for 250 hours.  Stackable\n`violinservice` `service`", true);
-			case 3 -> builder.setTitle(user + "'s Inventory - Page 3\nLootboxes")
-					.addField("Free Box " + Emoji.FREE_BOX, "Count: `" + Numbers.formatNumber(data.get("voteBox")) + "`\nUsage: Gives you bad random items, as decided by RNGesus\nID: `freebox` `votebox` `free` `vote", true)
-					.addField("Gift Box " + Emoji.GIFT_BOX, "Count: `" + Numbers.formatNumber(data.get("giftBox")) + "`\nUsage: Gives you miniscully valuable random items, as decided by RNGesus\nID: `giftbox` `gift`", true)
-					.addField("Musician Kit " + Emoji.MUSICIAN_KIT, "Count: `" + Numbers.formatNumber(data.get("kits")) + "`\nUsage: Gives you somewhat valuable random items, as decided by RNGesus\nID: `kits` `kit`", true)
-					.addField("Ling Ling Box " + Emoji.LING_LING_BOX, "Count: `" + Numbers.formatNumber(data.get("linglingBox")) + "`\nUsage: Gives you valuable random items, as decided by RNGesus\nID: `linglingbox` `lingling` `llbox`", true)
-					.addField("Crazy Person Box " + Emoji.CRAZY_BOX, "Count: `" + Numbers.formatNumber(data.get("crazyBox")) + "`\nUsage: Gives you very valuable random items, as decided by RNGesus\nID: `crazybox` `crazy`", true)
-					.addField("RNGesus Box " + Emoji.RNGESUS_BOX, "Count: `" + Numbers.formatNumber(data.get("RNGesusBox")) + "`\nUsage: Gives you EXTREMELY valuable random items, as decided by RNGesus\nID: `rngesusbox` `rngesus`", true);
+		if(page == -1) {
+			builder.setTitle(user + "'s Inventory")
+					.addField("Inventory Pages", "\n`1` - Raw Materials\n`2` - Consumables\n`3` - Lootboxes\n`4` - RNG Drops", true);
+		} else {
+			switch(page) {
+				case 1 -> builder.setTitle(user + "'s Inventory - Page 1\nRaw Materials")
+						.addField("Rice Grains " + Emoji.GRAINS, "Count: `" + Numbers.formatNumber(data.get("grains")) + "`\nCrafting Ingredient", true)
+						.addField("Plastic " + Emoji.PLASTIC, "Count: `" + Numbers.formatNumber(data.get("plastic")) + "`\nCrafting Ingredient", true)
+						.addField("Water " + Emoji.WATER, "Count: `" + Numbers.formatNumber(data.get("water")) + "`\nCrafting Ingredient", true)
+						.addField("Tea Base " + Emoji.TEABAG, "Count: `" + Numbers.formatNumber(data.get("teaBase")) + "`\nCrafting Ingredient", true)
+						.addBlankField(true)
+						.addField("Wood " + Emoji.WOOD, "Count: `" + Numbers.formatNumber(data.get("wood")) + "`\nCrafting Ingredient", true)
+						.addField("Pine Sap " + Emoji.SAP, "Count: `" + Numbers.formatNumber(data.get("pineSap")) + "`\nCrafting Ingredient", true)
+						.addField("Steel " + Emoji.STEEL, "Count: `" + Numbers.formatNumber(data.get("steel")) + "`\nCrafting Ingredient", true)
+						.addField("Horse Hair " + Emoji.HORSE_HAIR, "Count: `" + Numbers.formatNumber(data.get("horseHair")) + "`\nCrafting Ingredient", true);
+				case 2 -> builder.setTitle(user + "'s Inventory - Page 2\nConsumables")
+						.addField("Rice " + Emoji.RICE, "Count: `" + Numbers.formatNumber(data.get("rice")) +
+								"`\nUsage: Gives you 2 hours of income\nID: `rice`", true)
+						.addField("Bubble Tea " + Emoji.TEA, "Count: `" + Numbers.formatNumber(data.get("tea")) +
+								"`\nUsage: Gives you 6 hours of income\nID: `tea`", true)
+						.addField("Ling Ling Blessing " + Emoji.BLESSING, "Count: `" + Numbers.formatNumber(data.get("blessings")) +
+								"`\nUsage: Gives you 24 hours of income and 1-3 Ling Ling Medals\n`blessings` `blessing`", true)
+						.addField("Rosin " + Emoji.ROSIN, "Count: `" + Numbers.formatNumber(data.get("rosin")) +
+								"`\nUsage: Allows you to make 25% of your income for 50 hours.  Stackable\nID: `rosin`", true)
+						.addBlankField(true)
+						.addField("New Strings " + Emoji.STRING, "Count: `" + Numbers.formatNumber(data.get("string")) +
+								"`\nUsage: Allows you to make 25% of your income for 100 hours.  Stackable\nID: `string`", true)
+						.addField("Bow Hair " + Emoji.BOW_HAIR, "Count: `" + Numbers.formatNumber(data.get("bowHair")) +
+								"`\nUsage: Allows you to make 25% of your income for 150 hours.  Stackable\nID: `bowhair` `hair`", true)
+						.addBlankField(true)
+						.addField("Violin Service " + Emoji.SERVICE, "Count: `" + Numbers.formatNumber(data.get("violinService")) +
+								"`\nUsage: Allows you to make 25% of your income for 250 hours.  Stackable\n`violinservice` `service`", true);
+				case 3 -> builder.setTitle(user + "'s Inventory - Page 3\nLootboxes")
+						.addField("Free Box " + Emoji.FREE_BOX, "Count: `" + Numbers.formatNumber(data.get("voteBox")) +
+								"`\nUsage: Gives you bad random items, as decided by RNGesus\nID: `freebox` `votebox` `free` `vote`", true)
+						.addField("Gift Box " + Emoji.GIFT_BOX, "Count: `" + Numbers.formatNumber(data.get("giftBox")) +
+								"`\nUsage: Gives you miniscully valuable random items, as decided by RNGesus\nID: `giftbox` `gift`", true)
+						.addField("Musician Kit " + Emoji.MUSICIAN_KIT, "Count: `" + Numbers.formatNumber(data.get("kits")) +
+								"`\nUsage: Gives you somewhat valuable random items, as decided by RNGesus\nID: `kits` `kit`", true)
+						.addField("Ling Ling Box " + Emoji.LING_LING_BOX, "Count: `" + Numbers.formatNumber(data.get("linglingBox")) +
+								"`\nUsage: Gives you valuable random items, as decided by RNGesus\nID: `linglingbox` `lingling` `llbox`", true)
+						.addField("Crazy Person Box " + Emoji.CRAZY_BOX, "Count: `" + Numbers.formatNumber(data.get("crazyBox")) +
+								"`\nUsage: Gives you very valuable random items, as decided by RNGesus\nID: `crazybox` `crazy`", true)
+						.addField("RNGesus Box " + Emoji.RNGESUS_BOX, "Count: `" + Numbers.formatNumber(data.get("RNGesusBox")) +
+								"`\nUsage: Gives you EXTREMELY valuable random items, as decided by RNGesus\nID: `rngesusbox` `rngesus`", true);
+				case 4 -> {
+					builder.setTitle(user + "'s Inventory - Page 4\nRNG Drops")
+							.addField("Extra Income Voucher", "Count: `" + Numbers.formatNumber(data.get("freeIncome")) +
+									"`\nEffect: Grants `+" + Numbers.formatNumber((long) data.get("freeIncome") * 100) + "`" + Emoji.VIOLINS + "/hour income", true)
+							.addField("Benevolent Banker", "Count: `" + Numbers.formatNumber(data.get("benevolentBankers")) +
+									"`\nEffect: Grants `+" + Numbers.formatNumber((long) data.get("benevolentBankers") * 1000000) + "` bank space", true)
+							.addField("Item Quality Boost Potion", "Count: `" + Numbers.formatNumber(data.get("qualityItems")) +
+									"`\nEffect: Grants `+" + Numbers.formatNumber((long) data.get("qualityItems") * 5) + "%` item duration (where applicable)", true)
+							.addField("Medal Generator", "Count: `" + Numbers.formatNumber(data.get("bonusMedals")) +
+									"`\nEffect: Grants `+" + Numbers.formatNumber(data.get("bonusMedals")) + "`" + Emoji.MEDALS + " each time `!daily` is run", true)
+							.addField("Bonus Interest", "Count: `" + Numbers.formatNumber(data.get("bonusInterest")) +
+									"`\nEffect: Grants `+" + ((long) data.get("bonusInterest")) * 0.1 + "%` extra interest", true);
+					if((long) data.get("RNGesusItemThatDoesAbsolutelyNothingLMAO") == 0) {
+						builder.addField("???", "Count: `0`\nEffect: ???", true);
+					} else {
+						builder.addField("RNGesus Item That Does Absolutely Nothing LMAO", "Count: `" + Numbers.formatNumber(data.get("RNGesusItemThatDoesAbsolutelyNothingLMAO")) +
+								"`\nA completely useless item!  At least you can flex this in your inventory.", true);
+					}
+				}
+				default -> {
+					builder.setTitle(user + "'s Inventory - Page ???")
+							.addField("404 Not Found", "The page you are looking for doesn't exist!  Run `/inv` to see a list of pages.", true);
+				}
+			}
 		}
 		e.replyEmbeds(builder.build());
 	}

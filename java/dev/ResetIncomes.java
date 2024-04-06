@@ -32,6 +32,8 @@ public class ResetIncomes {
 				income += 200 * (long) data.get("lessonQuality");
 				income += 150 * (long) data.get("stringQuality");
 				income += 250 * (long) data.get("bowQuality");
+				income += 100 * (long) data.get("freeIncome");
+
 				if((Boolean) data.get("math")) {
 					income += 6500;
 				}

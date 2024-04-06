@@ -16,7 +16,7 @@ public class Loan {
 				e.reply("You have to either input `max` or an integer.");
 				return;
 			}
-			long maxLoan = 200 * (long) data.get("income");
+			long maxLoan = Numbers.maxLoan(data);
 			if(amount.equals("max")) {
 				loan = maxLoan;
 			} else {
@@ -32,7 +32,8 @@ public class Loan {
 			}
 			data.replace("loan", loan);
 			data.replace("violins", (long) data.get("violins") + loan);
-			e.reply("You have borrowed `" + Numbers.formatNumber(loan) + "`" + Emoji.VIOLINS + " from the bank.  Most actions will result in a portion being used to pay back the loan.  You can also manually contribute by using `/payloan`.");
+			e.reply("You have borrowed `" + Numbers.formatNumber(loan) + "`" + Emoji.VIOLINS + " from the bank.  " +
+					"Most actions will result in a portion being used to pay back the loan.  You can also manually contribute by using `/payloan`.");
 			SaveData.saveData(e, data);
 		}
 	}

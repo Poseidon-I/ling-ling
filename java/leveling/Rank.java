@@ -24,7 +24,7 @@ public class Rank {
 			}
 		}
 		try {
-			user = Objects.requireNonNull(e.getGuild().getMemberById(user)).getNickname();
+			user = Objects.requireNonNull(e.getGuild().getMemberById(user)).getEffectiveName();
 		} catch(Exception exception) {
 			e.reply("The user you wanted to look up does not exist!");
 		}

@@ -32,7 +32,8 @@ public class Withdraw {
 			balance -= amount;
 			data.replace("violins", (long) data.get("violins") + amount);
 			data.replace("bank", balance);
-			e.reply("You withdrew `" + Numbers.formatNumber(amount) + "`" + Emoji.VIOLINS + " from your bank.  You now have `" + Numbers.formatNumber(balance) + "`" + Emoji.VIOLINS + " in your bank.");
+			e.reply("You withdrew `" + Numbers.formatNumber(amount) + "`" + Emoji.VIOLINS + " from your bank.  You now have `" +
+					Numbers.formatNumber(balance) + "`" + Emoji.VIOLINS + " in your bank.");
 			SaveData.saveData(e, data);
 		}
 	}

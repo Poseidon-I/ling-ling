@@ -8,7 +8,7 @@ import processes.Numbers;
 import java.awt.*;
 import java.util.Random;
 
-public class Gamble {	
+public class Gamble {
 	public static void gamble(GenericDiscordEvent e, String game, String temp) {
 		JSONObject data = LoadData.loadData(e);
 		long bet;
@@ -62,17 +62,24 @@ public class Gamble {
 							violins -= bet;
 							winnings -= bet;
 							if((boolean) data.get("extraInfo")) {
-								e.reply("You lost `" + Numbers.formatNumber(bet) + "`" + Emoji.VIOLINS + "\n*The generator rolled `" + chance + "`, you need less than `0.5` to win.*\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS);
+								e.reply("You lost `" + Numbers.formatNumber(bet) + "`" + Emoji.VIOLINS +
+										"\n*The generator rolled `" + chance + "`, you need less than `0.5` to win.*" +
+										"\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS);
 							} else {
-								e.reply("You lost `" + Numbers.formatNumber(bet) + "`" + Emoji.VIOLINS + "\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS);
+								e.reply("You lost `" + Numbers.formatNumber(bet) + "`" + Emoji.VIOLINS +
+										"\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS);
 							}
 						} else {
 							violins += (long) (bet * (1 + multi));
 							winnings += (long) (bet * (1 + multi));
 							if((boolean) data.get("extraInfo")) {
-								e.reply("You won `" + Numbers.formatNumber(bet) + "`" + Emoji.VIOLINS + "\nYour `" + multi * 100 + "%` multiplier earned you an extra `" + Numbers.formatNumber((long) (bet * multi)) + "`" + Emoji.VIOLINS + "\n*The generator rolled `" + chance + "`.*\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS);
+								e.reply("You won `" + Numbers.formatNumber(bet) + "`" + Emoji.VIOLINS +
+										"\nYour `" + multi * 100 + "%` multiplier earned you an extra `" + Numbers.formatNumber((long) (bet * multi)) + "`" + Emoji.VIOLINS +
+										"\n*The generator rolled `" + chance + "`.*\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS);
 							} else {
-								e.reply("You won `" + Numbers.formatNumber(bet) + "`" + Emoji.VIOLINS + "\nYour `" + multi * 100 + "%` multiplier earned you an extra `" + Numbers.formatNumber((long) (bet * multi)) + "`" + Emoji.VIOLINS + "\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS);
+								e.reply("You won `" + Numbers.formatNumber(bet) + "`" + Emoji.VIOLINS +
+										"\nYour `" + multi * 100 + "%` multiplier earned you an extra `" + Numbers.formatNumber((long) (bet * multi)) + "`" + Emoji.VIOLINS +
+										"\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS);
 							}
 						}
 						data.replace("violins", violins);
@@ -113,12 +120,15 @@ public class Gamble {
 						if(payout != -1) {
 							violins += (long) (payout * (1 + multi));
 							winnings += (long) (payout * (1 + multi));
-							builder.addField(name, ":white_check_mark: You **win**!  Payout: `" + Numbers.formatNumber(payout) + "`" + Emoji.VIOLINS + "\nYour `" + multi * 100 + "%` multiplier earned you an extra `" + Numbers.formatNumber((long) (payout * multi)) + "`" + Emoji.VIOLINS + "\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS, false);
+							builder.addField(name, ":white_check_mark: You **win**!  Payout: `" + Numbers.formatNumber(payout) + "`" + Emoji.VIOLINS +
+									"\nYour `" + multi * 100 + "%` multiplier earned you an extra `" + Numbers.formatNumber((long) (payout * multi)) + "`" + Emoji.VIOLINS +
+									"\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS, false);
 
 						} else {
 							violins -= bet;
 							winnings -= bet;
-							builder.addField(name, ":x: You **lose**!  You lost `" + Numbers.formatNumber(bet) + "`" + Emoji.VIOLINS + "\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS, false);
+							builder.addField(name, ":x: You **lose**!  You lost `" + Numbers.formatNumber(bet) + "`" + Emoji.VIOLINS +
+									"\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS, false);
 						}
 						e.replyEmbeds(builder.build());
 						data.replace("violins", violins);
@@ -171,22 +181,49 @@ public class Gamble {
 								}
 							}
 						}
-						StringBuilder breakdown = new StringBuilder().append("\n\n**__Ticket Breakdown__**\nLose 5" + Emoji.VIOLINS + ": `").append(payouts[0]).append("`\nNo Prize: `").append(payouts[1]).append("`\nGain 2" + Emoji.VIOLINS + ": `").append(payouts[2]).append("`\nGain 5" + Emoji.VIOLINS + ": `").append(payouts[3]).append("`\nGain 10" + Emoji.VIOLINS + ": `").append(payouts[4]).append("`\nGain 25" + Emoji.VIOLINS + ": `").append(payouts[5]).append("`\nGain 50" + Emoji.VIOLINS + ": `").append(payouts[6]).append("`\nGain 100" + Emoji.VIOLINS + ": `").append(payouts[7]).append("`\nGain 200" + Emoji.VIOLINS + ": `").append(payouts[8]).append("`\nGain 500" + Emoji.VIOLINS + ": `").append(payouts[9]).append("`");
 						if(payout > 0) {
 							violins += (long) (payout * (1 + multi));
 							winnings += (long) (payout * (1 + multi));
 							if((boolean) data.get("extraInfo")) {
-								e.reply("You scratched `" + Numbers.formatNumber(numTickets) + "` tickets and gained `" + Numbers.formatNumber(payout) + "`" + Emoji.VIOLINS + "\nYour `" + multi * 100 + "%` multiplier earned you an extra `" + Numbers.formatNumber((long) (payout * multi)) + "`" + Emoji.VIOLINS + "\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS + breakdown);
+								e.reply("You scratched `" + Numbers.formatNumber(numTickets) + "` tickets and gained `" + Numbers.formatNumber(payout) + "`" + Emoji.VIOLINS +
+										"\nYour `" + multi * 100 + "%` multiplier earned you an extra `" + Numbers.formatNumber((long) (payout * multi)) + "`" + Emoji.VIOLINS +
+										"\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS +
+										"\n\n**__Ticket Breakdown__**\nLose 5" + Emoji.VIOLINS + ": `" +
+										payouts[0] + "`\nNo Prize: `" +
+										payouts[1] + "`\nGain 2" + Emoji.VIOLINS + ": `" +
+										payouts[2] + "`\nGain 5" + Emoji.VIOLINS + ": `" +
+										payouts[3] + "`\nGain 10" + Emoji.VIOLINS + ": `" +
+										payouts[4] + "`\nGain 25" + Emoji.VIOLINS + ": `" +
+										payouts[5] + "`\nGain 50" + Emoji.VIOLINS + ": `" +
+										payouts[6] + "`\nGain 100" + Emoji.VIOLINS + ": `" +
+										payouts[7] + "`\nGain 200" + Emoji.VIOLINS + ": `" +
+										payouts[8] + "`\nGain 500" + Emoji.VIOLINS + ": `" +
+										payouts[9] + "`");
 							} else {
-								e.reply("You scratched `" + Numbers.formatNumber(numTickets) + "` tickets and gained `" + Numbers.formatNumber(payout) + "`" + Emoji.VIOLINS + "\nYour `" + multi * 100 + "%` multiplier earned you an extra `" + Numbers.formatNumber((long) (payout * multi)) + "`" + Emoji.VIOLINS + "\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS);
+								e.reply("You scratched `" + Numbers.formatNumber(numTickets) + "` tickets and gained `" + Numbers.formatNumber(payout) + "`" + Emoji.VIOLINS +
+										"\nYour `" + multi * 100 + "%` multiplier earned you an extra `" + Numbers.formatNumber((long) (payout * multi)) + "`" + Emoji.VIOLINS +
+										"\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS);
 							}
 						} else {
 							violins += payout;
 							winnings += payout;
 							if((boolean) data.get("extraInfo")) {
-								e.reply("You scratched `" + Numbers.formatNumber(numTickets) + "` tickets and lost `" + Numbers.formatNumber(payout * -1) + "`" + Emoji.VIOLINS + "\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS + breakdown);
+								e.reply("You scratched `" + Numbers.formatNumber(numTickets) + "` tickets and lost `" + Numbers.formatNumber(payout * -1) + "`" + Emoji.VIOLINS +
+										"\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS +
+										"\n\n**__Ticket Breakdown__**\nLose 5" + Emoji.VIOLINS + ": `" +
+										payouts[0] + "`\nNo Prize: `" +
+										payouts[1] + "`\nGain 2" + Emoji.VIOLINS + ": `" +
+										payouts[2] + "`\nGain 5" + Emoji.VIOLINS + ": `" +
+										payouts[3] + "`\nGain 10" + Emoji.VIOLINS + ": `" +
+										payouts[4] + "`\nGain 25" + Emoji.VIOLINS + ": `" +
+										payouts[5] + "`\nGain 50" + Emoji.VIOLINS + ": `" +
+										payouts[6] + "`\nGain 100" + Emoji.VIOLINS + ": `" +
+										payouts[7] + "`\nGain 200" + Emoji.VIOLINS + ": `" +
+										payouts[8] + "`\nGain 500" + Emoji.VIOLINS + ": `" +
+										payouts[9] + "`");
 							} else {
-								e.reply("You scratched `" + Numbers.formatNumber(numTickets) + "` tickets and lost `" + Numbers.formatNumber(payout * -1) + "`" + Emoji.VIOLINS + "\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS);
+								e.reply("You scratched `" + Numbers.formatNumber(numTickets) + "` tickets and lost `" + Numbers.formatNumber(payout * -1) + "`" + Emoji.VIOLINS +
+										"\nYou now have `" + Numbers.formatNumber(violins) + "`" + Emoji.VIOLINS);
 							}
 						}
 						data.replace("violins", violins);

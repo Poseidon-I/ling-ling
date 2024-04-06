@@ -5,13 +5,11 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import processes.Numbers;
-import processes.WindowsExplorerStringComparator;
 
 import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class Market {
@@ -70,7 +68,7 @@ public class Market {
 		if(files == null || files.length == 0) {
 			builder.addField("No items found!", "Unfortunately, nobody is selling this item.  Check back later!", false);
 		} else {
-			Arrays.sort(files, new WindowsExplorerStringComparator());
+			// Arrays.sort(files, new WindowsExplorerStringComparator());
 			StringBuilder line = new StringBuilder();
 			for(int i = 0; i < Math.min(10, files.length); i++) {
 				String name = files[i];
@@ -96,7 +94,7 @@ public class Market {
 			if(names == null || names.length == 0) {
 				builder.addField(file.getName(), "No Sell Offers!", true);
 			} else {
-				Arrays.sort(names, new WindowsExplorerStringComparator());
+				// Arrays.sort(names, new WindowsExplorerStringComparator());
 				String[] fileName = names[0].split(" ");
 				builder.addField(file.getName() + " " + emoji, "Price: `" + Numbers.formatNumber(Long.parseLong(fileName[0])) + "`" + Emoji.VIOLINS, true);
 			}
@@ -111,7 +109,7 @@ public class Market {
 			e.reply("Nobody is selling this item!");
 			return;
 		}
-		Arrays.sort(files, new WindowsExplorerStringComparator());
+		// Arrays.sort(files, new WindowsExplorerStringComparator());
 		long paid = 0;
 		long gained = 0;
 		long violins = (long) data.get("violins");
@@ -230,7 +228,7 @@ public class Market {
 			e.reply("You cannot sell items for a negative amount of violins, I know that scamming trick.");
 			return;
 		}
-		Arrays.sort(files, new WindowsExplorerStringComparator());
+		// Arrays.sort(files, new WindowsExplorerStringComparator());
 		File file = new File("Ling Ling Bot Data\\Market\\" + item + "\\" + price + " " + amount + " " + e.getAuthor().getId() + ".txt");
 		try {
 			file.createNewFile();

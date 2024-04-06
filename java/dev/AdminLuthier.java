@@ -46,7 +46,8 @@ public class AdminLuthier {
 								.append("word", "blank")
 								.append("amount", 0)
 								.append("discordID", e.getGuild().getId()));
-						e.reply("Successfully set up Luthier for " + e.getGuild().getName() + " in " + e.getChannel().getAsMention() + ".\nLuthier Multipliers can be crafted using `/craft`");
+						e.reply("Successfully set up Luthier for " + e.getGuild().getName() + " in "
+								+ e.getChannel().getAsMention() + ".\nLuthier Multipliers can be crafted using `/craft`");
 					} catch(Exception exception2) {
 						e.reply("Something went horribly wrong!");
 					}

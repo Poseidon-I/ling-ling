@@ -57,7 +57,8 @@ public class MessageLeaderboard {
 			String id = entry[i].split(" ")[0];
 			JSONObject temp = DatabaseManager.getDataForUser(e, "Leveling Data", id);
 			assert temp != null;
-			board.append("**").append(i + 1).append("\\. ").append(Objects.requireNonNull(e.getGuild().getMemberById(id)).getNickname()).append("** `").append(id).append("`: `").append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[1]))).append("` messages").append("\n");
+			board.append("**").append(i + 1).append("\\. ").append(Objects.requireNonNull(e.getGuild().getMemberById(id)).getNickname())
+					.append("** `").append(id).append("`: `").append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[1]))).append("` messages").append("\n");
 		}
 		if(place >= 11) {
 			board.append("\n**").append(place).append("\\. You**: ").append(userMessages).append(" messages");

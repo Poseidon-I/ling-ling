@@ -24,12 +24,16 @@ public class Leveling {
 					.append("time", 0L)
 					.append("messages", 0L)
 					.append("discordID", e.getAuthor().getId())
-					.append("discordName", e.getAuthor().getGlobalName()));
+					.append("discordName", e.getAuthor().getEffectiveName()));
 			return loadData(e);
 		}
 
-		if(data.get("discordName").toString().isEmpty()) {
-			data.replace("discordName", e.getAuthor().getGlobalName());
+		try {
+			if(data.get("discordName").toString().isEmpty() || !data.get("discordName").toString().equals(e.getAuthor().getEffectiveName())) {
+				data.replace("discordName", e.getAuthor().getEffectiveName());
+			}
+		} catch(Exception exception) {
+			data.replace("discordName", e.getAuthor().getEffectiveName());
 		}
 		return data;
 	}

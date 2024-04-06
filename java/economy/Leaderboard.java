@@ -57,7 +57,8 @@ public class Leaderboard {
 			String id = entry[i].split(" ")[0];
 			JSONObject temp = DatabaseManager.getDataForUser(e, "Economy Data", id);
 			assert temp != null;
-			board.append("**").append(i + 1).append("\\. ").append(temp.get("discordName")).append("** `").append(id).append("`: `").append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[1]))).append("` ").append(emoji).append("\n");
+			board.append("**").append(i + 1).append("\\. ").append(temp.get("discordName")).append("** `").append(id).append("`: `")
+					.append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[1]))).append("` ").append(emoji).append("\n");
 		}
 
 		if(place >= 11L) {

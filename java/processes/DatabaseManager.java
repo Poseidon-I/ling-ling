@@ -201,7 +201,7 @@ public class DatabaseManager {
 		return databasePunishments.getCollection(target);
 	}*/
 
-	public static void connectToDatabase() {
+	public static void connectToDatabase(boolean beta) {
 		// establish connection to database
 		String connectionString = "mongodb+srv://StradivariusViolin:tDIEzkZyDmnbA7vE@linglingbot.ac7xhbw.mongodb.net/?retryWrites=true&w=majority";
 		ServerApi serverApi = ServerApi.builder()
@@ -219,7 +219,11 @@ public class DatabaseManager {
 		try {
 			mongoClient = MongoClients.create(settings);
 			// Send a ping to confirm a successful connection
-			database = mongoClient.getDatabase("Ling_Ling");
+			if(beta) {
+				database = mongoClient.getDatabase("Ling_Ling_Beta");
+			} else {
+				database = mongoClient.getDatabase("Ling_Ling");
+			}
 			database.runCommand(new Document("ping", 1));
 			System.out.println("Connected to main database.");
 

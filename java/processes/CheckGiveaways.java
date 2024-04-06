@@ -89,9 +89,11 @@ public class CheckGiveaways {
 			long minutes = (endTime - System.currentTimeMillis()) / 60000;
 			boolean hasRequirement = (boolean) data.get("requirement");
 			if(minutes > 0) {
-				String send = ":tada: **GIVEAWAY for __" + item + "__** :tada:\n\nWinners: `" + winners + "`\nEnds in `" + minutes + "` Minutes\n\nReact to Enter! <@&734697425595531285> <@&750876814842527754>";
+				String send = ":tada: **GIVEAWAY for __" + item + "__** :tada:\n\nWinners: `" + winners + "`\nEnds in `" + minutes + "` Minutes" +
+						"\n\nReact to Enter! <@&734697425595531285> <@&750876814842527754>";
 				if(hasRequirement) {
-					send += "\n\n:warning: **This giveaway has a REQUIREMENT that can be found below.  Failure to complete this requirement will result in a warning and a blacklist from all giveaways and events for up to a week.**";
+					send += "\n\n:warning: **This giveaway has a REQUIREMENT that can be found below.  " +
+							"Failure to complete this requirement will result in a warning and a blacklist from all giveaways and events for up to a week.**";
 				}
 				channel.editMessageById(message.getId(), send).queue();
 			} else {

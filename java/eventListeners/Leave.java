@@ -12,6 +12,7 @@ public class Leave extends ListenerAdapter {
 		TextChannel channel = e.getGuild().getTextChannelById("734697493828206662");
 		assert channel != null;
 		int members = e.getGuild().getMemberCount() - 5;
-		channel.sendMessage("<@" + Objects.requireNonNull(e.getMember()).getId() + "> just left the server.  I guess they can be considered a VIOLIST now.\n*" + members + " members remain good musicians*").queue();
+		channel.sendMessage("<@" + Objects.requireNonNull(e.getMember()).getId() + "> just left the server.  I guess they can be considered a VIOLIST now." +
+				"\n*" + members + " members remain good musicians*").queue();
 	}
 }

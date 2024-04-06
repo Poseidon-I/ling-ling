@@ -37,6 +37,17 @@ public class Use {
 		}
 	}
 
+	public static String generateMessage(Map<String, Long> addItems) {
+		return Numbers.formatNumber(addItems.get("grains")) + "`"
+				+ Emoji.GRAINS + " `" + Numbers.formatNumber(addItems.get("plastic")) + "`"
+				+ Emoji.PLASTIC + " `" + Numbers.formatNumber(addItems.get("water")) + "`"
+				+ Emoji.WATER + " `" + Numbers.formatNumber(addItems.get("teaBase")) + "`"
+				+ Emoji.TEABAG + " `" + Numbers.formatNumber(addItems.get("wood")) + "`"
+				+ Emoji.WOOD + " `" + Numbers.formatNumber(addItems.get("pineSap")) + "`"
+				+ Emoji.SAP + " `" + Numbers.formatNumber(addItems.get("steel")) + "`"
+				+ Emoji.STEEL + " `" + Numbers.formatNumber(addItems.get("horseHair")) + "`" + Emoji.HORSE_HAIR;
+	}
+
 	public static void addTime(JSONObject data, String item, long amount) {
 		long original = (long) data.get(item);
 		if(System.currentTimeMillis() < original) {
@@ -103,10 +114,12 @@ public class Use {
 		Random random = new Random();
 		Map<String, Long> addItems = new HashMap<>(0);
 		long income = (long) data.get("income");
+		double bonusItemDuration = ((long) data.get("qualityItems")) * 0.05 + 1;
 		long itemAmount = (long) data.get(item);
 		long useAmount;
 		long extraRolls = income / 100000;
-		long extraItems = income / 25000;
+		long extraItems = income / 50000;
+		double magicFindBonus = 1 + ((long) data.get("magicFind")) * 0.01;
 		try {
 			useAmount = Long.parseLong(temp);
 		} catch(Exception exception) {
@@ -133,8 +146,10 @@ public class Use {
 					e.reply("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.");
 					return;
 				} else {
-					addItems.put("violins", income * 2 * useAmount);
-					e.reply("You ate `" + Numbers.formatNumber(useAmount) + "`" + Emoji.RICE + "  The God of Rice gave you `" + Numbers.formatNumber(income * 2 * useAmount) + "`" + Emoji.VIOLINS);
+					long baseAmount = income * 2 * useAmount;
+					addItems.put("violins", (long) (baseAmount * magicFindBonus));
+					e.reply("You ate `" + Numbers.formatNumber(useAmount) + "`" + Emoji.RICE + "  The God of Rice gave you `" + Numbers.formatNumber(baseAmount) + "`" + Emoji.VIOLINS +
+							"\nYour Magic Find gave you a bonus of `" + Numbers.formatNumber((long) (baseAmount * (magicFindBonus - 1))) + "`" + Emoji.VIOLINS);
 				}
 			}
 			case "tea" -> {
@@ -145,8 +160,10 @@ public class Use {
 					e.reply("Very unwise of you to use this item when you have zero income as you would get zero violins.  Grow a brain.");
 					return;
 				} else {
-					addItems.put("violins", income * 6 * useAmount);
-					e.reply("You drank `" + Numbers.formatNumber(useAmount) + "`" + Emoji.TEA + "  Brett and Eddy approved and gave you `" + Numbers.formatNumber(income * 6 * useAmount) + "`" + Emoji.VIOLINS);
+					long baseAmount = income * 6 * useAmount;
+					addItems.put("violins", (long) (baseAmount * magicFindBonus));
+					e.reply("You drank `" + Numbers.formatNumber(useAmount) + "`" + Emoji.TEA + "  Brett and Eddy approved and gave you `" + Numbers.formatNumber(baseAmount) + "`" + Emoji.VIOLINS +
+							"\nYour Magic Find gave you a bonus of `" + Numbers.formatNumber((long) (baseAmount * (magicFindBonus - 1))) + "`" + Emoji.VIOLINS);
 				}
 			}
 			case "blessings" -> {
@@ -158,6 +175,7 @@ public class Use {
 					return;
 				} else {
 					long add = 0;
+					long bonus = 0;
 					for(int i = 0; i < useAmount; i++) {
 						double num = random.nextDouble();
 						if(num > 0.5) {
@@ -167,9 +185,17 @@ public class Use {
 						} else {
 							add += 3;
 						}
+						if(random.nextDouble() < magicFindBonus - 1) {
+							bonus++;
+							add++;
+						}
 					}
 					addItems.put("medals", add);
-					e.reply("Ling Ling blessed you thanks to your `" + useAmount + "` performances!  You received `" + add + "`" + Emoji.MEDALS);
+					String reply = "Ling Ling blessed you thanks to your `" + Numbers.formatNumber(useAmount) + "` performances!  You received `" + Numbers.formatNumber(add) + "`" + Emoji.MEDALS;
+					if(bonus > 0) {
+						reply += "\nYour Magic Find created `" + Numbers.formatNumber(bonus) + "`" + Emoji.MEDALS + " for you out of thin air!";
+					}
+					e.reply(reply);
 				}
 			}
 			case "voteBox" -> {
@@ -178,10 +204,78 @@ public class Use {
 					return;
 				} else {
 					addItems.put("voteBox", -useAmount);
+					long bonusHours = 0;
 					for(int i = 0; i < useAmount; i++) {
-						generateArray(addItems, 5 + extraRolls, 2, 3 + extraItems); // initial: 2-3 --> 3-4
+						generateArray(addItems, 3 + extraRolls, 3, 3 + extraItems); // initial: 3-5 x 3
+						if(random.nextDouble() < 0.1 * magicFindBonus) {
+							long thisBonusHours = random.nextInt(3) + 1;
+							bonusHours += thisBonusHours;
+							if(addItems.containsKey("violins")) {
+								addItems.replace("violins", addItems.get("violins") + income * thisBonusHours);
+							} else {
+								addItems.put("violins", income * bonusHours);
+							}
+						}
+						if(random.nextDouble() < 0.25 * magicFindBonus) {
+							if(addItems.containsKey("rice")) {
+								addItems.replace("rice", addItems.get("rice") + 1);
+							} else {
+								addItems.put("rice", 1L);
+							}
+						}
+						if(random.nextDouble() < 0.1 * magicFindBonus) {
+							if(addItems.containsKey("tea")) {
+								addItems.replace("tea", addItems.get("tea") + 1);
+							} else {
+								addItems.put("tea", 1L);
+							}
+						}
+						if(random.nextDouble() < 0.03 * magicFindBonus) {
+							if(addItems.containsKey("medals")) {
+								addItems.replace("medals", addItems.get("medals") + 1);
+							} else {
+								addItems.put("medals", 1L);
+							}
+						}
+						if(random.nextDouble() < 0.02 * magicFindBonus) {
+							if(addItems.containsKey("blessings")) {
+								addItems.replace("blessings", addItems.get("blessings") + 1);
+							} else {
+								addItems.put("blessings", 1L);
+							}
+						}
+						if(random.nextDouble() < 0.002 * magicFindBonus) {
+							if(addItems.containsKey("freeIncome")) {
+								addItems.replace("freeIncome", addItems.get("freeIncome") + 1);
+								addItems.replace("income", addItems.get("income") + 100);
+							} else {
+								addItems.put("freeIncome", 1L);
+								addItems.put("income", 100L);
+							}
+						}
 					}
-					e.reply("You opened `" + Numbers.formatNumber(useAmount) + "`" + Emoji.FREE_BOX + "  You received the following items...\n\n`" + Numbers.formatNumber(addItems.get("grains")) + "`" + Emoji.GRAINS + " `" + Numbers.formatNumber(addItems.get("plastic")) + "`" + Emoji.PLASTIC + " `" + Numbers.formatNumber(addItems.get("water")) + "`" + Emoji.WATER + " `" + Numbers.formatNumber(addItems.get("teaBase")) + "`" + Emoji.TEABAG + " `" + Numbers.formatNumber(addItems.get("wood")) + "`" + Emoji.WOOD + " `" + Numbers.formatNumber(addItems.get("pineSap")) + "`" + Emoji.SAP + " `" + Numbers.formatNumber(addItems.get("steel")) + "`" + Emoji.STEEL + " `" + Numbers.formatNumber(addItems.get("horseHair")) + "`" + Emoji.HORSE_HAIR);
+					String message = "You opened `" + Numbers.formatNumber(useAmount) + "`" + Emoji.FREE_BOX + "  You received the following items...\n\n`" + generateMessage(addItems) + "\n";
+					if(addItems.containsKey("violins")) {
+						message += "\n**BONUS!**  You received an additional `" + Numbers.formatNumber(bonusHours) + "` hours of income totaling to `" +
+								Numbers.formatNumber(income * bonusHours) + "`" + Emoji.VIOLINS;
+					}
+					if(addItems.containsKey("rice")) {
+						message += "\n**BONUS!**  You found `" + Numbers.formatNumber(addItems.get("rice")) + "`" + Emoji.RICE + " in the box!";
+					}
+					if(addItems.containsKey("tea")) {
+						message += "\n**BONUS!**  You found `" + Numbers.formatNumber(addItems.get("tea")) + "`" + Emoji.TEA + " in the box!";
+					}
+					if(addItems.containsKey("medals")) {
+						message += "\n**RARE DROP!**  You found `" + Numbers.formatNumber(addItems.get("medals")) + "`" + Emoji.MEDALS + " sitting at the bottom of the box!";
+					}
+					if(addItems.containsKey("blessings")) {
+						message += "\n**RARE DROP!**  You found `" + Numbers.formatNumber(addItems.get("blessings")) + "`" + Emoji.BLESSING + " in the box!";
+					}
+					if(addItems.containsKey("freeIncome")) {
+						message += "\n**CRAZY RARE DROP!**  You found `" + Numbers.formatNumber(addItems.get("freeIncome")) + "` income voucher(s), granting you a total of `" +
+								Numbers.formatNumber(addItems.get("income")) + "`" + Emoji.VIOLINS + "/hour extra income!";
+					}
+					e.reply(message);
 				}
 			}
 			case "giftBox" -> {
@@ -190,10 +284,77 @@ public class Use {
 					return;
 				} else {
 					addItems.put("giftBox", -useAmount);
+					long bonusHours = 0;
 					for(int i = 0; i < useAmount; i++) {
-						generateArray(addItems, 6 + extraRolls, 3, 4 + extraItems); // initial: 3-5 --> 4-6
+						generateArray(addItems, 4 + extraRolls, 3, 4 + extraItems); // initial: 4-6 x 4
+						if(random.nextDouble() < 0.1 * magicFindBonus) {
+							long thisBonusHours = random.nextInt(3) + 2;
+							bonusHours += thisBonusHours;
+							if(addItems.containsKey("violins")) {
+								addItems.replace("violins", addItems.get("violins") + income * thisBonusHours);
+							} else {
+								addItems.put("violins", income * bonusHours);
+							}
+						}
+						if(random.nextDouble() < 0.25 * magicFindBonus) {
+							if(addItems.containsKey("rice")) {
+								addItems.replace("rice", addItems.get("rice") + 2);
+							} else {
+								addItems.put("rice", 2L);
+							}
+						}
+						if(random.nextDouble() < 0.1 * magicFindBonus) {
+							if(addItems.containsKey("tea")) {
+								addItems.replace("tea", addItems.get("tea") + 2);
+							} else {
+								addItems.put("tea", 2L);
+							}
+						}
+						if(random.nextDouble() < 0.04 * magicFindBonus) {
+							if(addItems.containsKey("medals")) {
+								addItems.replace("medals", addItems.get("medals") + 1);
+							} else {
+								addItems.put("medals", 1L);
+							}
+						}
+						if(random.nextDouble() < 0.02 * magicFindBonus) {
+							if(addItems.containsKey("blessings")) {
+								addItems.replace("blessings", addItems.get("blessings") + 2);
+							} else {
+								addItems.put("blessings", 2L);
+							}
+						}
+						if(random.nextDouble() < 0.002 * magicFindBonus) {
+							if(addItems.containsKey("benevolentBankers")) {
+								addItems.replace("benevolentBankers", addItems.get("benevolentBankers") + 1);
+							} else {
+								addItems.put("benevolentBankers", 1L);
+							}
+						}
 					}
-					e.reply("You opened `" + Numbers.formatNumber(useAmount) + "`" + Emoji.GIFT_BOX + "  You received the following items...\n\n`" + Numbers.formatNumber(addItems.get("grains")) + "`" + Emoji.GRAINS + " `" + Numbers.formatNumber(addItems.get("plastic")) + "`" + Emoji.PLASTIC + " `" + Numbers.formatNumber(addItems.get("water")) + "`" + Emoji.WATER + " `" + Numbers.formatNumber(addItems.get("teaBase")) + "`" + Emoji.TEABAG + " `" + Numbers.formatNumber(addItems.get("wood")) + "`" + Emoji.WOOD + " `" + Numbers.formatNumber(addItems.get("pineSap")) + "`" + Emoji.SAP + " `" + Numbers.formatNumber(addItems.get("steel")) + "`" + Emoji.STEEL + " `" + Numbers.formatNumber(addItems.get("horseHair")) + "`" + Emoji.HORSE_HAIR);
+					String message = "You opened `" + Numbers.formatNumber(useAmount) + "`" + Emoji.GIFT_BOX + "  You received the following items...\n\n`" + generateMessage(addItems) + "\n";
+					if(addItems.containsKey("violins")) {
+						message += "\n**BONUS!**  You received an additional `" + Numbers.formatNumber(bonusHours) + "` hours of income totaling to `" +
+								Numbers.formatNumber(income * bonusHours) + "`" + Emoji.VIOLINS;
+					}
+					if(addItems.containsKey("rice")) {
+						message += "\n**BONUS!**  You found `" + Numbers.formatNumber(addItems.get("rice")) + "`" + Emoji.RICE + " in the box!";
+					}
+					if(addItems.containsKey("tea")) {
+						message += "\n**BONUS!**  You found `" + Numbers.formatNumber(addItems.get("tea")) + "`" + Emoji.TEA + " in the box!";
+					}
+					if(addItems.containsKey("medals")) {
+						message += "\n**RARE DROP!**  You found `" + Numbers.formatNumber(addItems.get("medals")) + "`" + Emoji.MEDALS + " sitting at the bottom of the box!";
+					}
+					if(addItems.containsKey("blessings")) {
+						message += "\n**RARE DROP!**  You found `" + Numbers.formatNumber(addItems.get("blessings")) + "`" + Emoji.BLESSING + " in the box!";
+					}
+					if(addItems.containsKey("benevolentBankers")) {
+						message += "\n**CRAZY RARE DROP!**  In front of you appears `" +
+								Numbers.formatNumber(addItems.get("benevolentBankers")) + "` banker(s)!  They are nice, and grant you a total of `" +
+								Numbers.formatNumber(addItems.get("benevolentBankers") * 1000000) + "` extra Bank Space!";
+					}
+					e.reply(message);
 				}
 			}
 			case "kits" -> {
@@ -202,10 +363,77 @@ public class Use {
 					return;
 				} else {
 					addItems.put("kits", -useAmount);
+					long bonusHours = 0;
 					for(int i = 0; i < useAmount; i++) {
-						generateArray(addItems, 7 + extraRolls, 5, 6 + extraItems); // initial: 5-8 --> 6-10
+						generateArray(addItems, 5 + extraRolls, 3, 6 + extraItems); // initial: 6-8 x 5
+						if(random.nextDouble() < 0.15 * magicFindBonus) {
+							long thisBonusHours = random.nextInt(3) + 2;
+							bonusHours += thisBonusHours;
+							if(addItems.containsKey("violins")) {
+								addItems.replace("violins", addItems.get("violins") + income * thisBonusHours);
+							} else {
+								addItems.put("violins", income * bonusHours);
+							}
+						}
+						if(random.nextDouble() < 0.25 * magicFindBonus) {
+							if(addItems.containsKey("rice")) {
+								addItems.replace("rice", addItems.get("rice") + 3);
+							} else {
+								addItems.put("rice", 3L);
+							}
+						}
+						if(random.nextDouble() < 0.1 * magicFindBonus) {
+							if(addItems.containsKey("tea")) {
+								addItems.replace("tea", addItems.get("tea") + 3);
+							} else {
+								addItems.put("tea", 3L);
+							}
+						}
+						if(random.nextDouble() < 0.05 * magicFindBonus) {
+							if(addItems.containsKey("medals")) {
+								addItems.replace("medals", addItems.get("medals") + 1);
+							} else {
+								addItems.put("medals", 1L);
+							}
+						}
+						if(random.nextDouble() < 0.02 * magicFindBonus) {
+							if(addItems.containsKey("blessings")) {
+								addItems.replace("blessings", addItems.get("blessings") + 3);
+							} else {
+								addItems.put("blessings", 3L);
+							}
+						}
+						if(random.nextDouble() < 0.002 * magicFindBonus) {
+							if(addItems.containsKey("qualityItems")) {
+								addItems.replace("qualityItems", addItems.get("qualityItems") + 1);
+							} else {
+								addItems.put("qualityItems", 1L);
+							}
+						}
 					}
-					e.reply("You opened `" + Numbers.formatNumber(useAmount) + "`" + Emoji.MUSICIAN_KIT + "  You received the following items...\n\n`" + Numbers.formatNumber(addItems.get("grains")) + "`" + Emoji.GRAINS + " `" + Numbers.formatNumber(addItems.get("plastic")) + "`" + Emoji.PLASTIC + " `" + Numbers.formatNumber(addItems.get("water")) + "`" + Emoji.WATER + " `" + Numbers.formatNumber(addItems.get("teaBase")) + "`" + Emoji.TEABAG + " `" + Numbers.formatNumber(addItems.get("wood")) + "`" + Emoji.WOOD + " `" + Numbers.formatNumber(addItems.get("pineSap")) + "`" + Emoji.SAP + " `" + Numbers.formatNumber(addItems.get("steel")) + "`" + Emoji.STEEL + " `" + Numbers.formatNumber(addItems.get("horseHair")) + "`" + Emoji.HORSE_HAIR);
+					String message = "You opened `" + Numbers.formatNumber(useAmount) + "`" + Emoji.MUSICIAN_KIT + "  You received the following items...\n\n`" + generateMessage(addItems) + "\n";
+					if(addItems.containsKey("violins")) {
+						message += "\n**BONUS!**  You received an additional `" + Numbers.formatNumber(bonusHours) + "` hours of income totaling to `" +
+								Numbers.formatNumber(income * bonusHours) + "`" + Emoji.VIOLINS;
+					}
+					if(addItems.containsKey("rice")) {
+						message += "\n**BONUS!**  You found `" + Numbers.formatNumber(addItems.get("rice")) + "`" + Emoji.RICE + " in the box!";
+					}
+					if(addItems.containsKey("tea")) {
+						message += "\n**BONUS!**  You found `" + Numbers.formatNumber(addItems.get("tea")) + "`" + Emoji.TEA + " in the box!";
+					}
+					if(addItems.containsKey("medals")) {
+						message += "\n**RARE DROP!**  You found `" + Numbers.formatNumber(addItems.get("medals")) + "`" + Emoji.MEDALS + " sitting at the bottom of the box!";
+					}
+					if(addItems.containsKey("blessings")) {
+						message += "\n**RARE DROP!**  You found `" + Numbers.formatNumber(addItems.get("blessings")) + "`" + Emoji.BLESSING + " in the box!";
+					}
+					if(addItems.containsKey("qualityItems")) {
+						message += "\n**CRAZY RARE DROP!**  `" +
+								Numbers.formatNumber(addItems.get("qualityItems")) + "` bottle(s) of Item Quality Boost Potion appear in front of you!  Your items now last `" +
+								Numbers.formatNumber(addItems.get("qualityItems") * 5) + "%` longer.";
+					}
+					e.reply(message);
 				}
 			}
 			case "linglingBox" -> {
@@ -214,10 +442,77 @@ public class Use {
 					return;
 				} else {
 					addItems.put("linglingBox", -useAmount);
+					long bonusHours = 0;
 					for(int i = 0; i < useAmount; i++) {
-						generateArray(addItems, 8 + extraRolls, 5, 8 + extraItems); // initial: 7-10 --> 8-12
+						generateArray(addItems, 6 + extraRolls, 3, 8 + extraItems); // initial: 8-10 x 6
+						if(random.nextDouble() < 0.15 * magicFindBonus) {
+							long thisBonusHours = random.nextInt(4) + 3;
+							bonusHours += thisBonusHours;
+							if(addItems.containsKey("violins")) {
+								addItems.replace("violins", addItems.get("violins") + income * thisBonusHours);
+							} else {
+								addItems.put("violins", income * bonusHours);
+							}
+						}
+						if(random.nextDouble() < 0.25 * magicFindBonus) {
+							if(addItems.containsKey("rice")) {
+								addItems.replace("rice", addItems.get("rice") + 4);
+							} else {
+								addItems.put("rice", 4L);
+							}
+						}
+						if(random.nextDouble() < 0.1 * magicFindBonus) {
+							if(addItems.containsKey("tea")) {
+								addItems.replace("tea", addItems.get("tea") + 4);
+							} else {
+								addItems.put("tea", 4L);
+							}
+						}
+						if(random.nextDouble() < 0.05 * magicFindBonus) {
+							long medals = random.nextInt(2) + 1;
+							if(addItems.containsKey("medals")) {
+								addItems.replace("medals", addItems.get("medals") + medals);
+							} else {
+								addItems.put("medals", medals);
+							}
+						}
+						if(random.nextDouble() < 0.02 * magicFindBonus) {
+							if(addItems.containsKey("blessings")) {
+								addItems.replace("blessings", addItems.get("blessings") + 4);
+							} else {
+								addItems.put("blessings", 4L);
+							}
+						}
+						if(random.nextDouble() < 0.002 * magicFindBonus) {
+							if(addItems.containsKey("bonusMedals")) {
+								addItems.replace("bonusMedals", addItems.get("bonusMedals") + 1);
+							} else {
+								addItems.put("bonusMedals", 1L);
+							}
+						}
 					}
-					e.reply("You opened `" + Numbers.formatNumber(useAmount) + "`" + Emoji.LING_LING_BOX + "  You received the following items...\n\n`" + Numbers.formatNumber(addItems.get("grains")) + "`" + Emoji.GRAINS + " `" + Numbers.formatNumber(addItems.get("plastic")) + "`" + Emoji.PLASTIC + " `" + Numbers.formatNumber(addItems.get("water")) + "`" + Emoji.WATER + " `" + Numbers.formatNumber(addItems.get("teaBase")) + "`" + Emoji.TEABAG + " `" + Numbers.formatNumber(addItems.get("wood")) + "`" + Emoji.WOOD + " `" + Numbers.formatNumber(addItems.get("pineSap")) + "`" + Emoji.SAP + " `" + Numbers.formatNumber(addItems.get("steel")) + "`" + Emoji.STEEL + " `" + Numbers.formatNumber(addItems.get("horseHair")) + "`" + Emoji.HORSE_HAIR);
+					String message = "You opened `" + Numbers.formatNumber(useAmount) + "`" + Emoji.LING_LING_BOX + "  You received the following items...\n\n`" + generateMessage(addItems) + "\n";
+					if(addItems.containsKey("violins")) {
+						message += "\n**BONUS!**  You received an additional `" + Numbers.formatNumber(bonusHours) + "` hours of income totaling to `" +
+								Numbers.formatNumber(income * bonusHours) + "`" + Emoji.VIOLINS;
+					}
+					if(addItems.containsKey("rice")) {
+						message += "\n**BONUS!**  You found `" + Numbers.formatNumber(addItems.get("rice")) + "`" + Emoji.RICE + " in the box!";
+					}
+					if(addItems.containsKey("tea")) {
+						message += "\n**BONUS!**  You found `" + Numbers.formatNumber(addItems.get("tea")) + "`" + Emoji.TEA + " in the box!";
+					}
+					if(addItems.containsKey("medals")) {
+						message += "\n**RARE DROP!**  You found `" + Numbers.formatNumber(addItems.get("medals")) + "`" + Emoji.MEDALS + " sitting at the bottom of the box!";
+					}
+					if(addItems.containsKey("blessings")) {
+						message += "\n**RARE DROP!**  You found `" + Numbers.formatNumber(addItems.get("blessings")) + "`" + Emoji.BLESSING + " in the box!";
+					}
+					if(addItems.containsKey("bonusMedals")) {
+						message += "\n**CRAZY RARE DROP!**  Ling Ling has shown favor upon you, and is granting you `+" +
+								Numbers.formatNumber(addItems.get("bonusMedals")) + "`" + Emoji.MEDALS + " bonus medals each time you run `!daily`!";
+					}
+					e.reply(message);
 				}
 			}
 			case "crazyBox" -> {
@@ -226,10 +521,76 @@ public class Use {
 					return;
 				} else {
 					addItems.put("crazyBox", -useAmount);
+					long bonusHours = 0;
 					for(int i = 0; i < useAmount; i++) {
-						generateArray(addItems, 9 + extraRolls, 6, 10 + extraItems); // initial: 8-12 --> 10-15
+						generateArray(addItems, 7 + extraRolls, 3, 10 + extraItems); // initial: 10-12 x 7
+						if(random.nextDouble() < 0.2 * magicFindBonus) {
+							long thisBonusHours = random.nextInt(4) + 3;
+							bonusHours += thisBonusHours;
+							if(addItems.containsKey("violins")) {
+								addItems.replace("violins", addItems.get("violins") + income * thisBonusHours);
+							} else {
+								addItems.put("violins", income * bonusHours);
+							}
+						}
+						if(random.nextDouble() < 0.25 * magicFindBonus) {
+							if(addItems.containsKey("rice")) {
+								addItems.replace("rice", addItems.get("rice") + 5);
+							} else {
+								addItems.put("rice", 5L);
+							}
+						}
+						if(random.nextDouble() < 0.1 * magicFindBonus) {
+							if(addItems.containsKey("tea")) {
+								addItems.replace("tea", addItems.get("tea") + 5);
+							} else {
+								addItems.put("tea", 5L);
+							}
+						}
+						if(random.nextDouble() < 0.05 * magicFindBonus) {
+							long medals = random.nextInt(3) + 1;
+							if(addItems.containsKey("medals")) {
+								addItems.replace("medals", addItems.get("medals") + medals);
+							} else {
+								addItems.put("medals", medals);
+							}
+						}
+						if(random.nextDouble() < 0.02 * magicFindBonus) {
+							if(addItems.containsKey("blessings")) {
+								addItems.replace("blessings", addItems.get("blessings") + 5);
+							} else {
+								addItems.put("blessings", 5L);
+							}
+						}
+						if(random.nextDouble() < 0.002 * magicFindBonus) {
+							if(addItems.containsKey("bonusInterest")) {
+								addItems.replace("bonusInterest", addItems.get("bonusInterest") + 1);
+							} else {
+								addItems.put("bonusInterest", 1L);
+							}
+						}
 					}
-					e.reply("You opened `" + Numbers.formatNumber(useAmount) + "`" + Emoji.CRAZY_BOX + "  You received the following items...\n\n`" + Numbers.formatNumber(addItems.get("grains")) + "`" + Emoji.GRAINS + " `" + Numbers.formatNumber(addItems.get("plastic")) + "`" + Emoji.PLASTIC + " `" + Numbers.formatNumber(addItems.get("water")) + "`" + Emoji.WATER + " `" + Numbers.formatNumber(addItems.get("teaBase")) + "`" + Emoji.TEABAG + " `" + Numbers.formatNumber(addItems.get("wood")) + "`" + Emoji.WOOD + " `" + Numbers.formatNumber(addItems.get("pineSap")) + "`" + Emoji.SAP + " `" + Numbers.formatNumber(addItems.get("steel")) + "`" + Emoji.STEEL + " `" + Numbers.formatNumber(addItems.get("horseHair")) + "`" + Emoji.HORSE_HAIR);
+					String message = "You opened `" + Numbers.formatNumber(useAmount) + "`" + Emoji.CRAZY_BOX + "  You received the following items...\n\n`" + generateMessage(addItems) + "\n";
+					if(addItems.containsKey("violins")) {
+						message += "\n**BONUS!**  You received an additional `" + Numbers.formatNumber(bonusHours) + "` hours of income totaling to `" +
+								Numbers.formatNumber(income * bonusHours) + "`" + Emoji.VIOLINS;
+					}
+					if(addItems.containsKey("rice")) {
+						message += "\n**BONUS!**  You found `" + Numbers.formatNumber(addItems.get("rice")) + "`" + Emoji.RICE + " in the box!";
+					}
+					if(addItems.containsKey("tea")) {
+						message += "\n**BONUS!**  You found `" + Numbers.formatNumber(addItems.get("tea")) + "`" + Emoji.TEA + " in the box!";
+					}
+					if(addItems.containsKey("medals")) {
+						message += "\n**RARE DROP!**  You found `" + Numbers.formatNumber(addItems.get("medals")) + "`" + Emoji.MEDALS + " sitting at the bottom of the box!";
+					}
+					if(addItems.containsKey("blessings")) {
+						message += "\n**RARE DROP!**  You found `" + Numbers.formatNumber(addItems.get("blessings")) + "`" + Emoji.BLESSING + " in the box!";
+					}
+					if(addItems.containsKey("bonusInterest")) {
+						message += "\n**CRAZY RARE DROP!**  The Bank of TwoSet is imporessed by your dedication and grants you `+" + addItems.get("bonusInterest") * 0.1 + "%` extra interest!";
+					}
+					e.reply(message);
 				}
 			}
 			case "RNGesusBox" -> {
@@ -238,10 +599,78 @@ public class Use {
 					return;
 				} else {
 					addItems.put("RNGesusBox", -useAmount);
+					long bonusHours = 0;
 					for(int i = 0; i < useAmount; i++) {
-						generateArray(addItems, 10 + extraRolls, 7, 12 + extraItems); // initial: 10-15 --> 12-18
+						generateArray(addItems, 8 + extraRolls, 4, 12 + extraItems); // initial: 12-15 x 8
+						if(random.nextDouble() < 0.2 * magicFindBonus) {
+							long thisBonusHours = random.nextInt(5) + 4;
+							bonusHours += thisBonusHours;
+							if(addItems.containsKey("violins")) {
+								addItems.replace("violins", addItems.get("violins") + income * thisBonusHours);
+							} else {
+								addItems.put("violins", income * bonusHours);
+							}
+						}
+						if(random.nextDouble() < 0.25 * magicFindBonus) {
+							if(addItems.containsKey("rice")) {
+								addItems.replace("rice", addItems.get("rice") + 6);
+							} else {
+								addItems.put("rice", 6L);
+							}
+						}
+						if(random.nextDouble() < 0.1 * magicFindBonus) {
+							if(addItems.containsKey("tea")) {
+								addItems.replace("tea", addItems.get("tea") + 6);
+							} else {
+								addItems.put("tea", 6L);
+							}
+						}
+						if(random.nextDouble() < 0.05 * magicFindBonus) {
+							long medals = random.nextInt(4) + 1;
+							if(addItems.containsKey("medals")) {
+								addItems.replace("medals", addItems.get("medals") + medals);
+							} else {
+								addItems.put("medals", medals);
+							}
+						}
+						if(random.nextDouble() < 0.02 * magicFindBonus) {
+							if(addItems.containsKey("blessings")) {
+								addItems.replace("blessings", addItems.get("blessings") + 6);
+							} else {
+								addItems.put("blessings", 6L);
+							}
+						}
+						if(random.nextDouble() < 0.002 * magicFindBonus) {
+							if(addItems.containsKey("RNGesusItemThatDoesAbsolutelyNothingLMAO")) {
+								addItems.replace("RNGesusItemThatDoesAbsolutelyNothingLMAO", addItems.get("RNGesusItemThatDoesAbsolutelyNothingLMAO") + 1);
+							} else {
+								addItems.put("RNGesusItemThatDoesAbsolutelyNothingLMAO", 1L);
+							}
+						}
 					}
-					e.reply("You opened `" + Numbers.formatNumber(useAmount) + "`" + Emoji.RNGESUS_BOX + "  You received the following items...\n\n`" + Numbers.formatNumber(addItems.get("grains")) + "`" + Emoji.GRAINS + " `" + Numbers.formatNumber(addItems.get("plastic")) + "`" + Emoji.PLASTIC + " `" + Numbers.formatNumber(addItems.get("water")) + "`" + Emoji.WATER + " `" + Numbers.formatNumber(addItems.get("teaBase")) + "`" + Emoji.TEABAG + " `" + Numbers.formatNumber(addItems.get("wood")) + "`" + Emoji.WOOD + " `" + Numbers.formatNumber(addItems.get("pineSap")) + "`" + Emoji.SAP + " `" + Numbers.formatNumber(addItems.get("steel")) + "`" + Emoji.STEEL + " `" + Numbers.formatNumber(addItems.get("horseHair")) + "`" + Emoji.HORSE_HAIR);
+					String message = "You opened `" + Numbers.formatNumber(useAmount) + "`" + Emoji.RNGESUS_BOX + "  You received the following items...\n\n`" + generateMessage(addItems) + "\n";
+					if(addItems.containsKey("violins")) {
+						message += "\n**BONUS!**  You received an additional `" + Numbers.formatNumber(bonusHours) + "` hours of income totaling to `" +
+								Numbers.formatNumber(income * bonusHours) + "`" + Emoji.VIOLINS;
+					}
+					if(addItems.containsKey("rice")) {
+						message += "\n**BONUS!**  You found `" + Numbers.formatNumber(addItems.get("rice")) + "`" + Emoji.RICE + " in the box!";
+					}
+					if(addItems.containsKey("tea")) {
+						message += "\n**BONUS!**  You found `" + Numbers.formatNumber(addItems.get("tea")) + "`" + Emoji.TEA + " in the box!";
+					}
+					if(addItems.containsKey("medals")) {
+						message += "\n**RARE DROP!**  You found `" + Numbers.formatNumber(addItems.get("medals")) + "`" + Emoji.MEDALS + " sitting at the bottom of the box!";
+					}
+					if(addItems.containsKey("blessings")) {
+						message += "\n**RARE DROP!**  You found `" + Numbers.formatNumber(addItems.get("blessings")) + "`" + Emoji.BLESSING + " in the box!";
+					}
+					if(addItems.containsKey("RNGesusItemThatDoesAbsolutelyNothingLMAO")) {
+						message += "\n\n# INSANE DROP\nYou found `" +
+								Numbers.formatNumber(addItems.get("RNGesusItemThatDoesAbsolutelyNothingLMAO")) +
+								"` \"RNGesus Item That Does Absolutely Nothing LMAO\"!  Now you can flex this utterly useless item in your inventory! https://imgur.com/a/SSjcgz3";
+					}
+					e.reply(message);
 				}
 			}
 			case "rosin" -> {
@@ -250,8 +679,9 @@ public class Use {
 					return;
 				} else {
 					addItems.put("rosin", -useAmount);
-					addTime(data, "rosinExpire", useAmount * 180000000);
-					e.reply(Emoji.ROSIN + "  You apply rosin to your bow.  You are now entitled to `" + Numbers.formatNumber(50 * useAmount) + "` more hours of income.");
+					addTime(data, "rosinExpire", (long) (useAmount * 180000000 * bonusItemDuration));
+					e.reply(Emoji.ROSIN + "  You apply rosin to your bow.  Your rosin now lasts for an additional `" +
+							Numbers.formatNumber((long) (50 * useAmount * bonusItemDuration)) + "` hours before needing to be reapplied.");
 				}
 			}
 			case "string" -> {
@@ -260,8 +690,9 @@ public class Use {
 					return;
 				} else {
 					addItems.put("string", -useAmount);
-					addTime(data, "stringsExpire", useAmount * 360000000);
-					e.reply(Emoji.STRING + "  You change the strings on your violin.  You are now entitled to `" + Numbers.formatNumber(100 * useAmount) + "` more hours of income.");
+					addTime(data, "stringsExpire", (long) (useAmount * 360000000 * bonusItemDuration));
+					e.reply(Emoji.STRING + "  You change the strings on your violin.  Your strings now last for an additional `" +
+							Numbers.formatNumber((long) (100 * useAmount * bonusItemDuration)) + "` hours before needing to be changed.");
 				}
 			}
 			case "bowHair" -> {
@@ -270,8 +701,9 @@ public class Use {
 					return;
 				} else {
 					addItems.put("bowHair", -useAmount);
-					addTime(data, "bowHairExpire", useAmount * 540000000);
-					e.reply(Emoji.BOW_HAIR + "  You asked Olaf to rehair your bow, to which he agreed.  You are now entitled to `" + Numbers.formatNumber(150 * useAmount) + "` more hours of income.");
+					addTime(data, "bowHairExpire", (long) (useAmount * 540000000 * bonusItemDuration));
+					e.reply(Emoji.BOW_HAIR + "  You asked Olaf to rehair your bow, to which he agreed.  Your bow now lasts for an additional `" +
+							Numbers.formatNumber((long) (150 * useAmount * bonusItemDuration)) + "` hours before needing to be rehaired.");
 				}
 			}
 			case "violinService" -> {
@@ -280,8 +712,9 @@ public class Use {
 					return;
 				} else {
 					addItems.put("violinService", -useAmount);
-					addTime(data, "serviceExpire", useAmount * 900000000);
-					e.reply(Emoji.SERVICE + "  You asked Olaf to service your violin, to which he agreed.  You are now entitled to `" + Numbers.formatNumber(250 * useAmount) + "` more hours of income.");
+					addTime(data, "serviceExpire", (long) (useAmount * 900000000 * bonusItemDuration));
+					e.reply(Emoji.SERVICE + "  You asked Olaf to service your violin, to which he agreed.  Your violins now lasts for an additional `" +
+							Numbers.formatNumber((long) (250 * useAmount * bonusItemDuration)) + "` hours before needing to be reserviced.");
 				}
 			}
 			default -> {

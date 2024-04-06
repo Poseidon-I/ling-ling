@@ -71,18 +71,22 @@ public class Numbers {
 			return (long) (cost * 0.5 + 210000000);
 		}
 	}
+
+	public static long maxLoan(JSONObject data) {
+		return (long) Math.pow(100, Math.log10((long) data.get("income")) - 1);
+	}
 	
 	public static void calculateLoan(JSONObject data, long earned) {
 		long loan = (long) data.get("loan");
-		long income = (long) data.get("income");
 		long violins = (long) data.get("violins");
-		if(loan > income * 400) {
+		long maxLoan = maxLoan(data);
+		if(loan > maxLoan * 2) {
 			violins = (long) (violins - (earned * 0.1));
 			loan = (long) (loan - (earned * 1.1));
-		} else if(loan > income * 250) {
+		} else if(loan > maxLoan * 1.25) {
 			violins = (long) (violins + earned * 0.2);
 			loan = (long) (loan - (earned * 0.8));
-		} else if(loan > income * 100) {
+		} else if(loan > maxLoan / 2) {
 			violins = (long) (violins + earned * 0.5);
 			loan = (long) (loan - (earned * 0.5));
 		} else if(loan > 0) {
@@ -101,5 +105,9 @@ public class Numbers {
 	
 	public static boolean containsBadLanguage(String input) {
 		return input.contains("@everyone") || input.contains("@here") || input.contains("<@&") || input.contains("nigg") || input.contains("nibba") || input.contains("cunt") || input.contains("chink");
+	}
+
+	public static long maxBank(JSONObject data) {
+		return 20000000 * (long) data.get("storage") + 1000000 * (long) data.get("benevolentBankers");
 	}
 }

@@ -16,6 +16,7 @@ public class GenericDiscordEvent {
 	JDA jda;
 	Guild guild;
 	SlashCommandInteractionEvent slashEvent = null;
+
 	public GenericDiscordEvent(SlashCommandInteractionEvent e) {
 		this.author = e.getUser();
 		this.channel = e.getChannel();

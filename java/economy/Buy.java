@@ -101,10 +101,12 @@ public class Buy {
 			data.replace(currency, amount - cost);
 			data.replace("income", (long) data.get("income") + add);
 			data.replace(item, true);
-			e.reply("Successfully purchased `" + item + "` for `" + Numbers.formatNumber(cost) + "`" + currencyEmoji + "\nYou have `" + Numbers.formatNumber(amount - cost) + "`" + currencyEmoji + " left.");
+			e.reply("Successfully purchased `" + item + "` for `" + Numbers.formatNumber(cost) + "`" + currencyEmoji +
+					"\nYou have `" + Numbers.formatNumber(amount - cost) + "`" + currencyEmoji + " left.");
 			if(item.equals("orchestra")) {
 				data.replace("storage", 1);
-				e.sendMessage("The Bank of TwoSet has noticed you, and has given you space to store violins!  You have 20 million storage for free; this can increased by buying more space using medals.");
+				e.sendMessage("The Bank of TwoSet has noticed you, and has given you space to store violins!  " +
+						"You have 20 million storage for free; this can increased by buying more space using medals.");
 			}
 			RNGesus.lootbox(e, data);
 			SaveData.saveData(e, data);
@@ -129,12 +131,15 @@ public class Buy {
 			RNGesus.lootbox(e, data);
 			SaveData.saveData(e, data);
 			if(maxAmount == 2147483647) {
-				e.reply("Successfully purchased `" + item + " #" + itemCount + "` for `" + Numbers.formatNumber(cost) + "`" + currencyEmoji + "\nYou have `" + Numbers.formatNumber(amount - cost) + "`" + currencyEmoji + " left.");
+				e.reply("Successfully purchased `" + item + " #" + itemCount + "` for `" + Numbers.formatNumber(cost) + "`" + currencyEmoji +
+						"\nYou have `" + Numbers.formatNumber(amount - cost) + "`" + currencyEmoji + " left.");
 			} else {
 				if(amount == maxAmount) {
-					e.reply("**MAX LEVEL**\nSuccessfully purchased `" + item + " #" + itemCount + "/" + maxAmount + "` for `" + cost + "`" + currencyEmoji + "\nYou have `" + Numbers.formatNumber(amount - cost) + "`" + currencyEmoji + " left.");
+					e.reply("**MAX LEVEL**\nSuccessfully purchased `" + item + " #" + itemCount + "/" + maxAmount + "` for `" + cost + "`" + currencyEmoji +
+							"\nYou have `" + Numbers.formatNumber(amount - cost) + "`" + currencyEmoji + " left.");
 				} else {
-					e.reply("Successfully purchased `" + item + " #" + itemCount + "/" + maxAmount + "` for `" + Numbers.formatNumber(cost) + "`" + currencyEmoji + "\nYou have `" + Numbers.formatNumber(amount - cost) + "`" + currencyEmoji + " left.");
+					e.reply("Successfully purchased `" + item + " #" + itemCount + "/" + maxAmount + "` for `" + Numbers.formatNumber(cost) + "`" + currencyEmoji +
+							"\nYou have `" + Numbers.formatNumber(amount - cost) + "`" + currencyEmoji + " left.");
 				}
 			}
 		}

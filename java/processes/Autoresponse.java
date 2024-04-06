@@ -25,7 +25,8 @@ public class Autoresponse {
                     e.sendMessage("At least better than Davie504 and his bAss");
                 }
             } else if(fullMessage.contains("pls kill")) {
-                if(fullMessage.contains("strad") || fullMessage.contains("dev") || fullMessage.contains("jacqueline") || fullMessage.contains("619989388109152256") || fullMessage.contains("488487157372157962")) {
+                if(fullMessage.contains("strad") || fullMessage.contains("dev") || fullMessage.contains("jacqueline")
+                        || fullMessage.contains("619989388109152256") || fullMessage.contains("488487157372157962")) {
                     e.sendMessage("**Imagine trying to kill the devs smh**");
                 }
             } else if(array2.contains("practice")) {
@@ -55,7 +56,11 @@ public class Autoresponse {
             } else if(array2.contains("band")) {
                 e.sendMessage("Band is a subset of the full orchestra (and too loud as well) now get out of my face if you don't understand this simple fact.");
             } else if(array2.contains("fortnite")) {
-                e.sendMessage("**Aiyooooo!  How many times do I need to tell you??  __Ling Ling is practising FORTY hours a day!  DO YOU THINK LING LING HAS TIME TO PLAY *FORTNITE*???  *HUH?!?!?!*  LING LING ALREADY WIN TWENTY COMPETITION, YOU PLAY *FORTNITE*?  *HUUUUUH?!?!?!?!?!?!?!?!?!?!*__**");
+                e.sendMessage("**Aiyooooo!  How many times do I need to tell you??  __Ling Ling is practising FORTY hours a day!  DO YOU THINK LING LING HAS TIME TO PLAY *FORTNITE*???  " +
+                        "*HUH?!?!?!*  LING LING ALREADY WIN TWENTY COMPETITION, YOU PLAY *FORTNITE*?  *HUUUUUH?!?!?!?!?!?!?!?!?!?!*__**");
+            } else if(array2.contains("val") || fullMessage.contains("valorant")) {
+                e.sendMessage("**Aiyooooo!  How many times do I need to tell you??  __Ling Ling is practising FORTY hours a day!  DO YOU THINK LING LING HAS TIME TO PLAY *VALORANT*???  " +
+                        "*HUH?!?!?!*  LING LING ALREADY WIN TWENTY COMPETITION, YOU PLAY *VALORANT*?  *HUUUUUH?!?!?!?!?!?!?!?!?!?!*__**");
             } else if(array2.contains("wheat")) {
                 e.sendMessage("Rice is the superior crop, don't you dare start about wheat");
             } else if(fullMessage.contains("there are only 24 hours in a day")) {

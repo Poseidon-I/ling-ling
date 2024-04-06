@@ -21,6 +21,7 @@ public class ILoveJava extends ListenerAdapter {
 			ex.printStackTrace();
 		}
 	}
+
 	public void onUserUpdateOnlineStatus(UserUpdateOnlineStatusEvent e) {
 		if(e.getMember().getId().equals("733409243222507670") && e.getNewOnlineStatus().equals(OnlineStatus.OFFLINE)) {
 			forceRestart();

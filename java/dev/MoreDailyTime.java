@@ -23,7 +23,7 @@ public class MoreDailyTime {
 			} catch(Exception exception) {
 				continue;
 			}
-			data.replace("retainDaily", true);
+			data.replace("dailyCD", System.currentTimeMillis());
 			collection.replaceOne(eq("discordID", data.get("discordID")), Document.parse(data.toJSONString()));
 		}
 		e.reply("Gave everyone +1 Day to run `!daily`");

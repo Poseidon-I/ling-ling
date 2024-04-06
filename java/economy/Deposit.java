@@ -29,15 +29,17 @@ public class Deposit {
 		if(amount < 1) {
 			e.reply("Stop wasting my time trying to deposit a negative amount.");
 		} else {
-			long max = 20000000 * (long) data.get("storage");
+			long max = Numbers.maxBank(data);
 			long balance = (long) data.get("bank");
 			if(balance + amount > max) {
 				amount = max - balance;
 				balance = max;
-				e.reply("**MAX VIOLINS**\nYou deposited `" + Numbers.formatNumber(amount) + "`" + Emoji.VIOLINS + " into your bank.  You now have `" + Numbers.formatNumber(balance) + "`" + Emoji.VIOLINS + " in your bank.");
+				e.reply("**MAX VIOLINS**\nYou deposited `" + Numbers.formatNumber(amount) + "`" + Emoji.VIOLINS + " into your bank.  You now have `" +
+						Numbers.formatNumber(balance) + "`" + Emoji.VIOLINS + " in your bank.");
 			} else {
 				balance += amount;
-				e.reply("You deposited `" + Numbers.formatNumber(amount) + "`" + Emoji.VIOLINS + " into your bank.  You now have `" + Numbers.formatNumber(balance) + "`" + Emoji.VIOLINS + " in your bank.");
+				e.reply("You deposited `" + Numbers.formatNumber(amount) + "`" + Emoji.VIOLINS + " into your bank.  You now have `" +
+						Numbers.formatNumber(balance) + "`" + Emoji.VIOLINS + " in your bank.");
 			}
 			data.replace("violins", wallet - amount);
 			data.replace("bank", balance);

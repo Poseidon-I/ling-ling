@@ -51,7 +51,8 @@ public class Unban {
 			LogCase.logCase(e, "Unban", idToModerate, reason);
 			try {
 				String finalReason = reason;
-				Objects.requireNonNull(e.getJDA().getUserById(idToModerate)).openPrivateChannel().queue((channel) -> channel.sendMessage("You have been unbanned.  Reason: " + finalReason).queue());
+				Objects.requireNonNull(e.getJDA().getUserById(idToModerate)).openPrivateChannel()
+						.queue((channel) -> channel.sendMessage("You have been unbanned.  Reason: " + finalReason).queue());
 			} catch(Exception exception) {
 				// nothing here lol
 			}

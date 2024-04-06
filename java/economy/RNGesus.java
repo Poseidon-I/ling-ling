@@ -22,30 +22,34 @@ public class RNGesus {
 			case "Musician Kit" -> {
 				builder.setColor(Color.BLUE);
 				if(extraInfo) {
-					message.append("\n*You rolled `").append(chance).append("`, the range for obtaining this box was between `").append(0.00375 * increase).append("` and `").append(0.01375 * increase).append("`*");
+					message.append("\n*You rolled `").append(chance).append("`, the range for obtaining this box was between `")
+							.append(0.00375 * increase).append("` and `").append(0.01375 * increase).append("`*");
 				}
-				builder.addField("Decimal rolled: `" +  chance + "`", "Range: `" + 0.00375 * increase + "` - `" + 0.01375 * increase + "`", false);
+				builder.addField("Decimal rolled: `" +  chance + "`", "Range: `" + 0.004663 * increase + "` - `" + 0.014663 * increase + "`", false);
 			}
 			case "Ling Ling Box" -> {
 				builder.setColor(Color.MAGENTA);
 				if(extraInfo) {
-					message.append("\n*You rolled `").append(chance).append("`, the range for obtaining this box was between `").append(0.00125 * increase).append("` and `").append(0.00375 * increase).append("`*");
+					message.append("\n*You rolled `").append(chance).append("`, the range for obtaining this box was between `")
+							.append(0.00125 * increase).append("` and `").append(0.00375 * increase).append("`*");
 				}
-				builder.addField("Decimal rolled: `" +  chance + "`", "Range: `" + 0.00125 * increase + "` - `" + 0.00375 * increase + "`", false);
+				builder.addField("Decimal rolled: `" +  chance + "`", "Range: `" + 0.001333 * increase + "` - `" + 0.004663 * increase + "`", false);
 			}
 			case "Crazy Person Box" -> {
 				builder.setColor(Color.MAGENTA);
 				if(extraInfo) {
-					message.append("\n*You rolled `").append(chance).append("`, the range for obtaining this box was between `").append(0.00025 * increase).append("` and `").append(0.00125 * increase).append("`*");
+					message.append("\n*You rolled `").append(chance).append("`, the range for obtaining this box was between `")
+							.append(0.00025 * increase).append("` and `").append(0.00125 * increase).append("`*");
 				}
-				builder.addField("Decimal rolled: `" +  chance + "`", "Range: `" + 0.00025 * increase + "` - `" + 0.00125 * increase + "`", false);
+				builder.addField("Decimal rolled: `" +  chance + "`", "Range: `" + 0.000333 * increase + "` - `" + 0.001333 * increase + "`", false);
 			}
 			case "RNGesus Box" -> {
 				builder.setColor(Color.RED);
 				if(extraInfo) {
-					message.append("\n*You rolled `").append(chance).append("`, the range for obtaining this box was between `0` and `").append(0.00025 * increase).append("`*");
+					message.append("\n*You rolled `").append(chance).append("`, the range for obtaining this box was between `0` and `")
+							.append(0.00025 * increase).append("`*");
 				}
-				builder.addField("Decimal rolled: `" +  chance + "`", "Range: `0` - `" + 0.00025 * increase + "`", false);
+				builder.addField("Decimal rolled: `" +  chance + "`", "Range: `0` - `" + 0.000333 * increase + "`", false);
 			}
 		}
 		Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("1029498872441077860")).sendMessageEmbeds(builder.build()).queue();
@@ -58,29 +62,30 @@ public class RNGesus {
 		chance = random.nextDouble();
 		increase = 1.0 + (long) data.get("magicFind") * 0.01;
 		extraInfo = (boolean) data.get("extraInfo");
-		if(chance > 0.01375 * increase) {
+		if(chance > 0.014663 * increase) {
 			return data;
-		} else if(chance > 0.00375 * increase) { //0.01 (1 in 100)
+		} else if(chance > 0.004663 * increase) { //0.01 (1 in 100)
 			data.replace("kits", (long) data.get("kits") + 1);
 			data.replace("RNGesusWeight", (long) data.get("RNGesusWeight") + 3);
-			message.append("**Very Rare Drop!** " + Emoji.MUSICIAN_KIT + " <@").append(e.getAuthor().getId()).append(">\nYou found a Musician Kit while you were out and about.");
+			message.append("**Rare Drop!** " + Emoji.MUSICIAN_KIT + " <@").append(e.getAuthor().getId()).append(">\nYou found a Musician Kit while you were out and about.");
 			sendLog(e, "Musician Kit");
-		} else if(chance > 0.00125 * increase) { //0.0025 (1 in 400)
+		} else if(chance > 0.001333 * increase) { //0.00333 (1 in 300)
 			data.replace("linglingBox", (long) data.get("linglingBox") + 1);
-			data.replace("RNGesusWeight", (long) data.get("RNGesusWeight") + 6);
-			message.append("**CRAZY RARE DROP!** " + Emoji.LING_LING_BOX + " <@").append(e.getAuthor().getId()).append(">\nYou found a Ling Ling Box sitting in your room!");
+			data.replace("RNGesusWeight", (long) data.get("RNGesusWeight") + 4);
+			message.append("**Very Rare Drop!** " + Emoji.LING_LING_BOX + " <@").append(e.getAuthor().getId()).append(">\nYou found a Ling Ling Box sitting in your room!");
 			sendLog(e, "Ling Ling Box");
-		} else if(chance > 0.00025 * increase) { // 0.001 (1 in 1000)
+		} else if(chance > 0.000333 * increase) { // 0.001 (1 in 1000)
 			data.replace("crazyBox", (long) data.get("crazyBox") + 1);
 			data.replace("RNGesusWeight", (long) data.get("RNGesusWeight") + 6);
 			message.append("**CRAZY RARE DROP!** " + Emoji.CRAZY_BOX + " <@").append(e.getAuthor().getId()).append(">\nYou see a CRAZY PERSON BOX appear in front of you!");
 			sendLog(e, "Crazy Person Box");
-		} else { // 0.00025 (1 in 4000)
+		} else { // 0.000333 (1 in 3000)
 			data.replace("RNGesusBox", (long) data.get("RNGesusBox") + 1);
 			data.replace("RNGesusWeight", (long) data.get("RNGesusWeight") + 10);
 			message.append("https://imgur.com/a/SSjcgz3 " + Emoji.RNGESUS_BOX + " <@").append(e.getAuthor().getId()).append(">\nYou see an **__RNGESUS BOX__** appear in front of you! GG!");
 			sendLog(e, "RNGesus Box");
-			Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("734697505543159879")).sendMessage("WOW!  `" + e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator() + "` found an **__RNGESUS BOX__**!!!").queue();
+			Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("734697505543159879"))
+					.sendMessage("WOW!  `" + e.getAuthor().getEffectiveName() + "` found an **__RNGESUS BOX__**!!!").queue();
 		}
 		return data;
 	}

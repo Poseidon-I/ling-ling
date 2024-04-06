@@ -21,7 +21,8 @@ public class Joke {
 			case 9 -> e.reply("A violist and a cellist were standing on a sinking ship. \"Help!\" cried the cellist, \"I can't swim!\"\n\"Don't worry,\" said the violist, \"||Just fake it.||\"");
 			case 10 -> e.reply("Q: What's the difference between the first and last desk of the viola section?\nA: ||About half a bar.||");
 			case 11 -> e.reply("Q: How do you get two violists to play in tune with each other?\nA: ||Ask one of them to leave.||");
-			case 12 -> e.reply("A group of terrorists hijacked a plane full of violists. They called down to ground control with their list of demands and added that if their demands weren't met, they would ||release one violist every hour.||");
+			case 12 -> e.reply("A group of terrorists hijacked a plane full of violists.  " +
+					"They called down to ground control with their list of demands and added that if their demands weren't met, they would ||release one violist every hour.||");
 			case 13 -> e.reply("Q: What's the difference between a viola and a trampoline?\nA: ||You take your shoes off to jump on a trampoline.||");
 			case 14 -> e.reply("Q: What's the difference between a viola and an onion?\nA: ||No one cries when you cut up a viola.||");
 			case 15 -> e.reply("Q: Anything\nA: Viola.\n||*intense wheezing*||");

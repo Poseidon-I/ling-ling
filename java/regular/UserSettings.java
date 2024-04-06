@@ -33,9 +33,12 @@ public class UserSettings {
 					.setColor(Color.decode((String) data.get("color")))
 					.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
 					.setTitle("**__Settings for " + e.getAuthor().getGlobalName() + "__**")
-					.addField("Color", "Sets the embed color for your commands.  Does not apply to `/help` for technical reasons.\nCurrent option: `" + data.get("color") + "`\nID: `color`", false)
-					.addField("DMs", "Toggles whether DMs are sent for Rob, Gift, and Market.\nCurrent option: `" + data.get("DMs") + "`\nID: `dms`", false)
-					.addField("Extra Information", "Toggles whether extra info is shown, like your chance of a successful `/rob` or what you rolled to get a lootbox.\nCurrent option: `" + data.get("extraInfo") + "`\nID: `info`", false);
+					.addField("Color", "Sets the embed color for your commands.  Does not apply to `/help` for technical reasons." +
+							"\nCurrent option: `" + data.get("color") + "`\nID: `color`", false)
+					.addField("DMs", "Toggles whether DMs are sent for Rob, Gift, and Market." +
+							"\nCurrent option: `" + data.get("DMs") + "`\nID: `dms`", false)
+					.addField("Extra Information", "Toggles whether extra info is shown, like your chance of a successful `/rob` or what you rolled to get a lootbox." +
+							"\nCurrent option: `" + data.get("extraInfo") + "`\nID: `info`", false);
 			e.replyEmbeds(builder.build());
 		} else {
 			switch(option) {

@@ -13,6 +13,7 @@ public class Warn {
 			Long.parseLong(idToModerate);
 		} catch(Exception exception) {
 			e.reply("You didn't provide an ID!");
+			return;
 		}
 
 		if(idToModerate.equals(e.getAuthor().getId())) {
@@ -28,7 +29,9 @@ public class Warn {
 			}
 			LogCase.logCase(e, "Warn", idToModerate, reason);
 			try {
-				Objects.requireNonNull(e.getJDA().getUserById(idToModerate)).openPrivateChannel().queue((channel) -> channel.sendMessage("You have received a warning.  Reason: " + reason + "\nContinuation of this action may result in a save file reset and/or a bot ban.").queue());
+				Objects.requireNonNull(e.getJDA().getUserById(idToModerate)).openPrivateChannel()
+						.queue((channel) -> channel.sendMessage("You have received a warning.  Reason: " + reason +
+								"\nContinuation of this action may result in a save file reset and/or a bot ban.").queue());
 			} catch(Exception exception) {
 				// nothing here lol
 			}

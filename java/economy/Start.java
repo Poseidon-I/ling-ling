@@ -24,10 +24,10 @@ public class Start {
 			}
 			String discordName;
 			if(!ban) {
-				discordName = e.getAuthor().getGlobalName();
+				discordName = e.getAuthor().getEffectiveName();
 			} else {
 				try {
-					discordName = Objects.requireNonNull(e.getJDA().getUserById(id)).getGlobalName();
+					discordName = Objects.requireNonNull(e.getJDA().getUserById(id)).getEffectiveName();
 				} catch(Exception exception) {
 					discordName = "";
 				}
@@ -75,6 +75,14 @@ public class Start {
 						.append("crazyBox", 0L)
 						.append("RNGesusBox", 0L)
 
+						// Lootbox Rewards
+						.append("freeIncome", 0L)
+						.append("benevolentBankers", 0L)
+						.append("qualityItems", 0L)
+						.append("bonusMedals", 0L)
+						.append("bonusInterest", 0L)
+						.append("RNGesusItemThatDoesAbsolutelyNothingLMAO", 0L)
+
 						// AFK Income Penalty
 						.append("rosinExpire", System.currentTimeMillis() + 1224000000)
 						.append("stringsExpire", System.currentTimeMillis() + 1224000000)
@@ -117,8 +125,10 @@ public class Start {
 						.append("performCD", 0L)
 						.append("robCD", 0L)
 						.append("voteCD", 0L)
-						.append("hadDailyToday", true)
-						.append("hadGiftToday", false)
+						.append("dailyCD", 0L)
+						.append("giftCD", 0L)
+						.append("incomeCD", ((System.currentTimeMillis() / 3600000L) + 1L) * 3600000L)
+						.append("interestCD", ((System.currentTimeMillis() / 259200000L) + 1L) * 259200000L)
 
 						// Misc Upgrades
 						.append("efficiency", 0L)
@@ -207,7 +217,6 @@ public class Start {
 						.append("banned", ban)
 						.append("perms", 0L)
 						.append("medalToday", false)
-						.append("retainDaily", true)
 						.append("isBooster", false)
 						.append("serverLevel", 1.0)
 						.append("mcIGN", "")

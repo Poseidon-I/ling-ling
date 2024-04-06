@@ -15,21 +15,28 @@ public class Balance {
 			e.reply("This save file does not exist!");
 			return;
 		}
-		if(user.equals("768056391814086676")) {
-			user = "**NARWHAL**";
-		} else {
-			try {
-				user = data.get("discordName").toString();
-			} catch(Exception exception) {
-				user = "Someone";
+		if(user.equals(e.getAuthor().getId())) {
+			if(!data.get("discordName").toString().equals(e.getAuthor().getEffectiveName())) {
+				data.replace("discordName", e.getAuthor().getEffectiveName());
+				SaveData.saveData(e, data);
 			}
+		}
+		try {
+			user = data.get("discordName").toString();
+		} catch(Exception exception) {
+			user = "Someone";
 		}
 		EmbedBuilder builder = new EmbedBuilder()
 				.setColor(Color.decode((String) data.get("color")))
 				.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
 				.setTitle(user + "'s Profile");
-		builder.addField("General Stats", "Balance: `" + Numbers.formatNumber(data.get("violins")) + "`" + Emoji.VIOLINS + "\nBank Balance: `" + Numbers.formatNumber(data.get("bank")) + "/" + Numbers.formatNumber((long) data.get("storage") * 20000000) + "`" + Emoji.VIOLINS + "\nLing Ling Medals: `" + Numbers.formatNumber(data.get("medals")) + "`" + Emoji.MEDALS + "\nHourly Income: `" + Numbers.formatNumber(data.get("income")) + "`" + Emoji.VIOLINS + "/hour", false);
-		builder.addField("Medals", Emoji.FIRST_PLACE + "`" + Numbers.formatNumber(data.get("firstPlace")) + "`\n" + Emoji.SECOND_PLACE + "`" + Numbers.formatNumber(data.get("secondPlace")) + "`\n" + Emoji.THIRD_PLACE + "`" + Numbers.formatNumber(data.get("thirdPlace")) + "`", false);
+		builder.addField("General Stats", "Balance: `" + Numbers.formatNumber(data.get("violins")) + "`" + Emoji.VIOLINS +
+				"\nBank Balance: `" + Numbers.formatNumber(data.get("bank")) + "/" + Numbers.formatNumber(Numbers.maxBank(data)) + "`" + Emoji.VIOLINS +
+				"\nLing Ling Medals: `" + Numbers.formatNumber(data.get("medals")) + "`" + Emoji.MEDALS +
+				"\nHourly Income: `" + Numbers.formatNumber(data.get("income")) + "`" + Emoji.VIOLINS + "/hour", false);
+		builder.addField("Medals", Emoji.FIRST_PLACE + "`" + Numbers.formatNumber(data.get("firstPlace")) +
+				"`\n" + Emoji.SECOND_PLACE + "`" + Numbers.formatNumber(data.get("secondPlace")) +
+				"`\n" + Emoji.THIRD_PLACE + "`" + Numbers.formatNumber(data.get("thirdPlace")) + "`", false);
 		e.replyEmbeds(builder.build());
 	}
 }

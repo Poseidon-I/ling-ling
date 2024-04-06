@@ -14,7 +14,7 @@ public class Cooldowns {
 		}
 		return newString;
 	}
-	
+
 	public static String reformatMilliseconds(long string) {
 		String newString = String.valueOf(string);
 		if(String.valueOf(string).length() == 1) {
@@ -24,7 +24,7 @@ public class Cooldowns {
 		}
 		return newString;
 	}
-	
+
 	public static void cooldowns(GenericDiscordEvent e) {
 		try {
 			JSONObject data = LoadData.loadData(e);
@@ -51,7 +51,7 @@ public class Cooldowns {
 				milliseconds -= seconds * 1000;
 				builder.addField("**Rob**", "`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
 			}
-			
+
 			//scales
 			milliseconds = (long) data.get("scaleCD") - time;
 			if(milliseconds < 0) {
@@ -61,7 +61,7 @@ public class Cooldowns {
 				milliseconds -= seconds * 1000;
 				builder.addField("**Scales**", "`" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
 			}
-			
+
 			//practice
 			milliseconds = (long) data.get("practiceCD") - time;
 			if(milliseconds < 0) {
@@ -73,7 +73,7 @@ public class Cooldowns {
 				milliseconds -= seconds * 1000;
 				builder.addField("**Practice**", "`" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
 			}
-			
+
 			//teach
 			if((boolean) data.get("certificate")) {
 				milliseconds = (long) data.get("teachCD") - time;
@@ -89,7 +89,7 @@ public class Cooldowns {
 					builder.addField("**Teach**", "`" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
 				}
 			}
-			
+
 			//rehearse
 			if((boolean) data.get("orchestra")) {
 				milliseconds = (long) data.get("rehearseCD") - time;
@@ -105,7 +105,7 @@ public class Cooldowns {
 					builder.addField("**Rehearse**", "`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
 				}
 			}
-			
+
 			//perform
 			milliseconds = (long) data.get("performCD") - time;
 			if(milliseconds < 0) {
@@ -119,11 +119,12 @@ public class Cooldowns {
 				milliseconds -= seconds * 1000;
 				builder.addField("**Perform**", "`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
 			}
-			
+
 			//daily
-			if((boolean) data.get("hadDailyToday")) {
-				long temp = System.currentTimeMillis() % 86400000;
-				milliseconds = 86400000 - temp;
+			milliseconds = (long) data.get("dailyCD") - time;
+			if(milliseconds < 0) {
+				builder.addField("**Daily**", ":white_check_mark:", true);
+			} else {
 				hours = milliseconds / 3600000;
 				milliseconds -= hours * 3600000;
 				minutes = milliseconds / 60000;
@@ -131,14 +132,13 @@ public class Cooldowns {
 				seconds = milliseconds / 1000;
 				milliseconds -= seconds * 1000;
 				builder.addField("**Daily**", "`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
-			} else {
-				builder.addField("**Daily**", ":white_check_mark:", true);
 			}
-			
+
 			//gift
-			if((boolean) data.get("hadGiftToday")) {
-				long temp = System.currentTimeMillis() % 86400000;
-				milliseconds = 86400000 - temp;
+			milliseconds = (long) data.get("giftCD") - time;
+			if(milliseconds < 0) {
+				builder.addField("**Gift**", ":white_check_mark:", true);
+			} else {
 				hours = milliseconds / 3600000;
 				milliseconds -= hours * 3600000;
 				minutes = milliseconds / 60000;
@@ -146,10 +146,8 @@ public class Cooldowns {
 				seconds = milliseconds / 1000;
 				milliseconds -= seconds * 1000;
 				builder.addField("**Gift**", "`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
-			} else {
-				builder.addField("**Gift**", ":white_check_mark:", true);
 			}
-			
+
 			//claim
 			milliseconds = (long) data.get("voteCD") - time;
 			if(milliseconds < 0) {
@@ -163,7 +161,7 @@ public class Cooldowns {
 				milliseconds -= seconds * 1000;
 				builder.addField("**Claim**", "`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
 			}
-			
+
 			//income - rosin
 			milliseconds = (long) data.get("rosinExpire") - time;
 			if(milliseconds < 0) {
@@ -182,7 +180,7 @@ public class Cooldowns {
 				}
 			}
 			builder2.addBlankField(true);
-			
+
 			//income - strings
 			milliseconds = (long) data.get("stringsExpire") - time;
 			if(milliseconds < 0) {
@@ -200,7 +198,7 @@ public class Cooldowns {
 					builder2.addField("**Strings Income**", ":white_check_mark:\n`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
 				}
 			}
-			
+
 			//income - bow hairs
 			milliseconds = (long) data.get("bowHairExpire") - time;
 			if(milliseconds < 0) {
@@ -219,7 +217,7 @@ public class Cooldowns {
 				}
 			}
 			builder2.addBlankField(true);
-			
+
 			//income - service
 			milliseconds = (long) data.get("serviceExpire") - time;
 			if(milliseconds < 0) {
@@ -237,7 +235,7 @@ public class Cooldowns {
 					builder2.addField("**Violin Service Income**", ":white_check_mark:\n`" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`", true);
 				}
 			}
-			
+
 			builder.setTitle("__**Command Cooldowns**__");
 			builder2.setTitle("__**Time Before Hourly Income Penalty**__");
 			e.replyTwoEmbeds(builder.build(), builder2.build());

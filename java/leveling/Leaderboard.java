@@ -66,7 +66,9 @@ public class Leaderboard {
 			String id = entry[i].split(" ")[0];
 			JSONObject temp = DatabaseManager.getDataForUser(e, "Leveling Data", id);
 			assert temp != null;
-			board.append("**").append(i + 1).append("\\. ").append(Objects.requireNonNull(e.getGuild().getMemberById(id)).getNickname()).append("** `").append(id).append("`: Level `").append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[1]))).append("` - `").append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[2]))).append("` XP\n");
+			board.append("**").append(i + 1).append("\\. ").append(Objects.requireNonNull(e.getGuild().getMemberById(id)).getNickname())
+					.append("** `").append(id).append("`: Level `").append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[1])))
+					.append("` - `").append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[2]))).append("` XP\n");
 		}
 		if(place >= 11) {
 			board.append("\n**").append(place).append(". You**: Level `").append(userLevel).append("` - `").append(userXP).append("` XP");

@@ -39,7 +39,8 @@ public class ResetSave {
 				collection.deleteOne(eq("discordID", data.get("discordID")));
 				LogCase.logCase(e, "Save Reset", idToModerate, reason);
 				try {
-					Objects.requireNonNull(e.getJDA().getUserById(idToModerate)).openPrivateChannel().queue((channel) -> channel.sendMessage("Your save was reset.  Reason: " + reason + "\nContinuation of this action may result in a bot ban.").queue());
+					Objects.requireNonNull(e.getJDA().getUserById(idToModerate)).openPrivateChannel()
+							.queue((channel) -> channel.sendMessage("Your save was reset.  Reason: " + reason + "\nContinuation of this action may result in a bot ban.").queue());
 				} catch(Exception exception) {
 					// nothing here lol
 				}

@@ -37,14 +37,17 @@ public class Ban {
 			} catch(Exception exception) {
 				name = "Someone";
 			}
-			Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("734697505543159879")).sendMessage("""
-					:hammer: **THE BAN HAMMER HAS SPOKEN** :hammer:
-					            Someone has been banned.
-										
-					https://i.imgur.com/KTyk7EC.mp4""").queue();
+			Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("734697505543159879"))
+					.sendMessage("""
+							:hammer: **THE BAN HAMMER HAS SPOKEN** :hammer:
+							            Someone has been banned.
+												
+							https://i.imgur.com/KTyk7EC.mp4
+							""").queue();
 			LogCase.logCase(e, "BAN", idToModerate, reason);
 			try {
-				Objects.requireNonNull(e.getJDA().getUserById(idToModerate)).openPrivateChannel().queue((channel) -> channel.sendMessage("You were banned.  Reason: " + reason).queue());
+				Objects.requireNonNull(e.getJDA().getUserById(idToModerate)).openPrivateChannel()
+						.queue((channel) -> channel.sendMessage("You were banned.  Reason: " + reason).queue());
 			} catch(Exception exception) {
 				// nothing here lol
 			}
