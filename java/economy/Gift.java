@@ -44,6 +44,7 @@ public class Gift {
 			targetdata.replace("giftsReceived", (long) targetdata.get("giftsReceived") + 1);
 			targetdata.replace("giftBox", (long) targetdata.get("giftBox") + 1);
 			RNGesus.lootbox(e, data);
+			Achievement.calculateAchievement(e, data, "giftsGiven", "Generous");
 			SaveData.saveData(e, data);
 			DatabaseManager.saveDataForUser(e, "Economy Data", target, targetdata);
 			try {

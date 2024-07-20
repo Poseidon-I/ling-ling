@@ -27,6 +27,7 @@ public class GlobalStats {
 		long earnings = 0;
 		long interest = 0;
 		long penalties = 0;
+		long scaleStreak = 0;
 		ArrayList<Document> documents = DatabaseManager.getAllEconomyData();
 		for(Document file : documents) {
 			JSONParser parser = new JSONParser();
@@ -52,6 +53,7 @@ public class GlobalStats {
 			earnings += (long) data.get("earnings");
 			interest += (long) data.get("interestEarned");
 			penalties += (long) data.get("penaltiesIncurred");
+			scaleStreak = Math.max(scaleStreak, (long) data.get("scaleStreakRecord"));
 		}
 		EmbedBuilder builder = new EmbedBuilder()
 				.setColor(Color.BLUE)
@@ -69,6 +71,7 @@ public class GlobalStats {
 		builder.addField("**__Lootboxes__**", "**Gifts Given**: " + Numbers.formatNumber(giftsGiven) +
 				"\n**Number of Votes**: " + Numbers.formatNumber(votes), false);
 		builder.addField("**__Miscellaneous__**", "**Highest Daily Streak**: " + Numbers.formatNumber(maxStreak) +
+				"**Highest Scale Streak**: " + Numbers.formatNumber(scaleStreak) +
 				"\n**Luthiers Unscrambled**: " + Numbers.formatNumber(luthiers) +
 				"\n**Violins Earned**: " + Numbers.formatNumber(earnings) +
 				"\n**Interest Earned**: " + Numbers.formatNumber(interest) +

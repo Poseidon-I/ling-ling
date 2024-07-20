@@ -1,5 +1,6 @@
 package processes;
 
+import economy.Achievement;
 import economy.Emoji;
 import economy.RNGesus;
 import eventListeners.GenericDiscordEvent;
@@ -93,6 +94,7 @@ public class Luthier {
 					userData.replace("luthiers", (long) userData.get("luthiers") + 1);
 					e.reply("**" + name + "** unscrambled `" + target + "` and gained " + Numbers.formatNumber(gain) + Emoji.VIOLINS);
 					RNGesus.lootbox(e, userData);
+					Achievement.calculateAchievement(e, userData, "luthiers", "English Major");
 					DatabaseManager.saveDataByUser(e, "Economy Data", userData);
 					data.replace("hasWord", false);
 					data.replace("word", "blank");

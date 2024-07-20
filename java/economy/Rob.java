@@ -204,9 +204,10 @@ public class Rob {
 			targetdata.replace("violins", targetViolins);
 			targetdata.replace("lostToRob", targetLostToRob);
 			DatabaseManager.saveDataForUser(e, "Economy Data", user, targetdata);
-			RNGesus.lootbox(e, data);
 			data.replace("robCD", time + 57540000);
 			data.replace("robbed", (long) data.get("robbed") + baseRob);
+			RNGesus.lootbox(e, data);
+			Achievement.calculateAchievement(e, data, "robbed", "Heartless");
 			SaveData.saveData(e, data);
 			e.reply(message);
 		}

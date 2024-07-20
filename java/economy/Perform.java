@@ -169,6 +169,7 @@ public class Perform {
 			data.replace("earnings", violinsEarned + base);
 			data.replace("performances", (long) data.get("performances") + 1);
 			RNGesus.lootbox(e, data);
+			Achievement.calculateAchievement(e, data, "performances", "Virtuoso");
 			SaveData.saveData(e, data);
 		}
 	}

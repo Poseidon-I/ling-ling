@@ -84,6 +84,7 @@ public class Gamble {
 						}
 						data.replace("violins", violins);
 						data.replace("winnings", winnings);
+						Achievement.calculateAchievement(e, data, "earnings", "Gambling Addict");
 						SaveData.saveData(e, data);
 					}
 					case "slots" -> {
@@ -95,7 +96,7 @@ public class Gamble {
 								case 0 -> emojis[i] = ":trumpet:";
 								case 1 -> emojis[i] = "<:violin:1019787510295048272>";
 								case 2 -> emojis[i] = "<:lingling40hrs:688449820410773532>";
-								case 3 -> emojis[i] = "<:twoset:688452024009883669>";
+								case 3 -> emojis[i] = "<:twoset:852784233819013150>";
 								case 4 -> emojis[i] = "<:linglingclock:747499551451250730>";
 								case 5 -> emojis[i] = "<a:StradSpam:772894512154279945>";
 							}
@@ -133,6 +134,7 @@ public class Gamble {
 						e.replyEmbeds(builder.build());
 						data.replace("violins", violins);
 						data.replace("winnings", winnings);
+						Achievement.calculateAchievement(e, data, "earnings", "Gambling Addict");
 						SaveData.saveData(e, data);
 					}
 					case "scratch" -> {
@@ -228,6 +230,7 @@ public class Gamble {
 						}
 						data.replace("violins", violins);
 						data.replace("winnings", winnings);
+						Achievement.calculateAchievement(e, data, "earnings", "Gambling Addict");
 						SaveData.saveData(e, data);
 					}
 				}

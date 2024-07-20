@@ -128,6 +128,7 @@ public class Practise {
 				}
 			}
 			RNGesus.lootbox(e, data);
+			Achievement.calculateAchievement(e, data, "hoursPractised", "40 Hours A Day");
 			SaveData.saveData(e, data);
 		}
 	}

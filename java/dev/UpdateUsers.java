@@ -21,7 +21,7 @@ public class UpdateUsers {
 			e.reply("You have to give a name, can't just call it nothing, can you?");
 			return;
 		}
-		if(value.isEmpty()) {
+		if(value.isEmpty() && !dataType.equals("string")) {
 			e.reply("You have to give a default value, stupid.");
 			return;
 		}

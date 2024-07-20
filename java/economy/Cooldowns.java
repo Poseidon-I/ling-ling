@@ -25,6 +25,8 @@ public class Cooldowns {
 		return newString;
 	}
 
+	// TODO increase abstraction and decrease headaches by making a general method for creating a cooldown string
+
 	public static void cooldowns(GenericDiscordEvent e) {
 		try {
 			JSONObject data = LoadData.loadData(e);

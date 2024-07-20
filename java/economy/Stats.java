@@ -51,6 +51,7 @@ public class Stats {
 						"`\n**Taxes Paid**: `" + Numbers.formatNumber(data.get("taxPaid")) + "`", true)
 				.addBlankField(true)
 				.addField("**__Miscellaneous__**", "**Highest Daily Streak**: `" + Numbers.formatNumber(data.get("maxStreak")) +
+						"`\n**Highest Scale Streak**: `" + Numbers.formatNumber(data.get("scaleStreakRecord")) +
 						"`\n**Luthiers Unscrambled**: `" + Numbers.formatNumber(data.get("luthiers")) +
 						"`\n**Violins Earned**: `" + Numbers.formatNumber(data.get("earnings")) +
 						"`\n**Interest Earned**: `" + Numbers.formatNumber(data.get("interestEarned")) +

@@ -92,6 +92,7 @@ public class CheckGiveaways {
 				String send = ":tada: **GIVEAWAY for __" + item + "__** :tada:\n\nWinners: `" + winners + "`\nEnds in `" + minutes + "` Minutes" +
 						"\n\nReact to Enter! <@&734697425595531285> <@&750876814842527754>";
 				if(hasRequirement) {
+					//noinspection TextBlockMigration
 					send += "\n\n:warning: **This giveaway has a REQUIREMENT that can be found below.  " +
 							"Failure to complete this requirement will result in a warning and a blacklist from all giveaways and events for up to a week.**";
 				}
@@ -100,7 +101,7 @@ public class CheckGiveaways {
 				completeGiveaway(message, winners, item);
 			}
 		}
-		if(!e.getChannel().getId().equals("734697496688853012") && !e.getChannel().getId().equals("863135059712409632")) {
+		if(e.getMessage().getContentRaw().equals("beethoven forceupdategiveaways")) {
 			e.sendMessage("Done!");
 		}
 	}

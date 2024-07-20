@@ -25,12 +25,11 @@ public class Receiver extends ListenerAdapter {
 			UpdateLuthierChance.updateLuthierChance(e1, false);
 
 			ArrayList<Document> documents = DatabaseManager.getAllEconomyData();
-			if(e.getJDA().getSelfUser().getId().equals("733409243222507670")) {
+			if(e.getJDA().getSelfUser().getId().equals("846097308504293393")) {
 				int users = documents.size();
 				VoiceChannel channel = Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getVoiceChannelById("839877827838476289");
 				assert channel != null;
 				channel.getManager().setName(users + " Ling Ling Wannabes").queue();
-				Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("863135059712409632")).sendMessage("Daily cooldowns reset!").queue();
 			}
 		}
 		if(e.getChannel().getId().equals("734697521758339163")) {

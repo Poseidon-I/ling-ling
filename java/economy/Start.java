@@ -220,7 +220,12 @@ public class Start {
 						.append("isBooster", false)
 						.append("serverLevel", 1.0)
 						.append("mcIGN", "")
-						.append("discordName", discordName));
+						.append("discordName", discordName)
+						.append("achievements", "")
+						.append("scaleStreak", 0)
+						.append("scaleStreakRecord", 0)
+						.append("scaleStreakExpire", 0)
+						.append("goOutside", false));
 
 				if(!ban) {
 					e.reply("Your profile has been created!  Run `/help 3` for a list of economy commands!\nSupport server: https://discord.gg/gNfPwa8\nBeginner's Guide: <https://docs.google.com/document/d/1Oo8m8XuGsIOyMzJhllUN9SpOJI8hSUeQt5RbyPY9qMI/edit?usp=sharing>");

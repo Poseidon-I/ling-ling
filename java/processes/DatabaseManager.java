@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import static com.mongodb.client.model.Filters.eq;
 
+@SuppressWarnings("DuplicatedCode")
 public class DatabaseManager {
 
 	private static MongoDatabase database;

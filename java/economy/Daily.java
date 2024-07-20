@@ -48,6 +48,7 @@ public class Daily {
 			e.reply(message);
 			data.replace("streak", streak);
 			RNGesus.lootbox(e, data);
+			Achievement.calculateAchievement(e, data, "maxStreak", "Dedication");
 			SaveData.saveData(e, data);
 		}
 	}

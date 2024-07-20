@@ -109,7 +109,9 @@ public class Buy {
 						"You have 20 million storage for free; this can increased by buying more space using medals.");
 			}
 			RNGesus.lootbox(e, data);
+			Achievement.calculateAchievement(e, data, "income", "AFKer");
 			SaveData.saveData(e, data);
+
 		}
 	}
 	
@@ -128,8 +130,6 @@ public class Buy {
 			if(item.contains("magicFind")) {
 				data.replace("magicFind", (long) data.get("magicFind") + 1);
 			}
-			RNGesus.lootbox(e, data);
-			SaveData.saveData(e, data);
 			if(maxAmount == 2147483647) {
 				e.reply("Successfully purchased `" + item + " #" + itemCount + "` for `" + Numbers.formatNumber(cost) + "`" + currencyEmoji +
 						"\nYou have `" + Numbers.formatNumber(amount - cost) + "`" + currencyEmoji + " left.");
@@ -142,6 +142,9 @@ public class Buy {
 							"\nYou have `" + Numbers.formatNumber(amount - cost) + "`" + currencyEmoji + " left.");
 				}
 			}
+			RNGesus.lootbox(e, data);
+			Achievement.calculateAchievement(e, data, "income", "AFKer");
+			SaveData.saveData(e, data);
 		}
 	}
 	

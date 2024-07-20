@@ -6,13 +6,15 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.json.simple.JSONObject;
 
 public class StartBot {
-	public static final boolean BETA = false; // TODO UPDATE THIS BEFORE DOING BETAS OR FULL RELEASES
+	public static final boolean BETA = true; // TODO UPDATE THIS BEFORE DOING BETAS OR FULL RELEASES
 
 	public static void startBot() {
 		/* File file = new File("Ling Ling Bot Data\\loadedservers.txt");
@@ -70,7 +72,7 @@ public class StartBot {
 				.build();
 		jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
 		jda.getPresence().setActivity(Activity.customStatus("Practising violin 40 hours a day.  Sometimes practises 72 hours a day!"));
-		// jda.upsertCommand(Commands.slash("h", "Collect all pending hourly income!")).queue();
+		jda.upsertCommand(Commands.slash("h", "Collect all pending hourly income!")).queue();
 
 			OptionData optionData;
 			/*
@@ -162,7 +164,7 @@ public class StartBot {
 			jda.upsertCommand(
 					Commands.slash("stats", "View your stats.")
 							.addOption(OptionType.STRING, "otheruser", "Use this to view another user's stats.")
-			).queue();
+			).queue();*/
 			optionData = new OptionData(OptionType.STRING, "page", "Select the page to view.")
 					.addChoice("Raw Materials", "1")
 					.addChoice("Consumables", "2")
@@ -173,7 +175,7 @@ public class StartBot {
 							.addOptions(optionData)
 							.addOption(OptionType.STRING, "otheruser", "Use this to view another user's inventory.")
 			).queue();
-			data = new OptionData(OptionType.STRING, "action", "Choose whether to Buy, Sell, or view an item or your offers.")
+			/*data = new OptionData(OptionType.STRING, "action", "Choose whether to Buy, Sell, or view an item or your offers.")
 					.addChoice("Buy Items", "buy")
 					.addChoice("Sell Items", "sell")
 					.addChoice("View Item Prices", "view")

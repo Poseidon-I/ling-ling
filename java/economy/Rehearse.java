@@ -125,6 +125,7 @@ public class Rehearse {
 				}
 				data.replace("rehearsals", (long) data.get("rehearsals") + 1);
 				RNGesus.lootbox(e, data);
+				Achievement.calculateAchievement(e, data, "rehearsals", "Well-Practised");
 				SaveData.saveData(e, data);
 			}
 		} else {

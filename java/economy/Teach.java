@@ -36,6 +36,7 @@ public class Teach {
 				data.replace("earnings", (long) data.get("earnings") + base);
 				Numbers.calculateLoan(data, base);
 				RNGesus.lootbox(e, data);
+				Achievement.calculateAchievement(e, data, "hoursTaught", "Sensei");
 				SaveData.saveData(e, data);
 			}
 		} else {
