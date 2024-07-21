@@ -97,7 +97,6 @@ public class RNGesus {
 			message.append("https://imgur.com/a/SSjcgz3 " + Emoji.RNGESUS_BOX + " <@").append(e.getAuthor().getId()).append(">\nYou see an **__RNGESUS BOX__** appear in front of you! GG!");
 			sendLog(e, "RNGesus Box", true);
 		}
-		Achievement.calculateAchievement(e, data, "earnings", "Moneymaker");
 		Achievement.calculateAchievement(e, data, "RNGesusWeight", "Lucky");
 	}
 

@@ -267,8 +267,9 @@ public class StartBot {
 			).queue();
 		jda.upsertCommand(
 				Commands.slash("lb", "View a leaderboard!")
+						.addOption(OptionType.STRING, "leaderboard", "Select the leaderboard to view.")
 		).queue();
-		jda.upsertCommand(
+		/*jda.upsertCommand(
 				Commands.slash("a", "View your achievements!")
 						.addOption(OptionType.STRING, "page", "Select the page to view.")
 		).queue();
