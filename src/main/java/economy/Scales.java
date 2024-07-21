@@ -58,7 +58,8 @@ public class Scales {
 				data.replace("scaleStreak", streak);
 				if(streak > (long) data.get("scaleStreakRecord")) {
 					data.replace("scaleStreakRecord", streak);
-					message += "\n**NEW RECORD**";
+				} else if (streak == (long) data.get("scaleStreakRecord")) {
+					message += "\n**PERSONAL BEST**";
 				}
 				message += "\nYour Scale Streak is now `" + Numbers.formatNumber(data.get("scaleStreak")) + "`.  It will expire in `" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`";
 			}
