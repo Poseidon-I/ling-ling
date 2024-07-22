@@ -824,7 +824,7 @@ public class OldReceiver extends ListenerAdapter {
 			if(data != null) {
 				DatabaseManager.saveDataForUser(e1, "Economy Data", id, data);
 			}
-			Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().complete().sendMessage("Thank you for voting for Ling Ling!  You have received 1x Free Box!").queue();
+			Objects.requireNonNull(e.getJDA().getUserById(id)).openPrivateChannel().complete().sendMessage(messageToSend).queue();
 			return;
 		}
 
