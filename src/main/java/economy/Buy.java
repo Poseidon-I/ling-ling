@@ -169,7 +169,7 @@ public class Buy {
 				case "lessonCharge" ->
 						processUpgrade(3000000 * ((long) data.get("lessonCharge") + 1), 3000, 5, "violins");
 				case "students" ->
-						processUpgrade(Numbers.itemCost((long) data.get("students"), 2, 1000000), 2000, 2147483647, "violins");
+						processUpgrade(Numbers.itemCost((long) data.get("students"), 1.9, 1000000), 2000, 2147483647, "violins");
 				default -> boughtItem = false;
 			}
 		}
@@ -209,11 +209,11 @@ public class Buy {
 				case "soloist" ->
 						processUpgrade(250000 * ((long) data.get("soloist") + 1), 60, 4, "violins");
 				case "conductor" ->
-						processUpgrade(Numbers.itemCost((long) data.get("conductor"), 3, 100000), 500, 2147483647, "violins");
+						processUpgrade(Numbers.itemCost((long) data.get("conductor"), 2.8, 100000), 500, 2147483647, "violins");
 				case "advertising" ->
 						processUpgrade(100000 * ((long) data.get("advertising") + 1), 100, 20, "violins");
 				case "tickets" ->
-						processUpgrade(Numbers.itemCost((long) data.get("tickets"), 2, 1000000), 1000, 2147483647, "violins");
+						processUpgrade(Numbers.itemCost((long) data.get("tickets"), 1.9, 1000000), 1000, 2147483647, "violins");
 				case "moreInterest", "lessPenalty" -> processBooleanUpgrade(15, 0, "medals");
 				case "storage" -> processUpgrade(3 * (long) data.get("storage"), 0, 2147483647, "medals");
 				case "certificate" -> {
@@ -231,21 +231,21 @@ public class Buy {
 				case "insurance" -> processBooleanUpgrade(2500000, 0, "violins");
 				case "timeCrunch" -> processBooleanUpgrade(120000000, 0, "violins");
 				case "efficiency" ->
-						processUpgrade(Numbers.itemCost((long) data.get("efficiency"), 1.1, 400), 0, 2147483647, "violins");
+						processUpgrade(Numbers.itemCost((long) data.get("efficiency"), 1.09, 400), 0, 2147483647, "violins");
 				case "luck" ->
-						processUpgrade(Numbers.itemCost((long) data.get("luck"), 1.25, 1000), 0, 50, "violins");
+						processUpgrade(Numbers.itemCost((long) data.get("luck"), 1.22, 1000), 0, 50, "violins");
 				case "sophistication" ->
-						processUpgrade(Numbers.itemCost((long) data.get("sophistication"), 1.4, 5000), 0, 30, "violins");
+						processUpgrade(Numbers.itemCost((long) data.get("sophistication"), 1.35, 5000), 0, 30, "violins");
 				case "violinQuality" ->
-						processUpgrade(Numbers.itemCost((long) data.get("violinQuality"), 3, 1000), 600, 2147483647, "violins");
+						processUpgrade(Numbers.itemCost((long) data.get("violinQuality"), 2.8, 1000), 600, 2147483647, "violins");
 				case "skills" ->
-						processUpgrade(Numbers.itemCost((long) data.get("skills"), 2, 500), 250, 2147483647, "violins");
+						processUpgrade(Numbers.itemCost((long) data.get("skills"), 1.9, 500), 250, 2147483647, "violins");
 				case "lessonQuality" ->
-						processUpgrade(Numbers.itemCost((long) data.get("lessonQuality"), 2, 400), 200, 2147483647, "violins");
+						processUpgrade(Numbers.itemCost((long) data.get("lessonQuality"), 1.9, 400), 200, 2147483647, "violins");
 				case "stringQuality" ->
-						processUpgrade(Numbers.itemCost((long) data.get("stringQuality"), 1.5, 300), 150, 2147483647, "violins");
+						processUpgrade(Numbers.itemCost((long) data.get("stringQuality"), 1.45, 300), 150, 2147483647, "violins");
 				case "bowQuality" ->
-						processUpgrade(Numbers.itemCost((long) data.get("bowQuality"), 2.5, 600), 250, 2147483647, "violins");
+						processUpgrade(Numbers.itemCost((long) data.get("bowQuality"), 2.3, 600), 250, 2147483647, "violins");
 				case "math" -> processBooleanUpgrade(10000000, 6500, "violins");
 				case "moreIncome" ->
 						processUpgrade((long) data.get("moreIncome") + 1, 2000, 2147483647, "medals");
@@ -258,7 +258,7 @@ public class Buy {
 				case "shield" -> processBooleanUpgrade(10, 0, "medals");
 				case "duplicator" -> processBooleanUpgrade(15, 0, "medals");
 				case "magicFindViolins" ->
-						processUpgrade(Numbers.itemCost((long) data.get("magicFindViolins"), 4, 1000000), 0, 2147483647, "violins");
+						processUpgrade(Numbers.itemCost((long) data.get("magicFindViolins"), 3, 1000000), 0, 2147483647, "violins");
 				case "magicFindMedals" ->
 						processUpgrade((long) Math.pow(2, (long) data.get("magicFindMedals")), 0, 2147483647, "medals");
 				case "orchestra" -> {
@@ -270,9 +270,9 @@ public class Buy {
 				}
 				case "hall" -> {
 					if(!hasOrchestra) {
-						processUpgrade(Numbers.itemCost((long) data.get("hall"), 4, 100000), 300, 3, "violins");
+						processUpgrade(Numbers.itemCost((long) data.get("hall"), 3.5, 100000), 300, 3, "violins");
 					} else {
-						processUpgrade(Numbers.itemCost((long) data.get("hall"), 4, 100000), 300, 2147483647, "violins");
+						processUpgrade(Numbers.itemCost((long) data.get("hall"), 3.5, 100000), 300, 2147483647, "violins");
 					}
 				}
 				default -> e.reply("You can't buy something that's not for sale, that would be quite a waste of time and violins.");

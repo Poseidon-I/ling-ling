@@ -15,19 +15,19 @@ public class Upgrades {
 	public static void incomeUpgrades() {
 		builder.setTitle("__**Income Upgrades**__")
 				.addField("Violin Quality " + Numbers.formatNumber(data.get("violinQuality")),
-						"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("violinQuality"), 2, 1000)) + Emoji.VIOLINS +
+						"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("violinQuality"), 2.8, 1000)) + Emoji.VIOLINS +
 						"\nEffect: `+600`" + Emoji.VIOLINS + "/hour\nID: `quality` `violinquality` `q`", true)
 				.addField("Skill Level " + Numbers.formatNumber(data.get("skills")),
-						"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("skills"), 1.75, 500)) + Emoji.VIOLINS +
+						"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("skills"), 1.9, 500)) + Emoji.VIOLINS +
 						"\nEffect: `+250`" + Emoji.VIOLINS + "/hour\nID: `skills` `s`", true)
 				.addField("Lesson Quality " + Numbers.formatNumber(data.get("lessonQuality")),
-						"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("lessonQuality"), 1.75, 400)) + Emoji.VIOLINS +
+						"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("lessonQuality"), 1.9, 400)) + Emoji.VIOLINS +
 						"\nEffect: `+200`" + Emoji.VIOLINS + "/hour\nID: `lesson` `l` `lessonquality`", true)
 				.addField("String Quality " + Numbers.formatNumber(data.get("stringQuality")),
-						"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("stringQuality"), 1.4, 300)) + Emoji.VIOLINS +
+						"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("stringQuality"), 1.45, 300)) + Emoji.VIOLINS +
 						"\nEffect: `+150`" + Emoji.VIOLINS + "/hour\nID: `string` `str` `stringquality`", true)
 				.addField("Bow Quality " + Numbers.formatNumber(data.get("bowQuality")),
-						"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("bowQuality"), 1.9, 600)) + Emoji.VIOLINS +
+						"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("bowQuality"), 2.3, 600)) + Emoji.VIOLINS +
 								"\nEffect: `+250`" + Emoji.VIOLINS + "/hour\nID: `bow` `b` `bowquality`", true);
 		if((boolean) data.get("math")) {
 			builder.addField("Math Tutoring :white_check_mark:", "Effect: `+6 500`" + Emoji.VIOLINS + "/hour", true);
@@ -44,7 +44,7 @@ public class Upgrades {
 				builder.addField("Concert Hall Quality :white_check_mark:", "Effect: `+300`" + Emoji.VIOLINS + "/hour, `x1.125` command income", true);
 			} else {
 				builder.addField("Concert Hall Quality " + Numbers.formatNumber(data.get("hall")) + "/`3`",
-						"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("hall"), 3, 100000)) + Emoji.VIOLINS +
+						"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("hall"), 3.5, 100000)) + Emoji.VIOLINS +
 								"\nEffect: `+300`" + Emoji.VIOLINS + "/hour, `x1.125` command income\nID: `hall`", true);
 			}
 			builder.addField("Orchestra",
@@ -52,14 +52,14 @@ public class Upgrades {
 							"\nEffect: `+3 100`" + Emoji.VIOLINS + "/hour, access to `/rehearse` command\nID:`orchestra`", true);
 		} else {
 			builder.addField("Concert Hall Quality " + Numbers.formatNumber(data.get("hall")),
-							"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("hall"), 3, 100000)) + Emoji.VIOLINS +
+							"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("hall"), 3.5, 100000)) + Emoji.VIOLINS +
 									"\nEffect: `+300`" + Emoji.VIOLINS + "/hour, x1.125 command income\nID: `hall`", true)
 					.addBlankField(true)
 					.addField("Conductor Musicality " + Numbers.formatNumber(data.get("conductor")),
-							"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("conductor"), 3, 100000)) + Emoji.VIOLINS +
+							"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("conductor"), 2.8, 100000)) + Emoji.VIOLINS +
 									"\nEffect: `+200`" + Emoji.VIOLINS + "/hour\nID: `conductor`", true)
 					.addField("Ticket Price " + Numbers.formatNumber(data.get("tickets")),
-							"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("tickets"), 2, 1000000)) + Emoji.VIOLINS +
+							"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("tickets"), 1.9, 1000000)) + Emoji.VIOLINS +
 									"\nEffect: `+1000`" + Emoji.VIOLINS + "/hour\nID: `tickets`", true)
 					.addBlankField(true);
 			if((long) data.get("advertising") == 20) {
@@ -82,29 +82,29 @@ public class Upgrades {
 		builder.setTitle("__**Other Miscellaneous Upgrades**__");
 		if((long) data.get("efficiency") < 10) {
 			builder.addField("Efficient Practising " + Numbers.formatNumber(data.get("efficiency")),
-					"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("efficiency"), 1.08, 400)) + Emoji.VIOLINS +
+					"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("efficiency"), 1.09, 400)) + Emoji.VIOLINS +
 							"\nEffect: Multiplies your command income by `x1.1`\nID: `ep` `efficiency`", true);
 		} else if((long) data.get("efficiency") < 100) {
 			builder.addField("Efficient Practising " + Numbers.formatNumber(data.get("efficiency")),
-					"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("efficiency"), 1.08, 400)) + Emoji.VIOLINS +
+					"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("efficiency"), 1.09, 400)) + Emoji.VIOLINS +
 							"\nEffect: Multiplies your command income by `x1.05`\nID: `ep` `efficiency`", true);
 		} else {
 			builder.addField("Efficient Practising " + Numbers.formatNumber(data.get("efficiency")),
-					"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("efficiency"), 1.08, 400)) + Emoji.VIOLINS +
+					"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("efficiency"), 1.09, 400)) + Emoji.VIOLINS +
 							"\nEffect: Multiplies your command income by `x1.025`\nID: `ep` `efficiency`", true);
 		}
 		if((long) data.get("luck") == 50) {
 			builder.addField("Lucky Musician :white_check_mark:", "Effect: Increases your gambling multiplier by 0.5%", true);
 		} else {
 			builder.addField("Lucky Musician " + Numbers.formatNumber(data.get("luck")) + "/`50`",
-					"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("luck"), 1.2, 1000)) + Emoji.VIOLINS +
+					"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("luck"), 1.22, 1000)) + Emoji.VIOLINS +
 							"\nEffect: Increases your gambling multiplier by `0.5%`\nID: `lm` `luck`", true);
 		}
 		if((long) data.get("sophistication") == 30) {
 			builder.addField("Sophisticated Robbing :white_check_mark:", "Effect: Increases your chance of a successful `/rob` by `0.25%`", true);
 		} else {
 			builder.addField("Sophisticated Robbing " + Numbers.formatNumber(data.get("sophistication")) + "/`30`",
-					"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("sophistication"), 1.33, 5000)) + Emoji.VIOLINS +
+					"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("sophistication"), 1.35, 5000)) + Emoji.VIOLINS +
 							"\nEffect: Increases your chance of a successful `/rob` by `0.25%`\nID: `rob` `sr` `sophistication`", true);
 		}
 		builder.addField("Magic Find " + Numbers.formatNumber(data.get("magicFindViolins")),
@@ -365,7 +365,7 @@ public class Upgrades {
 		}
 		builder.setTitle("__**Teacher Upgrades**__")
 				.addField("More Students " + Numbers.formatNumber(data.get("students")),
-						"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("students"), 1.75, 1000000)) + Emoji.VIOLINS +
+						"Price: " + Numbers.formatNumber(Numbers.itemCost((long) data.get("students"), 1.9, 1000000)) + Emoji.VIOLINS +
 								"\nEffect: `+2 000`" + Emoji.VIOLINS + "/hour, `x1.15` violins from `/teach`\nID: `students`", true);
 		if((long) data.get("lessonCharge") == 5) {
 			builder.addField("Higher Lesson Rates :white_check_mark:", "Effect: `+3 000`" + Emoji.VIOLINS + "/hour, x1.1 violins from `/teach`", true);
