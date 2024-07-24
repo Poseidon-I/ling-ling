@@ -33,7 +33,7 @@ public class PayLoan {
 				amount = Math.min(amount, owed);
 				data.replace("loan", owed - amount);
 				data.replace("violins", violins - amount);
-				e.reply("You paid back `" + Numbers.formatNumber(amount) + "`" + Emoji.VIOLINS + ".  You now owe `" + Numbers.formatNumber(owed - amount) + "`" + Emoji.VIOLINS + ".");
+				e.reply("You paid back " + Numbers.formatNumber(amount) + Emoji.VIOLINS + ".  You now owe " + Numbers.formatNumber(owed - amount) + Emoji.VIOLINS + ".");
 				SaveData.saveData(e, data);
 			}
 		}

@@ -45,11 +45,11 @@ public class Leaderboard {
 				if(num > Long.parseLong(entry[i].split(" ")[1]) && !id.equals(e.getAuthor().getId())) {
 					System.arraycopy(entry, i, entry, i + 1, 9 - i);
 					entry[i] = id + " " + num;
-					if(num > userNum) {
-						place++;
-					}
 					break;
 				}
+			}
+			if(num > userNum) {
+				place++;
 			}
 		}
 		StringBuilder board = new StringBuilder();
@@ -57,12 +57,12 @@ public class Leaderboard {
 			String id = entry[i].split(" ")[0];
 			JSONObject temp = DatabaseManager.getDataForUser(e, "Economy Data", id);
 			assert temp != null;
-			board.append("**").append(i + 1).append("\\. ").append(temp.get("discordName")).append("** `").append(id).append("`: `")
-					.append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[1]))).append("` ").append(emoji).append("\n");
+			board.append("**").append(i + 1).append("\\. ").append(temp.get("discordName")).append("** `").append(id).append("`: ")
+					.append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[1]))).append(" ").append(emoji).append("\n");
 		}
 
 		if(place >= 11L) {
-			board.append("\n**").append(place).append("\\. You**: `").append(Numbers.formatNumber(userNum)).append("`").append(emoji);
+			board.append("\n**").append(place).append("\\. You**: ").append(Numbers.formatNumber(userNum)).append(emoji);
 		}
 		EmbedBuilder builder = new EmbedBuilder()
 				.setColor(Color.decode(color))

@@ -46,18 +46,17 @@ public class Leaderboard {
 				if(level > Long.parseLong(entry[i].split(" ")[1]) && !id.equals(e.getAuthor().getId())) {
 					System.arraycopy(entry, i, entry, i + 1, 9 - i);
 					entry[i] = id + " " + level + " " + xp;
-					if(level > userLevel) {
-						place++;
-					}
 					break;
 				} else if(level == Long.parseLong(entry[i].split(" ")[1]) && xp > Long.parseLong(entry[i].split(" ")[2]) && !id.equals(e.getAuthor().getId())) {
 					System.arraycopy(entry, i, entry, i + 1, 9 - i);
 					entry[i] = id + " " + level + " " + xp;
-					if(xp > userXP) {
-						place++;
-					}
 					break;
 				}
+			}
+			if(level > userLevel) {
+				place++;
+			} else if(level == userLevel && xp > userXP) {
+				place++;
 			}
 		}
 
@@ -67,8 +66,8 @@ public class Leaderboard {
 			JSONObject temp = DatabaseManager.getDataForUser(e, "Leveling Data", id);
 			assert temp != null;
 			board.append("**").append(i + 1).append("\\. ").append(Objects.requireNonNull(e.getGuild().getMemberById(id)).getNickname())
-					.append("** `").append(id).append("`: Level `").append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[1])))
-					.append("` - `").append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[2]))).append("` XP\n");
+					.append("** `").append(id).append("`: Level ").append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[1])))
+					.append(" - ").append(Numbers.formatNumber(Long.parseLong(entry[i].split(" ")[2]))).append(" XP\n");
 		}
 		if(place >= 11) {
 			board.append("\n**").append(place).append(". You**: Level `").append(userLevel).append("` - `").append(userXP).append("` XP");

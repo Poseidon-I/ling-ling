@@ -7,9 +7,6 @@ import processes.Numbers;
 
 import java.util.Random;
 
-import static economy.Cooldowns.reformat;
-import static economy.Cooldowns.reformatMilliseconds;
-
 public class Scales {
 
 
@@ -33,7 +30,7 @@ public class Scales {
 			} else {
 				data.replace("scaleCD", time + 89500);
 			}
-			String message = "You played your scales and earned `" + Numbers.formatNumber(base) + "`" + Emoji.VIOLINS + "\n";
+			String message = "You played your scales and earned " + Numbers.formatNumber(base) + Emoji.VIOLINS + "\n";
 			data.replace("scalesPlayed", (long) data.get("scalesPlayed") + 1);
 			data.replace("earnings", (long) data.get("earnings") + base);
 
@@ -43,17 +40,10 @@ public class Scales {
 				data.replace("scaleStreak", 1);
 				data.replace("scaleStreakExpire", time + 86460000);
 			} else if(time > streakExpires) {
-				message += "\nYour Scale Streak has expired!  You reached a streak of `" + Numbers.formatNumber(data.get("scaleStreak")) + "`.  The timer has reset and your streak now expires in `24:01:00.000`";
+				message += "\nYour Scale Streak has expired!  You reached a streak of " + Numbers.formatNumber(data.get("scaleStreak")) + ".  The timer has reset and your streak now expires in `24:01:00.000`";
 				data.replace("scaleStreak", 1);
 				data.replace("scaleStreakExpire", time + 86460000);
 			} else {
-				long milliseconds = streakExpires - time;
-				long hours = milliseconds / 3600000;
-				milliseconds -= hours * 3600000;
-				long minutes = milliseconds / 60000;
-				milliseconds -= minutes * 60000;
-				long seconds = milliseconds / 1000;
-				milliseconds -= seconds * 1000;
 				long streak = (long) data.get("scaleStreak") + 1;
 				data.replace("scaleStreak", streak);
 				if(streak > (long) data.get("scaleStreakRecord")) {
@@ -61,7 +51,7 @@ public class Scales {
 				} else if (streak == (long) data.get("scaleStreakRecord")) {
 					message += "\n**PERSONAL BEST**";
 				}
-				message += "\nYour Scale Streak is now `" + Numbers.formatNumber(data.get("scaleStreak")) + "`.  It will expire in `" + reformat(hours) + ":" + reformat(minutes) + ":" + reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`";
+				message += "\nYour Scale Streak is now " + Numbers.formatNumber(data.get("scaleStreak")) + ".  It will expire in " + Numbers.makeCooldownTime(streakExpires - time);
 			}
 			e.reply(message);
 			RNGesus.lootbox(e, data);

@@ -28,7 +28,7 @@ public class HourlyIncome {
 			if(time <= (long) data.get("serviceExpire")) {
 				howManyHours += 0.25;
 			}
-			if(time <= (long) data.get("interestCD")) {
+			if(time > (long) data.get("interestCD")) {
 				InterestPenalty.interestPenalty(data);
 				interestCD += 259200000;
 			}
@@ -65,13 +65,14 @@ public class HourlyIncome {
 		data.replace("violins", (long) data.get("violins") + net);
 		data.replace("loan", loan - loanPaid);
 		data.replace("incomeCD", lastIncome);
+		data.replace("interestCD", interestCD);
 		long originalIncome = originalHours * income;
-		e.reply("You collected `" + Numbers.formatNumber(originalHours) + "` hours of income!" +
-				"\n\nOriginal Income: `" + Numbers.formatNumber(originalIncome) + "`" + Emoji.VIOLINS +
-				"\nGross Income: `" + Numbers.formatNumber(gross) + "`" + Emoji.VIOLINS +
-				"\nIncome Lost to Inactive Items: `" + Numbers.formatNumber(originalIncome - gross) + "`" + Emoji.VIOLINS +
-				"\nLoans Paid: `" + Numbers.formatNumber(loanPaid) + "`" + Emoji.VIOLINS +
-				"\n\nNet Income: `" + Numbers.formatNumber(net) + "`" + Emoji.VIOLINS);
+		e.reply("You collected " + Numbers.formatNumber(originalHours) + " hours of income!" +
+				"\n\nOriginal Income: " + Numbers.formatNumber(originalIncome) + Emoji.VIOLINS +
+				"\nGross Income: " + Numbers.formatNumber(gross) + Emoji.VIOLINS +
+				"\nIncome Lost to Inactive Items: " + Numbers.formatNumber(originalIncome - gross) + Emoji.VIOLINS +
+				"\nLoans Paid: " + Numbers.formatNumber(loanPaid) + Emoji.VIOLINS +
+				"\n\nNet Income: " + Numbers.formatNumber(net) + Emoji.VIOLINS);
 		RNGesus.lootbox(e, data);
 		SaveData.saveData(e, data);
 	}

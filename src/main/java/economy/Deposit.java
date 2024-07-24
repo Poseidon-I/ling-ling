@@ -34,12 +34,12 @@ public class Deposit {
 			if(balance + amount > max) {
 				amount = max - balance;
 				balance = max;
-				e.reply("**MAX VIOLINS**\nYou deposited `" + Numbers.formatNumber(amount) + "`" + Emoji.VIOLINS + " into your bank.  You now have `" +
-						Numbers.formatNumber(balance) + "`" + Emoji.VIOLINS + " in your bank.");
+				e.reply("**MAX VIOLINS**\nYou deposited " + Numbers.formatNumber(amount) + Emoji.VIOLINS + " into your bank.  You now have " +
+						Numbers.formatNumber(balance) + Emoji.VIOLINS + " in your bank.");
 			} else {
 				balance += amount;
-				e.reply("You deposited `" + Numbers.formatNumber(amount) + "`" + Emoji.VIOLINS + " into your bank.  You now have `" +
-						Numbers.formatNumber(balance) + "`" + Emoji.VIOLINS + " in your bank.");
+				e.reply("You deposited " + Numbers.formatNumber(amount) + Emoji.VIOLINS + " into your bank.  You now have " +
+						Numbers.formatNumber(balance) + Emoji.VIOLINS + " in your bank.");
 			}
 			data.replace("violins", wallet - amount);
 			data.replace("bank", balance);

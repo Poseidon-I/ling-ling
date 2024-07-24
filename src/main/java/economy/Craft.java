@@ -7,9 +7,87 @@ import processes.DatabaseManager;
 import processes.Numbers;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Craft {
+	private static void craftItems(GenericDiscordEvent e, JSONObject data, String what, Map<String, Long> recipe, long craftAmount) {
+		for(String key : recipe.keySet()) {
+			long craftable = (long) data.get(key) / recipe.get(key);
+			if(craftable < craftAmount) {
+				craftAmount = craftable;
+			}
+		}
+
+		StringBuilder result;
+		if(craftAmount == 0) {
+			result = new StringBuilder("You did not have enough materials to craft any ").append(getEmoji(what)).append("  Check that you have enough Raw Materials...\n");
+			for(String key : recipe.keySet()) {
+				result.append("\n").append(Numbers.formatNumber(data.get(key))).deleteCharAt(result.length() - 1)
+						.append("/").append(recipe.get(key)).append("`");
+			}
+		} else {
+			result = new StringBuilder("You crafted ").append(Numbers.formatNumber(craftAmount)).append(getEmoji(what)).append(" for...\n");
+			for(String key : recipe.keySet()) {
+				data.replace(key, (long) data.get(key) - (recipe.get(key) * craftAmount));
+				result.append('\n').append(Numbers.formatNumber(recipe.get(key) * craftAmount)).append(getEmoji(what));
+			}
+			data.replace(what, (long) data.get(what) + craftAmount);
+		}
+		e.reply(result.toString());
+	}
+
+	private static String getEmoji(String key) {
+		switch(key) {
+			case "grains" -> {
+				return Emoji.GRAINS;
+			}
+			case "plastic" -> {
+				return Emoji.PLASTIC;
+			}
+			case "water" -> {
+				return Emoji.WATER;
+			}
+			case "teaBase" -> {
+				return Emoji.TEABAG;
+			}
+			case "wood" -> {
+				return Emoji.WOOD;
+			}
+			case "pineSap" -> {
+				return Emoji.SAP;
+			}
+			case "steel" -> {
+				return Emoji.STEEL;
+			}
+			case "horseHair" -> {
+				return Emoji.HORSE_HAIR;
+			}
+			case "rice" -> {
+				return Emoji.RICE;
+			}
+			case "tea" -> {
+				return Emoji.TEA;
+			}
+			case "rosin" -> {
+				return Emoji.ROSIN;
+			}
+			case "string" -> {
+				return Emoji.STRING;
+			}
+			case "bowHair" -> {
+				return Emoji.BOW_HAIR;
+			}
+			case "violinService" -> {
+				return Emoji.SERVICE;
+			}
+			default -> {
+				return "404 Error - Yell at the developer for being stupid.";
+			}
+		}
+	}
+
 	public static void craft(GenericDiscordEvent e, String temp, String item) {
 		JSONObject data = LoadData.loadData(e);
 		if(item.isEmpty()) {
@@ -61,187 +139,39 @@ public class Craft {
 		}
 		EmbedBuilder builder = new EmbedBuilder()
 				.setColor(Color.decode((String) data.get("color")));
+		Map<String, Long> recipe = new HashMap<>();
 		switch(item) {
 			case "rice" -> {
-				long grains = (long) data.get("grains");
-				long wood = (long) data.get("wood");
-				long water = (long) data.get("water");
-				long rice = (long) data.get("rice");
-				long i = 0;
-				for(; i < craftAmount; i++) {
-					if(grains < 20 || water < 10 || wood < 10) {
-						if(i == 0) {
-							e.reply("You were unable to craft any Rice!  Check that you have enough Raw Materials:" +
-									"\n" + Numbers.formatNumber(grains) + "/25`" + Emoji.GRAINS +
-									"\n`" + Numbers.formatNumber(wood) + "/10`" + Emoji.WOOD +
-									"\n`" + Numbers.formatNumber(water) + "/10`" + Emoji.WATER);
-							return;
-						}
-						break;
-					}
-					grains -= 20;
-					water -= 10;
-					wood -= 10;
-					rice++;
-				}
-				data.replace("grains", grains);
-				data.replace("wood", wood);
-				data.replace("water", water);
-				data.replace("rice", rice);
-				e.reply("You crafted `" + Numbers.formatNumber(i) + "`" + Emoji.RICE + " for `" +
-						Numbers.formatNumber(20 * i) + "`" + Emoji.GRAINS + ", `" +
-						Numbers.formatNumber(10 * i) + "`" + Emoji.WOOD + ", `" +
-						Numbers.formatNumber(10 * i) + "`" + Emoji.WATER);
+				recipe.put("grains", 20L);
+				recipe.put("wood", 10L);
+				recipe.put("water", 10L);
 			}
 			case "tea" -> {
-				long plastic = (long) data.get("plastic");
-				long teaBase = (long) data.get("teaBase");
-				long water = (long) data.get("water");
-				long tea = (long) data.get("tea");
-				long i = 0;
-				for(; i < craftAmount; i++) {
-					if(plastic < 10 || water < 20 || teaBase < 10) {
-						if(i == 0) {
-							e.reply("You were unable to craft any Tea!  Check that you have enough Raw Materials:" +
-									"\n" + Numbers.formatNumber(water) + "/20`" + Emoji.WATER +
-									"\n`" + Numbers.formatNumber(plastic) + "/10`" + Emoji.PLASTIC +
-									"\n`" + Numbers.formatNumber(teaBase) + "/10`" + Emoji.TEABAG);
-							return;
-						}
-						break;
-					}
-					water -= 20;
-					teaBase -= 10;
-					plastic -= 10;
-					tea++;
-				}
-				data.replace("plastic", plastic);
-				data.replace("teaBase", teaBase);
-				data.replace("water", water);
-				data.replace("tea", tea);
-				e.reply("You crafted `" + Numbers.formatNumber(i) + "`" + Emoji.TEA + " for `" +
-						Numbers.formatNumber(10 * i) + "`" + Emoji.TEABAG + ", `" +
-						Numbers.formatNumber(10 * i) + "`" + Emoji.PLASTIC + ", `" +
-						Numbers.formatNumber(20 * i) + "`" + Emoji.WATER);
+				recipe.put("plastic", 10L);
+				recipe.put("teaBase", 10L);
+				recipe.put("water", 20L);
 			}
 			case "rosin" -> {
-				long pineSap = (long) data.get("pineSap");
-				long rosin = (long) data.get("rosin");
-				long i = 0;
-				for(; i < craftAmount; i++) {
-					if(pineSap < 20) {
-						if(i == 0) {
-							e.reply("You were unable to craft any Rosin!  Check that you have enough Raw Materials:" +
-									"\n" + Numbers.formatNumber(pineSap) + "/20`" + Emoji.SAP);
-							return;
-						}
-						break;
-					}
-					pineSap -= 20;
-					rosin++;
-				}
-				data.replace("pineSap", pineSap);
-				data.replace("rosin", rosin);
-				e.reply("You crafted `" + Numbers.formatNumber(i) + "`" + Emoji.ROSIN + " for `" +
-						Numbers.formatNumber(20 * i) + "`" + Emoji.SAP);
+				recipe.put("pineSap", 20L);
 			}
-			case "strings" -> {
-				long steel = (long) data.get("steel");
-				long strings = (long) data.get("string");
-				long i = 0;
-				for(; i < craftAmount; i++) {
-					if(steel < 40) {
-						if(i == 0) {
-							e.reply("You were unable to craft any Strings!  Check that you have enough Raw Materials:" +
-									"\n" + Numbers.formatNumber(steel) + "/40`" + Emoji.STEEL);
-							return;
-						}
-						break;
-					}
-					steel -= 40;
-					strings++;
-				}
-				data.replace("steel", steel);
-				data.replace("string", strings);
-				e.reply("You crafted `" + Numbers.formatNumber(i) + "`" + Emoji.STRING + " for `" +
-						Numbers.formatNumber(40 * i) + "`" + Emoji.STEEL);
+			case "string" -> {
+				recipe.put("steel", 40L);
 			}
 			case "bowHair" -> {
-				long horseHairs = (long) data.get("horseHair");
-				long hairs = (long) data.get("bowHair");
-				long i = 0;
-				for(; i < craftAmount; i++) {
-					if(horseHairs < 60) {
-						if(i == 0) {
-							e.reply("You were unable to craft any Bow Hair!  Check that you have enough Raw Materials:" +
-									"\n" + Numbers.formatNumber(horseHairs) + "/60`" + Emoji.HORSE_HAIR);
-							return;
-						}
-						break;
-					}
-					horseHairs -= 60;
-					hairs++;
-				}
-				data.replace("horseHair", horseHairs);
-				data.replace("bowHair", hairs);
-				e.reply("You crafted `" + Numbers.formatNumber(i) + "`" + Emoji.BOW_HAIR + " for `" + Numbers.formatNumber(60 * i) + "`" + Emoji.HORSE_HAIR);
+				recipe.put("horseHair", 60L);
 			}
-			case "service" -> {
-				long grains = (long) data.get("grains");
-				long plastic = (long) data.get("plastic");
-				long water = (long) data.get("water");
-				long teaBase = (long) data.get("teaBase");
-				long wood = (long) data.get("wood");
-				long pineSap = (long) data.get("pineSap");
-				long steel = (long) data.get("steel");
-				long horseHairs = (long) data.get("horseHair");
-				long services = (long) data.get("violinService");
-				long i = 0;
-				for(; i < craftAmount; i++) {
-					if(grains < 20 || plastic < 20 || water < 20 || teaBase < 20 || wood < 80 || pineSap < 20 || steel < 20 || horseHairs < 20) {
-						if(i == 0) {
-							e.reply("You were unable to craft any Violin Service!  Check that you have enough Raw Materials:" +
-									"\n" + Numbers.formatNumber(wood) + "/80`" + Emoji.WOOD +
-									"\n`" + Numbers.formatNumber(grains) + "/20`" + Emoji.GRAINS +
-									"\n`" + Numbers.formatNumber(plastic) + "/20`" + Emoji.PLASTIC +
-									"\n`" + Numbers.formatNumber(water) + "/20`" + Emoji.WATER +
-									"\n`" + Numbers.formatNumber(teaBase) + "/20`" + Emoji.TEABAG +
-									"\n`" + Numbers.formatNumber(pineSap) + "/20`" + Emoji.SAP +
-									"\n`" + Numbers.formatNumber(steel) + "/20`" + Emoji.STEEL +
-									"\n`" + Numbers.formatNumber(horseHairs) + "/20`" + Emoji.HORSE_HAIR);
-							return;
-						}
-						break;
-					}
-					grains -= 20;
-					plastic -= 20;
-					water -= 20;
-					teaBase -= 20;
-					wood -= 80;
-					pineSap -= 20;
-					steel -= 20;
-					horseHairs -= 20;
-					services++;
-				}
-				data.replace("grains", grains);
-				data.replace("plastic", plastic);
-				data.replace("water", water);
-				data.replace("teaBase", teaBase);
-				data.replace("wood", wood);
-				data.replace("pineSap", pineSap);
-				data.replace("steel", steel);
-				data.replace("horseHair", horseHairs);
-				data.replace("violinService", services);
-				e.reply("You crafted `" + Numbers.formatNumber(i) + "`" + Emoji.SERVICE + " for `" +
-						Numbers.formatNumber(i * 20) + "`" + Emoji.GRAINS + ", `" +
-						Numbers.formatNumber(i * 20) + "`" + Emoji.PLASTIC + ", `" +
-						Numbers.formatNumber(i * 20) + "`" + Emoji.WATER + ", `" +
-						Numbers.formatNumber(i * 20) + "`" + Emoji.TEABAG + ", `" +
-						Numbers.formatNumber(i * 80) + "`" + Emoji.WOOD + ", `" +
-						Numbers.formatNumber(i * 20) + "`" + Emoji.SAP + ", `" +
-						Numbers.formatNumber(i * 20) + "`" + Emoji.STEEL + ", `" +
-						Numbers.formatNumber(i * 20) + "`" + Emoji.HORSE_HAIR);
+			case "violinService" -> {
+				recipe.put("grains", 20L);
+				recipe.put("plastic", 20L);
+				recipe.put("water", 20L);
+				recipe.put("teaBase", 20L);
+				recipe.put("wood", 80L);
+				recipe.put("pineSap", 20L);
+				recipe.put("steel", 20L);
+				recipe.put("horseHair", 20L);
 			}
+
+			// TODO finish refactoring when luthier is a consumable item
 			case "luthier" -> {
 				if(Objects.requireNonNull(e.getGuild()).getId().equals("670725611207262219")) {
 					e.reply("Strad find you trying to sneakily mess with the only buffed Luthier around.  " +
@@ -314,10 +244,14 @@ public class Craft {
 				Objects.requireNonNull(e.getGuild().getTextChannelById((String) luthierData.get("channel")))
 						.sendMessage("**:tada: <@" + e.getAuthor().getId() + "> just buffed this server's luthier by `" + i + "`x!  New Multiplier: `" + multiplier + "x`** :tada:");
 				DatabaseManager.saveDataByGuild(e, "Luthier Data", luthierData);
+				return;
 			}
-			default ->
-					e.reply("This crafting recipe does not exist!  Run `/craft` with no arguments to see all recipes.");
+			default -> {
+				e.reply("This crafting recipe does not exist!  Run `/craft` with no arguments to see all recipes.");
+				return;
+			}
 		}
+		craftItems(e, data, item, recipe, craftAmount);
 		SaveData.saveData(e, data);
 	}
 }

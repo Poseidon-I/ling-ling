@@ -26,10 +26,10 @@ public class Teach {
 				base = (long) (base * Math.pow(1.05, (long) data.get("training")));
 				if((boolean) data.get("longerLessons")) {
 					base *= 2;
-					e.reply("You taught a student for an hour and earned `" + Numbers.formatNumber(base) + "`" + Emoji.VIOLINS);
+					e.reply("You taught a student for an hour and earned " + Numbers.formatNumber(base) + Emoji.VIOLINS);
 					data.replace("hoursTaught", (double) data.get("hoursTaught") + 1);
 				} else {
-					e.reply("You taught a student for a half-hour and earned `" + Numbers.formatNumber(base) + "`" + Emoji.VIOLINS);
+					e.reply("You taught a student for a half-hour and earned " + Numbers.formatNumber(base) + Emoji.VIOLINS);
 					data.replace("hoursTaught", (double) data.get("hoursTaught") + 0.5);
 				}
 				data.replace("teachCD", time + 3540000);

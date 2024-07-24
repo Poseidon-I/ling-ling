@@ -12,7 +12,7 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 // BEETHOVEN-ONLY CLASS
 public class TimeOut {
 	public static void timeOut(GenericDiscordEvent e) {
-		MessageEmbed embed = e.getMessage().getEmbeds().get(0);
+		MessageEmbed embed = e.getMessage().getEmbeds().getFirst();
 		if(Objects.requireNonNull(embed.getTitle()).contains("unmute | case")) {
 			String[] string = Objects.requireNonNull(embed.getDescription()).split("\n");
 			User user = e.getJDA().getUserById(string[0].substring(string[0].lastIndexOf('@') + 1, string[0].lastIndexOf('>')));

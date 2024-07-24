@@ -9,7 +9,7 @@ public class Loan {
 		JSONObject data = LoadData.loadData(e);
 		long balance = (long) data.get("loan");
 		if(balance > 0) {
-			e.reply("You still have an outstanding balance of `" + Numbers.formatNumber(balance) + "`" + Emoji.VIOLINS + "!");
+			e.reply("You still have an outstanding balance of " + Numbers.formatNumber(balance) + Emoji.VIOLINS + "!\n\nIf you would like to repay in full or a portion, use `payloan`");
 		} else {
 			long loan;
 			if(amount.isEmpty()) {
@@ -32,8 +32,8 @@ public class Loan {
 			}
 			data.replace("loan", loan);
 			data.replace("violins", (long) data.get("violins") + loan);
-			e.reply("You have borrowed `" + Numbers.formatNumber(loan) + "`" + Emoji.VIOLINS + " from the bank.  " +
-					"Most actions will result in a portion being used to pay back the loan.  You can also manually contribute by using `/payloan`.");
+			e.reply("You have borrowed " + Numbers.formatNumber(loan) + Emoji.VIOLINS + " from the Bank.  " +
+					"Most actions will result in a portion being used to pay back the loan.  You can also manually contribute by using `payloan`.");
 			SaveData.saveData(e, data);
 		}
 	}

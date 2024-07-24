@@ -30,13 +30,13 @@ public class Balance {
 				.setColor(Color.decode((String) data.get("color")))
 				.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
 				.setTitle(user + "'s Profile");
-		builder.addField("General Stats", "Balance: `" + Numbers.formatNumber(data.get("violins")) + "`" + Emoji.VIOLINS +
-				"\nBank Balance: `" + Numbers.formatNumber(data.get("bank")) + "/" + Numbers.formatNumber(Numbers.maxBank(data)) + "`" + Emoji.VIOLINS +
-				"\nLing Ling Medals: `" + Numbers.formatNumber(data.get("medals")) + "`" + Emoji.MEDALS +
-				"\nHourly Income: `" + Numbers.formatNumber(data.get("income")) + "`" + Emoji.VIOLINS + "/hour", false);
-		builder.addField("Medals", Emoji.FIRST_PLACE + "`" + Numbers.formatNumber(data.get("firstPlace")) +
-				"`\n" + Emoji.SECOND_PLACE + "`" + Numbers.formatNumber(data.get("secondPlace")) +
-				"`\n" + Emoji.THIRD_PLACE + "`" + Numbers.formatNumber(data.get("thirdPlace")) + "`", false);
+		builder.addField("General Stats", "Balance: " + Numbers.formatNumber(data.get("violins")) + Emoji.VIOLINS +
+				"\nBank Balance: " + Numbers.formatNumber(data.get("bank")) + "/" + Numbers.formatNumber(Numbers.maxBank(data)) + Emoji.VIOLINS +
+				"\nLing Ling Medals: " + Numbers.formatNumber(data.get("medals")) + Emoji.MEDALS +
+				"\nHourly Income: " + Numbers.formatNumber(data.get("income")) + Emoji.VIOLINS + "/hour", false);
+		builder.addField("Medals", Emoji.FIRST_PLACE + Numbers.formatNumber(data.get("firstPlace")) +
+				"\n" + Emoji.SECOND_PLACE + Numbers.formatNumber(data.get("secondPlace")) +
+				"\n" + Emoji.THIRD_PLACE + Numbers.formatNumber(data.get("thirdPlace")), false);
 		e.replyEmbeds(builder.build());
 	}
 }

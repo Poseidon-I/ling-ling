@@ -16,7 +16,7 @@ public class Numbers {
 			return 0.001;
 		}
 	}
-	
+
 	public static String formatNumber(Object number) {
 		long tempNum = (long) number;
 		String num = String.valueOf(tempNum);
@@ -31,9 +31,12 @@ public class Numbers {
 				temp++;
 			}
 		}
-		return result.toString();
+		if(result.charAt(0) == '-' && result.charAt(1) == ' ') {
+			result.deleteCharAt(1);
+		}
+		return "`" + result + "`";
 	}
-	
+
 	public static long calculateAmount(JSONObject data, long base) {
 		long efficiency = (long) data.get("efficiency");
 		if(efficiency < 10) {
@@ -52,30 +55,15 @@ public class Numbers {
 		}
 		return base;
 	}
-	
+
 	public static long itemCost(long level, double power, long base) {
-		long cost = (long) (base * Math.pow(power, level));
-		if(cost <= 100000000) {
-			return cost;
-		} else if(cost <= 210000000) {
-			return (long) (cost * 0.9 + 10000000);
-		} else if(cost <= 330000000) {
-			return (long) (cost * 0.8 + 31000000);
-		} else if(cost <= 470000000) {
-			return (long) (cost * 0.75 + 47500000);
-		} else if(cost <= 610000000) {
-			return (long) (cost * 0.7 + 71000000);
-		} else if(cost <= 780000000) {
-			return (long) (cost * 0.6 + 132000000);
-		} else {
-			return (long) (cost * 0.5 + 210000000);
-		}
+		return (long) (base * Math.pow(power, level));
 	}
 
 	public static long maxLoan(JSONObject data) {
 		return (long) Math.pow(100, Math.log10((long) data.get("income")) - 1);
 	}
-	
+
 	public static void calculateLoan(JSONObject data, long earned) {
 		long loan = (long) data.get("loan");
 		long violins = (long) data.get("violins");
@@ -102,12 +90,49 @@ public class Numbers {
 		data.replace("violins", violins);
 		data.replace("loan", loan);
 	}
-	
+
 	public static boolean containsBadLanguage(String input) {
 		return input.contains("@everyone") || input.contains("@here") || input.contains("<@&") || input.contains("nigg") || input.contains("nibba") || input.contains("cunt") || input.contains("chink");
 	}
 
 	public static long maxBank(JSONObject data) {
 		return 20000000 * (long) data.get("storage") + 1000000 * (long) data.get("benevolentBankers");
+	}
+
+	public static String makeCooldownTime(long milliseconds) {
+		long hours = milliseconds / 3600000;
+		milliseconds -= hours * 3600000;
+		long minutes = milliseconds / 60000;
+		milliseconds -= minutes * 60000;
+		long seconds = milliseconds / 1000;
+		milliseconds -= seconds * 1000;
+
+		String answer = "`";
+		if(hours > 0) {
+			answer += reformat(hours) + ":";
+		}
+		if(minutes > 0) {
+			answer += reformat(minutes) + ":";
+		}
+		answer += reformat(seconds) + "." + reformatMilliseconds(milliseconds) + "`";
+		return answer;
+	}
+
+	public static String reformat(long string) {
+		String newString = String.valueOf(string);
+		if(String.valueOf(string).length() == 1) {
+			newString = "0" + string;
+		}
+		return newString;
+	}
+
+	public static String reformatMilliseconds(long string) {
+		String newString = String.valueOf(string);
+		if(String.valueOf(string).length() == 1) {
+			newString = "00" + string;
+		} else if(String.valueOf(string).length() == 2) {
+			newString = "0" + string;
+		}
+		return newString;
 	}
 }
