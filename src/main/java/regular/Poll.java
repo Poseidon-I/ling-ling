@@ -32,7 +32,7 @@ public class Poll {
 			currentChar ++;
 		}
 
-		send.append("\nPoll created by ").append(e.getAuthor().getGlobalName());
+		send.append("\nPoll created by ").append(e.getAuthor().getEffectiveName());
 		Message message = e.getChannel().sendMessage(send.toString()).complete();
 		int hex = 127462;
 		for(int j = 0; j < splitChoices.length; j++) {

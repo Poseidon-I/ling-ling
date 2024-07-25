@@ -145,6 +145,8 @@ public class Cooldowns {
 				}
 			}
 
+			builder2.addField("Hourly", "Reminder to run `h` to claim your hourly income!\nMake sure the above four are checked to avoid losing income.", false);
+
 			builder.setTitle("__**Command Cooldowns**__");
 			builder2.setTitle("__**Time Before Hourly Income Penalty**__");
 			e.replyTwoEmbeds(builder.build(), builder2.build());

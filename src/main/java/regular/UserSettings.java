@@ -32,7 +32,7 @@ public class UserSettings {
 			EmbedBuilder builder = new EmbedBuilder()
 					.setColor(Color.decode((String) data.get("color")))
 					.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
-					.setTitle("**__Settings for " + e.getAuthor().getGlobalName() + "__**")
+					.setTitle("**__Settings for " + e.getAuthor().getEffectiveName() + "__**")
 					.addField("Color", "Sets the embed color for your commands.  Does not apply to `/help` for technical reasons." +
 							"\nCurrent option: `" + data.get("color") + "`\nID: `color`", false)
 					.addField("DMs", "Toggles whether DMs are sent for Rob, Gift, and Market." +

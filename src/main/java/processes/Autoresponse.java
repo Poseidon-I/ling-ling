@@ -36,7 +36,7 @@ public class Autoresponse {
             } else if(fullMessage.contains("pls beg")) {
                 e.sendMessage("oh look at <@" + e.getAuthor().getId() + "> begging for coins");
             } else if(fullMessage.contains("pls settings passive true")) {
-                e.sendMessage("hey everyone come here and look at " + e.getAuthor().getGlobalName() + " being such a wimp");
+                e.sendMessage("hey everyone come here and look at " + e.getAuthor().getEffectiveName() + " being such a wimp");
             } else if(array2.contains("ritard")) {
                 e.sendMessage("Unless you are referring to the musical term \"ritardando\" then you are in danger");
             } else if(fullMessage.contains("ben lee")) {

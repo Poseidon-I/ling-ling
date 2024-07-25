@@ -199,20 +199,20 @@ public class StartBot {
 							.addOption(OptionType.INTEGER, "amount", "Pick the amount you want to Buy or Sell.")
 							.addOption(OptionType.INTEGER, "price", "Pick the price you want to Sell your items at.")
 			).queue();
-			data = new OptionData(OptionType.STRING, "item", "Choose the item you want to craft.")
+			optionData = new OptionData(OptionType.STRING, "item", "Choose the item you want to craft.")
 					.addChoice("Rice", "rice")
 					.addChoice("Bubble Tea", "tea")
 					.addChoice("Rosin", "rosin")
-					.addChoice("New Strings", "strings")
+					.addChoice("New Strings", "string")
 					.addChoice("Bow Hair", "bowHair")
-					.addChoice("Violin Service", "service")
+					.addChoice("Violin Service", "violinService")
 					.addChoice("1x Luthier", "luthier");
 			jda.upsertCommand(
 					Commands.slash("craft", "Craft items!")
-							.addOptions(data)
+							.addOptions(optionData)
 							.addOption(OptionType.STRING, "amount", "How much do you want to craft?")
 			).queue();
-			jda.upsertCommand(
+			/*jda.upsertCommand(
 					Commands.slash("link", "Link your Minecraft acccount!  SEE /rules FOR POLICIES REGARDING MINECRAFT LINKING.")
 							.addOption(OptionType.STRING, "ign", "Put in your Minecraft IGN!")
 			).queue();

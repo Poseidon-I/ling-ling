@@ -12,7 +12,7 @@ public class LoadData {
 			throw new IllegalArgumentException();
 		}
 		if(data.get("discordName").toString().isEmpty()) {
-			data.replace("discordName", e.getAuthor().getGlobalName());
+			data.replace("discordName", e.getAuthor().getEffectiveName());
 		}
 		if((boolean) data.get("banned")) {
 			e.reply("You are banned from using the economy!");

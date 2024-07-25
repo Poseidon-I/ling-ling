@@ -49,7 +49,7 @@ public class Emojify {
 				return;
 			}
 		}
-		send.append("\n`").append(e.getAuthor().getGlobalName()).append("`");
+		send.append("\n`").append(e.getAuthor().getEffectiveName()).append("`");
 		try {
 			e.reply("Done!");
 			e.getChannel().sendMessage(send.toString()).queue();

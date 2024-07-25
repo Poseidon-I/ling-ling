@@ -31,7 +31,7 @@ public class Craft {
 			result = new StringBuilder("You crafted ").append(Numbers.formatNumber(craftAmount)).append(getEmoji(what)).append(" for...\n");
 			for(String key : recipe.keySet()) {
 				data.replace(key, (long) data.get(key) - (recipe.get(key) * craftAmount));
-				result.append('\n').append(Numbers.formatNumber(recipe.get(key) * craftAmount)).append(getEmoji(what));
+				result.append('\n').append(Numbers.formatNumber(recipe.get(key) * craftAmount)).append(getEmoji(key));
 			}
 			data.replace(what, (long) data.get(what) + craftAmount);
 		}
@@ -94,14 +94,19 @@ public class Craft {
 			EmbedBuilder builder = new EmbedBuilder().setTitle("**All Crafting Recipes**")
 					.addField("**Rice** " + Emoji.RICE, "`" + data.get("grains") + "/20`" + Emoji.GRAINS +
 							"\n`" + data.get("wood") + "/10`" + Emoji.WOOD +
-							"\n`" + data.get("water") + "/10`" + Emoji.WATER, true)
+							"\n`" + data.get("water") + "/10`" + Emoji.WATER +
+							"\nID: `rice`", true)
 					.addField("**Bubble Tea** " + Emoji.TEA, "`" + data.get("plastic") + "/10`" + Emoji.PLASTIC +
 							"\n`" + data.get("teaBase") + "/10`" + Emoji.TEABAG +
-							"\n`" + data.get("water") + "/20`" + Emoji.WATER, true)
-					.addField("**Rosin** " + Emoji.ROSIN, "`" + data.get("pineSap") + "/20`" + Emoji.SAP, true)
-					.addField("**New Strings** " + Emoji.STRING, "`" + data.get("steel") + "/40`" + Emoji.STEEL, true)
+							"\n`" + data.get("water") + "/20`" + Emoji.WATER +
+							"\nID: `tea`", true)
+					.addField("**Rosin** " + Emoji.ROSIN, "`" + data.get("pineSap") + "/20`" + Emoji.SAP +
+							"\nID: `rosin`", true)
+					.addField("**New Strings** " + Emoji.STRING, "`" + data.get("steel") + "/40`" + Emoji.STEEL +
+							"\nID: `string`", true)
 					.addBlankField(true)
-					.addField("**Bow Hair** " + Emoji.BOW_HAIR, "`" + data.get("horseHair") + "/60`" + Emoji.HORSE_HAIR, true)
+					.addField("**Bow Hair** " + Emoji.BOW_HAIR, "`" + data.get("horseHair") + "/60`" + Emoji.HORSE_HAIR +
+							"\nID: `bowHair`", true)
 					.addField("**Violin Service** " + Emoji.SERVICE, "`" + data.get("grains") + "/20`" + Emoji.GRAINS +
 							"\n`" + data.get("plastic") + "/20`" + Emoji.PLASTIC +
 							"\n`" + data.get("water") + "/20`" + Emoji.WATER +
@@ -109,7 +114,8 @@ public class Craft {
 							"\n`" + data.get("wood") + "/80`" + Emoji.WOOD +
 							"\n`" + data.get("pineSap") + "/20`" + Emoji.SAP +
 							"\n`" + data.get("steel") + "/20`" + Emoji.STEEL +
-							"\n`" + data.get("horseHair") + "/20`" + Emoji.HORSE_HAIR, true)
+							"\n`" + data.get("horseHair") + "/20`" + Emoji.HORSE_HAIR +
+							"\nID: `violinService`", true)
 					.addBlankField(true)
 					.addField("**1x Luthier** " + Emoji.SERVICE, "`" + data.get("grains") + "/250`" + Emoji.GRAINS +
 							"\n`" + data.get("plastic") + "/250`" + Emoji.PLASTIC +
@@ -118,7 +124,8 @@ public class Craft {
 							"\n`" + data.get("wood") + "/250`" + Emoji.WOOD +
 							"\n`" + data.get("pineSap") + "/250`" + Emoji.SAP +
 							"\n`" + data.get("steel") + "/250`" + Emoji.STEEL +
-							"\n`" + data.get("horseHair") + "/250`" + Emoji.HORSE_HAIR, true);
+							"\n`" + data.get("horseHair") + "/250`" + Emoji.HORSE_HAIR +
+							"\nID: `luthier`", true);
 			e.replyEmbeds(builder.build());
 			return;
 		}
@@ -157,10 +164,12 @@ public class Craft {
 			case "string" -> {
 				recipe.put("steel", 40L);
 			}
-			case "bowHair" -> {
+			case "bowhair", "bowHair" -> {
+				item = "bowHair";
 				recipe.put("horseHair", 60L);
 			}
-			case "violinService" -> {
+			case "violinservice", "violinService" -> {
+				item = "violinService";
 				recipe.put("grains", 20L);
 				recipe.put("plastic", 20L);
 				recipe.put("water", 20L);

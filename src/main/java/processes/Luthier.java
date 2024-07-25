@@ -84,8 +84,7 @@ public class Luthier {
 						e.reply("You don't even have a profile, where would you store your violins???  Run `/start` **in a bot command channel** to get one!");
 						return;
 					}
-					String name = e.getAuthor().getGlobalName();
-					assert name != null;
+					String name = e.getAuthor().getEffectiveName();
 					if(name.contains("@everyone") || name.contains("@here") || name.contains("<@&") || name.contains("nigg")) {
 						name = "A user who thought they were trying to be funny";
 					}
