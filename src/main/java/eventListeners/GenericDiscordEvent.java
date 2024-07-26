@@ -10,12 +10,12 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class GenericDiscordEvent {
-	User author;
-	Message message;
-	MessageChannel channel;
-	JDA jda;
-	Guild guild;
-	SlashCommandInteractionEvent slashEvent = null;
+	private final User author;
+	private Message message;
+	private final MessageChannel channel;
+	private final JDA jda;
+	private final Guild guild;
+	private SlashCommandInteractionEvent slashEvent = null;
 
 	public GenericDiscordEvent(SlashCommandInteractionEvent e) {
 		this.author = e.getUser();
@@ -60,6 +60,14 @@ public class GenericDiscordEvent {
 	public void reply(String message) {
 		if(isSlashCommand()) {
 			this.slashEvent.reply(message).queue();
+		} else {
+			this.message.reply(message).mentionRepliedUser(false).queue();
+		}
+	}
+
+	public void replyPrivate(String message) {
+		if(isSlashCommand()) {
+			this.slashEvent.reply(message).setEphemeral(true).queue();
 		} else {
 			this.message.reply(message).mentionRepliedUser(false).queue();
 		}

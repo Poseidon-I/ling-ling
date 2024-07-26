@@ -39,13 +39,13 @@ public class Luthier {
 					String original = word;
 					long money = 0;
 					for(int i = 0; i < word.length(); i++) {
-						money += random.nextInt(100) + 101;
+						money += random.nextInt(200) + 901;
 					}
 					money *= (long) data.get("multiplier");
 					char[] scrambler = new char[word.length()];
 					int i = 0;
 					StringBuilder send = new StringBuilder().append(original);
-					while(send.toString().equals(original)) {
+					while(send.toString().equals(original) || Numbers.containsBadLanguage(send.toString())) {
 						while(!word.isEmpty()) {
 							int num = random.nextInt(word.length());
 							StringBuilder newWord = new StringBuilder();
@@ -102,7 +102,8 @@ public class Luthier {
 					try {
 						e.getMessage().addReaction(net.dv8tion.jda.api.entities.emoji.Emoji.fromUnicode("U+274C")).queue();
 					} catch(Exception exception) {
-						e.reply("Wrong answer!");
+						e.replyPrivate("Wrong answer!");
+						e.getChannel().sendMessage("**" + e.getAuthor().getEffectiveName() + "**: " + answer).complete().addReaction(net.dv8tion.jda.api.entities.emoji.Emoji.fromUnicode("U+274C")).queue();
 					}
 				}
 			}
