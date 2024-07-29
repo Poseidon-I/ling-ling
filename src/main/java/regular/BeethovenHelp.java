@@ -92,7 +92,10 @@ public class BeethovenHelp {
 						Syntax: `beethoven requestgiveaway <message>`
 						Usage: Request to host a giveaway!  Make sure you include how much you want to give away, how long your giveaway should be, and how many winners there are.
 						Example: `beethoven requestgiveaway 1 million violins, 24 hours, 1 winner`""", false);
-                default -> builder.addField("Command Doesn't Exist!", "`beethoven " + message[2] + "` doesn't exist you idiot.", false);
+				case "updatehypixel" -> builder.addField("UpdateHypixel Command", """
+						Syntax: `beethoven updatehypixel`
+						Usage: Forcibly updates the guild roles for all members.""", false);
+				default -> builder.addField("Command Doesn't Exist!", "`beethoven " + message[2] + "` doesn't exist you idiot.", false);
             }
         } catch(Exception exception) {
             builder.addField("**Commands**", """
@@ -104,6 +107,7 @@ public class BeethovenHelp {
 					`pingdeadchat` `checkdm`
 					`annoy` `forcerestartlingling`
 					`requestgiveaway`
+					`updatehypixel`
 
 					**__Leveling Commands__**
 					`rank` `setlevelingdata`

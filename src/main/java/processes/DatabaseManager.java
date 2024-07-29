@@ -9,7 +9,10 @@ import org.bson.Document;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -204,7 +207,15 @@ public class DatabaseManager {
 
 	public static void connectToDatabase(boolean beta) {
 		// establish connection to database
-		String connectionString = "mongodb+srv://StradivariusViolin:tDIEzkZyDmnbA7vE@linglingbot.ac7xhbw.mongodb.net/?retryWrites=true&w=majority";
+		String connectionString;
+		try {
+			Scanner scanner = new Scanner(new BufferedReader(new FileReader("databasetoken.txt")));
+			connectionString = scanner.nextLine();
+		} catch(Exception exception) {
+			System.out.println("Could not connect to database.  Exiting...");
+			System.exit(-1);
+			return;
+		}
 		ServerApi serverApi = ServerApi.builder()
 				.version(ServerApiVersion.V1)
 				.build();

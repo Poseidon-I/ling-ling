@@ -80,10 +80,11 @@ class CreateThreadBeethoven implements Runnable {
 				case "checkdm" -> CheckDM.checkDM(e);
 				case "annoy" -> Annoy.annoy(e);
 				case "requestgiveaway" -> RequestGiveaway.requestGiveaway(e);
+				case "updatehypixel" -> UpdateHypixel.updateHypixel(e);
 				default ->
 						e.reply("**__Don't interrupt my composing unless you actually need something__ :face_with_symbols_over_mouth:**");
 			}
-			System.out.println("        Thread " + Thread.currentThread().getId() + " Finished.");
+			System.out.println("        Thread " + Thread.currentThread().getName() + " Finished.");
 		} else {
 			e.reply("**__Don't interrupt my composing unless you actually need something__ :face_with_symbols_over_mouth:**");
 		}

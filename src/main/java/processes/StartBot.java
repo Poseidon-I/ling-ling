@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.json.simple.JSONObject;
 
 public class StartBot {
-	private static final boolean BETA = false; // TODO UPDATE THIS BEFORE DOING BETAS OR FULL RELEASES
+	private static final boolean BETA = true; // TODO UPDATE THIS BEFORE DOING BETAS OR FULL RELEASES
 
 	public static boolean isBeta() {
 		return BETA;
@@ -28,6 +28,7 @@ public class StartBot {
 			//nothing here lol
 		} */
 		DatabaseManager.connectToDatabase(BETA);
+		HypixelManager.connectToHypixel(BETA);
 		JSONObject data = DatabaseManager.getMiscData();
 
 		String token;
