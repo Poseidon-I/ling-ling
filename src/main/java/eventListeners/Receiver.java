@@ -19,34 +19,37 @@ public class Receiver extends ListenerAdapter {
 	public void onMessageReceived(@NotNull MessageReceivedEvent e) {
 		GenericDiscordEvent e1 = new GenericDiscordEvent(e);
 
-		if(e.getChannel().getId().equals("863135059712409632") || (e.getChannel().getId().equals("1029498872441077860") && !e1.getMessage().getContentRaw().equals("Done!")) || e.getChannel().getId().equals("734697496688853012")) {
-			CheckGiveaways.checkGiveaways(e1);
+		// background functions - ignore if beta testing
+		if(!StartBot.isBeta()) {
+			if(e.getChannel().getId().equals("863135059712409632") || (e.getChannel().getId().equals("1029498872441077860") && !e1.getMessage().getContentRaw().equals("Done!")) || e.getChannel().getId().equals("734697496688853012")) {
+				CheckGiveaways.checkGiveaways(e1);
 
-			UpdateLuthierChance.updateLuthierChance(e1, false);
+				UpdateLuthierChance.updateLuthierChance(e1, false);
 
-			ArrayList<Document> documents = DatabaseManager.getAllEconomyData();
-			if(e.getJDA().getSelfUser().getId().equals("846097308504293393")) {
-				int users = documents.size();
-				VoiceChannel channel = Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getVoiceChannelById("839877827838476289");
-				assert channel != null;
-				channel.getManager().setName(users + " Ling Ling Wannabes").queue();
+				ArrayList<Document> documents = DatabaseManager.getAllEconomyData();
+				if(e.getJDA().getSelfUser().getId().equals("846097308504293393")) {
+					int users = documents.size();
+					VoiceChannel channel = Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getVoiceChannelById("839877827838476289");
+					assert channel != null;
+					channel.getManager().setName(users + " Ling Ling Wannabes").queue();
+				}
 			}
-		}
-		if(e.getChannel().getId().equals("734697521758339163")) {
-			CheckCounting.checkCounting(e1);
-		}
-		if(e.getChannel().getId().equals("836710100127318057")) {
-			CheckReply.checkReply(e1);
-		}
-		if(e.getChannel().getId().equals("734697496688853012") && e.getAuthor().getId().equals("235148962103951360")) {
-			TimeOut.timeOut(e1);
-		}
-		if(e.getChannel().getId().equals("798751619344367626") && e.getAuthor().getId().equals("235148962103951360")
-				&& Objects.requireNonNull(e.getMessage().getEmbeds().get(0).getTitle()).contains("Suggestion")) {
-			e.getChannel().sendMessage("<@&930189721685094491>").queue();
-		}
-		if(e.getChannel().getId().equals("759092196976099348") && e.getAuthor().isBot() && e.getMessage().getContentRaw().contains("POLL:")) {
-			e.getChannel().sendMessage("<@&747954053660540928> <@&750876814842527754>").queue();
+			if(e.getChannel().getId().equals("734697521758339163")) {
+				CheckCounting.checkCounting(e1);
+			}
+			if(e.getChannel().getId().equals("836710100127318057")) {
+				CheckReply.checkReply(e1);
+			}
+			if(e.getChannel().getId().equals("734697496688853012") && e.getAuthor().getId().equals("235148962103951360")) {
+				TimeOut.timeOut(e1);
+			}
+			if(e.getChannel().getId().equals("798751619344367626") && e.getAuthor().getId().equals("235148962103951360")
+					&& Objects.requireNonNull(e.getMessage().getEmbeds().getFirst().getTitle()).contains("Suggestion")) {
+				e.getChannel().sendMessage("<@&930189721685094491>").queue();
+			}
+			if(e.getChannel().getId().equals("759092196976099348") && e.getAuthor().isBot() && e.getMessage().getContentRaw().contains("POLL:")) {
+				e.getChannel().sendMessage("<@&747954053660540928> <@&750876814842527754>").queue();
+			}
 		}
 
 		if(!e.getAuthor().isBot()) {
@@ -55,8 +58,10 @@ public class Receiver extends ListenerAdapter {
 			if(!Objects.requireNonNull(e.getMember()).getRoles().contains(e.getGuild().getRoleById("736287976224587838"))) {
 				WordAutomod.wordAutomod(e1);
 			}
-			// IGNORE BEETHOVEN COMMANDS IF BETA
-			if(e.getMessage().getContentRaw().toLowerCase().split(" ")[0].equals("beethoven") && !StartBot.isBeta()) {
+			// IGNORE BEETHOVEN COMMANDS IF BETA UNLESS IN CORRECT CHANNEL
+			if(e.getMessage().getContentRaw().toLowerCase().split(" ")[0].equals("beethoven") &&
+					((!StartBot.isBeta() && !e.getChannel().getId().equals("867617298918670366")) ||
+							(StartBot.isBeta() && e.getChannel().getId().equals("867617298918670366")))) {
 				Commands.commands(e1);
 			}
 			double multipler = 0.0;

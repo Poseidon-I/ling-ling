@@ -7,8 +7,8 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 public class CheckCounting {
 	public static void checkCounting(GenericDiscordEvent e) {
 		try {
-			System.out.println(e.getChannel().getHistory().getRetrievedHistory().get(0).getContentRaw());
-			if(Integer.parseInt(e.getMessage().getContentRaw()) != Integer.parseInt(e.getChannel().getHistory().getRetrievedHistory().get(0).getContentRaw()) + 1) {
+			System.out.println(e.getChannel().getHistory().getRetrievedHistory().getFirst().getContentRaw());
+			if(Integer.parseInt(e.getMessage().getContentRaw()) != Integer.parseInt(e.getChannel().getHistory().getRetrievedHistory().getFirst().getContentRaw()) + 1) {
 				e.getChannel().deleteMessageById(e.getMessage().getId()).queue();
 				TextChannel channel = e.getGuild().getTextChannelById("979776347729719296");
 				assert channel != null;

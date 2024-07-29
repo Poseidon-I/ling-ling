@@ -7,36 +7,48 @@ import net.hypixel.api.http.HypixelHttpClient;
 import net.hypixel.api.reply.GuildReply;
 import processes.HypixelManager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 public class UpdateHypixel {
 	public static void updateHypixel(GenericDiscordEvent e) {
-		try {
-			HypixelHttpClient client = HypixelManager.getClient();
-			HypixelAPI api = new HypixelAPI(client);
+		HypixelHttpClient client = HypixelManager.getClient();
+		HypixelAPI api = new HypixelAPI(client);
 
-			List<GuildReply.Guild.Member> guildMembers = api.getGuildByName("2bil Midas").get().getGuild().getMembers();
-			List<Member> nonGuildServerMembers = e.getGuild().getMembers();
-			for(GuildReply.Guild.Member member : guildMembers) {
-				String discord = api.getPlayerByUuid(member.getUuid()).get().getPlayer().getRaw().get("socialMedia").getAsJsonObject().get("links").getAsJsonObject().get("DISCORD").getAsString();
-				String[] parts = discord.split("#");
-				List<Member> guildServerMember = e.getGuild().getMembersByName(parts[0], true);
-				if(!guildServerMember.isEmpty()) {
-					e.getGuild().addRoleToMember(guildServerMember.getFirst(), Objects.requireNonNull(e.getGuild().getRoleById("1090691229789982800")));
-					nonGuildServerMembers.remove(guildServerMember.getFirst());
-				}
-			}
-			for(Member member : nonGuildServerMembers) {
-				e.getGuild().removeRoleFromMember(member, Objects.requireNonNull(e.getGuild().getRoleById("1090691229789982800")));
-			}
-		} catch(ExecutionException exception) {
-			e.reply("You are being rate-limited for this user!");
-		} catch(NullPointerException exception) {
-			e.reply("`" + e.getMessage().getContentRaw().split(" ")[2] + " has not linked a Discord account!");
+		List<GuildReply.Guild.Member> guildMembers;
+		try {
+			guildMembers = api.getGuildByName("2bil%20Midas").get().getGuild().getMembers();
 		} catch(Exception exception) {
 			exception.printStackTrace();
+			return;
 		}
+		List<Member> nonGuildServerMembers = e.getGuild().getMembers();
+		ArrayList<String> nonGuildServerMemberIDs = new ArrayList<>();
+		for(Member member : nonGuildServerMembers) {
+			nonGuildServerMemberIDs.add(member.getId());
+		}
+		for(GuildReply.Guild.Member member : guildMembers) {
+			String discord;
+			try {
+				discord = api.getPlayerByUuid(member.getUuid()).get().getPlayer().getRaw().get("socialMedia").getAsJsonObject().get("links").getAsJsonObject().get("DISCORD").getAsString();
+			} catch(Exception exception) {
+				continue;
+			}
+			String[] parts = discord.split("#");
+			List<Member> guildServerMember = e.getGuild().getMembersByName(parts[0], true);
+			if(!guildServerMember.isEmpty()) {
+				try {
+					e.getGuild().addRoleToMember(guildServerMember.getFirst(), Objects.requireNonNull(e.getGuild().getRoleById("1090691229789982800"))).queue();
+					nonGuildServerMemberIDs.remove(guildServerMember.getFirst().getId());
+				} catch(Exception exception) {
+					exception.printStackTrace();
+				}
+			}
+		}
+		for(String id : nonGuildServerMemberIDs) {
+			e.getGuild().removeRoleFromMember(Objects.requireNonNull(e.getGuild().getMemberById(id)), Objects.requireNonNull(e.getGuild().getRoleById("1090691229789982800"))).queue();
+		}
+		e.reply("Done!");
 	}
 }

@@ -23,9 +23,15 @@ class CreateThreadBeethoven implements Runnable {
 	public void run() {
 		String[] message = e.getMessage().getContentRaw().toLowerCase().split(" ");
 		if(message.length > 1) {
-			System.out.println("[DEBUG] New Thread: " + Thread.currentThread().getId() + "\n        Command: beethoven " + message[1]);
+			System.out.println("[DEBUG] New Thread: " + Thread.currentThread().threadId() + "\n        Command: beethoven " + message[1]);
 			switch(message[1]) {
-				case "link" -> Link.link(e, "");
+				case "link" -> {
+					if(message.length < 3) {
+						e.reply("You must provide a name.");
+						return;
+					}
+					Link.link(e, message[2]);
+				}
 				case "help" -> BeethovenHelp.help(e, message);
 				case "gstart" -> {
 					if(e.getChannel().getId().equals("734697492490354768")) {
@@ -66,8 +72,7 @@ class CreateThreadBeethoven implements Runnable {
 					}
 				}
 				case "rank" -> Rank.rank(e);
-				case "leaderboard", "lb", "levels" ->
-						Leaderboard.leaderboard(e);
+				case "leaderboard", "lb", "levels" -> Leaderboard.leaderboard(e);
 				case "setlevelingdata" -> SetLevel.setLevelingData(e);
 				case "forcerestartlingling" -> {
 					if(e.getAuthor().getId().equals("619989388109152256") || e.getAuthor().getId().equals("488487157372157962")) {
@@ -80,11 +85,17 @@ class CreateThreadBeethoven implements Runnable {
 				case "checkdm" -> CheckDM.checkDM(e);
 				case "annoy" -> Annoy.annoy(e);
 				case "requestgiveaway" -> RequestGiveaway.requestGiveaway(e);
-				case "updatehypixel" -> UpdateHypixel.updateHypixel(e);
+				case "updatehypixel" -> {
+					if(e.getAuthor().getId().equals("619989388109152256") || e.getAuthor().getId().equals("488487157372157962")) {
+						UpdateHypixel.updateHypixel(e);
+					} else {
+						e.reply(":no_entry: **403 FORBIDDEN** :no_entry:\nYou do not have permission to run this command!");
+					}
+				}
 				default ->
 						e.reply("**__Don't interrupt my composing unless you actually need something__ :face_with_symbols_over_mouth:**");
 			}
-			System.out.println("        Thread " + Thread.currentThread().getName() + " Finished.");
+			System.out.println("        Thread " + Thread.currentThread().threadId() + " Finished.");
 		} else {
 			e.reply("**__Don't interrupt my composing unless you actually need something__ :face_with_symbols_over_mouth:**");
 		}
