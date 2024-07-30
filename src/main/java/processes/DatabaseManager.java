@@ -2,6 +2,7 @@ package processes;
 
 import com.mongodb.*;
 import com.mongodb.client.*;
+import economy.MarketComparator;
 import eventListeners.GenericDiscordEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent;
@@ -12,6 +13,7 @@ import org.json.simple.parser.JSONParser;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -21,7 +23,6 @@ public class DatabaseManager {
 
 	private static MongoDatabase database;
 	//private static MongoDatabase databasePunishments;
-	//private static MongoDatabase databaseMarket;
 	@SuppressWarnings("FieldCanBeLocal")
 	private static MongoClient mongoClient;
 
@@ -71,52 +72,61 @@ public class DatabaseManager {
 		}
 	}
 
+	public static ArrayList<String> getItemData(String item) {
+		MongoCollection<Document> collection = database.getCollection("Market");
+		Document document = collection.find(eq("item", item)).first();
+		try {
+			JSONParser parser = new JSONParser();
+			assert document != null;
+			ArrayList<String> temp = new ArrayList<>(Arrays.asList(((String) ((JSONObject) parser.parse(document.toJson())).get("data")).split("\n")));
+			if(temp.isEmpty()) {
+				return null;
+			}
+			temp.sort(new MarketComparator());
+			return temp;
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			return null;
+		}
+	}
+
 	public static JSONObject getDataByUser(GenericDiscordEvent e, String collection1) {
 		MongoCollection<Document> collection = database.getCollection(collection1);
 		Document document = collection.find(eq("discordID", e.getAuthor().getId())).first();
-		if(document == null) {
+		try {
+			JSONParser parser = new JSONParser();
+			assert document != null;
+			return (JSONObject) parser.parse(document.toJson());
+		} catch(Exception exception) {
+			e.reply("An error occured!");
+			exception.printStackTrace();
 			return null;
-		} else {
-			try {
-				JSONParser parser = new JSONParser();
-				return (JSONObject) parser.parse(document.toJson());
-			} catch(Exception exception) {
-				e.reply("An error occured!");
-				exception.printStackTrace();
-				return null;
-			}
 		}
 	}
 
 	public static JSONObject getDataForUser(GuildMemberRoleAddEvent e, String collection1, String target) {
 		MongoCollection<Document> collection = database.getCollection(collection1);
 		Document document = collection.find(eq("discordID", target)).first();
-		if(document == null) {
+		try {
+			JSONParser parser = new JSONParser();
+			assert document != null;
+			return (JSONObject) parser.parse(document.toJson());
+		} catch(Exception exception) {
+			exception.printStackTrace();
 			return null;
-		} else {
-			try {
-				JSONParser parser = new JSONParser();
-				return (JSONObject) parser.parse(document.toJson());
-			} catch(Exception exception) {
-				exception.printStackTrace();
-				return null;
-			}
 		}
 	}
 
 	public static JSONObject getDataForUser(GuildMemberRoleRemoveEvent e, String collection1, String target) {
 		MongoCollection<Document> collection = database.getCollection(collection1);
 		Document document = collection.find(eq("discordID", target)).first();
-		if(document == null) {
+		try {
+			JSONParser parser = new JSONParser();
+			assert document != null;
+			return (JSONObject) parser.parse(document.toJson());
+		} catch(Exception exception) {
+			exception.printStackTrace();
 			return null;
-		} else {
-			try {
-				JSONParser parser = new JSONParser();
-				return (JSONObject) parser.parse(document.toJson());
-			} catch(Exception exception) {
-				exception.printStackTrace();
-				return null;
-			}
 		}
 	}
 
@@ -124,50 +134,41 @@ public class DatabaseManager {
 	public static JSONObject getDataForUser(GenericDiscordEvent e, String collection1, String target) {
 		MongoCollection<Document> collection = database.getCollection(collection1);
 		Document document = collection.find(eq("discordID", target)).first();
-		if(document == null) {
+		try {
+			JSONParser parser = new JSONParser();
+			assert document != null;
+			return (JSONObject) parser.parse(document.toJson());
+		} catch(Exception exception) {
+			e.reply("An error occured!");
+			exception.printStackTrace();
 			return null;
-		} else {
-			try {
-				JSONParser parser = new JSONParser();
-				return (JSONObject) parser.parse(document.toJson());
-			} catch(Exception exception) {
-				e.reply("An error occured!");
-				exception.printStackTrace();
-				return null;
-			}
 		}
 	}
 
 	public static JSONObject getDataByGuild(GenericDiscordEvent e, String collection1) {
 		MongoCollection<Document> collection = database.getCollection(collection1);
 		Document document = collection.find(eq("discordID", e.getGuild().getId())).first();
-		if(document == null) {
+		try {
+			JSONParser parser = new JSONParser();
+			assert document != null;
+			return (JSONObject) parser.parse(document.toJson());
+		} catch(Exception exception) {
+			e.reply("An error occured!");
+			exception.printStackTrace();
 			return null;
-		} else {
-			try {
-				JSONParser parser = new JSONParser();
-				return (JSONObject) parser.parse(document.toJson());
-			} catch(Exception exception) {
-				e.reply("An error occured!");
-				exception.printStackTrace();
-				return null;
-			}
 		}
 	}
 
 	public static JSONObject getMiscData() {
 		MongoCollection<Document> collection = database.getCollection("Misc Files");
 		Document document = collection.find(eq("discordID", -1)).first();
-		if(document == null) {
+		try {
+			JSONParser parser = new JSONParser();
+			assert document != null;
+			return (JSONObject) parser.parse(document.toJson());
+		} catch(Exception exception) {
+			exception.printStackTrace();
 			return null;
-		} else {
-			try {
-				JSONParser parser = new JSONParser();
-				return (JSONObject) parser.parse(document.toJson());
-			} catch(Exception exception) {
-				exception.printStackTrace();
-				return null;
-			}
 		}
 	}
 
@@ -201,6 +202,22 @@ public class DatabaseManager {
 		collection.replaceOne(eq("discordID", -1), Document.parse(newData.toJSONString()));
 	}
 
+	public static void saveMarketData(String item, ArrayList<String> newData) {
+		newData.sort(new MarketComparator());
+		MongoCollection<Document> collection = database.getCollection("Market");
+		JSONObject newMarketData = new JSONObject();
+		newMarketData.put("item", item);
+		StringBuilder result = new StringBuilder();
+		for(String string : newData) {
+			if(!string.isEmpty()) {
+				result.append(newData).append("\n");
+			}
+		}
+		result.deleteCharAt(result.length() - 1);
+		newMarketData.put("result", result);
+		collection.replaceOne(eq("item", item), Document.parse(newMarketData.toJSONString()));
+	}
+
 	/*public static MongoCollection<Document> getPunishmentData(GenericDiscordEvent e, String target) {
 		return databasePunishments.getCollection(target);
 	}*/
@@ -230,6 +247,7 @@ public class DatabaseManager {
 		// Create a new client and connect to the server
 		try {
 			mongoClient = MongoClients.create(settings);
+
 			// Send a ping to confirm a successful connection
 			if(beta) {
 				database = mongoClient.getDatabase("Ling_Ling_Beta");
@@ -241,13 +259,7 @@ public class DatabaseManager {
 
 			/*databasePunishments = mongoClient.getDatabase("Punishment_Logs");
 			databasePunishments.runCommand(new Document("ping", 1));
-			System.out.println("Connected to punisment database.");
-
-			databasePunishments = mongoClient.getDatabase("Market_Data");
-			databasePunishments.runCommand(new Document("ping", 1));
-			System.out.println("Connected to market database.");*/
-
-
+			System.out.println("Connected to punisment database.");*/
 		} catch(MongoException e) {
 			e.printStackTrace();
 		}
