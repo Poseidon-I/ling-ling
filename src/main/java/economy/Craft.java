@@ -144,8 +144,6 @@ public class Craft {
 			e.reply("You can't craft a negative amount of items.  Grow a brain.");
 			return;
 		}
-		EmbedBuilder builder = new EmbedBuilder()
-				.setColor(Color.decode((String) data.get("color")));
 		Map<String, Long> recipe = new HashMap<>();
 		switch(item) {
 			case "rice" -> {
@@ -251,7 +249,12 @@ public class Craft {
 						Numbers.formatNumber(i * 250) + "`" + Emoji.STEEL + ", `" +
 						Numbers.formatNumber(i * 250) + "`" + Emoji.HORSE_HAIR);
 				Objects.requireNonNull(e.getGuild().getTextChannelById((String) luthierData.get("channel")))
-						.sendMessage("**:tada: <@" + e.getAuthor().getId() + "> just buffed this server's luthier by `" + i + "`x!  New Multiplier: `" + multiplier + "x`** :tada:");
+						.sendMessage("**:tada: <@" + e.getAuthor().getId() + "> just buffed this server's luthier by " + Numbers.formatNumber(i) + "x!  New Multiplier: " + Numbers.formatNumber(multiplier) + "x** :tada:");
+				EmbedBuilder builder = new EmbedBuilder()
+						.setFooter("Ling Ling Bot", e.getJDA().getSelfUser().getAvatarUrl())
+						.setColor(Color.BLUE)
+						.setTitle("**__Luthier Crafted__**")
+						.addField("Crafter: " + data.get("discordName") + " `" + e.getAuthor().getId() + "`", "Server: " + e.getGuild().getName() + " `" + e.getGuild().getId() + "`" + "\nAmount Crafted: " + Numbers.formatNumber(i), false);
 				DatabaseManager.saveDataByGuild(e, "Luthier Data", luthierData);
 				return;
 			}

@@ -172,6 +172,19 @@ public class DatabaseManager {
 		}
 	}
 
+	public static JSONObject getData(String collectionName, String field, Object item) {
+		MongoCollection<Document> collection = database.getCollection(collectionName);
+		Document document = collection.find(eq(field, item)).first();
+		try {
+			JSONParser parser = new JSONParser();
+			assert document != null;
+			return (JSONObject) parser.parse(document.toJson());
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			return null;
+		}
+	}
+
 	public static void saveDataByUser(GenericDiscordEvent e, String collection1, JSONObject newData) {
 		MongoCollection<Document> collection = database.getCollection(collection1);
 		collection.replaceOne(eq("discordID", e.getAuthor().getId()), Document.parse(newData.toJSONString()));
@@ -203,18 +216,25 @@ public class DatabaseManager {
 	}
 
 	public static void saveMarketData(String item, ArrayList<String> newData) {
-		newData.sort(new MarketComparator());
 		MongoCollection<Document> collection = database.getCollection("Market");
-		JSONObject newMarketData = new JSONObject();
-		newMarketData.put("item", item);
+		JSONObject newMarketData;
+		try {
+			newMarketData = getData("Market", "item", item);
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			return;
+		}
 		StringBuilder result = new StringBuilder();
 		for(String string : newData) {
 			if(!string.isEmpty()) {
-				result.append(newData).append("\n");
+				result.append(string).append("\n");
 			}
 		}
-		result.deleteCharAt(result.length() - 1);
-		newMarketData.put("result", result);
+		if(!result.isEmpty()) {
+			result.deleteCharAt(result.length() - 1);
+		}
+		assert newMarketData != null;
+		newMarketData.replace("data", result.toString());
 		collection.replaceOne(eq("item", item), Document.parse(newMarketData.toJSONString()));
 	}
 

@@ -28,11 +28,11 @@ public class Market {
 				emoji = Emoji.GRAINS;
 				item = "grains";
 			}
-			case "horseHair", "hair" -> {
+			case "horseHair", "horsehair", "hair" -> {
 				emoji = Emoji.HORSE_HAIR;
 				item = "horseHair";
 			}
-			case "pineSap", "sap" -> {
+			case "pineSap", "pinesap", "sap" -> {
 				emoji = Emoji.SAP;
 				item = "pineSap";
 			}
@@ -44,7 +44,7 @@ public class Market {
 				emoji = Emoji.STEEL;
 				item = "steel";
 			}
-			case "teaBase", "tea" -> {
+			case "teaBase", "teabase", "tea" -> {
 				emoji = Emoji.TEABAG;
 				item = "teaBase";
 			}
@@ -60,25 +60,32 @@ public class Market {
 				emoji = "";
 				item = "none";
 			}
+			default -> {
+				emoji = "";
+				item = "invalid";
+			}
 		}
 	}
 
 	public static void showItemInfo() {
 		ArrayList<String> files = DatabaseManager.getItemData(item);
 		builder.setTitle("Information for " + item + " " + emoji);
-		if(files == null || files.isEmpty()) {
+		if(files == null || files.getFirst().isEmpty()) {
 			builder.addField("No items found!", "Unfortunately, nobody is selling this item.  Check back later!", false);
 		} else {
-			// Arrays.sort(files, new WindowsExplorerStringComparator());
 			StringBuilder line = new StringBuilder();
 			for(int i = 0; i < Math.min(10, files.size()); i++) {
-				String name = files.get(i);
+				String order = files.get(i);
 				// price count ID
-				String[] nameSplit = name.substring(0, name.lastIndexOf('.')).split(" ");
-				line.append('`').append(Numbers.formatNumber(Long.parseLong(nameSplit[1]))).append("x` for `").append(Numbers.formatNumber(Long.parseLong(nameSplit[0]))).append("`" + Emoji.VIOLINS + "\n");
+				String[] nameSplit = order.split(" ");
+				if(nameSplit[2].equals(e.getAuthor().getId())) {
+					line.append(Numbers.formatNumber(Long.parseLong(nameSplit[1]))).append("x for ").append(Numbers.formatNumber(Long.parseLong(nameSplit[0]))).append(Emoji.VIOLINS + " **Your Order**\n");
+					continue;
+				}
+				line.append(Numbers.formatNumber(Long.parseLong(nameSplit[1]))).append("x for ").append(Numbers.formatNumber(Long.parseLong(nameSplit[0]))).append(Emoji.VIOLINS + "\n");
 			}
 			if(files.size() > 10) {
-				line.append("+`").append(files.size() - 10).append("` more");
+				line.append("+").append(Numbers.formatNumber((long) files.size() - 10)).append(" more");
 			}
 			builder.addField("Best Sell Offers", line.toString(), false);
 		}
@@ -98,13 +105,13 @@ public class Market {
 			}
 			String currentItem = (String) file.get("item");
 			itemSwitch(currentItem);
-			ArrayList<String> names = new ArrayList<>(Arrays.asList(((String) file.get("data")).split("\n")));
-			names.sort(new MarketComparator());
-			if(names.isEmpty()) {
+			ArrayList<String> itemData = new ArrayList<>(Arrays.asList(((String) file.get("data")).split("\n")));
+			itemData.sort(new MarketComparator());
+			if(itemData.size() == 1 && itemData.getFirst().isEmpty()) {
 				builder.addField(currentItem, "No Sell Offers!", true);
 			} else {
-				String[] fileName = names.getFirst().split(" ");
-				builder.addField(currentItem + " " + emoji, "Price: `" + Numbers.formatNumber(Long.parseLong(fileName[0])) + "`" + Emoji.VIOLINS, true);
+				String[] fileName = itemData.getFirst().split(" ");
+				builder.addField(currentItem + " " + emoji, "Price: " + Numbers.formatNumber(Long.parseLong(fileName[0])) + Emoji.VIOLINS, true);
 			}
 		}
 		e.replyEmbeds(builder.build());
@@ -113,7 +120,7 @@ public class Market {
 	public static void buy() {
 		JSONParser parser = new JSONParser();
 		ArrayList<String> files = DatabaseManager.getItemData(item);
-		if(files == null || files.isEmpty()) {
+		if(files == null || files.getFirst().isEmpty()) {
 			e.reply("Nobody is selling this item!");
 			return;
 		}
@@ -131,6 +138,9 @@ public class Market {
 			long offerAmount = Long.parseLong(orderData[1]);
 			long offerPrice = Long.parseLong(orderData[0]);
 			String offererID = orderData[2];
+			if(offererID.equals(e.getAuthor().getId())) {
+				continue;
+			}
 			JSONObject tempData = DatabaseManager.getDataForUser(e, "Economy Data", offererID);
 			long price;
 			long purchased;
@@ -148,7 +158,7 @@ public class Market {
 				assert tempData != null;
 				if((boolean) tempData.get("DMs")) {
 					long finalAmount = amount;
-					Objects.requireNonNull(e.getJDA().getUserById(offererID)).openPrivateChannel().queue((channel) -> channel.sendMessage("Someone just purchased `" + Numbers.formatNumber(finalAmount) + "`" + emoji + " at `" + Numbers.formatNumber(offerPrice) + "`" + Emoji.VIOLINS + " each.  You made `" + Numbers.formatNumber((long) (price * 0.99)) + "`" + Emoji.VIOLINS + "!\n*Ling Ling taxed you `" + Numbers.formatNumber((long) (price * 0.01)) + "`" + Emoji.VIOLINS + "*"));
+					Objects.requireNonNull(e.getJDA().getUserById(offererID)).openPrivateChannel().queue((channel) -> channel.sendMessage("Someone just purchased " + Numbers.formatNumber(finalAmount) + emoji + " at " + Numbers.formatNumber(offerPrice) + Emoji.VIOLINS + " each.  You made " + Numbers.formatNumber((long) (price * 0.99)) + Emoji.VIOLINS + "!\n*Ling Ling taxed you " + Numbers.formatNumber((long) (price * 0.01)) + Emoji.VIOLINS + "*"));
 				}
 				tempData.replace("violins", (long) tempData.get("violins") + (long) (price * 0.99));
 				tempData.replace("itemsSold", (long) tempData.get("itemsSold") + gained);
@@ -159,7 +169,7 @@ public class Market {
 						.setFooter("Ling Ling Bot", e.getJDA().getSelfUser().getAvatarUrl())
 						.setColor(Color.GREEN)
 						.setTitle("**__Sell Offer Partially Filled__**")
-						.addField("Buyer: " + data.get("discordName") + " `" + e.getAuthor().getId() + "`", "Seller: " + tempData.get("discordName") + "\nItem: " + item + "\nPurchased: " + purchased + "\nPrice: " + price, false);
+						.addField("Buyer: " + data.get("discordName") + " " + e.getAuthor().getId(), "Seller: " + tempData.get("discordName") + "\nItem: " + item + "\nPurchased: " + purchased + "\nPrice: " + price, false);
 				Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("1028934753270894592")).sendMessageEmbeds(builder.build()).queue();
 			} else {
 				price = offerAmount * offerPrice;
@@ -173,9 +183,13 @@ public class Market {
 				paid += price;
 				files.set(i, "");
 				assert tempData != null;
-				if((boolean) tempData.get("DMs")) {
-					long finalOfferAmount = offerAmount;
-					Objects.requireNonNull(e.getJDA().getUserById(offererID)).openPrivateChannel().queue((channel) -> channel.sendMessage("Someone just purchased `" + Numbers.formatNumber(finalOfferAmount) + "x` " + item + " at `" + Numbers.formatNumber(offerPrice) + "`" + Emoji.VIOLINS + " each.  You made `" + Numbers.formatNumber((long) (price * 0.99)) + "`" + Emoji.VIOLINS + "!\n*Ling Ling taxed you `" + Numbers.formatNumber((long) (price * 0.01)) + "`" + Emoji.VIOLINS + "*").queue());
+				try {
+					if((boolean) tempData.get("DMs")) {
+						long finalOfferAmount = offerAmount;
+						Objects.requireNonNull(e.getJDA().getUserById(offererID)).openPrivateChannel().queue((channel) -> channel.sendMessage("Someone just purchased " + Numbers.formatNumber(finalOfferAmount) + "x " + item + " at " + Numbers.formatNumber(offerPrice) + Emoji.VIOLINS + " each.  You made " + Numbers.formatNumber((long) (price * 0.99)) + Emoji.VIOLINS + "!\n*Ling Ling taxed you " + Numbers.formatNumber((long) (price * 0.01)) + Emoji.VIOLINS + "*").queue());
+					}
+				} catch(Exception exception) {
+					// nothing here
 				}
 				tempData.replace("violins", (long) tempData.get("violins") + (long) (price * 0.99));
 				tempData.replace("itemsSold", (long) tempData.get("itemsSold") + gained);
@@ -185,7 +199,7 @@ public class Market {
 						.setFooter("Ling Ling Bot", e.getJDA().getSelfUser().getAvatarUrl())
 						.setColor(Color.GREEN)
 						.setTitle("**__Sell Offer Filled__**")
-						.addField("Buyer: " + data.get("discordName") + " `" + e.getAuthor().getId() + "`", "Seller: " + tempData.get("discordName") + "\nItem: " + item + "\n# Purchased: " + purchased + "\nPrice: " + price, false);
+						.addField("Buyer: " + data.get("discordName") + " " + e.getAuthor().getId(), "Seller: " + tempData.get("discordName") + "\nItem: " + item + "\n# Purchased: " + purchased + "\nPrice: " + price, false);
 				Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("1028934753270894592")).sendMessageEmbeds(builder.build()).queue();
 			}
 			DatabaseManager.saveDataForUser(e, "Economy Data", offererID, tempData);
@@ -195,19 +209,18 @@ public class Market {
 		data.replace("moneySpent", (long) data.get("moneySpent") + paid);
 		data.replace(item, (long) data.get(item) + gained);
 		if(ranOutOfOrders) {
-			e.reply("You purchased `" + gained + "`" + emoji + " for `" + Numbers.formatNumber(paid) + "`" + Emoji.VIOLINS + "\nAverage price paid: `" + Numbers.formatNumber(paid / gained) + "`" + Emoji.VIOLINS + "\n*you kind of bought out everything...*");
+			e.reply("You purchased " + Numbers.formatNumber(gained) + emoji + " for " + Numbers.formatNumber(paid) + Emoji.VIOLINS + "\nAverage price paid: " + Numbers.formatNumber(paid / gained) + Emoji.VIOLINS + "\n*you kind of bought out everything...*");
 		} else if(ranOutOfViolins && gained > 0) {
-			e.reply("You purchased `" + gained + "`" + emoji + " for `" + Numbers.formatNumber(paid) + "`" + Emoji.VIOLINS + "\nAverage price paid: `" + Numbers.formatNumber(paid / gained) + "`" + Emoji.VIOLINS + "\n*you ran out of violins though...*");
+			e.reply("You purchased " + Numbers.formatNumber(gained) + emoji + " for " + Numbers.formatNumber(paid) + Emoji.VIOLINS + "\nAverage price paid: " + Numbers.formatNumber(paid / gained) + Emoji.VIOLINS + "\n*you ran out of violins though...*");
 		} else if(ranOutOfViolins && gained == 0) {
 			e.reply("You don't have enough violins to purchase anything!  Try lowering the amount of items you're buying.");
 		} else {
-			e.reply("You purchased `" + gained + "`" + emoji + " for `" + Numbers.formatNumber(paid) + "`" + Emoji.VIOLINS + "\nAverage price paid: `" + Numbers.formatNumber(paid / gained) + "`" + Emoji.VIOLINS);
+			e.reply("You purchased " + Numbers.formatNumber(gained) + emoji + " for " + Numbers.formatNumber(paid) + Emoji.VIOLINS + "\nAverage price paid: " + Numbers.formatNumber(paid / gained) + Emoji.VIOLINS);
 		}
 		SaveData.saveData(e, data);
 		DatabaseManager.saveMarketData(item, files);
 	}
 
-	@SuppressWarnings("DataFlowIssue")
 	public static void sell() {
 		ArrayList<String> files = DatabaseManager.getItemData(item);
 		if(price == -1 && (files == null || files.isEmpty())) {
@@ -215,6 +228,10 @@ public class Market {
 			return;
 		}
 		long userAmount = (long) data.get(item);
+		if(userAmount == 0) {
+			e.reply("You don't have any of this item!");
+			return;
+		}
 		if(amount > userAmount) {
 			amount = userAmount;
 		}
@@ -223,14 +240,15 @@ public class Market {
 			return;
 		}
 		if(price == -1) {
+			assert files != null;
 			price = Long.parseLong(files.getFirst().split(" ")[0]) - 1;
-			return;
 		}
 		if(price <= 0) {
 			e.reply("You cannot sell items for a negative amount of violins, I know that scamming trick.");
 			return;
 		}
 		String newString = price + " " + amount + " " + e.getAuthor().getId();
+		assert files != null;
 		if(files.contains(newString)) {
 			int index = files.indexOf(newString);
 			files.set(index, price + " " + (amount + Long.parseLong(files.get(index).split(" ")[2])) + " " + e.getAuthor().getId());
@@ -238,15 +256,15 @@ public class Market {
 			files.add(newString);
 		}
 		data.replace(item, (long) data.get(item) - amount);
-		e.reply("You set up a Sell Offer for `" + Numbers.formatNumber(amount) + "`" + emoji + " at `" + Numbers.formatNumber(price) + "`" + Emoji.VIOLINS + " per!");
+		e.reply("You set up a Sell Offer for " + Numbers.formatNumber(amount) + emoji + " at " + Numbers.formatNumber(price) + Emoji.VIOLINS + " per!");
 		SaveData.saveData(e, data);
+		DatabaseManager.saveMarketData(item, files);
 		builder = new EmbedBuilder()
 				.setFooter("Ling Ling Bot", e.getJDA().getSelfUser().getAvatarUrl())
 				.setColor(Color.BLUE)
 				.setTitle("**__Sell Offer Setup__**")
-				.addField("User: " + e.getAuthor().getGlobalName() + " `" + e.getAuthor().getId() + "`", "Item: " + item + "\nAmount: " + amount + "\nPrice: " + price, false);
+				.addField("User: " + e.getAuthor().getGlobalName() + " " + e.getAuthor().getId(), "Item: " + item + "\nAmount: " + Numbers.formatNumber(amount) + "\nPrice: " + Numbers.formatNumber(price), false);
 		Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("1028934753270894592")).sendMessageEmbeds(builder.build()).queue();
-		DatabaseManager.saveMarketData(item, files);
 	}
 
 	public static void viewOffers() {
@@ -269,7 +287,7 @@ public class Market {
 			for(String order : orders) {
 				String[] orderArray = order.split(" ");
 				if(orderArray[2].equals(e.getAuthor().getId())) {
-					stringBuilder.append("`").append(Numbers.formatNumber(Long.parseLong(orderArray[1]))).append("`").append(emoji).append(" for `").append(Numbers.formatNumber(Long.parseLong(orderArray[0]))).append("`" + Emoji.VIOLINS + " per").append("\n");
+					stringBuilder.append(Numbers.formatNumber(Long.parseLong(orderArray[1]))).append(emoji).append(" for ").append(Numbers.formatNumber(Long.parseLong(orderArray[0]))).append(Emoji.VIOLINS + " per").append("\n");
 				}
 			}
 			if(stringBuilder.isEmpty()) {
@@ -286,21 +304,27 @@ public class Market {
 		StringBuilder stringBuilder = new StringBuilder();
 		for(Document file : allItems) {
 			JSONParser parser = new JSONParser();
-			JSONObject data;
+			JSONObject itemDAta;
 			try {
-				data = (JSONObject) parser.parse(file.toJson());
+				itemDAta = (JSONObject) parser.parse(file.toJson());
 			} catch(Exception exception) {
 				continue;
 			}
-			itemSwitch((String) data.get("item"));
-			String[] orders = ((String) data.get("data")).split("\n");
+			itemSwitch((String) itemDAta.get("item"));
+			String[] orders = ((String) itemDAta.get("data")).split("\n");
 			for(int i = 0; i < orders.length; i++) {
 				String order = orders[i];
 				String[] orderArray = order.split(" ");
 				if(orderArray[2].equals(e.getAuthor().getId())) {
-					stringBuilder.append("`").append(Numbers.formatNumber(Long.parseLong(orderArray[1]))).append("`").append(emoji).append("\n");
+					stringBuilder.append(Numbers.formatNumber(Long.parseLong(orderArray[1]))).append(emoji).append("\n");
 					orders[i] = "";
-					data.replace(item, (long) data.get(item) + Long.parseLong(orderArray[1]));
+					long num;
+					if(itemDAta.get(item) == null) {
+						num = 0;
+					} else {
+						num = (long) itemDAta.get(item);
+					}
+					data.replace(item, num + Long.parseLong(orderArray[1]));
 				}
 			}
 			DatabaseManager.saveMarketData(item, new ArrayList<>(Arrays.asList(orders)));
@@ -313,20 +337,31 @@ public class Market {
 				.setFooter("Ling Ling Bot", e.getJDA().getSelfUser().getAvatarUrl())
 				.setColor(Color.RED)
 				.setTitle("**__Sell Offers Cancelled__**")
-				.addField("User: " + e.getAuthor().getGlobalName() + " `" + e.getAuthor().getId() + "`", stringBuilder.toString(), false);
+				.addField("User: " + e.getAuthor().getGlobalName() + " " + e.getAuthor().getId(), stringBuilder.toString(), false);
 		Objects.requireNonNull(Objects.requireNonNull(e.getJDA().getGuildById("670725611207262219")).getTextChannelById("1028934753270894592")).sendMessageEmbeds(builder.build()).queue();
 	}
 
-	public static void market(GenericDiscordEvent event, String item1, String action, long amount1, long price1) {
-		event.reply("This command is temporarily diabled while Strad wraps his head around how the hell to migrate this command.  Also not like it saw much use anyway...");
+	public static void market(GenericDiscordEvent event, String item1, String action, String amount1, long price1) {
 		e = event;
 		data = LoadData.loadData(e);
-		amount = amount1;
+		try {
+			amount = Long.parseLong(amount1);
+		} catch(Exception exception) {
+			if(Objects.equals(amount1, "max")) {
+				amount = 2147483647;
+			} else {
+				amount = 1;
+			}
+		}
 		price = price1;
 		itemSwitch(item1);
+		if(item.equals("invalid")) {
+			e.reply("You did not give a valid item!");
+			return;
+		}
 		builder = new EmbedBuilder()
 				.setColor(Color.decode((String) data.get("color")))
-				.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl());
+				.setFooter("Ling Ling\nReminder: You cannot purchase from your own orders.", e.getJDA().getSelfUser().getAvatarUrl());
 		switch(action) {
 			// Viewing an item will return the lowest price for that specific item, how many items are in stock, and the 5 best offers.
 			// In the future, more statistics may be included in the detailed view.

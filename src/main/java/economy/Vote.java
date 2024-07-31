@@ -51,7 +51,7 @@ public class Vote {
 				RNGesus.sendLog(e, "Crazy Person Box", false);
 			} else { // 0.005 (1 in 200)
 				data.replace("RNGesusBox", ((long) data.get("RNGesusBox")) + 1);
-				message += "\n\n**BONUS** You found an extra " + Emoji.RNGESUS_BOX + "!";
+				message += "\n\n**BONUS** You found an extra " + Emoji.RNGESUS_BOX + "! https://imgur.com/a/SSjcgz3";
 				RNGesus.sendLog(e, "RNGesus Box", false);
 			}
 			message += "\n\nRemember to vote for Ling Ling at <https://top.gg/bot/733409243222507670/vote>!";

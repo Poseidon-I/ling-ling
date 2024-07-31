@@ -198,7 +198,7 @@ class CreateThreadMessage implements Runnable {
 				case "market" -> {
 					String action;
 					String item;
-					long amount;
+					String amount;
 					long price;
 					try {
 						action = message[2];
@@ -211,9 +211,9 @@ class CreateThreadMessage implements Runnable {
 						item = "none";
 					}
 					try {
-						amount = Long.parseLong(message[4]);
+						amount = message[4];
 					} catch(Exception exception) {
-						amount = 1;
+						amount = "1";
 					}
 					try {
 						price = Long.parseLong(message[5]);

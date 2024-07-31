@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -178,29 +179,29 @@ public class StartBot {
 				Commands.slash("inv", "View your inventory.")
 						.addOptions(optionData)
 						.addOption(OptionType.STRING, "otheruser", "Use this to view another user's inventory.")
+		).queue();*/
+		OptionData data1 = new OptionData(OptionType.STRING, "action", "Choose whether to Buy, Sell, or view an item or your offers.")
+				.addChoice("Buy Items", "buy")
+				.addChoice("Sell Items", "sell")
+				.addChoice("View Item Prices", "view")
+				.addChoice("View Your Offers", "offers")
+				.addChoice("Cancel Your Offers", "cancel");
+		OptionData data2 = new OptionData(OptionType.STRING, "item", "Pick the item you want to Buy, Sell, or View.")
+				.addChoice("Grains", "grains")
+				.addChoice("Plastic", "plastic")
+				.addChoice("Water", "water")
+				.addChoice("Tea Base", "teaBase")
+				.addChoice("Wood", "wood")
+				.addChoice("Pine Sap", "pineSap")
+				.addChoice("Steel", "steel")
+				.addChoice("Horse Hair", "horseHair");
+		jda.upsertCommand(
+				Commands.slash("market", "View and interact with the Public Market!")
+						.addOptions(data1, data2)
+						.addOption(OptionType.STRING, "amount", "Pick the amount you want to Buy or Sell.")
+						.addOption(OptionType.INTEGER, "price", "Pick the price you want to Sell your items at.")
 		).queue();
-			/*data = new OptionData(OptionType.STRING, "action", "Choose whether to Buy, Sell, or view an item or your offers.")
-					.addChoice("Buy Items", "buy")
-					.addChoice("Sell Items", "sell")
-					.addChoice("View Item Prices", "view")
-					.addChoice("View Your Offers", "offers")
-					.addChoice("Cancel Your Offers", "cancel");
-			OptionData data2 = new OptionData(OptionType.STRING, "item", "Pick the item you want to Buy, Sell, or View.")
-					.addChoice("Grains", "grains")
-					.addChoice("Plastic", "plastic")
-					.addChoice("Water", "water")
-					.addChoice("Tea Base", "teaBase")
-					.addChoice("Wood", "wood")
-					.addChoice("Pine Sap", "pineSap")
-					.addChoice("Steel", "steel")
-					.addChoice("Horse Hair", "horseHair");
-			jda.upsertCommand(
-					Commands.slash("market", "View and interact with the Public Market!")
-							.addOptions(data, data2)
-							.addOption(OptionType.INTEGER, "amount", "Pick the amount you want to Buy or Sell.")
-							.addOption(OptionType.INTEGER, "price", "Pick the price you want to Sell your items at.")
-			).queue();
-			optionData = new OptionData(OptionType.STRING, "item", "Choose the item you want to craft.")
+			/*optionData = new OptionData(OptionType.STRING, "item", "Choose the item you want to craft.")
 					.addChoice("Rice", "rice")
 					.addChoice("Bubble Tea", "tea")
 					.addChoice("Rosin", "rosin")

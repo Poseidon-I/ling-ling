@@ -159,9 +159,9 @@ public class Help {
 						Usage: Uses usable items like Rice.
 						Example: `!use rice 5`""", false);
 				case "market" -> builder.addField("Market Command", """
-						Syntax: `!market <buy | sell | view | offers> <(buy/sell) item> [(buy/sell) amount] [(sell) price]`
+						Syntax: `!market <buy | sell | view | offers | cancel> <(buy/sell/view) item> [(buy/sell) amount] [(sell) price]`
 						Usage: Interacts with the Publik Market.
-						Examples: `!market view grains` `!market buy grains 15` `!market sell grains 100 10`""", false);
+						Examples: `!market view grains` `!market buy grains 15` `!market sell grains 100 10` `!market cancel`""", false);
 				case "craft" -> builder.addField("Craft Command", """
 						Syntax: `!craft <item> [amount | max]`
 						Usage: Crafts items using raw materials.
@@ -240,9 +240,8 @@ public class Help {
 				
 				// PAGE 5
 				case "give" -> builder.addField("Give Command", """
-						Syntax: `!give <id> <type> <amount>`
-						Usage: Gives the user an amount of the specified currency.
-						Valid values: `violin`, `medal`, `rice`, `tea`, `blessing`, `gift`, `vote`, `kit`, `llbox`, `crazybox`
+						Syntax: `!give <id> <amount> <type>`
+						Usage: Gives the user an amount of the specified currency.  Only works with integer-based data.
 						Restrictions: Usable only by Bot Moderators and above.""", false);
 				case "warn" -> builder.addField("Warn Command", """
 						Syntax: `!warn <user> [reason]`

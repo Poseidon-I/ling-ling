@@ -136,7 +136,7 @@ public class RNGesus {
 				sendLog(e, "Crazy Person Box", false);
 			} else { // 0.005 (1 in 200)
 				data.replace("RNGesusBox", ((long) data.get("RNGesusBox")) + 1);
-				localMessage += "\n\n**BONUS** You found an extra " + Emoji.RNGESUS_BOX + "!";
+				localMessage += "\n\n**BONUS** You found an extra " + Emoji.RNGESUS_BOX + "!\nhttps://imgur.com/a/SSjcgz3";
 				sendLog(e, "RNGesus Box", false);
 			}
 			if((boolean) data.get("banned")) {

@@ -173,7 +173,7 @@ class CreateThreadSlash implements Runnable {
 			case "market" -> {
 				String action;
 				String item;
-				long amount;
+				String amount;
 				long price;
 				try {
 					action = Objects.requireNonNull(e1.getOption("action")).getAsString();
@@ -186,9 +186,9 @@ class CreateThreadSlash implements Runnable {
 					item = "none";
 				}
 				try {
-					amount = Objects.requireNonNull(e1.getOption("amount")).getAsInt();
+					amount = Objects.requireNonNull(e1.getOption("amount")).getAsString();
 				} catch(Exception exception) {
-					amount = 1;
+					amount = "1";
 				}
 				try {
 					price = Objects.requireNonNull(e1.getOption("price")).getAsInt();
