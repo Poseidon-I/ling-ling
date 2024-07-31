@@ -217,6 +217,7 @@ public class Market {
 		} else {
 			e.reply("You purchased " + Numbers.formatNumber(gained) + emoji + " for " + Numbers.formatNumber(paid) + Emoji.VIOLINS + "\nAverage price paid: " + Numbers.formatNumber(paid / gained) + Emoji.VIOLINS);
 		}
+		Achievement.calculateAchievement(e, data, "moneySpent", "Big Spender");
 		SaveData.saveData(e, data);
 		DatabaseManager.saveMarketData(item, files);
 	}
