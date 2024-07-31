@@ -158,9 +158,13 @@ public class Market {
 				gained += amount;
 				paid += price;
 				files.set(i, offerPrice + " " + offerAmount + " " + offererID);
-				if((boolean) tempData.get("DMs")) {
-					long finalAmount = amount;
-					Objects.requireNonNull(e.getJDA().getUserById(offererID)).openPrivateChannel().queue((channel) -> channel.sendMessage("Someone just purchased " + Numbers.formatNumber(finalAmount) + emoji + " at " + Numbers.formatNumber(offerPrice) + Emoji.VIOLINS + " each.  You made " + Numbers.formatNumber((long) (price * 0.99)) + Emoji.VIOLINS + "!\n*Ling Ling taxed you " + Numbers.formatNumber((long) (price * 0.01)) + Emoji.VIOLINS + "*"));
+				try {
+					if((boolean) tempData.get("DMs")) {
+						long finalAmount = amount;
+						Objects.requireNonNull(e.getJDA().getUserById(offererID)).openPrivateChannel().queue((channel) -> channel.sendMessage("Someone just purchased " + Numbers.formatNumber(finalAmount) + emoji + " at " + Numbers.formatNumber(offerPrice) + Emoji.VIOLINS + " each.  You made " + Numbers.formatNumber((long) (price * 0.99)) + Emoji.VIOLINS + "!\n*Ling Ling taxed you " + Numbers.formatNumber((long) (price * 0.01)) + Emoji.VIOLINS + "*").queue());
+					}
+				} catch(Exception exception) {
+					// nothing here
 				}
 				tempData.replace("violins", (long) tempData.get("violins") + (long) (price * 0.99));
 				tempData.replace("itemsSold", (long) tempData.get("itemsSold") + gained);
@@ -187,7 +191,7 @@ public class Market {
 				try {
 					if((boolean) tempData.get("DMs")) {
 						long finalOfferAmount = offerAmount;
-						Objects.requireNonNull(e.getJDA().getUserById(offererID)).openPrivateChannel().queue((channel) -> channel.sendMessage("Someone just purchased " + Numbers.formatNumber(finalOfferAmount) + "x " + item + " at " + Numbers.formatNumber(offerPrice) + Emoji.VIOLINS + " each.  You made " + Numbers.formatNumber((long) (price * 0.99)) + Emoji.VIOLINS + "!\n*Ling Ling taxed you " + Numbers.formatNumber((long) (price * 0.01)) + Emoji.VIOLINS + "*").queue());
+						Objects.requireNonNull(e.getJDA().getUserById(offererID)).openPrivateChannel().queue((channel) -> channel.sendMessage("Someone just purchased " + Numbers.formatNumber(finalOfferAmount) + emoji + " at " + Numbers.formatNumber(offerPrice) + Emoji.VIOLINS + " each.  You made " + Numbers.formatNumber((long) (price * 0.99)) + Emoji.VIOLINS + "!\n*Ling Ling taxed you " + Numbers.formatNumber((long) (price * 0.01)) + Emoji.VIOLINS + "*").queue());
 					}
 				} catch(Exception exception) {
 					// nothing here
