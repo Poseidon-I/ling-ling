@@ -65,8 +65,6 @@ public class DatabaseManager {
 				JSONParser parser = new JSONParser();
 				return (JSONObject) parser.parse(document.toJson());
 			} catch(Exception exception) {
-				e.reply("An error occured!");
-				exception.printStackTrace();
 				return null;
 			}
 		}
@@ -85,7 +83,6 @@ public class DatabaseManager {
 			temp.sort(new MarketComparator());
 			return temp;
 		} catch(Exception exception) {
-			exception.printStackTrace();
 			return null;
 		}
 	}
@@ -98,8 +95,6 @@ public class DatabaseManager {
 			assert document != null;
 			return (JSONObject) parser.parse(document.toJson());
 		} catch(Exception exception) {
-			e.reply("An error occured!");
-			exception.printStackTrace();
 			return null;
 		}
 	}
@@ -112,7 +107,6 @@ public class DatabaseManager {
 			assert document != null;
 			return (JSONObject) parser.parse(document.toJson());
 		} catch(Exception exception) {
-			exception.printStackTrace();
 			return null;
 		}
 	}
@@ -125,7 +119,6 @@ public class DatabaseManager {
 			assert document != null;
 			return (JSONObject) parser.parse(document.toJson());
 		} catch(Exception exception) {
-			exception.printStackTrace();
 			return null;
 		}
 	}
@@ -139,8 +132,6 @@ public class DatabaseManager {
 			assert document != null;
 			return (JSONObject) parser.parse(document.toJson());
 		} catch(Exception exception) {
-			e.reply("An error occured!");
-			exception.printStackTrace();
 			return null;
 		}
 	}
@@ -153,8 +144,6 @@ public class DatabaseManager {
 			assert document != null;
 			return (JSONObject) parser.parse(document.toJson());
 		} catch(Exception exception) {
-			e.reply("An error occured!");
-			exception.printStackTrace();
 			return null;
 		}
 	}

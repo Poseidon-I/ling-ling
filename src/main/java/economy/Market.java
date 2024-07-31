@@ -142,6 +142,9 @@ public class Market {
 				continue;
 			}
 			JSONObject tempData = DatabaseManager.getDataForUser(e, "Economy Data", offererID);
+			if(tempData == null) {
+				continue;
+			}
 			long price;
 			long purchased;
 			if(amount < offerAmount) {
@@ -155,7 +158,6 @@ public class Market {
 				gained += amount;
 				paid += price;
 				files.set(i, offerPrice + " " + offerAmount + " " + offererID);
-				assert tempData != null;
 				if((boolean) tempData.get("DMs")) {
 					long finalAmount = amount;
 					Objects.requireNonNull(e.getJDA().getUserById(offererID)).openPrivateChannel().queue((channel) -> channel.sendMessage("Someone just purchased " + Numbers.formatNumber(finalAmount) + emoji + " at " + Numbers.formatNumber(offerPrice) + Emoji.VIOLINS + " each.  You made " + Numbers.formatNumber((long) (price * 0.99)) + Emoji.VIOLINS + "!\n*Ling Ling taxed you " + Numbers.formatNumber((long) (price * 0.01)) + Emoji.VIOLINS + "*"));
@@ -182,7 +184,6 @@ public class Market {
 				gained += offerAmount;
 				paid += price;
 				files.set(i, "");
-				assert tempData != null;
 				try {
 					if((boolean) tempData.get("DMs")) {
 						long finalOfferAmount = offerAmount;
