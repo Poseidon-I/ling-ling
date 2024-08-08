@@ -73,7 +73,6 @@ public class HourlyIncome {
 				"\nIncome Lost to Inactive Items: " + Numbers.formatNumber(originalIncome - gross) + Emoji.VIOLINS +
 				"\nLoans Paid: " + Numbers.formatNumber(loanPaid) + Emoji.VIOLINS +
 				"\n\nNet Income: " + Numbers.formatNumber(net) + Emoji.VIOLINS);
-		RNGesus.lootbox(e, data);
 		SaveData.saveData(e, data);
 	}
 }

@@ -318,6 +318,9 @@ public class Market {
 			}
 			itemSwitch((String) itemDAta.get("item"));
 			String[] orders = ((String) itemDAta.get("data")).split("\n");
+			if(orders.length == 0) {
+				continue;
+			}
 			for(int i = 0; i < orders.length; i++) {
 				String order = orders[i];
 				String[] orderArray = order.split(" ");
