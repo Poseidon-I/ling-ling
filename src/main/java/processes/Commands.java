@@ -32,6 +32,13 @@ class CreateThreadBeethoven implements Runnable {
 					}
 					Link.link(e, message[2]);
 				}
+				case "baldness" -> {
+					if(message.length < 3) {
+						e.reply("You must provide a name.");
+						return;
+					}
+					Baldness.baldness(e, message[2]);
+				}
 				case "help" -> BeethovenHelp.help(e, message);
 				case "gstart" -> {
 					if(e.getChannel().getId().equals("734697492490354768")) {

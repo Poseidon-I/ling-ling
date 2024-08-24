@@ -1,6 +1,7 @@
 target/
 out/
 databasetoken.txt
+output.json
 
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

@@ -242,19 +242,21 @@ public class DatabaseManager {
 			System.exit(-1);
 			return;
 		}
-		ServerApi serverApi = ServerApi.builder()
-				.version(ServerApiVersion.V1)
-				.build();
-		MongoClientSettings settings = MongoClientSettings.builder()
-				.applyConnectionString(new ConnectionString(connectionString))
-				/*.applyToConnectionPoolSettings(builder ->
-						builder.maxConnectionIdleTime(1, TimeUnit.HOURS)
-								.maxConnectionLifeTime(1, TimeUnit.HOURS)
-								.build())*/
-				.serverApi(serverApi)
-				.build();
+
 		// Create a new client and connect to the server
 		try {
+			ServerApi serverApi = ServerApi.builder()
+					.version(ServerApiVersion.V1)
+					.build();
+			MongoClientSettings settings = MongoClientSettings.builder()
+					.applyConnectionString(new ConnectionString(connectionString))
+					/*.applyToConnectionPoolSettings(builder ->
+							builder.maxConnectionIdleTime(1, TimeUnit.HOURS)
+									.maxConnectionLifeTime(1, TimeUnit.HOURS)
+									.build())*/
+					.serverApi(serverApi)
+					.build();
+
 			mongoClient = MongoClients.create(settings);
 
 			// Send a ping to confirm a successful connection
@@ -269,8 +271,9 @@ public class DatabaseManager {
 			/*databasePunishments = mongoClient.getDatabase("Punishment_Logs");
 			databasePunishments.runCommand(new Document("ping", 1));
 			System.out.println("Connected to punisment database.");*/
-		} catch(MongoException e) {
-			e.printStackTrace();
+		} catch(Exception e) {
+			System.out.println("Failure connecting to database!  Maybe the IP isn't whitelisted?");
+			System.exit(-1);
 		}
 	}
 }

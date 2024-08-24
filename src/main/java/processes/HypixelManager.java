@@ -3,11 +3,13 @@ package processes;
 import net.hypixel.api.apache.ApacheHttpClient;
 import net.hypixel.api.http.HypixelHttpClient;
 import org.json.simple.JSONObject;
+import org.shanerx.mojang.Mojang;
 
 import java.util.UUID;
 
 public class HypixelManager {
 	private static HypixelHttpClient client;
+	private static Mojang mojang;
 
 	public static void connectToHypixel(boolean beta) {
 		JSONObject data = DatabaseManager.getMiscData();
@@ -23,9 +25,15 @@ public class HypixelManager {
 			exception.printStackTrace();
 			System.exit(-1);
 		}
+
+		mojang = new Mojang().connect();
 	}
 
 	public static HypixelHttpClient getClient() {
 		return client;
+	}
+
+	public static Mojang getMojang() {
+		return mojang;
 	}
 }

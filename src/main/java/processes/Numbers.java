@@ -135,4 +135,284 @@ public class Numbers {
 		}
 		return newString;
 	}
+
+	public static long skillLevel(long xp) {
+		if(xp < 50) {
+			return 0;
+		} else if(xp < 175) {
+			return 1;
+		} else if(xp < 375) {
+			return 2;
+		} else if(xp < 675) {
+			return 3;
+		} else if(xp < 1175) {
+			return 4;
+		} else if(xp < 1925) {
+			return 5;
+		} else if(xp < 2925) {
+			return 6;
+		} else if(xp < 4425) {
+			return 7;
+		} else if(xp < 6425) {
+			return 8;
+		} else if(xp < 9925) {
+			return 9;
+		} else if(xp < 14925) {
+			return 10;
+		} else if(xp < 22425) {
+			return 11;
+		} else if(xp < 32425) {
+			return 12;
+		} else if(xp < 47425) {
+			return 13;
+		} else if(xp < 67425) {
+			return 14;
+		} else if(xp < 97425) {
+			return 15;
+		} else if(xp < 147425) {
+			return 16;
+		} else if(xp < 222425) {
+			return 17;
+		} else if(xp < 322425) {
+			return 18;
+		} else if(xp < 522425) {
+			return 19;
+		} else if(xp < 822425) {
+			return 20;
+		} else if(xp < 1222425) {
+			return 21;
+		} else if(xp < 1722425) {
+			return 22;
+		} else if(xp < 2322425) {
+			return 23;
+		} else if(xp < 3022425) {
+			return 24;
+		} else if(xp < 3822425) {
+			return 25;
+		} else if(xp < 4722425) {
+			return 26;
+		} else if(xp < 5722425) {
+			return 27;
+		} else if(xp < 6822425) {
+			return 28;
+		} else if(xp < 8022425) {
+			return 29;
+		} else if(xp < 9322425) {
+			return 30;
+		} else if(xp < 10722425) {
+			return 31;
+		} else if(xp < 12222425) {
+			return 32;
+		} else if(xp < 13822425) {
+			return 33;
+		} else if(xp < 15522425) {
+			return 34;
+		} else if(xp < 17322425) {
+			return 35;
+		} else if(xp < 19222425) {
+			return 36;
+		} else if(xp < 21222425) {
+			return 37;
+		} else if(xp < 23322425) {
+			return 38;
+		} else if(xp < 25522425) {
+			return 39;
+		} else if(xp < 27822425) {
+			return 40;
+		} else if(xp < 30222425) {
+			return 41;
+		} else if(xp < 32722425) {
+			return 42;
+		} else if(xp < 35322425) {
+			return 43;
+		} else if(xp < 38072425) {
+			return 44;
+		} else if(xp < 40972425) {
+			return 45;
+		} else if(xp < 44072425) {
+			return 46;
+		} else if(xp < 47472425) {
+			return 47;
+		} else if(xp < 51172425) {
+			return 48;
+		} else if(xp < 55172425) {
+			return 49;
+		} else if(xp < 59472425) {
+			return 50;
+		} else if(xp < 64072425) {
+			return 51;
+		} else if(xp < 68072425) {
+			return 52;
+		} else if(xp < 74172425) {
+			return 53;
+		} else if(xp < 79672425) {
+			return 54;
+		} else if(xp < 85472425) {
+			return 55;
+		} else if(xp < 91572425) {
+			return 56;
+		} else if(xp < 97972425) {
+			return 57;
+		} else if(xp < 104672425) {
+			return 58;
+		} else if(xp < 111672425) {
+			return 59;
+		} else {
+			return 60;
+		}
+	}
+
+	public static long cataLevel(long xp) {
+		if(xp < 50) {
+			return 0;
+		} else if(xp < 125) {
+			return 1;
+		} else if(xp < 235) {
+			return 2;
+		} else if(xp < 395) {
+			return 3;
+		} else if(xp < 625) {
+			return 4;
+		} else if(xp < 955) {
+			return 5;
+		} else if(xp < 1425) {
+			return 6;
+		} else if(xp < 2095) {
+			return 7;
+		} else if(xp < 3045) {
+			return 8;
+		} else if(xp < 4385) {
+			return 9;
+		} else if(xp < 6275) {
+			return 10;
+		} else if(xp < 8940) {
+			return 11;
+		} else if(xp < 12700) {
+			return 12;
+		} else if(xp < 17960) {
+			return 13;
+		} else if(xp < 25340) {
+			return 14;
+		} else if(xp < 35640) {
+			return 15;
+		} else if(xp < 50040) {
+			return 16;
+		} else if(xp < 70040) {
+			return 17;
+		} else if(xp < 97640) {
+			return 18;
+		} else if(xp < 135640) {
+			return 19;
+		} else if(xp < 188140) {
+			return 20;
+		} else if(xp < 259640) {
+			return 21;
+		} else if(xp < 356640) {
+			return 22;
+		} else if(xp < 488640) {
+			return 23;
+		} else if(xp < 668640) {
+			return 24;
+		} else if(xp < 911640) {
+			return 25;
+		} else if(xp < 1239640) {
+			return 26;
+		} else if(xp < 1684640) {
+			return 27;
+		} else if(xp < 2284640) {
+			return 28;
+		} else if(xp < 3084640) {
+			return 29;
+		} else if(xp < 4149640) {
+			return 30;
+		} else if(xp < 5559640) {
+			return 31;
+		} else if(xp < 7459640) {
+			return 32;
+		} else if(xp < 9959640) {
+			return 33;
+		} else if(xp < 13259640) {
+			return 34;
+		} else if(xp < 17559640) {
+			return 35;
+		} else if(xp < 23159640) {
+			return 36;
+		} else if(xp < 30359640) {
+			return 37;
+		} else if(xp < 39559640) {
+			return 38;
+		} else if(xp < 51559640) {
+			return 39;
+		} else if(xp < 66559640) {
+			return 40;
+		} else if(xp < 85559640) {
+			return 41;
+		} else if(xp < 109559640) {
+			return 42;
+		} else if(xp < 139559640) {
+			return 43;
+		} else if(xp < 177559640) {
+			return 44;
+		} else if(xp < 225559640) {
+			return 45;
+		} else if(xp < 285559640) {
+			return 46;
+		} else if(xp < 360559640) {
+			return 47;
+		} else if(xp < 453559640) {
+			return 48;
+		} else if(xp < 569809640) {
+			return 49;
+		} else {
+			return 50;
+		}
+	}
+
+	public static long slayerLevel(long xp) {
+		if(xp < 10) {
+			return 0;
+		} else if(xp < 30) {
+			return 1;
+		} else if(xp < 250) {
+			return 2;
+		} else if(xp < 1500) {
+			return 3;
+		} else if(xp < 5000) {
+			return 4;
+		} else if(xp < 20000) {
+			return 5;
+		} else if(xp < 100000) {
+			return 6;
+		} else if(xp < 400000) {
+			return 7;
+		} else if(xp < 1000000) {
+			return 8;
+		} else {
+			return 9;
+		}
+	}
+
+	public static long hotmLevel(long xp) {
+		if(xp < 3000) {
+			return 1;
+		} else if(xp < 12000) {
+			return 2;
+		} else if(xp < 37000) {
+			return 3;
+		} else if(xp < 97000) {
+			return 4;
+		} else if(xp < 197000) {
+			return 5;
+		} else if(xp < 347000) {
+			return 6;
+		} else if(xp < 557000) {
+			return 7;
+		} else if(xp < 827000) {
+			return 8;
+		} else if(xp < 1247000) {
+			return 9;
+		} else {
+			return 10;
+		}
+	}
 }
