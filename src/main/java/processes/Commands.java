@@ -37,7 +37,13 @@ class CreateThreadBeethoven implements Runnable {
 						e.reply("You must provide a name.");
 						return;
 					}
-					Baldness.baldness(e, message[2]);
+					String profile;
+					try {
+						profile = message[3];
+					} catch(Exception exception) {
+						profile = "";
+					}
+					Baldness.baldness(e, message[2], profile);
 				}
 				case "help" -> BeethovenHelp.help(e, message);
 				case "gstart" -> {

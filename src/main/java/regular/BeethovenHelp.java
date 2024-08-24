@@ -70,7 +70,7 @@ public class BeethovenHelp {
                         "\nShows the amount of messages each staff member has sent, and whether they meet the required message count for the current month.", false);
                 case "gamble" -> builder.addField("Gamble Command", """
 						Syntax: `beethoven gamble <type> <amount | max>`
-						Usage: Bets the amount using the gamemode specified.  You can only bet up to 10x your hourly income.  Writing `max` in place of the amount will bet the maximum allowed.
+						Usage: Bets the amount using the gamemode specified.  Writing `max` in place of the amount will bet the maximum allowed.
 						Gambling Options: `rng` `slots` `scratch`
 						Cooldown: 10s
 						Example: `beethoven gamble slots 40001
@@ -95,6 +95,14 @@ public class BeethovenHelp {
 				case "updatehypixel" -> builder.addField("UpdateHypixel Command", """
 						Syntax: `beethoven updatehypixel`
 						Usage: Forcibly updates the guild roles for all members.""", false);
+				case "link" -> builder.addField("Link Command", """
+						Syntax: `beethoven link <IGN>`
+						Usage: Gives (or removes) the <@&1090691229789982800> role.""", false);
+				case "baldness" -> builder.addField("Baldness Command", """
+						Syntax: `beethoven baldness <IGN> [profile]`
+						Usage: Outputs the Baldness Factor for this SkyBlock player.
+						Example: `beethoven baldness akc0303` `beethoven baldness beethoven_ pomegranate`
+						""", false);
 				default -> builder.addField("Command Doesn't Exist!", "`beethoven " + message[2] + "` doesn't exist you idiot.", false);
             }
         } catch(Exception exception) {
@@ -108,6 +116,7 @@ public class BeethovenHelp {
 					`annoy` `forcerestartlingling`
 					`requestgiveaway`
 					`updatehypixel`
+					`link` `baldness`
 
 					**__Leveling Commands__**
 					`rank` `setlevelingdata`

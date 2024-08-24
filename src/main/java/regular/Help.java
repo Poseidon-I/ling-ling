@@ -127,10 +127,6 @@ public class Help {
 						"\nUsage: Shows the number of servers the bot is in and the number of profiles that have been created.", false);
 				case "settings" -> builder.addField("Settings Command", "Syntax: `!settings [setting] <(setting) newValue>`" +
 						"\nUsage: Change your settings.", false);
-				case "link" -> builder.addField("Link Command", """
-						Syntax: `!link <IGN>`
-						Usage: Adds the specified Minecraft Java IGN to your Ling Ling account.  **CAN ONLY BE DONE ONCE**
-						Recommended only for people who play on Strad's PRIVATE Creative World.""", false);
 
 				// PAGE 3
 				case "start" -> builder.addField("Start Command", "Syntax: `!start`" +

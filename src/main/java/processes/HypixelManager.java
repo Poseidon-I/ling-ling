@@ -15,11 +15,7 @@ public class HypixelManager {
 		JSONObject data = DatabaseManager.getMiscData();
 		try {
 			assert data != null;
-			if(beta) {
-				client = new ApacheHttpClient(UUID.fromString("bd49ecf6-3d03-407a-9694-a608910a968a"));
-			} else {
-				client = new ApacheHttpClient(UUID.fromString((String) data.get("hypixelKey")));
-			}
+			client = new ApacheHttpClient(UUID.fromString((String) data.get("hypixelKey")));
 		} catch(Exception exception) {
 			System.out.println("Unable to connect to Hypixel API.");
 			exception.printStackTrace();

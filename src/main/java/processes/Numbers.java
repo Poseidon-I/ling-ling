@@ -415,4 +415,102 @@ public class Numbers {
 			return 10;
 		}
 	}
+
+	public static long cropMilestone(long collected, double multiplier) {
+		if(collected < multiplier * 30) {
+			return 0;
+		} else if(collected < multiplier * 80) {
+			return 1;
+		} else if(collected < multiplier * 160) {
+			return 2;
+		} else if(collected < multiplier * 330) {
+			return 3;
+		} else if(collected < multiplier * 660) {
+			return 4;
+		} else if(collected < multiplier * 1330) {
+			return 5;
+		} else if(collected < multiplier * 2660) {
+			return 6;
+		} else if(collected < multiplier * 5160) {
+			return 7;
+		} else if(collected < multiplier * 8660) {
+			return 8;
+		} else if(collected < multiplier * 13660) {
+			return 9;
+		} else if(collected < multiplier * 20160) {
+			return 10;
+		} else if(collected < multiplier * 28160) {
+			return 11;
+		} else if(collected < multiplier * 38160) {
+			return 12;
+		} else if(collected < multiplier * 58160) {
+			return 13;
+		} else if(collected < multiplier * 93160) {
+			return 14;
+		} else if(collected < multiplier * 143160) {
+			return 15;
+		} else if(collected < multiplier * 218160) {
+			return 16;
+		} else if(collected < multiplier * 318160) {
+			return 17;
+		} else if(collected < multiplier * 493160) {
+			return 18;
+		} else if(collected < multiplier * 743160) {
+			return 19;
+		} else if(collected < multiplier * 1093160) {
+			return 20;
+		} else if(collected < multiplier * 1593160) {
+			return 21;
+		} else if(collected < multiplier * 2343160) {
+			return 22;
+		} else if(collected < multiplier * 3343160) {
+			return 23;
+		} else if(collected < multiplier * 4543160) {
+			return 24;
+		} else if(collected < multiplier * 6243160) {
+			return 25;
+		} else if(collected < multiplier * 8243160) {
+			return 26;
+		} else if(collected < multiplier * 10543160) {
+			return 27;
+		} else if(collected < multiplier * 13143160) {
+			return 28;
+		} else if(collected < multiplier * 16143160) {
+			return 29;
+		} else if(collected < multiplier * 19143160) {
+			return 30;
+		} else if(collected < multiplier * 22143160) {
+			return 31;
+		} else if(collected < multiplier * 25143160) {
+			return 32;
+		} else if(collected < multiplier * 28143160) {
+			return 33;
+		} else if(collected < multiplier * 31143160) {
+			return 34;
+		} else if(collected < multiplier * 34143160) {
+			return 35;
+		} else if(collected < multiplier * 37143160) {
+			return 36;
+		} else if(collected < multiplier * 40143160) {
+			return 37;
+		} else if(collected < multiplier * 43143160) {
+			return 38;
+		} else if(collected < multiplier * 46143160) {
+			return 39;
+		} else if(collected < multiplier * 49143160) {
+			return 40;
+		} else if(collected < multiplier * 52143160) {
+			return 41;
+		} else if(collected < multiplier * 55143160) {
+			return 42;
+		} else if(collected < multiplier * 58143160) {
+			return 43;
+		} else if(collected < multiplier * 61143160) {
+			return 44;
+		} else if(collected < multiplier * 64143160) {
+			return 45;
+		} else {
+			return 46;
+		}
+	}
 }
