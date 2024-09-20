@@ -20,7 +20,6 @@ import java.net.URLConnection;
 import java.util.concurrent.ExecutionException;
 
 public class Baldness {
-
 	public static void baldness(GenericDiscordEvent e, String playerName, String fruit) {
 		try {
 			String uuid = HypixelManager.getMojang().getUUIDOfUsername(playerName);
@@ -30,10 +29,16 @@ public class Baldness {
 			JsonArray object = reply.getProfiles();
 			JsonObject profile = null;
 			String profileUUID = "";
+			boolean ironman = false;
 			if(fruit.isEmpty()) {
 				for(int i = 0; i < object.size(); i++) {
 					profile = object.get(i).getAsJsonObject();
 					if(profile.get("selected").getAsBoolean()) {
+						if(profile.has("game_mode")) {
+							if(profile.get("game_mode").getAsString().equals("ironman")) {
+								ironman = true;
+							}
+						}
 						profileUUID = profile.get("profile_id").getAsString();
 						profile = profile.getAsJsonObject("members").getAsJsonObject(uuid);
 						break;
@@ -91,10 +96,8 @@ public class Baldness {
 					.setFooter("Ling Ling", e.getJDA().getSelfUser().getAvatarUrl())
 					.setTitle("Baldness Factor for " + playerName);
 			double baldness = 0.0;
-			if(playerName.equalsIgnoreCase("GodHunter775")) {
-				baldness += 1;
-				builder.addField("**__Is GodHunter775__**", "+1", false);
-			}
+
+			boolean isBaldHunter = playerName.equalsIgnoreCase("GodHunter775");
 
 			/*
 				██╗     ███████╗██╗   ██╗███████╗██╗
@@ -297,41 +300,41 @@ public class Baldness {
 
 			JsonObject slayers = profile.getAsJsonObject("slayer").getAsJsonObject("slayer_bosses");
 			long zombieLevel;
-			if(slayers.getAsJsonObject("zombie").has("xp")) {
+			try {
 				zombieLevel = Numbers.slayerLevel(slayers.getAsJsonObject("zombie").get("xp").getAsLong());
-			} else {
+			} catch(Exception exception) {
 				zombieLevel = 0;
 			}
 			long spiderLevel;
-			if(slayers.getAsJsonObject("spider").has("xp")) {
+			try {
 				spiderLevel = Numbers.slayerLevel(slayers.getAsJsonObject("spider").get("xp").getAsLong());
-			} else {
+			} catch(Exception exception) {
 				spiderLevel = 0;
 			}
 			long wolfLevel;
-			if(slayers.getAsJsonObject("blaze").has("xp")) {
+			try {
 				wolfLevel = Numbers.slayerLevel(slayers.getAsJsonObject("wolf").get("xp").getAsLong());
-			} else {
+			} catch(Exception exception) {
 				wolfLevel = 0;
 			}
 			long emanLevel;
-			if(slayers.getAsJsonObject("enderman").has("xp")) {
+			try {
 				emanLevel = Numbers.slayerLevel(slayers.getAsJsonObject("enderman").get("xp").getAsLong());
-			} else {
+			} catch(Exception exception) {
 				emanLevel = 0;
 			}
 
 			long blazeLevel;
-			if(slayers.getAsJsonObject("blaze").has("xp")) {
+			try {
 				blazeLevel = Numbers.slayerLevel(slayers.getAsJsonObject("blaze").get("xp").getAsLong());
-			} else {
+			} catch(Exception exception) {
 				blazeLevel = 0;
 			}
 
 			long vampLevel;
-			if(slayers.getAsJsonObject("vampire").has("xp")) {
+			try {
 				vampLevel = Math.min(5, Numbers.skillLevel(slayers.getAsJsonObject("vampire").get("xp").getAsLong() / 2)); // inaccurate but it works
-			} else {
+			} catch(Exception exception) {
 				vampLevel = 0;
 			}
 			if(zombieLevel < 9) {
@@ -521,18 +524,6 @@ public class Baldness {
 					if(collections.get("GLOWSTONE_DUST").getAsLong() < 25000) {
 						causes += "Glowstone Collection: +0.015\n";
 						thisBaldness += 0.015;
-					}
-
-					long gold = collections.get("GOLD_INGOT").getAsLong();
-					if(gold < 100000000) {
-						if(gold < 25000) {
-							causes += "Gold Collection: +0.015\n";
-							thisBaldness += 0.015;
-						}
-						long millions = gold / 1000000;
-						double result = (100 - millions) * 0.01;
-						causes += "Bad Gold Collection: + " + result + "\n";
-						thisBaldness += result;
 					}
 
 					if(collections.get("GRAVEL").getAsLong() < 50000) {
@@ -842,6 +833,22 @@ public class Baldness {
 				} catch(Exception exception) {
 					causes += "Wilted Berberis Collection: +0.015\n";
 					thisBaldness += 0.015;
+				}
+
+				try {
+					long gold = collections.get("GOLD_INGOT").getAsLong();
+					if(gold < 100000000) {
+						if(gold < 25000) {
+							causes += "Gold Collection: +0.015\n";
+							thisBaldness += 0.015;
+						}
+						double result = 1 - (Math.sqrt(2 * gold) / (Math.sqrt(2) * 10000));
+						causes += "Bad Gold Collection: + " + result + "\n";
+						thisBaldness += result;
+					}
+				} catch(Exception exception) {
+					causes += "Terrible Gold Collection: +1.015\n";
+					thisBaldness += 1.015;
 				}
 
 				if(thisBaldness > 0) {
@@ -1190,9 +1197,10 @@ public class Baldness {
 			 */
 
 			long mp = profile.getAsJsonObject("accessory_bag_storage").get("highest_magical_power").getAsLong();
-			if(mp < 1697) {
-				builder.addField("**__Magical Power__**", "Missing " + (1697 - mp) + " MP: +" + (1697 - mp) * 0.0006, false);
-				baldness += (1697 - mp) * 0.0006;
+			long maxMP = 1701;
+			if(mp < maxMP) {
+				builder.addField("**__Magical Power__**", "Missing " + (maxMP - mp) + " MP: +" + (maxMP - mp) * 0.0006, false);
+				baldness += (maxMP - mp) * 0.0006;
 			}
 
 			/*
@@ -1382,34 +1390,38 @@ public class Baldness {
 				╚═════╝        ╚════╝  ╚═════╝
 			 */
 
-			JsonObject dojo = profile.getAsJsonObject("nether_island_player_data").getAsJsonObject("dojo");
 			long total = 0;
-			if(dojo.has("dojo_points_mob_kb")) {
-				total += dojo.get("dojo_points_mob_kb").getAsLong();
-			}
+			try {
+				JsonObject dojo = profile.getAsJsonObject("nether_island_player_data").getAsJsonObject("dojo");
+				if(dojo.has("dojo_points_mob_kb")) {
+					total += dojo.get("dojo_points_mob_kb").getAsLong();
+				}
 
-			if(dojo.has("dojo_points_wall_jump")) {
-				total += dojo.get("dojo_points_wall_jump").getAsLong();
-			}
+				if(dojo.has("dojo_points_wall_jump")) {
+					total += dojo.get("dojo_points_wall_jump").getAsLong();
+				}
 
-			if(dojo.has("dojo_points_archer")) {
-				total += dojo.get("dojo_points_archer").getAsLong();
-			}
+				if(dojo.has("dojo_points_archer")) {
+					total += dojo.get("dojo_points_archer").getAsLong();
+				}
 
-			if(dojo.has("dojo_points_sword_swap")) {
-				total += dojo.get("dojo_points_sword_swap").getAsLong();
-			}
+				if(dojo.has("dojo_points_sword_swap")) {
+					total += dojo.get("dojo_points_sword_swap").getAsLong();
+				}
 
-			if(dojo.has("dojo_points_snake")) {
-				total += dojo.get("dojo_points_snake").getAsLong();
-			}
+				if(dojo.has("dojo_points_snake")) {
+					total += dojo.get("dojo_points_snake").getAsLong();
+				}
 
-			if(dojo.has("dojo_points_fireball")) {
-				total += dojo.get("dojo_points_fireball").getAsLong();
-			}
+				if(dojo.has("dojo_points_fireball")) {
+					total += dojo.get("dojo_points_fireball").getAsLong();
+				}
 
-			if(dojo.has("dojo_points_lock_head")) {
-				total += dojo.get("dojo_points_lock_head").getAsLong();
+				if(dojo.has("dojo_points_lock_head")) {
+					total += dojo.get("dojo_points_lock_head").getAsLong();
+				}
+			} catch(Exception exception) {
+				// nothing here
 			}
 
 			if(total < 7000) {
@@ -1432,9 +1444,9 @@ public class Baldness {
 			} catch(Exception exception) {
 				donations = 0;
 			}
-			if(donations < 351) {
-				builder.addField("**__Museum__**", "Missing " + (351 - donations) + " Museum Donos: +" + (351 - donations) * 0.002, false);
-				baldness += (351 - donations) * 0.002;
+			if(donations < 300) {
+				builder.addField("**__Museum__**", "Missing " + (300 - donations) + " Museum Donos: +" + (300 - donations) * 0.002, false);
+				baldness += (300 - donations) * 0.002;
 			}
 
 			/*
@@ -1677,9 +1689,10 @@ public class Baldness {
 			 */
 
 			long score = profile.getAsJsonObject("leveling").get("highest_pet_score").getAsLong();
-			if(score < 445) {
-				builder.addField("**__Pet Score__**", "Missing " + (445 - score) + " Pet Score: +" + (445 - score) * 0.002, false);
-				baldness += (445 - score) * 0.002;
+			long maxPetScore = 445;
+			if(score < maxPetScore) {
+				builder.addField("**__Pet Score__**", "Missing " + (maxPetScore - score) + " Pet Score: +" + (maxPetScore - score) * 0.002, false);
+				baldness += (maxPetScore - score) * 0.002;
 			}
 
 			/*
@@ -1699,7 +1712,7 @@ public class Baldness {
 			if(melody == null) {
 				melody = new JsonObject();
 			}
-			
+
 			if(!melody.has("song_hymn_joy_perfect_completions")) {
 				causes += "Beethoven Symphony No. 9 in D Minor (Choral); IV. Finale: +0.05\n";
 				thisBaldness += 0.05;
@@ -1770,27 +1783,41 @@ public class Baldness {
 				baldness += thisBaldness;
 			}
 
+			causes = "";
+
+			if(ironman) {
+				causes += "Ironman (Respect): x0.9\n";
+				baldness *= 0.9;
+			}
+
+			if(isBaldHunter) {
+				causes += "Is GodHunter775: x2\n";
+				baldness *= 2;
+			}
+
+			builder.addField("**__Multipliers__**", causes, false);
+
 			e.replyEmbeds(builder.build());
 
 			String rank;
-			if(baldness < 2.5) {
+			if(baldness < 2) {
 				rank = "Not Bald";
-			} else if(baldness < 6) {
+			} else if(baldness < 5) {
 				rank = "Slightly Bald";
-			} else if(baldness < 10.5) {
+			} else if(baldness < 9) {
 				rank = "Bald";
-			} else if(baldness < 16) {
+			} else if(baldness < 14) {
 				rank = "Very Bald";
 			} else {
 				rank = "Extremely Bald";
 			}
 
-			e.sendMessage("# **Final Baldness Score**: **||" + baldness + "||**\n# **Your Baldness Rank**: **||" + rank + "||**");
+			e.sendMessage("# **Final Baldness Score for `" + playerName + "`**: **||" + baldness + "||**\n# **Baldness Rank**: **||" + rank + "||**");
 		} catch(ExecutionException exception) {
-			exception.printStackTrace();
-			e.reply("You are being rate-limited for this user!");
+			e.reply("This user doees not exist!");
 		} catch(Exception exception) {
 			exception.printStackTrace();
+			e.reply("Something went wrong!  Contact the dev to get him to sort out the issue.");
 		}
 	}
 }

@@ -649,7 +649,7 @@ class CreateThreadSlash implements Runnable {
 			case "forcestop" -> {
 				if(CheckPermLevel(e) == 3 && Objects.requireNonNull(e1.getOption("PASSWORD")).getAsString().equals("@#$%FUCK")) {
 					e.reply("Forcing bot to stop...");
-					e.getJDA().shutdownNow();
+					System.exit(0);
 				} else {
 					e.reply(":no_entry: **403 FORBIDDEN** :no_entry:\nYou do not have permission to run this command, or you entered the wrong Password.");
 				}

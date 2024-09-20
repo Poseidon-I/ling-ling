@@ -20,7 +20,7 @@ public class Daily {
 			e.reply("I can't give out violins that fast, wait " + hours + " hours " + minutes + " minutes " + seconds + " seconds " + milliseconds + " milliseconds!");
 		} else {
 			long streak = (long) data.get("streak") + 1;
-			long income = (long) data.get("income");
+			long income = (long) data.get("income") + 1000;
 			long bonusMedals = (long) data.get("bonusMedals");
 			String message = "";
 			if(time > dailyCD + 86400000 && streak != 0) {
