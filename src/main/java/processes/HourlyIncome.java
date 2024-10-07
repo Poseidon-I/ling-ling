@@ -72,11 +72,11 @@ public class HourlyIncome {
 				"\n\nOriginal Income: " + Numbers.formatNumber(originalIncome) + Emoji.VIOLINS +
 				"\nGross Income: " + Numbers.formatNumber(gross) + Emoji.VIOLINS +
 				"\nIncome Lost to Inactive Items: " + Numbers.formatNumber(originalIncome - gross) + Emoji.VIOLINS +
-				"\nLoans Paid: " + Numbers.formatNumber(loanPaid) + Emoji.VIOLINS;
+				"\nLoans Paid: " + Numbers.formatNumber(loanPaid) + Emoji.VIOLINS +
+				"\n\nNet Income: " + Numbers.formatNumber(net) + Emoji.VIOLINS;
 		if(!message.isEmpty()) {
 			reply += "\n\n" + message + Emoji.VIOLINS;
 		}
-		reply += "\n\nNet Income: " + Numbers.formatNumber(net) + Emoji.VIOLINS;
 		e.reply(reply);
 		SaveData.saveData(e, data);
 	}
