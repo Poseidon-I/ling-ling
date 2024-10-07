@@ -15,6 +15,7 @@ public class HourlyIncome {
 		long interestCD = (long) data.get("interestCD");
 		double howManyHours = 0;
 		long originalHours = 0;
+		String message = "";
 		while(lastIncome < time) {
 			if(time <= (long) data.get("rosinExpire")) {
 				howManyHours += 0.25;
@@ -28,8 +29,8 @@ public class HourlyIncome {
 			if(time <= (long) data.get("serviceExpire")) {
 				howManyHours += 0.25;
 			}
-			if(time > (long) data.get("interestCD")) {
-				InterestPenalty.interestPenalty(data);
+			if(time > interestCD) {
+				message = InterestPenalty.interestPenalty(data);
 				interestCD += 259200000;
 			}
 			originalHours++;
@@ -67,12 +68,16 @@ public class HourlyIncome {
 		data.replace("incomeCD", lastIncome);
 		data.replace("interestCD", interestCD);
 		long originalIncome = originalHours * income;
-		e.reply("You collected " + Numbers.formatNumber(originalHours) + " hours of income!" +
+		String reply = "You collected " + Numbers.formatNumber(originalHours) + " hours of income!" +
 				"\n\nOriginal Income: " + Numbers.formatNumber(originalIncome) + Emoji.VIOLINS +
 				"\nGross Income: " + Numbers.formatNumber(gross) + Emoji.VIOLINS +
 				"\nIncome Lost to Inactive Items: " + Numbers.formatNumber(originalIncome - gross) + Emoji.VIOLINS +
-				"\nLoans Paid: " + Numbers.formatNumber(loanPaid) + Emoji.VIOLINS +
-				"\n\nNet Income: " + Numbers.formatNumber(net) + Emoji.VIOLINS);
+				"\nLoans Paid: " + Numbers.formatNumber(loanPaid) + Emoji.VIOLINS;
+		if(!message.isEmpty()) {
+			reply += "\n\n" + message + Emoji.VIOLINS;
+		}
+		reply += "\n\nNet Income: " + Numbers.formatNumber(net) + Emoji.VIOLINS;
+		e.reply(reply);
 		SaveData.saveData(e, data);
 	}
 }

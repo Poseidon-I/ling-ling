@@ -3,20 +3,11 @@ package processes;
 import org.json.simple.JSONObject;
 
 public class InterestPenalty {
-	public static void interestPenalty(JSONObject data) {
-		//LOAN PENALTY
-		long owed = (long) data.get("loan");
-		if((boolean) data.get("lessPenalty")) {
-			data.replace("loan", (long) (owed * 1.09));
-			data.replace("penaltiesIncurred", (long) data.get("penaltiesIncurred") + (long) (owed * 0.09));
-		} else {
-			data.replace("loan", (long) (owed * 1.1));
-			data.replace("penaltiesIncurred", (long) data.get("penaltiesIncurred") + (long) (owed * 0.1));
-		}
-
+	public static String interestPenalty(JSONObject data) {
 		//BANK INTEREST
+		String message = "";
 		long balance = (long) data.get("bank");
-		double interest = 1.01;
+		double interest = 0.01;
 		if((boolean) data.get("moreInterest")) {
 			interest += 0.01;
 		}
@@ -26,6 +17,7 @@ public class InterestPenalty {
 		if(earned + balance > max) {
 			earned -= (earned + balance) - max;
 		}
+		message += "Interest Earned: " + Numbers.formatNumber(earned);
 
 		long loan = (long) data.get("loan");
 		long violins = (long) data.get("violins");
@@ -44,13 +36,25 @@ public class InterestPenalty {
 		} else {
 			balance += earned;
 		}
+
 		if(loan < 0) {
 			balance -= loan;
 			loan = 0;
 		}
+
+		//LOAN PENALTY
+		if((boolean) data.get("lessPenalty")) {
+			data.replace("loan", (long) (loan * 1.09));
+			data.replace("penaltiesIncurred", (long) data.get("penaltiesIncurred") + (long) (loan * 0.09));
+		} else {
+			data.replace("loan", (long) (loan * 1.1));
+			data.replace("penaltiesIncurred", (long) data.get("penaltiesIncurred") + (long) (loan * 0.1));
+		}
+
 		data.replace("violins", violins);
 		data.replace("loan", loan);
 		data.replace("bank", balance);
 		data.replace("interestEarned", (long) data.get("interestEarned") + earned);
+		return message;
 	}
 }
